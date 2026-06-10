@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Scorecard — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Station scorecard (7 days)</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Yield = keyword hits ÷ chunks processed. Use <strong>swap</strong> / <strong>fix</strong> hints when slots are limited.
+</p>
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Station</th>
+      <th>Status</th>
+      <th>On</th>
+      <th>Chunks 7d</th>
+      <th>Gaps 7d</th>
+      <th>Keywords 7d</th>
+      <th>Unique kw</th>
+      <th>Yield</th>
+      <th>Hint</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.station_label }}</td>
+      <td>{{ format_status(row.status)|safe }}</td>
+      <td>{% if row.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge muted">off</span>{% endif %}</td>
+      <td>{{ row.chunks_7d or 0 }}</td>
+      <td>{{ row.gaps_7d or 0 }}</td>
+      <td>{{ row.keyword_hits_7d or 0 }}</td>
+      <td>{{ row.unique_keywords_7d or 0 }}</td>
+      <td>{{ "%.2f"|format(row.yield_pct) }}%</td>
+      <td>{{ format_recommendation(row.recommendation)|safe }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No stations in database.</p>
+{% endif %}
+{% endblock %}

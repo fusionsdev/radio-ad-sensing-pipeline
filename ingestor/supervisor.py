@@ -14,6 +14,8 @@ from ingestor.ffmpeg import ChunkRunner, FfmpegChunkRunner, is_valid_chunk_durat
 from ingestor.repository import enqueue_chunk, log_gap, upsert_station
 from shared.metrics import (
     increment_chunks_processed,
+    increment_ingest_chunks,
+    increment_ingest_errors,
     set_station_last_chunk_timestamp,
 )
 from shared.models import PipelineSettings, StationConfig
@@ -150,6 +152,7 @@ class StationIngestor:
             self.backoff.reset()
             set_station_last_chunk_timestamp(self.station.name, expected_end_ts)
             increment_chunks_processed("ingestor")
+            increment_ingest_chunks(self.station.name)
             self._sleep_until_next_stride(start_ts)
             logger.info(
                 "chunk enqueued",
@@ -172,6 +175,7 @@ class StationIngestor:
             end_ts=expected_end_ts,
             reason=reason,
         )
+        increment_ingest_errors(self.station.name, reason)
         if output_path.exists():
             output_path.unlink(missing_ok=True)
         delay = self.backoff.next_delay()
@@ -204,6 +208,42 @@ def slugify_station_name(name: str) -> str:
     """Make a station name safe for chunk directory names."""
     slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
     return slug or "station"
+
+
+def startup_stagger_delay_seconds(index: int, stagger_sec: float) -> float:
+    """Seconds to wait before station *index* begins its first chunk."""
+    if index <= 0 or stagger_sec <= 0:
+        return 0.0
+    return index * stagger_sec
+
+
+def wait_startup_stagger(
+    stop_event: threading.Event,
+    delay_sec: float,
+    *,
+    sleep_fn: Callable[[float], None] = time.sleep,
+    monotonic_fn: Callable[[], float] = time.monotonic,
+) -> None:
+    """Sleep up to delay_sec unless stop_event is already set."""
+    if delay_sec <= 0 or stop_event.is_set():
+        return
+    deadline = monotonic_fn() + delay_sec
+    while monotonic_fn() < deadline:
+        if stop_event.is_set():
+            return
+        sleep_fn(min(0.5, deadline - monotonic_fn()))
+
+
+def run_station_ingestor(
+    ingestor: StationIngestor,
+    stop_event: threading.Event,
+    *,
+    startup_delay_sec: float = 0.0,
+) -> None:
+    """Thread target: optional stagger delay, then run until stopped."""
+    wait_startup_stagger(stop_event, startup_delay_sec)
+    if not stop_event.is_set():
+        ingestor.run(stop_event)
 
 
 def create_station_ingestors(

@@ -14,7 +14,7 @@ import httpx
 from shared.config import TelegramSettings, load_settings, load_telegram_settings
 from shared.db import get_connection, transaction
 from shared.logging import setup_logging
-from shared.metrics import increment_chunks_processed, set_queue_pending_hours
+from shared.metrics import increment_alerts_sent, increment_chunks_processed, set_queue_pending_hours
 from shared.models import PipelineSettings
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -371,6 +371,7 @@ class AlerterService:
                 audio_path = self._resolve_audio_path(alert.archived_audio_path)
                 if audio_path is not None:
                     self.log.info("dry-run audio: %s", audio_path)
+            self._record_alert_sent("first_seen", success=True)
             return True
         assert self._client is not None
         try:
@@ -379,9 +380,11 @@ class AlerterService:
                 audio_path = self._resolve_audio_path(alert.archived_audio_path)
                 if audio_path is not None:
                     self._client.send_audio(self.telegram_settings.telegram_chat_id or "", audio_path, caption=alert.company_name or "ad archive")
+            self._record_alert_sent("first_seen", success=True)
             return True
         except Exception:
             self.log.exception("failed to send first-seen alert", extra={"detection_id": alert.detection_id})
+            self._record_alert_sent("first_seen", success=False)
             return False
 
     def _send_station_down_alert(self, alert: StationDownAlert, now_ts: float) -> bool:
@@ -395,13 +398,16 @@ class AlerterService:
         )
         if self._dry_run:
             self.log.info(message)
+            self._record_alert_sent("station_down", success=True)
             return True
         assert self._client is not None
         try:
             self._client.send_message(self.telegram_settings.telegram_chat_id or "", message)
+            self._record_alert_sent("station_down", success=True)
             return True
         except Exception:
             self.log.exception("failed to send station down alert", extra={"station_id": alert.station_id})
+            self._record_alert_sent("station_down", success=False)
             return False
 
     def _send_queue_drop_alert(self, alert: dict[str, Any], now_ts: float) -> bool:
@@ -416,13 +422,16 @@ class AlerterService:
             message += f"\nReasons: {unique_reasons}"
         if self._dry_run:
             self.log.info(message)
+            self._record_alert_sent("queue_drop", success=True)
             return True
         assert self._client is not None
         try:
             self._client.send_message(self.telegram_settings.telegram_chat_id or "", message)
+            self._record_alert_sent("queue_drop", success=True)
             return True
         except Exception:
             self.log.exception("failed to send queue drop alert")
+            self._record_alert_sent("queue_drop", success=False)
             return False
 
     def _send_daily_digest(self, digest: dict[str, Any], now_ts: float) -> bool:
@@ -438,14 +447,24 @@ class AlerterService:
             message += f"\nDown stations: {names}"
         if self._dry_run:
             self.log.info(message)
+            self._record_alert_sent("digest", success=True)
             return True
         assert self._client is not None
         try:
             self._client.send_message(self.telegram_settings.telegram_chat_id or "", message)
+            self._record_alert_sent("digest", success=True)
             return True
         except Exception:
             self.log.exception("failed to send daily digest")
+            self._record_alert_sent("digest", success=False)
             return False
+
+    def _record_alert_sent(self, alert_type: str, *, success: bool) -> None:
+        if self._dry_run:
+            outcome = "dry_run"
+        else:
+            outcome = "success" if success else "fail"
+        increment_alerts_sent(alert_type, outcome)
 
     def _format_first_seen_message(self, alert: FirstSeenAlert) -> str:
         lines = [

@@ -9,7 +9,7 @@ import yaml
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from shared.models import PipelineSettings, StationConfig, StationsFile
+from shared.models import LoanKeywordEntry, LoanKeywordsFile, PipelineSettings, StationConfig, StationsFile
 
 CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 
@@ -31,6 +31,32 @@ def load_stations(path: Path | None = None) -> list[StationConfig]:
     with config_path.open(encoding="utf-8") as handle:
         data = yaml.safe_load(handle)
     return StationsFile.model_validate(data).stations
+
+
+def _normalize_loan_keywords_data(data: object) -> object:
+    """Accept v2 {phrase, confidence} entries and legacy plain strings."""
+    if not isinstance(data, dict):
+        return data
+    raw_keywords = data.get("keywords")
+    if not isinstance(raw_keywords, list):
+        return data
+    normalized: list[object] = []
+    for item in raw_keywords:
+        if isinstance(item, str):
+            normalized.append({"phrase": item.strip(), "confidence": 0.7})
+        else:
+            normalized.append(item)
+    return {**data, "keywords": normalized}
+
+
+def load_loan_keywords(path: Path | None = None) -> list[LoanKeywordEntry]:
+    """Load loan/funding keyword phrases with per-phrase confidence from YAML."""
+    config_path = path or CONFIG_DIR / "loan_keywords.yaml"
+    if not config_path.is_file():
+        return []
+    with config_path.open(encoding="utf-8") as handle:
+        data = yaml.safe_load(handle) or {}
+    return LoanKeywordsFile.model_validate(_normalize_loan_keywords_data(data)).keywords
 
 
 def load_settings(path: Path | None = None) -> PipelineSettings:

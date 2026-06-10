@@ -14,7 +14,11 @@ dashboard_port: 8080
 db_path: data/pipeline.db
 chunks_dir: data/chunks
 # Ingestor resilience — fast retry before exponential backoff
-ingest_immediate_retries: 3
-ingest_immediate_retry_delay_sec: 0.5
-ingest_backoff_initial_sec: 1
-ingest_backoff_max_sec: 30
+ingest_immediate_retries: 7
+ingest_immediate_retry_delay_sec: 2
+ingest_backoff_initial_sec: 2
+ingest_backoff_max_sec: 60
+# Delay each enabled station thread start by index × N seconds (reduces cold-start contention)
+ingest_startup_stagger_sec: 15
+# Minimum phrase confidence from loan_keywords.yaml to insert keyword_hits
+keyword_min_record_confidence: 0.6

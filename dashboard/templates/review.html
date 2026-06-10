@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Review — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Review inbox ({{ window_days }} days)</h2>
+<p style="color: var(--muted); font-size: 0.9rem; max-width: 52rem;">
+  Filter loan/funding <strong>ads</strong> vs keyword noise before Telegram alerts.
+  <strong>Tier A</strong> = keyword + LLM ad ·
+  <strong>Tier B</strong> = LLM ad only ·
+  <strong>Tier C</strong> = keyword mention only (usually news/talk — not an ad).
+</p>
+<p style="font-size: 0.85rem; margin-bottom: 1rem;">
+  Show:
+  <a href="/review"{% if not tier_filter %} style="font-weight:600"{% endif %}>All</a>
+  · <a href="/review?tier=A"{% if tier_filter == 'A' %} style="font-weight:600"{% endif %}>A</a>
+  · <a href="/review?tier=B"{% if tier_filter == 'B' %} style="font-weight:600"{% endif %}>B</a>
+  · <a href="/review?tier=C"{% if tier_filter == 'C' %} style="font-weight:600"{% endif %}>C</a>
+  {% if tier_filter %}<span style="color: var(--muted);"> — {{ rows|length }} row(s)</span>{% endif %}
+</p>
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Tier</th>
+      <th>Time</th>
+      <th>Station</th>
+      <th>Keywords</th>
+      <th>LLM ad</th>
+      <th>Offer / contact</th>
+      <th>Excerpt</th>
+      <th>Alert</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ format_tier(row.tier)|safe }}</td>
+      <td style="white-space: nowrap;">{{ format_ts(row.chunk_start_ts) }}</td>
+      <td>{{ row.station_label }}</td>
+      <td style="max-width: 140px;">
+        {% if row.keywords %}
+          {% for kw in row.keywords %}<span class="badge muted" style="margin: 0 0.2rem 0.2rem 0;">{{ kw }}</span>{% endfor %}
+        {% else %}<span class="badge muted">—</span>{% endif %}
+      </td>
+      <td style="max-width: 160px;">
+        {% if row.detection_id %}
+          <strong>{{ row.company_name or "—" }}</strong><br>
+          <span style="color: var(--muted); font-size: 0.8rem;">
+            {{ row.ad_category or "—" }}
+            {% if row.confidence is not none %} · {{ "%.0f"|format(row.confidence * 100) }}%{% endif %}
+          </span>
+          {% if row.canonical_ad_id %}
+          <br><a href="/ads/{{ row.canonical_ad_id }}" style="font-size: 0.8rem;">canonical #{{ row.canonical_ad_id }}</a>
+          {% endif %}
+        {% else %}
+          <span class="badge muted">no LLM ad</span>
+        {% endif %}
+      </td>
+      <td style="max-width: 180px; font-size: 0.85rem;">
+        {% if row.offer_summary %}{{ row.offer_summary }}{% else %}—{% endif %}
+        {% if row.phone_number or row.website %}
+        <div style="color: var(--muted); margin-top: 0.25rem;">
+          {% if row.phone_number %}{{ row.phone_number }}{% endif %}
+          {% if row.phone_number and row.website %} · {% endif %}
+          {% if row.website %}{{ row.website }}{% endif %}
+        </div>
+        {% endif %}
+      </td>
+      <td style="max-width: 280px; font-size: 0.85rem;">
+        {% if row.keyword_excerpt %}
+        <div style="color: var(--muted); margin-bottom: 0.35rem;"><em>kw:</em> {{ row.keyword_excerpt }}</div>
+        {% endif %}
+        {{ row.transcript_excerpt or "—" }}
+      </td>
+      <td>
+        {% if row.detection_id %}
+          {% if row.alerted %}<span class="badge ok">sent</span>{% else %}<span class="badge warn">pending</span>{% endif %}
+        {% else %}<span class="badge muted">n/a</span>{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No keyword hits or LLM ad detections in the last {{ window_days }} days.</p>
+{% endif %}
+{% endblock %}

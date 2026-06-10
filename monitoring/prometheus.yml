@@ -66,16 +66,15 @@ scrape_configs:
 
   # ---------------------------------------------------------------------------
   # Ollama — official image exposes /metrics on 11434 since v0.1.32.
-  # We do not include it here by default; uncomment once the local Ollama
-  # version is confirmed. Worker-side metrics cover LLM latency already.
+  # Metric names vary by Ollama version; panels use ollama_* counters when present.
   # ---------------------------------------------------------------------------
-  # - job_name: ollama
-  #   metrics_path: /metrics
-  #   static_configs:
-  #     - targets: ['ollama:11434']
-  #       labels:
-  #         service: ollama
-  #         tier: llm
+  - job_name: ollama
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['ollama:11434']
+        labels:
+          service: ollama
+          tier: llm
 
   # ---------------------------------------------------------------------------
   # GPU metrics via NVIDIA dcgm-exporter (DCGM >= 3.x).

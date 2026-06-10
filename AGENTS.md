@@ -7,7 +7,8 @@
 | Item | Status |
 |---|---|
 | **Opus review gate** | ✅ **CLOSED** — ทุก WP ship (`plan/opus-review-plan-6165b3.md`) |
-| **Tests** | **103/104** passing (`pytest`; 1 pre-existing `.env` Telegram leak) |
+| **Tests** | **112/112** passing (`pytest`) |
+| **Grafana metrics** | ✅ WP-10c — `plan/wp10c-grafana-metrics-report.md` (stage/ASR/LLM/dedup/ingest/alerter + Ollama scrape) |
 | **Ingest resilience** | ✅ WP ship — `plan/wp-ingest-resilience-report.md` (Hermes Sonnet + Opus gate) |
 | **DB migrate** | `python -c "from shared.db import migrate; migrate('data/pipeline.db')"` |
 | **Docker** | ✅ full stack up on Win GPU host — `plan/wp7b-docker-smoke-20260610.md` |
@@ -32,6 +33,7 @@
 | WP-9 Dashboard | `plan/wp9-report.md` |
 | WP-10a Monitoring config | `plan/wp10a-report.md` |
 | WP-10b Instrument metrics | `plan/wp10b-report.md` |
+| WP-10c Grafana expansion | `plan/wp10c-grafana-metrics-report.md` |
 | WP-11a Tests+hardening | `plan/wp11a-report.md` |
 | WP-11b Extraction eval | `plan/wp11b-report.md` |
 | WP-12 RAM disk + janitor | `plan/wp12-report.md` |
@@ -48,6 +50,7 @@
 ## Key technical facts (don't forget)
 
 - **Stack:** Python 3.11+, SQLite WAL, faster-whisper + Ollama/Qwen, Telegram outbound, FastAPI dashboard (`python -m dashboard`)
+- **Monitoring:** Prometheus + Grafana (19 panels, `$station` filter) — scrape 9101–9104 + ollama:11434 + dcgm:9400
 - **docker-compose.yml** 10 services — metrics ports 9101–9104; worker waits on `ollama-pull`
 - **`shared/`** must stay import-light — no GPU/ML deps
 - **SQLite concurrency:** `shared/db.py` → WAL + `busy_timeout=5000` + `@retry_on_busy`
@@ -78,6 +81,13 @@ Installed globally; graph output lives in **this repo** under `.understand-anyth
 **Auto-run:** with setup done, agent refreshes graph on session start (stale commit) and after `git commit` via `.cursor/hooks.json` — no manual `/understand` each time.
 
 Full command list: `README.md` § Codebase map. Plugin paths: `final-install-list.md`.
+
+## Hermes Telegram (remote ops)
+
+- Context: `.hermes.md` (auto-loaded by Hermes gateway when cwd is this repo)
+- Skill: `/pipeline-ops` → `.agents/skills/pipeline-ops/SKILL.md`
+- Live status: `.\scripts\pipeline-status.ps1` (query DB via `docker exec radio-worker`)
+- **Do not** read `data/pipeline.db` from Windows host during Docker ingest (stale bind-mount)
 
 ## Session checklist for agent
 

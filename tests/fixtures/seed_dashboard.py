@@ -37,12 +37,12 @@ def seed_dashboard_db(db_path: Path, *, archive_dir: Path | None = None) -> dict
     try:
         with transaction(conn):
             conn.execute(
-                "INSERT INTO stations (name, url, format, enabled) VALUES (?, ?, ?, 1)",
-                ("news-talk", "https://example.com/news.mp3", "mp3"),
+                "INSERT INTO stations (name, url, format, enabled, display_name) VALUES (?, ?, ?, 1, ?)",
+                ("news-talk", "https://example.com/news.mp3", "mp3", "News Talk 1010 — Demo Market"),
             )
             conn.execute(
-                "INSERT INTO stations (name, url, format, enabled) VALUES (?, ?, ?, 0)",
-                ("sports-fm", "https://example.com/sports.mp3", "mp3"),
+                "INSERT INTO stations (name, url, format, enabled, display_name) VALUES (?, ?, ?, 0, ?)",
+                ("sports-fm", "https://example.com/sports.mp3", "mp3", "Sports FM 99.1 — Demo Market"),
             )
             station_id = conn.execute(
                 "SELECT id FROM stations WHERE name = 'news-talk'"
@@ -124,6 +124,36 @@ def seed_dashboard_db(db_path: Path, *, archive_dir: Path | None = None) -> dict
                 VALUES (?, ?, ?, ?)
                 """,
                 (station_id, now - 4000, now - 3900, "stream down"),
+            )
+
+            conn.execute(
+                """
+                INSERT INTO keyword_hits (
+                    station_id, keyword, chunk_id, detection_id, hit_ts, context_excerpt
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    station_id,
+                    "business funding",
+                    chunk_ids[0],
+                    detection_id,
+                    now - 7100,
+                    "...business funding...",
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO keyword_hits (
+                    station_id, keyword, chunk_id, hit_ts, context_excerpt
+                ) VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    station_id,
+                    "hard money",
+                    chunk_ids[1],
+                    now - 7000,
+                    "...hard money...",
+                ),
             )
 
         return {

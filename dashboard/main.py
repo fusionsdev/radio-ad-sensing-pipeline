@@ -122,6 +122,53 @@ def create_app(db_path: Path | None = None) -> FastAPI:
             {"gaps": rows, "format_ts": _format_ts},
         )
 
+    @app.get("/scorecard", response_class=HTMLResponse)
+    def scorecard(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        rows = queries.fetch_station_scorecard(resolved_db)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "scorecard.html",
+            {
+                "rows": rows,
+                "format_status": _format_status,
+                "format_recommendation": _format_recommendation,
+            },
+        )
+
+    @app.get("/keywords", response_class=HTMLResponse)
+    def keywords_page(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        stations, keywords, matrix = queries.fetch_keyword_matrix(resolved_db)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "keywords.html",
+            {"stations": stations, "keywords": keywords, "matrix": matrix},
+        )
+
+    @app.get("/review", response_class=HTMLResponse)
+    def review_inbox(request: Request, tier: str | None = None, days: int = 7) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        window_days = max(1, min(days, 30))
+        rows = queries.fetch_review_inbox(resolved_db, window_days=window_days, tier=tier)
+        tier_filter = tier.upper() if tier else None
+        if tier_filter not in {None, "A", "B", "C"}:
+            tier_filter = None
+        return TEMPLATES.TemplateResponse(
+            request,
+            "review.html",
+            {
+                "rows": rows,
+                "window_days": window_days,
+                "tier_filter": tier_filter,
+                "format_ts": _format_ts,
+                "format_tier": _format_tier,
+            },
+        )
+
     app.state.db_path = resolved_db
     return app
 
@@ -155,4 +202,26 @@ def _format_status(status: str) -> str:
         "disabled": ("Off", "muted"),
     }
     label, css = labels.get(status, (status.title(), "muted"))
+    return f'<span class="badge {css}">{label}</span>'
+
+
+def _format_recommendation(recommendation: str) -> str:
+    labels = {
+        "keep": ("Keep", "ok"),
+        "swap": ("Swap", "err"),
+        "fix": ("Fix ingest", "warn"),
+        "review": ("Review", "warn"),
+        "bench": ("Bench", "muted"),
+    }
+    label, css = labels.get(recommendation, (recommendation.title(), "muted"))
+    return f'<span class="badge {css}">{label}</span>'
+
+
+def _format_tier(tier: str) -> str:
+    labels = {
+        "A": ("A · kw+ad", "ok"),
+        "B": ("B · ad only", "warn"),
+        "C": ("C · kw only", "muted"),
+    }
+    label, css = labels.get(tier, (tier, "muted"))
     return f'<span class="badge {css}">{label}</span>'

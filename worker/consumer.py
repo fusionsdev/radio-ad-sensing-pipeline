@@ -10,18 +10,26 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
+from shared.config import load_loan_keywords
 from shared.db import get_connection, retry_on_busy, transaction
 from shared.metrics import (
     increment_chunks_dropped,
     increment_chunks_processed,
+    increment_fingerprint_errors,
+    increment_fingerprint_hits,
+    observe_asr_metrics,
+    observe_llm_extraction_duration,
+    observe_stage_duration,
+    refresh_chunks_by_status,
     set_asr_rtf_avg,
     set_queue_pending_hours,
 )
-from shared.models import AdExtraction, ChunkStatus, PipelineSettings
+from shared.models import AdExtraction, ChunkStatus, LoanKeywordEntry, PipelineSettings
 from worker.dedup import DetectionPersister
 from worker.extract import OllamaExtractor
 from worker.fingerprint import FingerprintAnnotator, FingerprintMatch
 from worker.janitor import ChunkJanitor
+from worker.keywords import find_keyword_matches, record_keyword_hits
 from worker.transcribe import Transcriber, TranscriptionResult, WhisperBackend
 
 logger = logging.getLogger("worker")
@@ -45,6 +53,7 @@ RETURNING id, station_id, path, start_ts, end_ts
 class ClaimedChunk:
     id: int
     station_id: int
+    station: str
     path: str
     start_ts: float
     end_ts: float
@@ -87,6 +96,7 @@ class ChunkConsumer:
         fingerprint_annotator: FingerprintAnnotationBackend | None = None,
         janitor: ChunkJanitor | None = None,
         poll_interval_sec: float = 1.0,
+        loan_keywords: list[LoanKeywordEntry] | list[str] | None = None,
     ) -> None:
         self.db_path = Path(db_path)
         self.settings = settings
@@ -96,6 +106,7 @@ class ChunkConsumer:
         self.fingerprint_annotator = fingerprint_annotator
         self.janitor = janitor if janitor is not None else ChunkJanitor(db_path, settings)
         self.poll_interval_sec = poll_interval_sec
+        self.loan_keywords = loan_keywords if loan_keywords is not None else load_loan_keywords()
         self._run_loops = 0
 
     def run(self, stop_event: Any | None = None) -> None:
@@ -131,6 +142,7 @@ class ChunkConsumer:
         finally:
             conn.close()
             set_queue_pending_hours(self.db_path)
+            refresh_chunks_by_status(self.db_path)
 
     def _enforce_drop_oldest(self, conn: sqlite3.Connection) -> None:
         max_seconds = self.settings.queue_max_hours * 3600
@@ -203,9 +215,15 @@ class ChunkConsumer:
         row = conn.execute(CLAIM_SQL).fetchone()
         if row is None:
             return None
+        station_row = conn.execute(
+            "SELECT name FROM stations WHERE id = ?",
+            (row["station_id"],),
+        ).fetchone()
+        station_name = str(station_row["name"]) if station_row is not None else str(row["station_id"])
         return ClaimedChunk(
             id=row["id"],
             station_id=row["station_id"],
+            station=station_name,
             path=row["path"],
             start_ts=row["start_ts"],
             end_ts=row["end_ts"],
@@ -220,13 +238,23 @@ class ChunkConsumer:
 
             known_ad_match: FingerprintMatch | None = None
             if self.fingerprint_annotator is not None:
+                fingerprint_started = time.perf_counter()
                 try:
                     known_ad_match = self.fingerprint_annotator.annotate_chunk(chunk.id, audio_path)
                 except Exception:
+                    increment_fingerprint_errors()
                     logger.exception(
                         "fingerprint annotation failed; continuing with ASR/LLM path",
                         extra={"chunk_id": chunk.id, "path": chunk.path},
                     )
+                finally:
+                    observe_stage_duration(
+                        "fingerprint",
+                        time.perf_counter() - fingerprint_started,
+                    )
+
+            if known_ad_match is not None:
+                increment_fingerprint_hits()
 
             try:
                 result = self.transcriber.transcribe(
@@ -241,6 +269,9 @@ class ChunkConsumer:
                 self._mark_dropped(chunk.id, str(exc))
                 return True
 
+            observe_stage_duration("asr", result.wall_time_sec)
+            observe_asr_metrics(chunk.station, result.wall_time_sec, result.rtf)
+
             self._persist_success(chunk, result)
             if (
                 known_ad_match is None
@@ -248,12 +279,22 @@ class ChunkConsumer:
                 and self.detection_persister is not None
             ):
                 try:
+                    llm_started = time.perf_counter()
                     extraction = self.extractor.extract(result.text)
+                    llm_duration_sec = time.perf_counter() - llm_started
+                    observe_llm_extraction_duration(llm_duration_sec)
+                    observe_stage_duration("llm", llm_duration_sec)
+
+                    dedup_started = time.perf_counter()
                     self.detection_persister.record_extraction(
                         chunk.id,
                         extraction,
                         transcript_text=result.text,
                         segments=result.segments,
+                    )
+                    observe_stage_duration(
+                        "dedup",
+                        time.perf_counter() - dedup_started,
                     )
                 except Exception as exc:
                     logger.exception(
@@ -293,6 +334,20 @@ class ChunkConsumer:
                     "UPDATE chunks SET status = 'done', error = NULL WHERE id = ?",
                     (chunk.id,),
                 )
+                if self.loan_keywords:
+                    matches = find_keyword_matches(
+                        result.text,
+                        self.loan_keywords,
+                        min_record_confidence=float(self.settings.keyword_min_record_confidence),
+                    )
+                    if matches:
+                        record_keyword_hits(
+                            conn,
+                            station_id=chunk.station_id,
+                            chunk_id=chunk.id,
+                            hit_ts=chunk.start_ts,
+                            matches=matches,
+                        )
                 self._update_rtf_avg(conn, result.rtf)
                 set_asr_rtf_avg(result.rtf)
         finally:

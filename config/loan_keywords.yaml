@@ -1,0 +1,86 @@
+# Loan/funding keyword dictionary v2 — phrase + per-phrase confidence.
+# Calibrated against US news/talk radio corpus (WBAP, KLIF, WTAM, KTRH, WOAI, WSB, WIBC, WWTN, WHBO).
+# Worker records hits only when confidence >= keyword_min_record_confidence in settings.yaml.
+
+keywords:
+  # Tier 1: high-precision tax/debt-relief phrases
+  - phrase: tax relief
+    confidence: 0.85
+  - phrase: tax debt
+    confidence: 0.85
+  - phrase: tax debt relief
+    confidence: 0.90
+  - phrase: irs tax debt
+    confidence: 0.95
+  - phrase: irs debt
+    confidence: 0.90
+  - phrase: back taxes
+    confidence: 0.80
+  - phrase: unfiled tax returns
+    confidence: 0.95
+  - phrase: stop collections
+    confidence: 0.80
+  - phrase: stop wage garnishment
+    confidence: 0.90
+  - phrase: wage garnishment
+    confidence: 0.80
+  - phrase: garnish paycheck
+    confidence: 0.90
+  - phrase: seize bank accounts
+    confidence: 0.85
+
+  # Tier 2: lender-adjacent insurance
+  - phrase: term life insurance
+    confidence: 0.70
+  - phrase: final expense
+    confidence: 0.80
+  - phrase: burial insurance
+    confidence: 0.80
+  - phrase: life insurance
+    confidence: 0.55
+  - phrase: homeowners insurance
+    confidence: 0.55
+
+  # Tier 3: timeshare cancellation
+  - phrase: cancel timeshare
+    confidence: 0.95
+  - phrase: timeshare exit
+    confidence: 0.90
+  - phrase: timeshare cancellation
+    confidence: 0.95
+  - phrase: exit your timeshare
+    confidence: 0.95
+  - phrase: maintenance fees
+    confidence: 0.60
+
+  # Tier 4: refi / equity — phrase form only
+  - phrase: refinance your mortgage
+    confidence: 0.80
+  - phrase: cash-out refinance
+    confidence: 0.85
+  - phrase: home equity loan
+    confidence: 0.75
+  - phrase: home equity line
+    confidence: 0.75
+  - phrase: second mortgage
+    confidence: 0.80
+
+  # Tier 5: business funding
+  - phrase: business funding
+    confidence: 0.85
+  - phrase: business loan
+    confidence: 0.70
+  - phrase: working capital
+    confidence: 0.65
+  - phrase: merchant cash advance
+    confidence: 0.80
+
+  # Tier 6: personal-loan / consolidation (broad — discovery)
+  - phrase: debt consolidation
+    confidence: 0.70
+  - phrase: debt relief
+    confidence: 0.70
+  - phrase: reverse mortgage
+    confidence: 0.85
+  - phrase: personal loan
+    confidence: 0.55

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Keywords — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Keyword × station matrix (7 days)</h2>
+{% if keywords %}
+<div style="overflow-x: auto;">
+<table>
+  <thead>
+    <tr>
+      <th>Keyword</th>
+      {% for station in stations %}
+      <th>{{ station }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for keyword in keywords %}
+    <tr>
+      <td>{{ keyword }}</td>
+      {% for station in stations %}
+      {% set hits = matrix.get(station, {}).get(keyword, 0) %}
+      <td>{% if hits %}<strong>{{ hits }}</strong>{% else %}<span style="color: var(--muted)">0</span>{% endif %}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<p class="empty">No keyword hits yet — run the worker with loan keywords configured.</p>
+{% endif %}
+{% endblock %}

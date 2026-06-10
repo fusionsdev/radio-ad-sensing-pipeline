@@ -17,18 +17,20 @@ def upsert_station(db_path: str | Path, station: StationConfig) -> int:
         with transaction(conn):
             conn.execute(
                 """
-                INSERT INTO stations (name, url, format, enabled)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO stations (name, url, format, enabled, display_name)
+                VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT(name) DO UPDATE SET
                     url = excluded.url,
                     format = excluded.format,
-                    enabled = excluded.enabled
+                    enabled = excluded.enabled,
+                    display_name = excluded.display_name
                 """,
                 (
                     station.name,
                     station.url,
                     station.format,
                     1 if station.enabled else 0,
+                    station.display_name,
                 ),
             )
             row = conn.execute(

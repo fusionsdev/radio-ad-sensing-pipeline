@@ -6,6 +6,7 @@ import logging
 import sqlite3
 import time
 from collections.abc import Callable
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from shared.db import checkpoint_wal, get_connection, retry_on_busy, transaction
@@ -13,6 +14,8 @@ from shared.metrics import increment_chunk_files_deleted, set_wal_checkpoint_met
 from shared.models import ChunkStatus, PipelineSettings
 
 logger = logging.getLogger("worker.janitor")
+
+STATUS_KEY_STATION_DAILY_LAST = "janitor:station_daily:last_date"
 
 
 def delete_chunk_file(path: str | Path) -> bool:
@@ -159,7 +162,109 @@ class ChunkJanitor:
             "expired_pending": self.expire_stale_pending(),
             "dropped_files_removed": self.cleanup_dropped_files(),
             "orphans_removed": self.sweep_orphans(),
+            "station_daily_rows": self.rollup_station_daily(),
         }
+
+    @retry_on_busy()
+    def rollup_station_daily(self, *, target_date: str | None = None) -> int:
+        """Aggregate yesterday (UTC) into station_daily once per calendar day."""
+        today = datetime.now(UTC).strftime("%Y-%m-%d")
+        conn = get_connection(self.db_path)
+        try:
+            last_row = conn.execute(
+                "SELECT value FROM status WHERE key = ?",
+                (STATUS_KEY_STATION_DAILY_LAST,),
+            ).fetchone()
+            if last_row and last_row["value"] == today and target_date is None:
+                return 0
+
+            if target_date is None:
+                target_date = (datetime.now(UTC).date() - timedelta(days=1)).isoformat()
+
+            start_ts = datetime.strptime(target_date, "%Y-%m-%d").replace(tzinfo=UTC).timestamp()
+            end_ts = start_ts + 24 * 3600
+            stations = conn.execute("SELECT id FROM stations").fetchall()
+            upserted = 0
+            with transaction(conn):
+                for station_row in stations:
+                    station_id = int(station_row["id"])
+                    chunks_count = conn.execute(
+                        """
+                        SELECT COUNT(*) FROM chunks
+                        WHERE station_id = ? AND start_ts >= ? AND start_ts < ?
+                        """,
+                        (station_id, start_ts, end_ts),
+                    ).fetchone()[0]
+                    gap_count = conn.execute(
+                        """
+                        SELECT COUNT(*) FROM gaps
+                        WHERE station_id = ? AND start_ts >= ? AND start_ts < ?
+                        """,
+                        (station_id, start_ts, end_ts),
+                    ).fetchone()[0]
+                    keyword_hits = conn.execute(
+                        """
+                        SELECT COUNT(*) FROM keyword_hits
+                        WHERE station_id = ? AND hit_ts >= ? AND hit_ts < ?
+                        """,
+                        (station_id, start_ts, end_ts),
+                    ).fetchone()[0]
+                    unique_keywords = conn.execute(
+                        """
+                        SELECT COUNT(DISTINCT keyword) FROM keyword_hits
+                        WHERE station_id = ? AND hit_ts >= ? AND hit_ts < ?
+                        """,
+                        (station_id, start_ts, end_ts),
+                    ).fetchone()[0]
+                    loan_detections = conn.execute(
+                        """
+                        SELECT COUNT(*) FROM detections d
+                        JOIN chunks c ON c.id = d.chunk_id
+                        WHERE c.station_id = ?
+                          AND c.start_ts >= ? AND c.start_ts < ?
+                          AND d.is_ad = 1
+                        """,
+                        (station_id, start_ts, end_ts),
+                    ).fetchone()[0]
+                    conn.execute(
+                        """
+                        INSERT INTO station_daily (
+                            station_id, date, chunks_count, gap_count,
+                            keyword_hits, unique_keywords, loan_detections
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(station_id, date) DO UPDATE SET
+                            chunks_count = excluded.chunks_count,
+                            gap_count = excluded.gap_count,
+                            keyword_hits = excluded.keyword_hits,
+                            unique_keywords = excluded.unique_keywords,
+                            loan_detections = excluded.loan_detections
+                        """,
+                        (
+                            station_id,
+                            target_date,
+                            int(chunks_count),
+                            int(gap_count),
+                            int(keyword_hits),
+                            int(unique_keywords),
+                            int(loan_detections),
+                        ),
+                    )
+                    upserted += 1
+
+                conn.execute(
+                    """
+                    INSERT INTO status (key, value, updated_at)
+                    VALUES (?, ?, ?)
+                    ON CONFLICT(key) DO UPDATE SET
+                        value = excluded.value,
+                        updated_at = excluded.updated_at
+                    """,
+                    (STATUS_KEY_STATION_DAILY_LAST, today, self._now()),
+                )
+            return upserted
+        finally:
+            conn.close()
 
     def _known_chunk_paths(self) -> set[str]:
         conn = get_connection(self.db_path, read_only=True)

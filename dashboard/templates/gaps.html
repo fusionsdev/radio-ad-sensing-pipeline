@@ -8,7 +8,7 @@
   <tbody>
     {% for g in gaps %}
     <tr>
-      <td>{{ g.station_name }}</td>
+      <td>{{ g.station_label }}</td>
       <td>{{ format_ts(g.start_ts) }}</td>
       <td>{{ format_ts(g.end_ts) }}</td>
       <td>{{ g.reason }}</td>

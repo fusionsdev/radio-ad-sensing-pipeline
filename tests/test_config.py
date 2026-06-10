@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from shared.config import load_settings, load_stations, load_telegram_settings
+from shared.config import load_loan_keywords, load_settings, load_stations, load_telegram_settings
 
 
 def test_load_stations_from_repo_config() -> None:
@@ -16,6 +16,12 @@ def test_load_stations_from_repo_config() -> None:
     assert station.name
     assert station.url
     assert isinstance(station.enabled, bool)
+
+
+def test_load_stations_have_display_names() -> None:
+    stations = load_stations()
+    wbap = next(s for s in stations if s.name == "wbap-am-820")
+    assert wbap.display_name == "WBAP 820 AM — Dallas–Fort Worth, TX"
 
 
 def test_load_settings_from_repo_config() -> None:
@@ -72,9 +78,31 @@ stations:
     assert stations[0].enabled is True
 
 
+def test_load_loan_keywords_from_repo_config() -> None:
+    keywords = load_loan_keywords()
+    phrases = {entry.phrase for entry in keywords}
+    assert "business funding" in phrases
+    assert "tax debt relief" in phrases
+    assert all(0.0 <= entry.confidence <= 1.0 for entry in keywords)
+
+
+def test_load_loan_keywords_legacy_string_format(tmp_path: Path) -> None:
+    path = tmp_path / "loan_keywords.yaml"
+    path.write_text("keywords:\n  - hard money\n  - business funding\n", encoding="utf-8")
+    keywords = load_loan_keywords(path)
+    assert [entry.phrase for entry in keywords] == ["hard money", "business funding"]
+    assert keywords[0].confidence == 0.7
+
+
+def test_load_loan_keywords_missing_file_returns_empty(tmp_path: Path) -> None:
+    assert load_loan_keywords(tmp_path / "missing.yaml") == []
+
+
 def test_telegram_settings_optional(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("TELEGRAM_BOT_TOKEN", raising=False)
     monkeypatch.delenv("TELEGRAM_CHAT_ID", raising=False)
-    settings = load_telegram_settings()
+    from shared.config import TelegramSettings
+
+    settings = TelegramSettings(_env_file=None)
     assert settings.telegram_bot_token is None
     assert settings.telegram_chat_id is None

@@ -11,6 +11,11 @@ from pathlib import Path
 from typing import Any
 
 from shared.db import get_connection, retry_on_busy, transaction
+from shared.metrics import (
+    increment_dedup_matches,
+    increment_dedup_suppressed,
+    increment_detections,
+)
 from shared.models import AdExtraction, PipelineSettings
 from worker.extract import normalize_phone_number
 from worker.transcribe import TranscriptSegment
@@ -156,6 +161,9 @@ class DetectionPersister:
                 canonical_id = self._find_matching_canonical(conn, extraction, transcript_text, chunk["start_ts"])
                 if canonical_id is None:
                     canonical_id = self._create_canonical(conn, extraction, chunk, segments)
+                    increment_dedup_matches("new")
+                else:
+                    increment_dedup_matches("existing")
 
                 duplicate_airing = self._has_recent_same_station_airing(conn, canonical_id, chunk)
                 detection_id = self._insert_detection(conn, chunk_id, canonical_id, extraction)
@@ -168,6 +176,9 @@ class DetectionPersister:
                     """,
                     (chunk["start_ts"], increment, canonical_id),
                 )
+                if duplicate_airing:
+                    increment_dedup_suppressed()
+                increment_detections()
                 return detection_id
         finally:
             conn.close()

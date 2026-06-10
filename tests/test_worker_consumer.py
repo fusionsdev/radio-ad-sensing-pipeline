@@ -196,6 +196,60 @@ def test_consumer_claim_transcript_and_done(
         conn.close()
 
 
+def test_consumer_records_keyword_hits_after_transcription(
+    worker_db: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    audio = tmp_path / "chunk.wav"
+    audio.write_bytes(b"fake wav")
+
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn, name="wbap-am-820")
+            chunk_id = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path=str(audio),
+                start_ts=2000.0,
+                end_ts=2090.0,
+            )
+    finally:
+        conn.close()
+
+    transcriber = FakeTranscriber(
+        text="Need cash-out refinance and business funding? Call now.",
+        wall_time_sec=5.0,
+    )
+    consumer = ChunkConsumer(
+        worker_db,
+        settings,
+        transcriber,
+        loan_keywords=["cash-out refinance", "business funding", "weight loss"],
+    )
+
+    assert consumer.run_once() is True
+
+    conn = get_connection(worker_db)
+    try:
+        rows = conn.execute(
+            """
+            SELECT keyword, chunk_id, hit_ts
+            FROM keyword_hits
+            WHERE chunk_id = ?
+            ORDER BY keyword
+            """,
+            (chunk_id,),
+        ).fetchall()
+        assert len(rows) == 2
+        assert rows[0]["keyword"] == "business funding"
+        assert rows[1]["keyword"] == "cash-out refinance"
+        assert rows[0]["hit_ts"] == pytest.approx(2000.0)
+    finally:
+        conn.close()
+
+
 def test_consumer_runs_extraction_and_dedup_after_transcription(
     worker_db: Path,
     settings: PipelineSettings,

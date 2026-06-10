@@ -22,6 +22,7 @@ class Station(BaseModel):
     url: str
     format: str | None = None
     enabled: bool = True
+    display_name: str | None = None
 
 
 class CanonicalAd(BaseModel):
@@ -115,10 +116,20 @@ class StationConfig(BaseModel):
     url: str
     format: str | None = None
     enabled: bool = True
+    display_name: str | None = None
 
 
 class StationsFile(BaseModel):
     stations: list[StationConfig]
+
+
+class LoanKeywordEntry(BaseModel):
+    phrase: str
+    confidence: float = Field(default=0.7, ge=0.0, le=1.0)
+
+
+class LoanKeywordsFile(BaseModel):
+    keywords: list[LoanKeywordEntry]
 
 
 class PipelineSettings(BaseModel):
@@ -142,6 +153,8 @@ class PipelineSettings(BaseModel):
     ingest_immediate_retry_delay_sec: float = 0.5
     ingest_backoff_initial_sec: float = 1.0
     ingest_backoff_max_sec: float = 30.0
+    ingest_startup_stagger_sec: float = 0.0
+    keyword_min_record_confidence: float = 0.6
 
 
 def detection_from_extraction(

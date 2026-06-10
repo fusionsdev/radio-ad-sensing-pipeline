@@ -261,3 +261,62 @@ def test_passive_wal_checkpoint_continues_on_failure(
     janitor = ChunkJanitor(db_path, settings)
     assert janitor.passive_wal_checkpoint() == 0
     assert janitor.run_sweep()["wal_checkpointed_frames"] == 0
+
+
+def test_rollup_station_daily_aggregates_keyword_hits(db_path: Path, settings: PipelineSettings) -> None:
+    from datetime import UTC, datetime
+
+    target_date = "2026-06-09"
+    day_start = datetime(2026, 6, 9, tzinfo=UTC).timestamp()
+    day_end = day_start + 24 * 3600
+
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn, name="wbap-am-820")
+            chunk_id = _seed_chunk(
+                conn,
+                station_id=station_id,
+                path="data/chunks/a.wav",
+                start_ts=day_start + 3600,
+                end_ts=day_start + 3690,
+                status=ChunkStatus.DONE.value,
+            )
+            conn.execute(
+                """
+                INSERT INTO keyword_hits (
+                    station_id, keyword, chunk_id, hit_ts, context_excerpt
+                ) VALUES (?, ?, ?, ?, ?)
+                """,
+                (station_id, "hard money", chunk_id, day_start + 3600, "...hard money..."),
+            )
+            conn.execute(
+                """
+                INSERT INTO gaps (station_id, start_ts, end_ts, reason)
+                VALUES (?, ?, ?, ?)
+                """,
+                (station_id, day_start + 7200, day_start + 7300, "stream_down"),
+            )
+    finally:
+        conn.close()
+
+    janitor = ChunkJanitor(db_path, settings, now_fn=lambda: day_end + 3600)
+    rows = janitor.rollup_station_daily(target_date=target_date)
+    assert rows == 1
+
+    conn = get_connection(db_path)
+    try:
+        row = conn.execute(
+            """
+            SELECT chunks_count, gap_count, keyword_hits, unique_keywords
+            FROM station_daily
+            WHERE station_id = ? AND date = ?
+            """,
+            (station_id, target_date),
+        ).fetchone()
+        assert row["chunks_count"] == 1
+        assert row["gap_count"] == 1
+        assert row["keyword_hits"] == 1
+        assert row["unique_keywords"] == 1
+    finally:
+        conn.close()

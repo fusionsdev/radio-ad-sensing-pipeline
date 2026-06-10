@@ -64,7 +64,11 @@ groups:
       # ASR is slower than real-time (RTF > 1.0). With medium.en int8 we expect
       # ~0.1; a sustained >1.0 means the GPU is overloaded.
       - alert: ASRSlow
-        expr: pipeline_asr_rtf_avg > 1.0
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum(rate(pipeline_asr_rtf_bucket[10m])) by (le)
+          ) > 1.0
         for: 10m
         labels:
           severity: warning

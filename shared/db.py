@@ -26,6 +26,8 @@ EXPECTED_TABLES = (
     "detections",
     "gaps",
     "fingerprints",
+    "keyword_hits",
+    "station_daily",
     "status",
     "schema_migrations",
 )

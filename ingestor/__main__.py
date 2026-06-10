@@ -8,7 +8,7 @@ import threading
 from pathlib import Path
 
 from ingestor.repository import upsert_station
-from ingestor.supervisor import create_station_ingestors
+from ingestor.supervisor import create_station_ingestors, run_station_ingestor, startup_stagger_delay_seconds
 from shared.config import load_settings, load_stations
 from shared.db import migrate
 from shared.logging import setup_logging
@@ -52,12 +52,21 @@ def main() -> None:
 
     threads = [
         threading.Thread(
-            target=ingestor.run,
-            args=(stop_event,),
+            target=run_station_ingestor,
+            args=(
+                ingestor,
+                stop_event,
+            ),
+            kwargs={
+                "startup_delay_sec": startup_stagger_delay_seconds(
+                    index,
+                    float(settings.ingest_startup_stagger_sec),
+                ),
+            },
             name=f"ingestor-{ingestor.station.name}",
             daemon=True,
         )
-        for ingestor in ingestors
+        for index, ingestor in enumerate(ingestors)
     ]
     for thread in threads:
         thread.start()

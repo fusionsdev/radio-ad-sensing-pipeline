@@ -12,7 +12,7 @@ from dashboard.main import create_app
 from shared.db import get_connection, migrate
 from tests.fixtures.seed_dashboard import seed_dashboard_db
 
-HTML_ROUTES = ["/", "/ads", "/stations", "/gaps"]
+HTML_ROUTES = ["/", "/ads", "/stations", "/scorecard", "/keywords", "/review", "/gaps"]
 
 
 @pytest.fixture
@@ -188,3 +188,61 @@ def test_ads_htmx_partial(seeded: tuple[Path, dict[str, int]]) -> None:
     assert response.status_code == 200
     assert "Acme Funding" in response.text
     assert "<html" not in response.text.lower()
+
+
+def test_scorecard_shows_yield_and_recommendation(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/scorecard")
+    assert response.status_code == 200
+    assert "News Talk 1010 — Demo Market" in response.text
+    assert "Yield" in response.text
+    rows = queries.fetch_station_scorecard(db_path)
+    news_talk = next(row for row in rows if row["name"] == "news-talk")
+    assert news_talk["keyword_hits_7d"] == 2
+    assert news_talk["yield_pct"] > 0
+
+
+def test_keywords_matrix_shows_station_hits(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/keywords")
+    assert response.status_code == 200
+    assert "business funding" in response.text
+    assert "hard money" in response.text
+    assert "News Talk 1010 — Demo Market" in response.text
+    stations, keywords, matrix = queries.fetch_keyword_matrix(db_path)
+    assert "News Talk 1010 — Demo Market" in stations
+    assert matrix["News Talk 1010 — Demo Market"]["business funding"] == 1
+
+
+def test_review_inbox_tiers_on_seeded_db(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, ids = seeded
+    rows = queries.fetch_review_inbox(db_path)
+    tiers = {row.chunk_id: row.tier for row in rows}
+    assert tiers[ids["chunk_ids"][0]] == "A"
+    assert tiers[ids["chunk_ids"][1]] == "C"
+    assert len(rows) == 2
+
+    tier_a = queries.fetch_review_inbox(db_path, tier="A")
+    assert len(tier_a) == 1
+    assert tier_a[0].company_name == "Acme Funding"
+    assert "business funding" in tier_a[0].keywords
+
+    tier_c = queries.fetch_review_inbox(db_path, tier="C")
+    assert len(tier_c) == 1
+    assert tier_c[0].detection_id is None
+    assert "hard money" in tier_c[0].keywords
+
+
+def test_review_page_renders_tiers(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/review")
+    assert response.status_code == 200
+    assert "Review inbox" in response.text
+    assert "kw+ad" in response.text
+    assert "Acme Funding" in response.text
+    assert "hard money" in response.text
+    assert client.get("/review?tier=C").status_code == 200
+    assert "no LLM ad" in client.get("/review?tier=C").text

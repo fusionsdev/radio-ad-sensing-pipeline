@@ -18,7 +18,14 @@ from ingestor.ffmpeg import (
     get_wav_duration_seconds,
     is_valid_chunk_duration,
 )
-from ingestor.supervisor import BackoffPolicy, StationIngestor, create_station_ingestors
+from ingestor.supervisor import (
+    BackoffPolicy,
+    StationIngestor,
+    create_station_ingestors,
+    run_station_ingestor,
+    startup_stagger_delay_seconds,
+    wait_startup_stagger,
+)
 from shared.db import get_connection, migrate
 from shared.models import PipelineSettings, StationConfig
 
@@ -499,3 +506,43 @@ def test_create_station_ingestors_skips_disabled_stations(tmp_path: Path) -> Non
     )
 
     assert [ingestor.station.name for ingestor in ingestors] == ["enabled"]
+
+
+def test_startup_stagger_delay_seconds() -> None:
+    assert startup_stagger_delay_seconds(0, 15) == 0.0
+    assert startup_stagger_delay_seconds(1, 15) == 15.0
+    assert startup_stagger_delay_seconds(8, 15) == 120.0
+    assert startup_stagger_delay_seconds(2, 0) == 0.0
+
+
+def test_wait_startup_stagger_honors_stop_event() -> None:
+    stop_event = threading.Event()
+    slept: list[float] = []
+
+    def fake_sleep(seconds: float) -> None:
+        slept.append(seconds)
+        stop_event.set()
+
+    wait_startup_stagger(stop_event, 30.0, sleep_fn=fake_sleep, monotonic_fn=lambda: 0.0)
+    assert slept == [0.5]
+
+
+def test_run_station_ingestor_runs_after_stagger(monkeypatch: pytest.MonkeyPatch) -> None:
+    stop_event = threading.Event()
+    calls: list[str] = []
+
+    class FakeIngestor:
+        def run(self, event: threading.Event) -> None:
+            calls.append("run")
+
+    def fake_wait(_event: threading.Event, delay_sec: float) -> None:
+        assert delay_sec == 2.0
+
+    monkeypatch.setattr("ingestor.supervisor.wait_startup_stagger", fake_wait)
+
+    run_station_ingestor(
+        FakeIngestor(),  # type: ignore[arg-type]
+        stop_event,
+        startup_delay_sec=2.0,
+    )
+    assert calls == ["run"]

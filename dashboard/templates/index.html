@@ -15,7 +15,7 @@
   <tbody>
     {% for s in stats.station_health %}
     <tr>
-      <td>{{ s.name }}</td>
+      <td>{{ s.station_label }}</td>
       <td>{{ format_status(s.status)|safe }}</td>
       <td>{% if s.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge muted">off</span>{% endif %}</td>
       <td>{{ format_ts(s.last_chunk_ts) }}</td>

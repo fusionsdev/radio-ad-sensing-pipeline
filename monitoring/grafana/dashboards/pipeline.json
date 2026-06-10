@@ -4,16 +4,23 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
+  "graphTooltip": 1,
   "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "id": 100,
+      "type": "row",
+      "title": "Overview — Queue & health",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+      "collapsed": false
+    },
+    {
       "id": 1,
       "title": "Queue depth (pending hours)",
       "type": "stat",
-      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 1},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
@@ -45,7 +52,7 @@
       "id": 2,
       "title": "Chunks processed / hour (by service)",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 6, "y": 0},
+      "gridPos": {"h": 8, "w": 12, "x": 6, "y": 1},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
@@ -63,7 +70,7 @@
       "id": 3,
       "title": "Chunks dropped / 10m",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 1},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
@@ -75,77 +82,63 @@
       "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "fixed", "value": "red"}}}
     },
     {
-      "id": 4,
-      "title": "ASR real-time factor (lower is faster)",
-      "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "id": 10,
+      "title": "Active alerts",
+      "type": "stat",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 9},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "pipeline_asr_rtf_avg",
+          "expr": "count(ALERTS{alertstate=\"firing\"})",
           "refId": "A",
-          "legendFormat": "RTF avg"
+          "legendFormat": "firing"
         }
       ],
       "fieldConfig": {
         "defaults": {
-          "unit": "none",
-          "custom": {"drawStyle": "line", "lineWidth": 2},
+          "unit": "short",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {"color": "green", "value": null},
-              {"color": "yellow", "value": 0.5},
-              {"color": "red", "value": 1.0}
+              {"color": "red", "value": 1}
             ]
           }
         }
       }
     },
     {
-      "id": 5,
-      "title": "LLM extraction latency (p50 / p95)",
+      "id": 17,
+      "title": "Queue composition (chunks by status)",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "gridPos": {"h": 8, "w": 18, "x": 6, "y": 9},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "histogram_quantile(0.50, sum(rate(pipeline_llm_extraction_duration_seconds_bucket[5m])) by (le))",
+          "expr": "pipeline_chunks_by_status",
           "refId": "A",
-          "legendFormat": "p50"
-        },
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(pipeline_llm_extraction_duration_seconds_bucket[5m])) by (le))",
-          "refId": "B",
-          "legendFormat": "p95"
+          "legendFormat": "{{status}}"
         }
       ],
-      "fieldConfig": {"defaults": {"unit": "s"}}
+      "fieldConfig": {"defaults": {"unit": "short"}},
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
     },
     {
-      "id": 6,
-      "title": "Detections / hour",
-      "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
-      "targets": [
-        {
-          "expr": "sum(rate(pipeline_detections_total[1h])) * 3600",
-          "refId": "A",
-          "legendFormat": "detections"
-        }
-      ],
-      "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "fixed", "value": "blue"}}}
+      "id": 101,
+      "type": "row",
+      "title": "Ingest & Stations",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 17},
+      "collapsed": false
     },
     {
       "id": 7,
       "title": "Station uptime (last chunk ago)",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 18},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "time() - pipeline_station_last_chunk_timestamp_seconds",
+          "expr": "time() - pipeline_station_last_chunk_timestamp_seconds{station=~\"$station\"}",
           "refId": "A",
           "legendFormat": "{{station}}"
         }
@@ -167,10 +160,243 @@
       "options": {"legend": {"displayMode": "table", "placement": "right"}}
     },
     {
+      "id": 13,
+      "title": "Ingest chunks / hour (by station)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 18},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "sum by (station) (rate(pipeline_ingest_chunks_total{station=~\"$station\"}[1h]) * 3600)",
+          "refId": "A",
+          "legendFormat": "{{station}}"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short"}}
+    },
+    {
+      "id": 14,
+      "title": "Ingest errors / 10m (by reason)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 26},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "sum by (station, reason) (rate(pipeline_ingest_errors_total[10m])) * 600",
+          "refId": "A",
+          "legendFormat": "{{station}} {{reason}}"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "fixed", "value": "orange"}}}
+    },
+    {
+      "id": 102,
+      "type": "row",
+      "title": "Worker & ASR (Whisper)",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 34},
+      "collapsed": false
+    },
+    {
+      "id": 11,
+      "title": "Pipeline stage latency (p50 / p95)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 35},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(pipeline_stage_duration_seconds_bucket[5m])) by (le, stage))",
+          "refId": "A",
+          "legendFormat": "{{stage}} p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(pipeline_stage_duration_seconds_bucket[5m])) by (le, stage))",
+          "refId": "B",
+          "legendFormat": "{{stage}} p95"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "s"}},
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
+    },
+    {
+      "id": 4,
+      "title": "ASR real-time factor (p50 / p95)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 43},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(pipeline_asr_rtf_bucket[5m])) by (le))",
+          "refId": "A",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(pipeline_asr_rtf_bucket[5m])) by (le))",
+          "refId": "B",
+          "legendFormat": "p95"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {"drawStyle": "line", "lineWidth": 2},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 0.5},
+              {"color": "red", "value": 1.0}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "ASR real-time factor (p95 by station)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 43},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(pipeline_asr_rtf_bucket{station=~\"$station\"}[5m])) by (le, station))",
+          "refId": "A",
+          "legendFormat": "{{station}} p95"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 0.5},
+              {"color": "red", "value": 1.0}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 103,
+      "type": "row",
+      "title": "LLM, Dedup & Ollama",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 51},
+      "collapsed": false
+    },
+    {
+      "id": 5,
+      "title": "LLM extraction latency (p50 / p95)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 52},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(pipeline_llm_extraction_duration_seconds_bucket[5m])) by (le))",
+          "refId": "A",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(pipeline_llm_extraction_duration_seconds_bucket[5m])) by (le))",
+          "refId": "B",
+          "legendFormat": "p95"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "s"}}
+    },
+    {
+      "id": 6,
+      "title": "Detections / hour",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 52},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "sum(rate(pipeline_detections_total[1h])) * 3600",
+          "refId": "A",
+          "legendFormat": "detections"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short", "color": {"mode": "fixed", "value": "blue"}}}
+    },
+    {
+      "id": 15,
+      "title": "Dedup funnel / hour",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 60},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "rate(pipeline_detections_total[1h]) * 3600",
+          "refId": "A",
+          "legendFormat": "detections"
+        },
+        {
+          "expr": "rate(pipeline_dedup_suppressed_total[1h]) * 3600",
+          "refId": "B",
+          "legendFormat": "suppressed"
+        },
+        {
+          "expr": "rate(pipeline_fingerprint_hits_total[1h]) * 3600",
+          "refId": "C",
+          "legendFormat": "fingerprint hits"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short"}}
+    },
+    {
+      "id": 19,
+      "title": "Dedup canonical matches / hour",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 60},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "sum by (match_type) (rate(pipeline_dedup_matches_total[1h]) * 3600)",
+          "refId": "A",
+          "legendFormat": "{{match_type}}"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short"}}
+    },
+    {
+      "id": 16,
+      "title": "Ollama request rate (native /metrics)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 68},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {
+          "expr": "sum(rate(ollama_total_duration_total[5m]))",
+          "refId": "A",
+          "legendFormat": "total duration rate"
+        },
+        {
+          "expr": "sum(rate(ollama_eval_total[5m]))",
+          "refId": "B",
+          "legendFormat": "eval tokens rate"
+        },
+        {
+          "expr": "sum(rate(ollama_prompt_eval_total[5m]))",
+          "refId": "C",
+          "legendFormat": "prompt tokens rate"
+        }
+      ],
+      "fieldConfig": {"defaults": {"unit": "short"}},
+      "options": {"legend": {"displayMode": "table", "placement": "right"}}
+    },
+    {
+      "id": 104,
+      "type": "row",
+      "title": "GPU & Alerter",
+      "gridPos": {"h": 1, "w": 24, "x": 0, "y": 76},
+      "collapsed": false
+    },
+    {
       "id": 8,
       "title": "GPU utilization (DCGM)",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 77},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
@@ -191,7 +417,7 @@
       "id": 9,
       "title": "GPU memory used (DCGM)",
       "type": "timeseries",
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 77},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
@@ -208,42 +434,52 @@
       "fieldConfig": {"defaults": {"unit": "bytes"}}
     },
     {
-      "id": 10,
-      "title": "Active alerts",
-      "type": "stat",
-      "gridPos": {"h": 4, "w": 24, "x": 0, "y": 32},
+      "id": 18,
+      "title": "Telegram alerts / hour",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 85},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "count(ALERTS{alertstate=\"firing\"})",
+          "expr": "sum by (alert_type, outcome) (rate(pipeline_alerts_sent_total[1h]) * 3600)",
           "refId": "A",
-          "legendFormat": "firing"
+          "legendFormat": "{{alert_type}} {{outcome}}"
         }
       ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {"color": "green", "value": null},
-              {"color": "red", "value": 1}
-            ]
-          }
-        }
-      }
+      "fieldConfig": {"defaults": {"unit": "short"}}
     }
   ],
   "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": ["radio", "pipeline"],
-  "templating": {"list": []},
+  "templating": {
+    "list": [
+      {
+        "current": {"selected": true, "text": "All", "value": "$__all"},
+        "datasource": {"type": "prometheus", "uid": "prometheus"},
+        "definition": "label_values(pipeline_station_enabled, station)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "station",
+        "options": [],
+        "query": {
+          "query": "label_values(pipeline_station_enabled, station)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "query"
+      }
+    ]
+  },
   "time": {"from": "now-6h", "to": "now"},
   "timepicker": {},
   "timezone": "",
   "title": "Radio Ad-Sensing Pipeline",
   "uid": "radio-pipeline",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
