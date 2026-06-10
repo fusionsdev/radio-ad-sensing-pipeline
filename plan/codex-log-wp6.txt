@@ -1,0 +1,136 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: h:\DEV\projects\radio-ad-sensing-pipeline
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eaee2-b913-74e1-b6b2-a9f7ab746873
+--------
+user
+Batch 3 Session C — WP-6 Alerter implement (GPT mini).
+
+Read: PLAN.md Phase 6, plan/work-dispatch-6165b3.md, shared/config.py TelegramSettings, alerter/__main__.py stub.
+
+Implement Telegram outbound alerter:
+- first-seen detection alerts (sendMessage + sendAudio when archived audio exists)
+- ops alert: station down >15min (from gaps/stations), queue drops — no spam every loop
+- daily digest (basic)
+- dry-run when TELEGRAM_BOT_TOKEN unset (log only, no crash)
+- alerted flag on detections prevents duplicate after restart
+- Replace stub __main__ with real poll loop
+
+Tests with mocked Telegram HTTP in tests/test_alerter.py (new file).
+Do not commit secrets. shared/ stays import-light.
+
+Verify: .venv\Scripts\pytest tests/test_alerter.py -v && .venv\Scripts\pytest -q
+Write plan/wp6-report.md when done.
+
+hook: SessionStart
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’m going to inspect the phase docs and the alerter stub first, then I’ll wire the Telegram loop with tests around the real HTTP behavior and finish by running the requested pytest checks.
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content -Path $env:USERPROFILE'"\\.codex\\memories\\MEMORY.md | Select-String -Pattern 'radio-ad-sensing-pipeline|alerter|telegram' -Context 2,2" in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1470ms:
+
+  - D1, Neon, deploy_history, deploys, apps/api-worker/src/lib/neon-sync.js, syncD1ToNeon, /api/automation/neon/test, /
+api/automation/neon/sync, isTrustedOriginRequest, Origin/Referer, settings=68 sites=0 deploys=0
+  
+> ## Task 5: Replace HCI with `hermes-webui`, update Hermes Agent, and remove Telegram polling conflict, success
+  
+  ### rollout_summary_files
+  
+> - rollout_summaries/2026-05-22T12-44-47-Xyv9-neon_sync_and_ci_workflow_hardening.md (cwd=H:\DEV\projects\ppc_project\
+ppc-claude-web-V1, rollout_path=C:\Users\Barbara\.codex\sessions\2026\05\22\rollout-2026-05-22T19-44-47-019e4fb7-838e-7
+5e1-8809-020c44a9b20b.jsonl, updated_at=2026-05-22T17:52:43+00:00, thread_id=019e4fb7-838e-75e1-8809-020c44a9b20b, offi
+cial Hermes WebUI path, live health checks, and Telegram runtime-token fix)
+  
+  ### keywords
+  
+> - hermes-webui, HCI, /opt/hermes-webui, /etc/systemd/system/hermes-webui.service, /health, 10272, hermes update, v0.1
+4.0, Telegram polling conflict, getWebhookInfo, getMe, /root/.hermes/.env, hermes-gateway
+  
+> ## Task 6: Harden `.github/workflows/fbis-nightly.yml` around MCP readiness, Claude auth, OIDC, agent mode, and Teleg
+ram notify, success
+  
+  ### rollout_summary_files
+  ### keywords
+  
+> - .github/workflows/fbis-nightly.yml, 406 Not Acceptable, /mcp, Not logged in · Please run /login, anthropics/claude-
+code-action@beta, id-token: write, OIDC, workflow_dispatch, mode: agent, if: always(), Telegram notification
+  
+  ## User preferences
+  - when the user corrected the target UI and pointed to the official quickstart / `hermes-webui` repo, prefer the offi
+cial Hermes flow and treat HCI as retired here, not as the source of truth [Task 5]
+  - when the user explicitly chose option `3`, follow that chosen path directly rather than re-proposing alternatives [
+Task 5]
+> - when the user wanted the Telegram polling warning gone, treat repeated runtime conflicts as something to actually e
+liminate, not just explain [Task 5]
+> - when the user iterated on CI failures from run to run, they wanted the next fix driven by the latest failing log li
+ne and expected the workflow to notify Telegram after the run, not stay silent [Task 6]
+  
+  ## Reusable knowledge
+  - `POST /api/automation/neon/sync` is the recovery path for D1 -> Neon parity, `GET /api/automation/neon/test` is the
+ fast connectivity check, and production requests may need trusted `Origin/Referer` because the worker auth path uses `
+isTrustedOriginRequest` [Task 4]
+  - `hermes-webui` replaced HCI here and is served from `/opt/hermes-webui/bootstrap.py --foreground --no-browser --hos
+t 0.0.0.0 10272` under `systemd`; the Hermes gateway API health endpoint remains `http://127.0.0.1:8642/health` [Task 5
+]
+> - Telegram `Conflict: terminated by other getUpdates request` means another live consumer still holds the same bot to
+ken; check `getWebhookInfo`, then verify the actual runtime token in `/root/.hermes/.env` before assuming the “new toke
+n” is active [Task 5]
+  - For this workflow, `GET /mcp` returning `406 Not Acceptable` is compatible with “server is up but request shape is 
+wrong”, so readiness should accept `406/200` and retry instead of requiring strict `200` [Task 6]
+> - In this CI path, the durable fix stack was: switch from brittle direct `claude` CLI login attempts to `anthropics/c
+laude-code-action@beta`, add `permissions: id-token: write`, use `mode: agent` for `workflow_dispatch`, and add an expl
+icit `if: always()` Telegram summary step [Task 6]
+  
+  ## Failures and how to do differently
+  - Symptom: production `neon/test` or `neon/sync` returns `401` -> cause: the request missed the trusted `Origin/Refer
+er` expected by `isTrustedOriginRequest` -> fix: replay with the trusted origin headers before changing the auth code a
+gain [Task 4]
+  - Symptom: Hermes UI migration seems done locally but the public URL is unreachable -> cause: WebUI was still bound t
+o `127.0.0.1` or not persisted under `systemd` -> fix: bind `0.0.0.0`, verify `/health`, and confirm the `hermes-webui.
+service` unit is enabled [Task 5]
+> - Symptom: Telegram conflict persists after a supposed token rotation -> cause: the runtime `.env` still contains the
+ old token or another process is polling it -> fix: verify `/root/.hermes/.env`, restart `hermes-gateway`, and recheck 
+with `getMe` plus fresh logs [Task 5]
+  - Symptom: FBIS nightly still fails after a workflow patch -> cause: the changed workflow was not yet on `main`, or t
+he runner CLI/auth assumptions do not match reality -> fix: confirm the remote branch/workflow version first, then foll
+ow the exact new failing log line instead of retrying the same auth idea [Task 6]
+  - Symptom: the Claude action fails after the CLI path is removed -> cause: OIDC permission or action mode does not ma
+tch the event type -> fix: add `id-token: write` and use `mode: agent` for `workflow_dispatch` [Task 6]
+  ## User preferences
+  
+> - when the user asked for a full live flow like “SSH to VPS”, “Call write_risk_score() via FBIS MCP (port 8765)”, “Ap
+prove in DashClaw UI”, “Verify risk score written + Telegram alert sent”, and “Check decisions table audit trail (7-yea
+r retention)” -> assume they want live end-to-end proof plus audit evidence, not just code inspection [Task 1]
+  - when the user framed “critical pass criteria” and kept narrowing to HITL, policy enforcement, persistence, and aler
+t delivery -> report pass/fail criterion-by-criterion instead of only a narrative summary [Task 1][Task 4]
+  - when the user explicitly asked to test both auth header and no-auth variants, and later presented `A) Add Authoriza
+tion: Bearer header`, `B) Check FBIS_API_KEY env var`, `C) Verify FBIS_API_BASE URL` -> compare auth/config paths side 
+by side instead of guessing a single cause [Task 1][Task 2]
+  
+  - `apps/fbis-mcp-server/tools/risk.py` computes `verdict_score` as `proxy_risk * 0.25 + (100 - isolation_score) * 0.3
+0 + (100 - traffic_quality) * 0.25 + timeline_risk * 0.20`, then maps to `healthy` / `watch` / `risk` / `critical` usin
+g thresholds `<=30`, `<=55`, `<=75`, `>75` [Task 1]
+> - In `risk.py`, Telegram alerts are best-effort only because `_send_telegram()` swallows exceptions; lack of an error
+ does not prove delivery [Task 1]
+  - `write_risk_score()` posts through `apps/fbis-mcp-server/tools/_client.py`; the durable client shape here is to sen
+d both `Authorization: Bearer <FBIS_API_KEY>` and legacy `x-api-key` for compatibility [Task 2][Task 4]
+  - The actual live write path is the Worker URL in `FBIS_API_BASE`, not `POST http://localhost:8787/api/analysis/risk-
+score` on the VPS host; verify the active endpoint before debugging the wrong address [Task 1]
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed

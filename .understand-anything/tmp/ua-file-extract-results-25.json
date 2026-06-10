@@ -1,0 +1,1133 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".agents/skills/caveman/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 49,
+      "nonEmptyLines": 32,
+      "sections": [
+        {
+          "heading": "Persistence",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Rules",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "Examples",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "Auto-Clarity Exception",
+          "level": 2,
+          "line": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": ".agents/skills/design-an-interface/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 94,
+      "nonEmptyLines": 61,
+      "sections": [
+        {
+          "heading": "Design an Interface",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Workflow",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "1. Gather Requirements",
+          "level": 3,
+          "line": 12
+        },
+        {
+          "heading": "2. Generate Designs (Parallel Sub-Agents)",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "3. Present Designs",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "4. Compare Designs",
+          "level": 3,
+          "line": 58
+        },
+        {
+          "heading": "5. Synthesize",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "Evaluation Criteria",
+          "level": 2,
+          "line": 77
+        },
+        {
+          "heading": "Anti-Patterns",
+          "level": 2,
+          "line": 89
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": ".agents/skills/diagnose/scripts/hitl-loop.template.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 41,
+      "nonEmptyLines": 32,
+      "functions": [
+        {
+          "name": "step",
+          "startLine": 17,
+          "endLine": 20,
+          "params": []
+        },
+        {
+          "name": "capture",
+          "startLine": 22,
+          "endLine": 27,
+          "params": []
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/diagnose/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 117,
+      "nonEmptyLines": 72,
+      "sections": [
+        {
+          "heading": "Diagnose",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Phase 1 — Build a feedback loop",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Ways to construct one — try them in roughly this order",
+          "level": 3,
+          "line": 18
+        },
+        {
+          "heading": "Iterate on the loop itself",
+          "level": 3,
+          "line": 33
+        },
+        {
+          "heading": "Non-deterministic bugs",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "When you genuinely cannot build a loop",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "Phase 2 — Reproduce",
+          "level": 2,
+          "line": 53
+        },
+        {
+          "heading": "Phase 3 — Hypothesise",
+          "level": 2,
+          "line": 65
+        },
+        {
+          "heading": "Phase 4 — Instrument",
+          "level": 2,
+          "line": 77
+        },
+        {
+          "heading": "Phase 5 — Fix + regression test",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "Phase 6 — Cleanup + post-mortem",
+          "level": 2,
+          "line": 107
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": ".agents/skills/edit-article/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 14,
+      "nonEmptyLines": 9,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 25,
+      "nonEmptyLines": 21,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/git-guardrails-claude-code/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 95,
+      "nonEmptyLines": 69,
+      "sections": [
+        {
+          "heading": "Setup Git Guardrails",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "What Gets Blocked",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Steps",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "1. Ask scope",
+          "level": 3,
+          "line": 22
+        },
+        {
+          "heading": "2. Copy the hook script",
+          "level": 3,
+          "line": 26
+        },
+        {
+          "heading": "3. Add hook to settings",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "4. Ask about customization",
+          "level": 3,
+          "line": 83
+        },
+        {
+          "heading": "5. Verify",
+          "level": 3,
+          "line": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": ".agents/skills/grill-me/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 10,
+      "nonEmptyLines": 7,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/handoff/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 15,
+      "nonEmptyLines": 10,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/PROMPTS.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 92,
+      "nonEmptyLines": 64,
+      "sections": [
+        {
+          "heading": "Hermes Review Prompts",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "WP gate (standard)",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "WP-13 hardening (codexplan)",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Stream B only (Gemini — storage + ASR)",
+          "level": 2,
+          "line": 51
+        },
+        {
+          "heading": "Stream A only (Cursor — WAL)",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Operator smoke reminder",
+          "level": 2,
+          "line": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1",
+      "language": "powershell",
+      "fileCategory": "script",
+      "totalLines": 136,
+      "nonEmptyLines": 111,
+      "metrics": {}
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/scripts/hermes-review.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 74,
+      "nonEmptyLines": 62,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 92,
+      "nonEmptyLines": 68,
+      "sections": [
+        {
+          "heading": "Hermes Dispatch — Periodic Review Gate",
+          "level": 1,
+          "line": 10
+        },
+        {
+          "heading": "When to run",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Prerequisites",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "Workflow",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Review axes (always both)",
+          "level": 2,
+          "line": 61
+        },
+        {
+          "heading": "Parallel implement + Hermes gate",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Do NOT",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "Periodic automation",
+          "level": 2,
+          "line": 80
+        },
+        {
+          "heading": "Output location",
+          "level": 2,
+          "line": 90
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": ".agents/skills/migrate-to-shoehorn/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 118,
+      "nonEmptyLines": 85,
+      "sections": [
+        {
+          "heading": "Migrate to Shoehorn",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Why shoehorn?",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "Install",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Migration patterns",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Large objects with few needed properties",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "`as Type` → `fromPartial()`",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "`as unknown as Type` → `fromAny()`",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "When to use each",
+          "level": 2,
+          "line": 97
+        },
+        {
+          "heading": "Workflow",
+          "level": 2,
+          "line": 105
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": ".agents/skills/obsidian-vault/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 59,
+      "nonEmptyLines": 39,
+      "sections": [
+        {
+          "heading": "Obsidian Vault",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Vault location",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "Naming conventions",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Linking",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Workflows",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Search for notes",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Create a new note",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "Find related notes",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "Find index notes",
+          "level": 3,
+          "line": 55
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": ".agents/skills/qa/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 130,
+      "nonEmptyLines": 77,
+      "sections": [
+        {
+          "heading": "QA Session",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "For each issue the user raises",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "1. Listen and lightly clarify",
+          "level": 3,
+          "line": 12
+        },
+        {
+          "heading": "2. Explore the codebase in the background",
+          "level": 3,
+          "line": 22
+        },
+        {
+          "heading": "3. Assess scope: single issue or breakdown?",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "4. File the GitHub issue(s)",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "For a single issue",
+          "level": 4,
+          "line": 53
+        },
+        {
+          "heading": "For a breakdown (multiple issues)",
+          "level": 4,
+          "line": 77
+        },
+        {
+          "heading": "Rules for all issue bodies",
+          "level": 4,
+          "line": 118
+        },
+        {
+          "heading": "5. Continue the session",
+          "level": 3,
+          "line": 128
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": ".agents/skills/request-refactor-plan/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 68,
+      "nonEmptyLines": 40,
+      "sections": [
+        {
+          "heading": "Problem Statement",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "Solution",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Commits",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "Decision Document",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Testing Decisions",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Out of Scope",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Further Notes (optional)",
+          "level": 2,
+          "line": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": ".agents/skills/review/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 78,
+      "nonEmptyLines": 48,
+      "sections": [
+        {
+          "heading": "Review",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Process",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Pin the fixed point",
+          "level": 3,
+          "line": 19
+        },
+        {
+          "heading": "2. Identify the spec source",
+          "level": 3,
+          "line": 25
+        },
+        {
+          "heading": "3. Identify the standards sources",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "4. Spawn both sub-agents in parallel",
+          "level": 3,
+          "line": 47
+        },
+        {
+          "heading": "5. Aggregate",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "Why two axes",
+          "level": 2,
+          "line": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": ".agents/skills/scaffold-exercises/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 106,
+      "nonEmptyLines": 74,
+      "sections": [
+        {
+          "heading": "Scaffold Exercises",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Directory naming",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Exercise variants",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "Required files",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Workflow",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Lint rules summary",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Moving/renaming exercises",
+          "level": 2,
+          "line": 65
+        },
+        {
+          "heading": "Example: stubbing from a plan",
+          "level": 2,
+          "line": 79
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": ".agents/skills/setup-pre-commit/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 91,
+      "nonEmptyLines": 63,
+      "sections": [
+        {
+          "heading": "Setup Pre-Commit Hooks",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "What This Sets Up",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "Steps",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "1. Detect package manager",
+          "level": 3,
+          "line": 17
+        },
+        {
+          "heading": "2. Install dependencies",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "3. Initialize Husky",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "4. Create `.husky/pre-commit`",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "5. Create `.lintstagedrc`",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "6. Create `.prettierrc` (if missing)",
+          "level": 3,
+          "line": 57
+        },
+        {
+          "heading": "7. Verify",
+          "level": 3,
+          "line": 73
+        },
+        {
+          "heading": "8. Commit",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": ".agents/skills/to-issues/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 83,
+      "nonEmptyLines": 50,
+      "sections": [
+        {
+          "heading": "To Issues",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Process",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "1. Gather context",
+          "level": 3,
+          "line": 14
+        },
+        {
+          "heading": "2. Explore the codebase (optional)",
+          "level": 3,
+          "line": 18
+        },
+        {
+          "heading": "3. Draft vertical slices",
+          "level": 3,
+          "line": 22
+        },
+        {
+          "heading": "4. Quiz the user",
+          "level": 3,
+          "line": 34
+        },
+        {
+          "heading": "5. Publish the issues to the issue tracker",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "Parent",
+          "level": 2,
+          "line": 59
+        },
+        {
+          "heading": "What to build",
+          "level": 2,
+          "line": 63
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "Blocked by",
+          "level": 2,
+          "line": 75
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": ".agents/skills/to-prd/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 74,
+      "nonEmptyLines": 44,
+      "sections": [
+        {
+          "heading": "Process",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Problem Statement",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Solution",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "User Stories",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Implementation Decisions",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Testing Decisions",
+          "level": 2,
+          "line": 58
+        },
+        {
+          "heading": "Out of Scope",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Further Notes",
+          "level": 2,
+          "line": 70
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": ".agents/skills/ubiquitous-language/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 93,
+      "nonEmptyLines": 64,
+      "sections": [
+        {
+          "heading": "Ubiquitous Language",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "Process",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Output Format",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Rules",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Example dialogue",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "Re-running",
+          "level": 2,
+          "line": 85
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": ".agents/skills/write-a-skill/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 117,
+      "nonEmptyLines": 80,
+      "sections": [
+        {
+          "heading": "Writing Skills",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "Process",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "Skill Structure",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "SKILL.md Template",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Description Requirements",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "When to Add Scripts",
+          "level": 2,
+          "line": 90
+        },
+        {
+          "heading": "When to Split Files",
+          "level": 2,
+          "line": 100
+        },
+        {
+          "heading": "Review Checklist",
+          "level": 2,
+          "line": 108
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": ".agents/skills/writing-beats/SKILL.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 52,
+      "nonEmptyLines": 32,
+      "sections": [
+        {
+          "heading": "What is a beat",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "Writing one beat",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Ending the journey",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "Writing rhythm",
+          "level": 2,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    }
+  ]
+}

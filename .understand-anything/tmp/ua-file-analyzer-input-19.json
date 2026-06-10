@@ -1,0 +1,28 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 50,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".windsurf/plans/handoff-wp9-dashboard-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 47,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md": [],
+    ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md": [],
+    ".windsurf/plans/handoff-wp9-dashboard-6165b3.md": []
+  }
+}

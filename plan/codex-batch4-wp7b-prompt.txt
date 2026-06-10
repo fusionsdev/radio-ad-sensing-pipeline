@@ -1,0 +1,16 @@
+Batch 4 Session B — WP-7b Docker finalize (Standard).
+
+Read: PLAN.md Phase 7, plan/wp7a-report.md, plan/wp10a-report.md, docker-compose.yml, worker/Dockerfile, .env.example.
+
+Scope:
+- Verify NVIDIA runtime only on worker + ollama + dcgm-exporter (not ingestor/alerter/dashboard)
+- Ensure ollama-pull one-shot still pulls Qwen model
+- Expose metrics ports 9101-9104 in compose for ingestor/worker/alerter/dashboard (from wp10b)
+- Restart policy, volumes, healthchecks coherent
+- .env not baked into images; secrets from env at runtime
+- Fix any compose/service wiring gaps found
+
+Run: docker compose config --quiet (must pass)
+If docker not available for full up, document manual verify steps in plan/wp7b-report.md.
+
+Do NOT reimplement business logic. Write plan/wp7b-report.md.

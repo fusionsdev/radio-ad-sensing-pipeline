@@ -1,0 +1,87 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "ingestor/ffmpeg.py",
+      "language": "python",
+      "sizeLines": 189,
+      "fileCategory": "code"
+    },
+    {
+      "path": "ingestor/repository.py",
+      "language": "python",
+      "sizeLines": 97,
+      "fileCategory": "code"
+    },
+    {
+      "path": "ingestor/supervisor.py",
+      "language": "python",
+      "sizeLines": 205,
+      "fileCategory": "code"
+    },
+    {
+      "path": "shared/models.py",
+      "language": "python",
+      "sizeLines": 170,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_asr_benchmark.py",
+      "language": "python",
+      "sizeLines": 87,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_ingestor.py",
+      "language": "python",
+      "sizeLines": 334,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_models.py",
+      "language": "python",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/asr_benchmark.py",
+      "language": "python",
+      "sizeLines": 96,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "ingestor/ffmpeg.py": [
+      "shared/models.py"
+    ],
+    "ingestor/repository.py": [
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "ingestor/supervisor.py": [
+      "ingestor/ffmpeg.py",
+      "ingestor/repository.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ],
+    "shared/models.py": [],
+    "tests/test_asr_benchmark.py": [
+      "shared/models.py",
+      "worker/asr_benchmark.py"
+    ],
+    "tests/test_ingestor.py": [
+      "ingestor/ffmpeg.py",
+      "ingestor/supervisor.py",
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "tests/test_models.py": [
+      "shared/models.py"
+    ],
+    "worker/asr_benchmark.py": [
+      "shared/config.py",
+      "shared/models.py",
+      "worker/transcribe.py"
+    ]
+  }
+}

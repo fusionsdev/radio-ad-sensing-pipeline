@@ -1,0 +1,14 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "alerter/Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 34,
+      "fileCategory": "infra"
+    }
+  ],
+  "batchImportData": {
+    "alerter/Dockerfile": []
+  }
+}

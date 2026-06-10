@@ -1,0 +1,42 @@
+# Local/dev artifacts
+.git
+.gitignore
+.github
+.venv
+venv
+env
+.idea
+.vscode
+.cursor
+.windsurf
+.agents
+.claude
+.cursorrules
+*.md
+!README.md
+!PLAN.md
+
+# Runtime data (bind-mounted at runtime)
+data/
+.env
+.env.local
+.env.*.local
+
+# Test + build artifacts
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.py[cod]
+*$py.class
+__pycache__
+*.egg-info
+dist
+build
+.coverage
+htmlcov
+tests/
+
+# Docker self-reference
+Dockerfile
+docker-compose*.yml
+.dockerignore

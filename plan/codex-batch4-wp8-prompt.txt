@@ -1,0 +1,13 @@
+Batch 4 Session A — WP-8 Fingerprint fix-then-ship.
+
+Read: plan/codex-out-wp8.md, worker/fingerprint.py, tests/test_fingerprint.py, PLAN.md Phase 8.
+
+Implement ALL 3 fixes from Opus review:
+1. Near-miss threshold test around 0.88 — borderline score must NOT match (false positive guard)
+2. Realistic multi-offset test: long vectors simulating 90s chunk with 30s clip embedded at offsets 0, 30, 45 — must match at each
+3. CPU budget guard: pytest perf assertion or benchmark in test_fingerprint.py (e.g. 100 candidates < 1s on CI host) OR log timing in matcher
+
+Write plan/wp8-report.md. Update plan/opus-review-plan-6165b3.md WP-8 to ship if done.
+
+Verify: .venv\Scripts\pytest tests/test_fingerprint.py -v && .venv\Scripts\pytest -q
+Minimal diff. No changes outside fingerprint + tests + plan.

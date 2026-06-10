@@ -1,0 +1,95 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 1,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "dashboard/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 37,
+      "nonEmptyLines": 29,
+      "services": [
+        {
+          "name": "base",
+          "image": "python:3.11-slim",
+          "ports": [
+            8080
+          ],
+          "startLine": 3,
+          "endLine": 38
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM python:3.11-slim AS base",
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "ENV PYTHONUNBUFFERED=1 \\",
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "RUN apt-get update \\",
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "COPY pyproject.toml README.md ./",
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "COPY shared/ ./shared/",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "COPY dashboard/ ./dashboard/",
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "COPY config/ ./config/",
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "RUN pip install --upgrade pip \\",
+          "startLine": 26,
+          "endLine": 26
+        },
+        {
+          "name": "EXPOSE 8080",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \\",
+          "startLine": 33,
+          "endLine": 33
+        },
+        {
+          "name": "CMD [\"python\", \"-m\", \"dashboard\"]",
+          "startLine": 37,
+          "endLine": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 1,
+        "stepCount": 12
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+Batch 3 Session C — WP-6 Alerter implement (GPT mini).
+
+Read: PLAN.md Phase 6, plan/work-dispatch-6165b3.md, shared/config.py TelegramSettings, alerter/__main__.py stub.
+
+Implement Telegram outbound alerter:
+- first-seen detection alerts (sendMessage + sendAudio when archived audio exists)
+- ops alert: station down >15min (from gaps/stations), queue drops — no spam every loop
+- daily digest (basic)
+- dry-run when TELEGRAM_BOT_TOKEN unset (log only, no crash)
+- alerted flag on detections prevents duplicate after restart
+- Replace stub __main__ with real poll loop
+
+Tests with mocked Telegram HTTP in tests/test_alerter.py (new file).
+Do not commit secrets. shared/ stays import-light.
+
+Verify: .venv\Scripts\pytest tests/test_alerter.py -v && .venv\Scripts\pytest -q
+Write plan/wp6-report.md when done.

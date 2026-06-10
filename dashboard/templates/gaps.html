@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Gaps — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Gaps (last 48h)</h2>
+{% if gaps %}
+<table>
+  <thead><tr><th>Station</th><th>Start</th><th>End</th><th>Reason</th></tr></thead>
+  <tbody>
+    {% for g in gaps %}
+    <tr>
+      <td>{{ g.station_name }}</td>
+      <td>{{ format_ts(g.start_ts) }}</td>
+      <td>{{ format_ts(g.end_ts) }}</td>
+      <td>{{ g.reason }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No gaps recorded in the last 48 hours.</p>
+{% endif %}
+{% endblock %}

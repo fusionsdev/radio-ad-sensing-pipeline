@@ -1,0 +1,378 @@
+# Radio Ad-Sensing Pipeline — local Docker Compose stack
+# All services run on a single Ubuntu host with one 12GB NVIDIA GPU.
+#
+# Bring up:    docker compose up -d
+# Tear down:   docker compose down
+# Tail logs:   docker compose logs -f worker
+# Verify:      docker compose config   (this is the M3 verify command)
+
+name: radio-ad-pipeline
+
+services:
+  # ---------------------------------------------------------------------------
+  # Ingestor — ffmpeg supervisor per station, chunk writer, gap logger
+  # ---------------------------------------------------------------------------
+  ingestor:
+    build:
+      context: .
+      dockerfile: ingestor/Dockerfile
+    image: radio-ad-pipeline/ingestor:dev
+    container_name: radio-ingestor
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - chunk-tmpfs:/app/chunks
+      - ./config:/app/config:ro
+    expose:
+      - "9101"
+    environment:
+      - PYTHONPATH=/app
+      - CHUNKS_DIR=/app/chunks
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from shared.config import load_stations; load_stations()"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Worker — faster-whisper ASR + (later) Ollama extraction + dedup
+  # GPU-bound. Needs NVIDIA container runtime on the host.
+  # ---------------------------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    image: radio-ad-pipeline/worker:dev
+    container_name: radio-worker
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+      ollama:
+        condition: service_started
+      ollama-pull:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - chunk-tmpfs:/app/chunks
+      - ./config:/app/config:ro
+    expose:
+      - "9102"
+    environment:
+      - PYTHONPATH=/app
+      - CHUNKS_DIR=/app/chunks
+      # Ollama client URL inside the compose network
+      - OLLAMA_HOST=http://ollama:11434
+    # NVIDIA GPU passthrough — requires nvidia-container-toolkit on the host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # faster-whisper is lazy-imported, so just check the import path works
+      test: ["CMD", "python", "-c", "import faster_whisper"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Alerter — Telegram outbound-only (sendMessage + sendAudio + ops + digest)
+  # ---------------------------------------------------------------------------
+  alerter:
+    build:
+      context: .
+      dockerfile: alerter/Dockerfile
+    image: radio-ad-pipeline/alerter:dev
+    container_name: radio-alerter
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    expose:
+      - "9103"
+    environment:
+      - PYTHONPATH=/app
+      # Telegram creds come from .env (see .env.example). If unset, alerter logs
+      # a warning and runs in dry-run mode (per WP-6 spec).
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import alerter; from shared.config import load_telegram_settings; load_telegram_settings()"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Dashboard — FastAPI + Jinja2/HTMX, read-only, LAN-only
+  # Bound to 127.0.0.1 by default (settings.yaml). For LAN access, override
+  # DASHBOARD_HOST in .env.
+  # ---------------------------------------------------------------------------
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    image: radio-ad-pipeline/dashboard:dev
+    container_name: radio-dashboard
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    expose:
+      - "9104"
+    environment:
+      - PYTHONPATH=/app
+      # Container must listen on 0.0.0.0 so Docker port-publish can reach uvicorn.
+      # Host exposure stays LAN-local via the 127.0.0.1:8080 port mapping below.
+      - DASHBOARD_HOST=${DASHBOARD_HOST:-0.0.0.0}
+      - DASHBOARD_PORT=${DASHBOARD_PORT:-8080}
+    ports:
+      # LAN-only by default — change the host port mapping (or DASHBOARD_HOST)
+      # to expose on a routable interface. The container itself binds to 8080.
+      - "127.0.0.1:8080:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Ollama — local LLM server (Qwen2.5-7B-Instruct Q4_K_M)
+  # Uses the official image; we pull the model in the `ollama-pull` init
+  # service below so the worker can rely on it being present.
+  # ---------------------------------------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    container_name: radio-ollama
+    restart: unless-stopped
+    # Persist model weights between container restarts
+    volumes:
+      - ollama_data:/root/.ollama
+    # NVIDIA GPU passthrough — same single GPU as the worker
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # Official ollama image has no curl; `ollama list` hits the local API.
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      - pipeline-internal
+
+  # Init container: pull the configured LLM model once. Exits 0 after success
+  # so the stack can come up; the worker depends on `ollama` (not on this),
+  # so a slow first pull does not block other services.
+  ollama-pull:
+    image: curlimages/curl:latest
+    container_name: radio-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    # Pull Qwen2.5-7B-Instruct Q4_K_M (PLAN §"LLM"). The endpoint is idempotent
+    # — re-pulling a model that is already cached is a no-op.
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        set -eu
+        echo "Pulling qwen2.5:7b-instruct-q4_K_M ..."
+        curl -fsS -X POST http://ollama:11434/api/pull \
+          -d '{"name": "qwen2.5:7b-instruct-q4_K_M", "stream": false}' \
+          >/dev/null
+        echo "Model pull complete."
+    restart: "no"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Migrate — one-shot init container. Runs the SQLite schema migrations so
+  # every other service can assume the tables exist. Exits 0 on success.
+  # Uses the ingestor image (which already has the shared/ package installed
+  # in editable mode) so we don't need a separate Python image with sources.
+  # ---------------------------------------------------------------------------
+  pipeline-migrate:
+    image: radio-ad-pipeline/ingestor:dev
+    container_name: radio-migrate
+    depends_on: []
+    build:
+      context: .
+      dockerfile: ingestor/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    working_dir: /app
+    command:
+      - python
+      - -c
+      - "from shared.db import migrate; migrate('data/pipeline.db')"
+    restart: "no"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Prometheus — scrapes /metrics from every service + DCGM GPU exporter.
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: radio-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      # Bound to localhost only; Grafana is the public-facing surface for users.
+      - "127.0.0.1:9090:9090"
+    depends_on:
+      - ingestor
+      - worker
+      - alerter
+      - dashboard
+      - dcgm-exporter
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Grafana — provisioning-driven, no UI clicks required to bring up the
+  # dashboard. Default admin password is configurable via .env (GRAFANA_ADMIN_PASSWORD).
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: radio-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      # LAN-only by default (PLAN §"Dashboard exposure"). Operator maps to LAN
+      # interface in their own override if needed.
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - prometheus
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # dcgm-exporter — NVIDIA GPU metrics. Shares the GPU with worker + ollama.
+  # ---------------------------------------------------------------------------
+  dcgm-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:latest
+    container_name: radio-dcgm-exporter
+    restart: unless-stopped
+    # CAP_SYS_ADMIN is required for dcgm-exporter; some hosts also need the
+    # nvidia-container-toolkit to be present on the host (verified by `nvidia-smi`).
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - DCGM_EXPORTER_LISTEN=:9400
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+networks:
+  pipeline-internal:
+    driver: bridge
+
+volumes:
+  chunk-tmpfs:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: "size=4g,mode=1777"
+  ollama_data:
+    # Named volume for model weights (persistent across `docker compose down`)
+  prometheus_data:
+    # TSDB time-series storage; 15d retention per prometheus args above.
+  grafana_data:
+    # Grafana state (users, dashboards edited via UI, etc.)

@@ -1,0 +1,88 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 1,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "alerter/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 34,
+      "nonEmptyLines": 27,
+      "services": [
+        {
+          "name": "base",
+          "image": "python:3.11-slim",
+          "ports": [],
+          "startLine": 3,
+          "endLine": 35
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM python:3.11-slim AS base",
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "ENV PYTHONUNBUFFERED=1 \\",
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "RUN apt-get update \\",
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "COPY pyproject.toml README.md ./",
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "COPY shared/ ./shared/",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "COPY alerter/ ./alerter/",
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "COPY config/ ./config/",
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "RUN pip install --upgrade pip \\",
+          "startLine": 26,
+          "endLine": 26
+        },
+        {
+          "name": "HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \\",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "CMD [\"python\", \"-m\", \"alerter\"]",
+          "startLine": 34,
+          "endLine": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 1,
+        "stepCount": 11
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: h:\DEV\projects\radio-ad-sensing-pipeline
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eaee2-b743-7293-a4fc-30ea5da878e1
+--------
+user
+Batch 3 Session B — WP-8 Fingerprint Deep REVIEW (read-only, no source edits).
+
+Read: PLAN.md Phase 8, plan/opus-review-plan-6165b3.md WP-8 row, worker/fingerprint.py, tests/test_fingerprint.py.
+
+Deep review: sliding-window offset-tolerant match (90s chunk vs 30s clip at any offset), threshold true-match and near-miss tests, false known_ad must not lose transcript, CPU budget.
+
+Run: .venv\Scripts\pytest tests/test_fingerprint.py -v && pytest -q
+
+Output findings by severity with file:line, spec checklist, test gaps, verdict ship/fix-then-ship/rework with numbered fixes.
+You MAY update only plan/opus-review-plan-6165b3.md WP-8 checklist line.
+
+hook: SessionStart
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’m treating this as a read-only code review of WP-8 with verification, so I’m pulling the spec, the WP-8 review row, and the fingerprint implementation/tests first, then I’ll run the targeted pytest commands and report findings by severity.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse

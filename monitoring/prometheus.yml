@@ -1,0 +1,100 @@
+# Prometheus scrape config for the radio-ad-sensing pipeline.
+#
+# This file is mounted into the prometheus container at /etc/prometheus/.
+# We use a static_configs list because all services run on a single host —
+# no service discovery is needed at this scale (4-10 stations).
+#
+# Verify locally with:  promtool check config monitoring/prometheus.yml
+# (run inside the prom/prometheus image: docker run --rm -v $PWD/monitoring:/etc/prometheus prom/prometheus:latest promtool check config /etc/prometheus/prometheus.yml)
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    pipeline: radio-ad-sensing
+    env: dev
+
+# Alertmanager is not deployed in this iteration; the alerter service handles
+# operational alerts via Telegram directly. The rules in alerts.yml still get
+# evaluated and become visible in Grafana.
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  # ---------------------------------------------------------------------------
+  # Pipeline services — each exposes /metrics on the port listed below.
+  # Static IPs on the pipeline-internal bridge are not stable across
+  # docker compose runs, so we use the compose service name as the hostname.
+  # ---------------------------------------------------------------------------
+
+  - job_name: ingestor
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['ingestor:9101']
+        labels:
+          service: ingestor
+          tier: ingestion
+
+  - job_name: worker
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['worker:9102']
+        labels:
+          service: worker
+          tier: processing
+
+  - job_name: alerter
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['alerter:9103']
+        labels:
+          service: alerter
+          tier: output
+
+  - job_name: dashboard
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['dashboard:9104']
+        labels:
+          service: dashboard
+          tier: ui
+
+  # ---------------------------------------------------------------------------
+  # Ollama — official image exposes /metrics on 11434 since v0.1.32.
+  # We do not include it here by default; uncomment once the local Ollama
+  # version is confirmed. Worker-side metrics cover LLM latency already.
+  # ---------------------------------------------------------------------------
+  # - job_name: ollama
+  #   metrics_path: /metrics
+  #   static_configs:
+  #     - targets: ['ollama:11434']
+  #       labels:
+  #         service: ollama
+  #         tier: llm
+
+  # ---------------------------------------------------------------------------
+  # GPU metrics via NVIDIA dcgm-exporter (DCGM >= 3.x).
+  # Runs as a sidecar on the GPU host; uses the container toolkit.
+  # ---------------------------------------------------------------------------
+  - job_name: dcgm
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['dcgm-exporter:9400']
+        labels:
+          service: gpu
+          tier: hardware
+
+  # ---------------------------------------------------------------------------
+  # Prometheus self-scrape (health check + storage visibility)
+  # ---------------------------------------------------------------------------
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: prometheus
+          tier: monitoring

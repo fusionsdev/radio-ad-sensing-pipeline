@@ -1,0 +1,10 @@
+Batch 3 Session B — WP-8 Fingerprint Deep REVIEW (read-only, no source edits).
+
+Read: PLAN.md Phase 8, plan/opus-review-plan-6165b3.md WP-8 row, worker/fingerprint.py, tests/test_fingerprint.py.
+
+Deep review: sliding-window offset-tolerant match (90s chunk vs 30s clip at any offset), threshold true-match and near-miss tests, false known_ad must not lose transcript, CPU budget.
+
+Run: .venv\Scripts\pytest tests/test_fingerprint.py -v && pytest -q
+
+Output findings by severity with file:line, spec checklist, test gaps, verdict ship/fix-then-ship/rework with numbered fixes.
+You MAY update only plan/opus-review-plan-6165b3.md WP-8 checklist line.

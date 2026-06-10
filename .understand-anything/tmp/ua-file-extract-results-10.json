@@ -1,0 +1,179 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 2,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "shared/migrations/001_initial.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 82,
+      "nonEmptyLines": 72,
+      "definitions": [
+        {
+          "name": "stations",
+          "kind": "table",
+          "fields": [
+            "id",
+            "name",
+            "url",
+            "format",
+            "enabled"
+          ],
+          "startLine": 1,
+          "endLine": 7
+        },
+        {
+          "name": "canonical_ads",
+          "kind": "table",
+          "fields": [
+            "id",
+            "company_name",
+            "phone_norm",
+            "category",
+            "first_seen",
+            "last_seen",
+            "airing_count",
+            "archived_audio_path"
+          ],
+          "startLine": 9,
+          "endLine": 18
+        },
+        {
+          "name": "chunks",
+          "kind": "table",
+          "fields": [
+            "id",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status",
+            "error",
+            "known_ad_id"
+          ],
+          "startLine": 20,
+          "endLine": 29
+        },
+        {
+          "name": "transcripts",
+          "kind": "table",
+          "fields": [
+            "id",
+            "chunk_id",
+            "text",
+            "asr_duration_ms"
+          ],
+          "startLine": 34,
+          "endLine": 39
+        },
+        {
+          "name": "detections",
+          "kind": "table",
+          "fields": [
+            "id",
+            "chunk_id",
+            "canonical_ad_id",
+            "is_ad",
+            "ad_category",
+            "company_name",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "confidence",
+            "alerted"
+          ],
+          "startLine": 41,
+          "endLine": 54
+        },
+        {
+          "name": "gaps",
+          "kind": "table",
+          "fields": [
+            "id",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "reason"
+          ],
+          "startLine": 58,
+          "endLine": 64
+        },
+        {
+          "name": "fingerprints",
+          "kind": "table",
+          "fields": [
+            "id",
+            "canonical_ad_id",
+            "chromaprint_vector",
+            "duration"
+          ],
+          "startLine": 66,
+          "endLine": 71
+        },
+        {
+          "name": "status",
+          "kind": "table",
+          "fields": [
+            "value",
+            "updated_at"
+          ],
+          "startLine": 73,
+          "endLine": 77
+        },
+        {
+          "name": "schema_migrations",
+          "kind": "table",
+          "fields": [
+            "version",
+            "applied_at"
+          ],
+          "startLine": 79,
+          "endLine": 82
+        },
+        {
+          "name": "idx_chunks_status",
+          "kind": "index",
+          "fields": [],
+          "startLine": 31,
+          "endLine": 31
+        },
+        {
+          "name": "idx_chunks_station_id",
+          "kind": "index",
+          "fields": [],
+          "startLine": 32,
+          "endLine": 32
+        },
+        {
+          "name": "idx_detections_canonical_ad_id",
+          "kind": "index",
+          "fields": [],
+          "startLine": 56,
+          "endLine": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 12
+      }
+    },
+    {
+      "path": "shared/migrations/002_transcript_segments.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 0
+      }
+    }
+  ]
+}

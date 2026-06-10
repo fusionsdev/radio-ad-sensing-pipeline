@@ -1,0 +1,112 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "tests/test_dedup.py",
+      "language": "python",
+      "sizeLines": 314,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_e2e_smoke.py",
+      "language": "python",
+      "sizeLines": 201,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_extract.py",
+      "language": "python",
+      "sizeLines": 145,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_extraction_eval.py",
+      "language": "python",
+      "sizeLines": 110,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_worker_consumer.py",
+      "language": "python",
+      "sizeLines": 574,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/consumer.py",
+      "language": "python",
+      "sizeLines": 414,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/dedup.py",
+      "language": "python",
+      "sizeLines": 328,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/extract.py",
+      "language": "python",
+      "sizeLines": 249,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/transcribe.py",
+      "language": "python",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "tests/test_dedup.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/dedup.py",
+      "worker/transcribe.py"
+    ],
+    "tests/test_e2e_smoke.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/db.py",
+      "shared/models.py",
+      "worker/consumer.py",
+      "worker/dedup.py",
+      "worker/transcribe.py"
+    ],
+    "tests/test_extract.py": [
+      "shared/models.py",
+      "worker/extract.py"
+    ],
+    "tests/test_extraction_eval.py": [
+      "worker/extract.py"
+    ],
+    "tests/test_worker_consumer.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/consumer.py",
+      "worker/fingerprint.py",
+      "worker/transcribe.py"
+    ],
+    "worker/consumer.py": [
+      "shared/db.py",
+      "shared/metrics.py",
+      "shared/models.py",
+      "worker/dedup.py",
+      "worker/extract.py",
+      "worker/fingerprint.py",
+      "worker/janitor.py",
+      "worker/transcribe.py"
+    ],
+    "worker/dedup.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/extract.py",
+      "worker/transcribe.py"
+    ],
+    "worker/extract.py": [
+      "shared/models.py"
+    ],
+    "worker/transcribe.py": [
+      "shared/models.py"
+    ]
+  }
+}

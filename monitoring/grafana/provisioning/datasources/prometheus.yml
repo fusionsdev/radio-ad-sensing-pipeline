@@ -1,0 +1,19 @@
+# Grafana datasource provisioning.
+# Mounted at /etc/grafana/provisioning/datasources/ in the grafana container.
+# On boot, Grafana creates the datasource automatically — no UI clicks required.
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    # Service name on the pipeline-internal network. The Prometheus container
+    # is named "prometheus" in docker-compose.yml.
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: 15s
+      httpMethod: POST

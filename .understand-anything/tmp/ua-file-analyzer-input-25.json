@@ -1,0 +1,182 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/caveman/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/design-an-interface/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 94,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/diagnose/scripts/hitl-loop.template.sh",
+      "language": "shell",
+      "sizeLines": 41,
+      "fileCategory": "script"
+    },
+    {
+      "path": ".agents/skills/diagnose/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 117,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/edit-article/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 14,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+      "language": "shell",
+      "sizeLines": 25,
+      "fileCategory": "script"
+    },
+    {
+      "path": ".agents/skills/git-guardrails-claude-code/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 95,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/grill-me/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/handoff/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/PROMPTS.md",
+      "language": "markdown",
+      "sizeLines": 92,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1",
+      "language": "powershell",
+      "sizeLines": 136,
+      "fileCategory": "script"
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/scripts/hermes-review.sh",
+      "language": "shell",
+      "sizeLines": 74,
+      "fileCategory": "script"
+    },
+    {
+      "path": ".agents/skills/hermes-dispatch/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 92,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/migrate-to-shoehorn/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 118,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/obsidian-vault/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/qa/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 130,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/request-refactor-plan/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 68,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/review/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 78,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/scaffold-exercises/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 106,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/setup-pre-commit/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 91,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/to-issues/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 83,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/to-prd/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/ubiquitous-language/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 93,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/write-a-skill/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 117,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/writing-beats/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 52,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/caveman/SKILL.md": [],
+    ".agents/skills/design-an-interface/SKILL.md": [],
+    ".agents/skills/diagnose/scripts/hitl-loop.template.sh": [],
+    ".agents/skills/diagnose/SKILL.md": [],
+    ".agents/skills/edit-article/SKILL.md": [],
+    ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh": [],
+    ".agents/skills/git-guardrails-claude-code/SKILL.md": [],
+    ".agents/skills/grill-me/SKILL.md": [],
+    ".agents/skills/handoff/SKILL.md": [],
+    ".agents/skills/hermes-dispatch/PROMPTS.md": [],
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1": [],
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.sh": [],
+    ".agents/skills/hermes-dispatch/SKILL.md": [],
+    ".agents/skills/migrate-to-shoehorn/SKILL.md": [],
+    ".agents/skills/obsidian-vault/SKILL.md": [],
+    ".agents/skills/qa/SKILL.md": [],
+    ".agents/skills/request-refactor-plan/SKILL.md": [],
+    ".agents/skills/review/SKILL.md": [],
+    ".agents/skills/scaffold-exercises/SKILL.md": [],
+    ".agents/skills/setup-pre-commit/SKILL.md": [],
+    ".agents/skills/to-issues/SKILL.md": [],
+    ".agents/skills/to-prd/SKILL.md": [],
+    ".agents/skills/ubiquitous-language/SKILL.md": [],
+    ".agents/skills/write-a-skill/SKILL.md": [],
+    ".agents/skills/writing-beats/SKILL.md": []
+  }
+}

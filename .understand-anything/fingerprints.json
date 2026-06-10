@@ -1,0 +1,7195 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "64c0c1a5a7c4bf70ef2c96838fcb909637634921",
+  "generatedAt": "2026-06-10T03:26:47.511Z",
+  "files": {
+    "AGENTS.md": {
+      "filePath": "AGENTS.md",
+      "contentHash": "5abad8cf571a88d3b1a95d8daf3280dd5513f73a3f207cc650f9d8bfd30bbf3c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 85,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/caveman/SKILL.md": {
+      "filePath": ".agents/skills/caveman/SKILL.md",
+      "contentHash": "b4bb6fe3bf3da222993ca0aee5e7c6f5368b182dd30ce1172e8f8e3280eb7052",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/design-an-interface/SKILL.md": {
+      "filePath": ".agents/skills/design-an-interface/SKILL.md",
+      "contentHash": "a2596e9fa2d50e23ba014f64a5b8f9df4eb56b846a52cad152899ef5eb97b085",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 95,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/diagnose/scripts/hitl-loop.template.sh": {
+      "filePath": ".agents/skills/diagnose/scripts/hitl-loop.template.sh",
+      "contentHash": "b2932630950e5210075bcd6f850e5accf30c101c5367b29eac3a29b4dd8084c8",
+      "functions": [
+        {
+          "name": "step",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "capture",
+          "params": [],
+          "exported": false,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/diagnose/SKILL.md": {
+      "filePath": ".agents/skills/diagnose/SKILL.md",
+      "contentHash": "28886402bbfa0470248086eab9106a103b964b76ae9496e63ff0c8a6761b6d13",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/edit-article/SKILL.md": {
+      "filePath": ".agents/skills/edit-article/SKILL.md",
+      "contentHash": "cc372fb25b552017765aa0dac1b108f77eaee4555d607041efc1ad5d8c995b4a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh": {
+      "filePath": ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh",
+      "contentHash": "234922b83c0a1737ee7300806c21ac0f389b07aaeb65c2d71ccedafbc5e1ea4b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/git-guardrails-claude-code/SKILL.md": {
+      "filePath": ".agents/skills/git-guardrails-claude-code/SKILL.md",
+      "contentHash": "03c4de7613c712aea336d64c467ea3ed14be2cbd52345925fe949c75c01c29f7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 96,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/grill-me/SKILL.md": {
+      "filePath": ".agents/skills/grill-me/SKILL.md",
+      "contentHash": "74147eb6010a65957efef2b9e0f0b3ff935c1def7fc117697151b1d0f3610556",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/grill-with-docs/ADR-FORMAT.md": {
+      "filePath": ".agents/skills/grill-with-docs/ADR-FORMAT.md",
+      "contentHash": "f1f36cd3f8d3b6474ddd5855da4e233bfc4ae1a1c5024909ccf11871819a41b2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/grill-with-docs/CONTEXT-FORMAT.md": {
+      "filePath": ".agents/skills/grill-with-docs/CONTEXT-FORMAT.md",
+      "contentHash": "b8cc318f2a4285b530e908b6bc43901c3c5cd11100362636bbc4216639bef597",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/grill-with-docs/SKILL.md": {
+      "filePath": ".agents/skills/grill-with-docs/SKILL.md",
+      "contentHash": "3e35025119ba03efe7983dfdec3c8b96918142e3978512f3c2bf66d428310c7e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 89,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/handoff/SKILL.md": {
+      "filePath": ".agents/skills/handoff/SKILL.md",
+      "contentHash": "d215dd8f2a19bf85fdaf67a3cdb5077641f6b4108f229ba79579414793d7b0a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/hermes-dispatch/PROMPTS.md": {
+      "filePath": ".agents/skills/hermes-dispatch/PROMPTS.md",
+      "contentHash": "f322626c87fad6d737e138d2f68a59d50f616b5e40ab3ea2e60da34b79db4614",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 93,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1": {
+      "filePath": ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1",
+      "contentHash": "a015bfcc25682bbbb862bf51eccee5ef68407ff3fa3ac0fbb1ff9281e4ae1679",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 137,
+      "hasStructuralAnalysis": false
+    },
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.sh": {
+      "filePath": ".agents/skills/hermes-dispatch/scripts/hermes-review.sh",
+      "contentHash": "cca729f1c5cd55cde833e8c32b240748dd02e5919e5658dd7b46b404a024425a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/hermes-dispatch/SKILL.md": {
+      "filePath": ".agents/skills/hermes-dispatch/SKILL.md",
+      "contentHash": "b60b0433b095fc856e534a5aaab94bd9cc6023285b0d3ffa14558e871df0d9a5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 93,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/improve-codebase-architecture/DEEPENING.md": {
+      "filePath": ".agents/skills/improve-codebase-architecture/DEEPENING.md",
+      "contentHash": "9577485f4fc32c0267639a9151bb41c8af0f8f6086e4bf8b84d5b236e30604e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/improve-codebase-architecture/HTML-REPORT.md": {
+      "filePath": ".agents/skills/improve-codebase-architecture/HTML-REPORT.md",
+      "contentHash": "8a8bcdbb578066271efe6ff675c831a6a4c4c7fd2081d6b5c9bc2e5fabc741d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 124,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/improve-codebase-architecture/INTERFACE-DESIGN.md": {
+      "filePath": ".agents/skills/improve-codebase-architecture/INTERFACE-DESIGN.md",
+      "contentHash": "678c3e34f1339015053212b3316bf0b676c70aa251050a0613667d4e755fb35e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/improve-codebase-architecture/LANGUAGE.md": {
+      "filePath": ".agents/skills/improve-codebase-architecture/LANGUAGE.md",
+      "contentHash": "6feca2140439c54a774749e8367f18350899ff69c777144ed2248cd4407949fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/improve-codebase-architecture/SKILL.md": {
+      "filePath": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "contentHash": "f00de04c7bb83cfd0ed1f97f3401a83838212c30856912ee44ba406649e6c749",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 82,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/migrate-to-shoehorn/SKILL.md": {
+      "filePath": ".agents/skills/migrate-to-shoehorn/SKILL.md",
+      "contentHash": "de4da4c11d924fac79c924b2ee3d2db4a5cb98386eb490a599119463d036ae72",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 119,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/obsidian-vault/SKILL.md": {
+      "filePath": ".agents/skills/obsidian-vault/SKILL.md",
+      "contentHash": "7bed1d552aa5e9345e493cd62cb13e65c5d829d153c349afdb2cb91c809fa6c4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/prototype/LOGIC.md": {
+      "filePath": ".agents/skills/prototype/LOGIC.md",
+      "contentHash": "da91dc92195c00d5dc33863b8c1a030998025a0f8583ebf2babd770825b7f70c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/prototype/SKILL.md": {
+      "filePath": ".agents/skills/prototype/SKILL.md",
+      "contentHash": "a653deb65afa2ee8f45c68f6ef4f593147171b386e994c8cccf89292d9ea9d75",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/prototype/UI.md": {
+      "filePath": ".agents/skills/prototype/UI.md",
+      "contentHash": "d76d565149ee50456c5ddc5e29c27fec8737637874fe5c37d970db085a200b27",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 113,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/qa/SKILL.md": {
+      "filePath": ".agents/skills/qa/SKILL.md",
+      "contentHash": "d9727aac6503981bf69bdd8b37e0d85b32b8fbd353a57528c252dac1337ab761",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 131,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/request-refactor-plan/SKILL.md": {
+      "filePath": ".agents/skills/request-refactor-plan/SKILL.md",
+      "contentHash": "d59de4ba6cc1fe2dd267e8b9b5a1fd88e3e739e2130bc9dd78061d2a072830b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/review/SKILL.md": {
+      "filePath": ".agents/skills/review/SKILL.md",
+      "contentHash": "5700f30d3f06706ee56c099adceec222fef26dbcf82817ff604962634e246b2e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/scaffold-exercises/SKILL.md": {
+      "filePath": ".agents/skills/scaffold-exercises/SKILL.md",
+      "contentHash": "75f5c9d771606fb9762f16522efc954df11c324f87148d8ff069bce166257de9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 107,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/domain.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/domain.md",
+      "contentHash": "a8cc3d1c11c9cdea455f39c4090cf61ac273f2474dd6f229ab0c2b9b1deec759",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-github.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/issue-tracker-github.md",
+      "contentHash": "f0e138631d1fc8aedc9e05d25bc688b97679f81eae7a7c760dd35e0790568370",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md",
+      "contentHash": "94c574647c4755f2a807742f5e78e7cef586c100266d54501d0e55445c1b1807",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-local.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/issue-tracker-local.md",
+      "contentHash": "9a052f4599525e581721ec24cb2ae3e0296b79053e39f684b540d34d3a4f6528",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/SKILL.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/SKILL.md",
+      "contentHash": "c778d4e3d86ecc9125c357279a86780657b5db23110e1f7acf4f46d2441e7204",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 122,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-matt-pocock-skills/triage-labels.md": {
+      "filePath": ".agents/skills/setup-matt-pocock-skills/triage-labels.md",
+      "contentHash": "4f53c9b40ce2651e3611aa090eaedbd6dbc9b71ef8c5f7e65eac0d8263190d0d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/setup-pre-commit/SKILL.md": {
+      "filePath": ".agents/skills/setup-pre-commit/SKILL.md",
+      "contentHash": "872f4037cb7e6e0e340d4175c086550072959925dffc87b160d1a30dc9f63bbd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 92,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/deep-modules.md": {
+      "filePath": ".agents/skills/tdd/deep-modules.md",
+      "contentHash": "f2123700bf953db1740625686c75bdd145efd486357c47c6818c869fee657a32",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/interface-design.md": {
+      "filePath": ".agents/skills/tdd/interface-design.md",
+      "contentHash": "764c5ff0e3fa6b4ab7095eb65ccc7201e090baf19fa16051dfdb72c06d27417d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/mocking.md": {
+      "filePath": ".agents/skills/tdd/mocking.md",
+      "contentHash": "3ceb807fdf4a47d6a93d4d9a891e5ba6d362a6247bd08adc451feebfc17361ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/refactoring.md": {
+      "filePath": ".agents/skills/tdd/refactoring.md",
+      "contentHash": "54fced22dd1911b7094c3fe7979b7c1a40d40be307482c4adf7dc0588f27d6cc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/SKILL.md": {
+      "filePath": ".agents/skills/tdd/SKILL.md",
+      "contentHash": "af059705061156fd4845ddbb736fe92b564118ac5f03551e09ef9e8f6d970638",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 110,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/tdd/tests.md": {
+      "filePath": ".agents/skills/tdd/tests.md",
+      "contentHash": "e12182f5c4c6a844b7c6ab4b8d2623b642aaaae5460fe58ed087efd4f3d5fb8a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/teach/GLOSSARY-FORMAT.md": {
+      "filePath": ".agents/skills/teach/GLOSSARY-FORMAT.md",
+      "contentHash": "d177def491519d97873291f2e860d8f1d60ead78feecb82eee022177958069c6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/teach/LEARNING-RECORD-FORMAT.md": {
+      "filePath": ".agents/skills/teach/LEARNING-RECORD-FORMAT.md",
+      "contentHash": "855f81017625256584bbf62bd5edb9b0c86605c4cc1139c56acc36b802595d17",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/teach/MISSION-FORMAT.md": {
+      "filePath": ".agents/skills/teach/MISSION-FORMAT.md",
+      "contentHash": "8da6d3ac84eb2eb19f17c260b6acf01c560d3ac7a4501c415eea0e985602f4d7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/teach/RESOURCES-FORMAT.md": {
+      "filePath": ".agents/skills/teach/RESOURCES-FORMAT.md",
+      "contentHash": "2bc634a64b0d0daa10904f9222e7aa0d361420dfacabbf092fbe3a72222edc08",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/teach/SKILL.md": {
+      "filePath": ".agents/skills/teach/SKILL.md",
+      "contentHash": "107ebd560c0a2a0ad2019b4526f1ddcdb5c67127dcadd60fee70716b77e2cdc1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 114,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/to-issues/SKILL.md": {
+      "filePath": ".agents/skills/to-issues/SKILL.md",
+      "contentHash": "0e6a2973fa5bdf32570227c578f7e474d945dd9281615d31439664c3ef016fce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/to-prd/SKILL.md": {
+      "filePath": ".agents/skills/to-prd/SKILL.md",
+      "contentHash": "5212dee3af6a95e60d7daaedac08f15f2789b170468d57d23f722e516a255269",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/triage/AGENT-BRIEF.md": {
+      "filePath": ".agents/skills/triage/AGENT-BRIEF.md",
+      "contentHash": "1c71c747aa97d938f75ec7a4b8fe87451763b38a3ce6348acf2b222e5819b2e5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 169,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/triage/OUT-OF-SCOPE.md": {
+      "filePath": ".agents/skills/triage/OUT-OF-SCOPE.md",
+      "contentHash": "8ed8cf27833444060c81b3961a83c0e3d8e6cf2fcb2ddf6f8b07c6655cbb0d85",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/triage/SKILL.md": {
+      "filePath": ".agents/skills/triage/SKILL.md",
+      "contentHash": "b819f0285e4e5814ac6472d0217f07dc9f23d2fdae3ebb0dd31d98360d8ac029",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 104,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/ubiquitous-language/SKILL.md": {
+      "filePath": ".agents/skills/ubiquitous-language/SKILL.md",
+      "contentHash": "2449e2345b96b9f1e861c697b5eab50d03ae1254481a4306b6f815684e523b3a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/write-a-skill/SKILL.md": {
+      "filePath": ".agents/skills/write-a-skill/SKILL.md",
+      "contentHash": "be8f20e66309258034b82a7db5040b03798aa40546f9d387662c2bd86be23123",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/writing-beats/SKILL.md": {
+      "filePath": ".agents/skills/writing-beats/SKILL.md",
+      "contentHash": "0843367d0a653bb17e61b3771d0ec08fa463663bc0ab6f3f421141b2687c4429",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/writing-fragments/SKILL.md": {
+      "filePath": ".agents/skills/writing-fragments/SKILL.md",
+      "contentHash": "4ffa34a701caff27da54b9e073fef48471f0ccafee009d404c22ae542d0e8dea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/writing-shape/SKILL.md": {
+      "filePath": ".agents/skills/writing-shape/SKILL.md",
+      "contentHash": "81a542b95fa865325835bf5ec7644a98e657c1e0f3374c56cb9f3b42b374660f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    ".agents/skills/zoom-out/SKILL.md": {
+      "filePath": ".agents/skills/zoom-out/SKILL.md",
+      "contentHash": "2a6894c7f9b1c9c55f451c625a834c4f377e217b623a85280e55db5fe9cacf48",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "alerter/Dockerfile": {
+      "filePath": "alerter/Dockerfile",
+      "contentHash": "e0b19238712fb37397a721db35288a86a7b54136098b8ce8495ec71ae16acb5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "alerter/__init__.py": {
+      "filePath": "alerter/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "alerter/__main__.py": {
+      "filePath": "alerter/__main__.py",
+      "contentHash": "ecee3804fb6eab9b82847967026bd976bfa2be48d8251f7a8cb4a1b7db0ce65b",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "signal",
+          "specifiers": [
+            "signal"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "alerter.service",
+          "specifiers": [
+            "AlerterService"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "start_metrics_server"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "alerter/service.py": {
+      "filePath": "alerter/service.py",
+      "contentHash": "2935064c80485fb19dcd4fa9a241f7e4aef0d2e20ff5b24f0060dbe2b9ea94a2",
+      "functions": [],
+      "classes": [
+        {
+          "name": "FirstSeenAlert",
+          "methods": [],
+          "properties": [
+            "detection_id",
+            "chunk_id",
+            "station_name",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "company_name",
+            "ad_category",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "confidence",
+            "archived_audio_path",
+            "transcript_text"
+          ],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "StationDownAlert",
+          "methods": [],
+          "properties": [
+            "station_id",
+            "station_name",
+            "outage_start_ts",
+            "last_chunk_ts",
+            "latest_gap_ts"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "TelegramBotApi",
+          "methods": [
+            "__init__",
+            "close",
+            "send_message",
+            "send_audio"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 46
+        },
+        {
+          "name": "AlerterService",
+          "methods": [
+            "__init__",
+            "close",
+            "run",
+            "poll_once",
+            "_load_first_seen_alerts",
+            "_load_station_down_alerts",
+            "_outage_start_ts",
+            "_load_queue_drop_alert",
+            "_load_daily_digest",
+            "_send_first_seen_alert",
+            "_send_station_down_alert",
+            "_send_queue_drop_alert",
+            "_send_daily_digest",
+            "_format_first_seen_message",
+            "_truncate_transcript",
+            "_resolve_audio_path",
+            "_format_confidence",
+            "_format_ts",
+            "_status_value",
+            "_mark_detection_alerted",
+            "_mark_station_down_alerted",
+            "_mark_status"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 424
+        }
+      ],
+      "imports": [
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any",
+            "Callable"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "TelegramSettings",
+            "load_settings",
+            "load_telegram_settings"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "increment_chunks_processed",
+            "set_queue_pending_hours"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        }
+      ],
+      "exports": [
+        "FirstSeenAlert",
+        "StationDownAlert",
+        "TelegramBotApi",
+        "AlerterService"
+      ],
+      "totalLines": 531,
+      "hasStructuralAnalysis": true
+    },
+    "config/settings.yaml": {
+      "filePath": "config/settings.yaml",
+      "contentHash": "193fdc5afc9c3d8e93fd1e2561879107987da40dd6ee97d157757ebbcea63e6e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "config/stations.yaml": {
+      "filePath": "config/stations.yaml",
+      "contentHash": "ba1c1211cb2a559285b2c1155383fca7fa641746f2620c55308f16f9091eb10b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    ".cursor/rules/project-conventions.mdc": {
+      "filePath": ".cursor/rules/project-conventions.mdc",
+      "contentHash": "dc17c8d87b4ff264a1ca14437489b8fcb676655628b96640e4a62534febbbf91",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    ".cursor/rules/project-plugins-mcp.mdc": {
+      "filePath": ".cursor/rules/project-plugins-mcp.mdc",
+      "contentHash": "e464163f2129a8b3e1711f2a712243872cd1c8e35ba95d1e65ce413b22bc7c1d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    ".cursor/rules/project-skills.mdc": {
+      "filePath": ".cursor/rules/project-skills.mdc",
+      "contentHash": "98585d0a557b79820fde3544ecb57506002150565500f3c240db00f33941a24a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/Dockerfile": {
+      "filePath": "dashboard/Dockerfile",
+      "contentHash": "6cb8cf6013b804fd44e8ee44ddc67604cdc5eb7d9d850b04f60808002d716b60",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "dashboard/__init__.py": {
+      "filePath": "dashboard/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "dashboard/__main__.py": {
+      "filePath": "dashboard/__main__.py",
+      "contentHash": "9f9466220186e9e1118733f5137ab964b1b1ede993c58f684baefe7c4e108044",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "uvicorn",
+          "specifiers": [
+            "uvicorn"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "dashboard/main.py": {
+      "filePath": "dashboard/main.py",
+      "contentHash": "b489703ae79a0a8558d4a43be0e1fe86917798e3df94d79006c51606065390e2",
+      "functions": [
+        {
+          "name": "create_app",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "FastAPI",
+          "exported": true,
+          "lineCount": 97
+        },
+        {
+          "name": "_no_database",
+          "params": [
+            "request"
+          ],
+          "returnType": "HTMLResponse",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_format_ts",
+          "params": [
+            "ts"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "_format_age",
+          "params": [
+            "seconds"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "fastapi",
+          "specifiers": [
+            "FastAPI",
+            "HTTPException",
+            "Request"
+          ]
+        },
+        {
+          "source": "fastapi.responses",
+          "specifiers": [
+            "FileResponse",
+            "HTMLResponse",
+            "JSONResponse"
+          ]
+        },
+        {
+          "source": "fastapi.templating",
+          "specifiers": [
+            "Jinja2Templates"
+          ]
+        },
+        {
+          "source": "dashboard",
+          "specifiers": [
+            "queries"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "configure_dashboard_metrics",
+            "start_metrics_server"
+          ]
+        }
+      ],
+      "exports": [
+        "create_app",
+        "_no_database",
+        "_format_ts",
+        "_format_age"
+      ],
+      "totalLines": 137,
+      "hasStructuralAnalysis": true
+    },
+    "dashboard/queries.py": {
+      "filePath": "dashboard/queries.py",
+      "contentHash": "c7e373e829b1aa9b49356cdfa1ad1b135c1e3860928ea91fd15e9068e710877a",
+      "functions": [
+        {
+          "name": "_start_of_today_ts",
+          "params": [],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "_forty_eight_hours_ago",
+          "params": [],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "db_exists",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "fetch_overview",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "OverviewStats",
+          "exported": true,
+          "lineCount": 50
+        },
+        {
+          "name": "fetch_ads_page",
+          "params": [
+            "db_path",
+            "page"
+          ],
+          "returnType": "tuple[list[AdRow], int]",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "fetch_ad_detail",
+          "params": [
+            "db_path",
+            "ad_id"
+          ],
+          "returnType": "tuple[AdRow | None, list[DetectionRow], str | None]",
+          "exported": true,
+          "lineCount": 58
+        },
+        {
+          "name": "fetch_stations",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "fetch_gaps",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "fetch_health",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "resolve_audio_path",
+          "params": [
+            "db_path",
+            "resource_id"
+          ],
+          "returnType": "Path | None",
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "_readonly",
+          "params": [
+            "db_path"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [
+        {
+          "name": "OverviewStats",
+          "methods": [],
+          "properties": [
+            "chunks_today",
+            "detections_today",
+            "ads_total",
+            "queue_depth",
+            "station_health"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "AdRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "company_name",
+            "category",
+            "phone_norm",
+            "first_seen",
+            "last_seen",
+            "airing_count"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "DetectionRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "company_name",
+            "offer_summary",
+            "confidence",
+            "alerted",
+            "transcript_excerpt",
+            "station_name",
+            "chunk_start_ts"
+          ],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "imports": [
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "contextlib",
+          "specifiers": [
+            "contextmanager"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection"
+          ]
+        }
+      ],
+      "exports": [
+        "OverviewStats",
+        "AdRow",
+        "DetectionRow",
+        "_start_of_today_ts",
+        "_forty_eight_hours_ago",
+        "db_exists",
+        "fetch_overview",
+        "fetch_ads_page",
+        "fetch_ad_detail",
+        "fetch_stations",
+        "fetch_gaps",
+        "fetch_health",
+        "resolve_audio_path",
+        "_readonly"
+      ],
+      "totalLines": 300,
+      "hasStructuralAnalysis": true
+    },
+    "dashboard/templates/ad_detail.html": {
+      "filePath": "dashboard/templates/ad_detail.html",
+      "contentHash": "55c9295c59278572e4803408fe96616f5fbea7ac9ee97dbe6fa2d86240b657ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/ads.html": {
+      "filePath": "dashboard/templates/ads.html",
+      "contentHash": "14f6c9fc4599c6885b884790ff69872af7e96652b46efbffd626d534a6743c44",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/base.html": {
+      "filePath": "dashboard/templates/base.html",
+      "contentHash": "e57fd45b452bd0638ab22e9d14485d9df5a7267b9549492616e76db2b9a78308",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/gaps.html": {
+      "filePath": "dashboard/templates/gaps.html",
+      "contentHash": "a9c754dd30ae8bdc9e68b156608810af9bbe1f4d6eeeac016456067858bdae72",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/index.html": {
+      "filePath": "dashboard/templates/index.html",
+      "contentHash": "54a81081fac4aabc67c9e0e90da2bc082b51224ca2180e0eeac487e6f617b165",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/no_database.html": {
+      "filePath": "dashboard/templates/no_database.html",
+      "contentHash": "d5964d1ba480af7314f60b474b491df4692cc62ffff24cd12df7a1f2822dfe62",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/partials/ads_rows.html": {
+      "filePath": "dashboard/templates/partials/ads_rows.html",
+      "contentHash": "c4effbf9e842aeab2422275f126b7e189755bc9312afb065ef84acc6189f42bc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "dashboard/templates/stations.html": {
+      "filePath": "dashboard/templates/stations.html",
+      "contentHash": "2e8561401bb2e27a5d4db33f440b8970db7aa38dec44d619742c2c781b52bb33",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": false
+    },
+    "docker-compose.prod.yml": {
+      "filePath": "docker-compose.prod.yml",
+      "contentHash": "4d524e37c42f682123a740847fee1df08bff2131fab3319f6ab5f52766c8c116",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "docker-compose.windows-dev.yml": {
+      "filePath": "docker-compose.windows-dev.yml",
+      "contentHash": "3d9e5284307600fa77e7b25b4812fa81553c10b537ed6e926ce793cd0c1f0893",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "docker-compose.yml": {
+      "filePath": "docker-compose.yml",
+      "contentHash": "ea33ed81c8950a59870885f54c863a71887d3bfeca350eaf1185f723dd54f4bc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 379,
+      "hasStructuralAnalysis": true
+    },
+    ".dockerignore": {
+      "filePath": ".dockerignore",
+      "contentHash": "6837b8e6375926bdffdcd8a3fa9c584f6c7553a94fc840e6c391dbbd32eca71c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "8a033b1423a287ec56cfe0f2f459d89b088e718fa37ef2a1d39b127011785ae8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    },
+    "final-install-list.md": {
+      "filePath": "final-install-list.md",
+      "contentHash": "03a3a56f70d584d2916c617d8a2b73e3a1df851e12f417de42a0685930b891ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/Dockerfile": {
+      "filePath": "ingestor/Dockerfile",
+      "contentHash": "7bb92d4ccad9a60c2babf9e9fd470ae5124d06cecb22b35d677663424dc85b3d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/ffmpeg.py": {
+      "filePath": "ingestor/ffmpeg.py",
+      "contentHash": "29b37816436b6b4279175e6c9a1b8fbef7d5877363f47e945f1cb8fa0a4d78c6",
+      "functions": [
+        {
+          "name": "build_ffmpeg_command",
+          "params": [
+            "station",
+            "output_path",
+            "settings"
+          ],
+          "returnType": "list[str]",
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "get_wav_duration_seconds",
+          "params": [
+            "path"
+          ],
+          "returnType": "float | None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "is_valid_chunk_duration",
+          "params": [
+            "path",
+            "expected_sec",
+            "tolerance_sec"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "_popen_with_process_group",
+          "params": [
+            "command"
+          ],
+          "returnType": "subprocess.Popen[bytes]",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_kill_process_group",
+          "params": [
+            "proc"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "_reap_process",
+          "params": [
+            "proc"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkRunner",
+          "methods": [
+            "record_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "FfmpegChunkRunner",
+          "methods": [
+            "__init__",
+            "terminate_active",
+            "record_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "signal",
+          "specifiers": [
+            "signal"
+          ]
+        },
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "wave",
+          "specifiers": [
+            "wave"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Protocol"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings",
+            "StationConfig"
+          ]
+        }
+      ],
+      "exports": [
+        "ChunkRunner",
+        "build_ffmpeg_command",
+        "get_wav_duration_seconds",
+        "is_valid_chunk_duration",
+        "_popen_with_process_group",
+        "_kill_process_group",
+        "_reap_process",
+        "FfmpegChunkRunner"
+      ],
+      "totalLines": 190,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/__init__.py": {
+      "filePath": "ingestor/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/__main__.py": {
+      "filePath": "ingestor/__main__.py",
+      "contentHash": "ae096dee72737faed297a706066c13e223e3654866488b5b35844d96b54e11be",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 44
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "signal",
+          "specifiers": [
+            "signal"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "ingestor.supervisor",
+          "specifiers": [
+            "create_station_ingestors"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings",
+            "load_stations"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "migrate"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "start_metrics_server"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/repository.py": {
+      "filePath": "ingestor/repository.py",
+      "contentHash": "a16d5a5d61570963e9e7ee647722d2fda4742e6b64699086774e8ab32240befa",
+      "functions": [
+        {
+          "name": "upsert_station",
+          "params": [
+            "db_path",
+            "station"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "enqueue_chunk",
+          "params": [
+            "db_path",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "log_gap",
+          "params": [
+            "db_path",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "reason"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "fetch_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "sqlite3.Row | None",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "retry_on_busy",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "ChunkStatus",
+            "StationConfig"
+          ]
+        }
+      ],
+      "exports": [
+        "upsert_station",
+        "enqueue_chunk",
+        "log_gap",
+        "fetch_station"
+      ],
+      "totalLines": 98,
+      "hasStructuralAnalysis": true
+    },
+    "ingestor/supervisor.py": {
+      "filePath": "ingestor/supervisor.py",
+      "contentHash": "4525502f4c29ce8fc262fe3e2034f4cb2da200d2c29ff57e03acb98ab46f75ff",
+      "functions": [
+        {
+          "name": "slugify_station_name",
+          "params": [
+            "name"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "create_station_ingestors",
+          "params": [
+            "db_path",
+            "stations",
+            "settings",
+            "chunks_dir",
+            "runner_factory"
+          ],
+          "returnType": "list[StationIngestor]",
+          "exported": true,
+          "lineCount": 23
+        }
+      ],
+      "classes": [
+        {
+          "name": "Clock",
+          "methods": [
+            "time",
+            "sleep"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "SystemClock",
+          "methods": [
+            "time",
+            "sleep"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "BackoffPolicy",
+          "methods": [
+            "next_delay",
+            "reset"
+          ],
+          "properties": [
+            "initial_seconds",
+            "max_seconds",
+            "current_seconds"
+          ],
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "StationIngestor",
+          "methods": [
+            "__init__",
+            "stride_seconds",
+            "run",
+            "run_once",
+            "_sleep_until_next_stride",
+            "_output_path"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 119
+        }
+      ],
+      "imports": [
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Callable",
+            "Protocol"
+          ]
+        },
+        {
+          "source": "ingestor.ffmpeg",
+          "specifiers": [
+            "ChunkRunner",
+            "FfmpegChunkRunner",
+            "is_valid_chunk_duration"
+          ]
+        },
+        {
+          "source": "ingestor.repository",
+          "specifiers": [
+            "enqueue_chunk",
+            "log_gap",
+            "upsert_station"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "increment_chunks_processed",
+            "set_station_last_chunk_timestamp"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings",
+            "StationConfig"
+          ]
+        }
+      ],
+      "exports": [
+        "Clock",
+        "SystemClock",
+        "BackoffPolicy",
+        "StationIngestor",
+        "slugify_station_name",
+        "create_station_ingestors"
+      ],
+      "totalLines": 206,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/alerts.yml": {
+      "filePath": "monitoring/alerts.yml",
+      "contentHash": "773534ff7df0ad10dcb7970fefae480abea2b8fb72807773ff09fd96ef249864",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/grafana/dashboards/pipeline.json": {
+      "filePath": "monitoring/grafana/dashboards/pipeline.json",
+      "contentHash": "183f087700b50de8c3b0bb887e46d2a95cfd4d3009c9cb19ae99205c51ac5f7b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 250,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/grafana/provisioning/dashboards/default.yml": {
+      "filePath": "monitoring/grafana/provisioning/dashboards/default.yml",
+      "contentHash": "ffe1217a32926565d4a5bdfb01bdcce9336e0f156dd263625b16f431e7872e42",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/grafana/provisioning/datasources/prometheus.yml": {
+      "filePath": "monitoring/grafana/provisioning/datasources/prometheus.yml",
+      "contentHash": "f9e45520de9ea962f40c3f8b6f96ca7f736cb17511219f42c3cc9c3fd87aaaa2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/__init__.py": {
+      "filePath": "monitoring/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "monitoring/prometheus.yml": {
+      "filePath": "monitoring/prometheus.yml",
+      "contentHash": "83aec57193b5ac7475f87f6d4507e5defcb45a1cbcaedbe6d2cd7cb121f03c5b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "plan/ca-tx-ingestor-smoke-20260610.md": {
+      "filePath": "plan/ca-tx-ingestor-smoke-20260610.md",
+      "contentHash": "5bbd1374ef0ca06f593209136b6c2448f5007e9c96a6e77fb776db18ea8d6d17",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 115,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-batch3-dispatch.md": {
+      "filePath": "plan/codex-batch3-dispatch.md",
+      "contentHash": "9ecf01012fdc04f1d15a6b648fcd012c466a0ff7ce09935441b6eac2722aba8a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-batch3-wp10b-prompt.txt": {
+      "filePath": "plan/codex-batch3-wp10b-prompt.txt",
+      "contentHash": "476ef30cb43182fd277c065b08a67e00b08c7a9769923e4580dee00d28ed29db",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch3-wp5-prompt.txt": {
+      "filePath": "plan/codex-batch3-wp5-prompt.txt",
+      "contentHash": "21190e3389bb42a93d93733fa1940521770bdead9646ed7d4435a0ba54c44bc9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch3-wp6-prompt.txt": {
+      "filePath": "plan/codex-batch3-wp6-prompt.txt",
+      "contentHash": "da0418e2f1e8862adb5792cd83a94e39e68b2e134a5204162db24ecaccd08b05",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch3-wp8-prompt.txt": {
+      "filePath": "plan/codex-batch3-wp8-prompt.txt",
+      "contentHash": "365e9fe049e30c54714cdc513ad6804788d2b6a3dafc89c074bf39960b824fdd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch4-wp11a-prompt.txt": {
+      "filePath": "plan/codex-batch4-wp11a-prompt.txt",
+      "contentHash": "ac40e670d032cd8666e669d496fd9d8fe8a92a51b1f3baf7f80f039d50dda120",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch4-wp11b-prompt.txt": {
+      "filePath": "plan/codex-batch4-wp11b-prompt.txt",
+      "contentHash": "1f101e6db04b47f9b48606dde75a3fae219360f753dce734b62d2a28a73dfd86",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch4-wp7b-prompt.txt": {
+      "filePath": "plan/codex-batch4-wp7b-prompt.txt",
+      "contentHash": "b94421e6b5148283b2ac89ace225d0fea01ae56bb0deefb896160bb27aa8f0f8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-batch4-wp8-prompt.txt": {
+      "filePath": "plan/codex-batch4-wp8-prompt.txt",
+      "contentHash": "0eca80279af76d66065b4520ac8a3eb9139055ee9fb3c472c1bfc3dea619809b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp10b-r2.txt": {
+      "filePath": "plan/codex-log-wp10b-r2.txt",
+      "contentHash": "a811dd2ea8ebc42313056795a2887b541310559f7de06960fdb2edc49f17e434",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15734,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp10b.txt": {
+      "filePath": "plan/codex-log-wp10b.txt",
+      "contentHash": "b815717259e56a564ce377febfb91f8e315e271a84a7d14d96bfa44f3ac2b7d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 432,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp11a.txt": {
+      "filePath": "plan/codex-log-wp11a.txt",
+      "contentHash": "18fe2656c3fb4026c8ede777b311eced593bf2d784a3173de0c67fdf27a21b5c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12350,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp11b.txt": {
+      "filePath": "plan/codex-log-wp11b.txt",
+      "contentHash": "7bd762448a406408ce930b05073f61194c89e09dcaefac6adc7791e309bb2536",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4949,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp5.txt": {
+      "filePath": "plan/codex-log-wp5.txt",
+      "contentHash": "3442dd9916624e24dab8c2f6bced1ff3edc05303d957b0a9a11a2339ea155961",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4118,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp6-r2.txt": {
+      "filePath": "plan/codex-log-wp6-r2.txt",
+      "contentHash": "bc5cab121525bd77010473480cdeeeba4fac814912bff11c94fcb33cbdc2b4ce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24715,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp6.txt": {
+      "filePath": "plan/codex-log-wp6.txt",
+      "contentHash": "d788fc7d8834c7f498473aae705b97163b1116b0c707c86b73b7d81ea5833124",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 137,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp7b.txt": {
+      "filePath": "plan/codex-log-wp7b.txt",
+      "contentHash": "5b0a44dab22fde60cfa753e5f28c2ce9fffad009a24ef5f8a91e00ee5971ca19",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2474,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp8-fix.txt": {
+      "filePath": "plan/codex-log-wp8-fix.txt",
+      "contentHash": "ee9d559c22c1ddcd03947017736d08cb9b1f141e369ffa1a3e4918fa6b9fdbb6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 5267,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp8-r2.txt": {
+      "filePath": "plan/codex-log-wp8-r2.txt",
+      "contentHash": "5e1b221d1706200549db35decbffeec6cdae34b84d58a49ae5649a4148b17aa5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2988,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-log-wp8.txt": {
+      "filePath": "plan/codex-log-wp8.txt",
+      "contentHash": "232d2b6b529985ad30a0cbcfe73da56496e8304737b421c6c08e9be7e80d2a4e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    "plan/codex-out-wp10b.md": {
+      "filePath": "plan/codex-out-wp10b.md",
+      "contentHash": "291cbbd3b64d43f62b9056f85beac5ff5cff75127ced730e6644328a8798dc82",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp11a.md": {
+      "filePath": "plan/codex-out-wp11a.md",
+      "contentHash": "5f4e884405a4071ae04e36410b5c232f736c5497b1504b7baa0edc50d3050dce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp11b.md": {
+      "filePath": "plan/codex-out-wp11b.md",
+      "contentHash": "115f3223636cb86d0095c06ebe7430bd9de6cb8acec47884e3a4bf6234e39785",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp5.md": {
+      "filePath": "plan/codex-out-wp5.md",
+      "contentHash": "d669668322641d749969a92b9c468740d054be31838b8affd11eb789a6288fa9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp6.md": {
+      "filePath": "plan/codex-out-wp6.md",
+      "contentHash": "feb1bae4c1432323741568e240e521a99f1a80011f15db7b06e914f164d9199d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp7b.md": {
+      "filePath": "plan/codex-out-wp7b.md",
+      "contentHash": "f59c733163b8e96d6dc55a8bd90efcddb9a002193a6479a93960729553e9881a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp8-fix.md": {
+      "filePath": "plan/codex-out-wp8-fix.md",
+      "contentHash": "f8aa89c77598faa9ad2210289707a2500b9a970553632f680b910e66b71ecef0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codex-out-wp8.md": {
+      "filePath": "plan/codex-out-wp8.md",
+      "contentHash": "71d752d5471a7ff721b9b308390895d90e0dd9c85dabb2e90865f3ae98b64514",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "plan/codexplan.md": {
+      "filePath": "plan/codexplan.md",
+      "contentHash": "85a39c9dcdc2ae0e82987ad435d2ea43466f28112a9ac788fa77101c3a3e6d02",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "plan/gpt-minimax-routing-6165b3.md": {
+      "filePath": "plan/gpt-minimax-routing-6165b3.md",
+      "contentHash": "a4e5cbc73ee977c55de5f0b0947e8d83e693099f479809264463e145aa4011b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 173,
+      "hasStructuralAnalysis": true
+    },
+    "plan/handoff-batch1-sessions-6165b3.md": {
+      "filePath": "plan/handoff-batch1-sessions-6165b3.md",
+      "contentHash": "93a0575d1d4c80b9bba7ba686608b777f01e549329ddb8a9bef8826ed27be78a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 197,
+      "hasStructuralAnalysis": true
+    },
+    "plan/handoff-ca-tx-smoke-20260610.md": {
+      "filePath": "plan/handoff-ca-tx-smoke-20260610.md",
+      "contentHash": "0cef195a94e55a02adf05ee17031a448a91ee7f1e48b4222150d4ae0aab0d866",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "plan/handoff-phase1-scaffold-db-6165b3.md": {
+      "filePath": "plan/handoff-phase1-scaffold-db-6165b3.md",
+      "contentHash": "5abaa14d1803839a0cfb60ba08423a0f107842cae6e1b95492316bbd2d466bf6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "plan/_hermes-prompt-wp13.txt": {
+      "filePath": "plan/_hermes-prompt-wp13.txt",
+      "contentHash": "cb519b7de68f82fd64696b1d8c86e923bc28995f877c8ea1adc151a4d8faf6ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": false
+    },
+    "plan/hermes-review-wp13-20260610-0846.md": {
+      "filePath": "plan/hermes-review-wp13-20260610-0846.md",
+      "contentHash": "7d1a3d9907da2960c33af736e6e81fa236198450b3bd7ea7abdda0d8784685c9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 99,
+      "hasStructuralAnalysis": true
+    },
+    "PLAN.md": {
+      "filePath": "PLAN.md",
+      "contentHash": "f35a94be81744136d0df01fd9b453b5cac465c6a0f017f0f034519b31a3a7de0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "plan/opus-review-plan-6165b3.md": {
+      "filePath": "plan/opus-review-plan-6165b3.md",
+      "contentHash": "bdbad8dac48f432bd301e2b939dda46ce7bedadfaff0a59392f90d4d6c84c57e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 88,
+      "hasStructuralAnalysis": true
+    },
+    "plan/phase1-report.md": {
+      "filePath": "plan/phase1-report.md",
+      "contentHash": "271fff5bbc768b26916a29c18f23fb7ef2175c1dd4e33dd8fae9ee75e15cdf65",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 200,
+      "hasStructuralAnalysis": true
+    },
+    "plan/radio-ad-sensing-pipeline-6165b3.md": {
+      "filePath": "plan/radio-ad-sensing-pipeline-6165b3.md",
+      "contentHash": "f35a94be81744136d0df01fd9b453b5cac465c6a0f017f0f034519b31a3a7de0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "plan/work-dispatch-6165b3.md": {
+      "filePath": "plan/work-dispatch-6165b3.md",
+      "contentHash": "76c12d20c75cf2b9fd8c204268549da5821b0bb19028d95a50dffbfad5757f97",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp10a-report.md": {
+      "filePath": "plan/wp10a-report.md",
+      "contentHash": "ddffab1c14a85d44f4090b6ec5c0a2e9524a45e5734e281cca7402e7fb63493c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 164,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp10b-report.md": {
+      "filePath": "plan/wp10b-report.md",
+      "contentHash": "830af0fa5bc3ab86efb490e625326c6495eb0afd99bab1196358d010f6202dab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp11a-report.md": {
+      "filePath": "plan/wp11a-report.md",
+      "contentHash": "30780e8f6387cf30a9d6f032e5a74ffa4ff7b2c4e7d3b2a4fcb55c697c3de97e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp11b-report.md": {
+      "filePath": "plan/wp11b-report.md",
+      "contentHash": "418c8607fa6e073ba3490e706dfaeb9bbbceaf56cb17a19edc848044bc1f80d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp12-report.md": {
+      "filePath": "plan/wp12-report.md",
+      "contentHash": "2697386fb8d675aac437f5d292f72c19a70ee99a0c25fefd5ac884822e76f27a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 77,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp13-hardening-report.md": {
+      "filePath": "plan/wp13-hardening-report.md",
+      "contentHash": "7f6eddc02a319377a08556c038231b1d7bd362b42d12123449f519e1737b881c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp2-report.md": {
+      "filePath": "plan/wp2-report.md",
+      "contentHash": "63f8d86053464a8b27aca40159d411c837b6476a54fc02943af5a76629f7967a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp3-report.md": {
+      "filePath": "plan/wp3-report.md",
+      "contentHash": "8c9b15bfc2541fcee912d7e5b4770ebce49157f971accf28463e805608026323",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 80,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp4-report.md": {
+      "filePath": "plan/wp4-report.md",
+      "contentHash": "9dcba66bd3186ab352f50d950d6c0e51f930bb530c37d8a36b7e2dcaa9fffd7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp5-report.md": {
+      "filePath": "plan/wp5-report.md",
+      "contentHash": "090f74af78d933159698f0246bcfd79dd3a6f7229694935e5631493231c64988",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp6-report.md": {
+      "filePath": "plan/wp6-report.md",
+      "contentHash": "3e1bda136c2a84a2023a4c9ad6969f6ffc816b11a669b93b47e42a313bdb4e1d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp7a-report.md": {
+      "filePath": "plan/wp7a-report.md",
+      "contentHash": "5f10bb1632acb18763838e0d754ee68bd03ecdb8915081e167c76f39fd980aa2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 116,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp7b-docker-smoke-20260610.md": {
+      "filePath": "plan/wp7b-docker-smoke-20260610.md",
+      "contentHash": "bb8898d549027eaecde6d80ff0d77baecfd975b9a1393bac03df4428c9a6f702",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp7b-report.md": {
+      "filePath": "plan/wp7b-report.md",
+      "contentHash": "452424b895bab160696d1af9579556206ccf332c98b6faceadec61ed48063c00",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp8-report.md": {
+      "filePath": "plan/wp8-report.md",
+      "contentHash": "3b0608e5dd90de091dce06d57172357b6baea59ab542b963491b5aebaea90697",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "plan/wp9-report.md": {
+      "filePath": "plan/wp9-report.md",
+      "contentHash": "d3ab5385149acd434afa27c604862029e9e0129e2080933956a2ed3c6b6591b4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    "pyproject.toml": {
+      "filePath": "pyproject.toml",
+      "contentHash": "82b0e3a8fc70a5454c48df241c0b9db28bbb04d4460c455a755d6c63e86b0aa5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "bd747121b79213fc78e020543a76dc18079b2dfef594a0b5b7804ba605a1f54d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/run_worker_until_empty.py": {
+      "filePath": "scripts/run_worker_until_empty.py",
+      "contentHash": "22ee5342e4d079c72f40a29e02d275dd7fde3c75dd3ee3a7340016ec153f12a1",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 79
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        },
+        {
+          "source": "worker.consumer",
+          "specifiers": [
+            "create_consumer"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 99,
+      "hasStructuralAnalysis": true
+    },
+    "shared/config.py": {
+      "filePath": "shared/config.py",
+      "contentHash": "e44d543a1df2dbce270bbc0cac1b91fdb59864e1301432e76e0d5021f13e8ca6",
+      "functions": [
+        {
+          "name": "load_stations",
+          "params": [
+            "path"
+          ],
+          "returnType": "list[StationConfig]",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "load_settings",
+          "params": [
+            "path"
+          ],
+          "returnType": "PipelineSettings",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "load_telegram_settings",
+          "params": [],
+          "returnType": "TelegramSettings",
+          "exported": true,
+          "lineCount": 2
+        }
+      ],
+      "classes": [
+        {
+          "name": "TelegramSettings",
+          "methods": [],
+          "properties": [
+            "telegram_bot_token",
+            "telegram_chat_id"
+          ],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "yaml",
+          "specifiers": [
+            "yaml"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "Field"
+          ]
+        },
+        {
+          "source": "pydantic_settings",
+          "specifiers": [
+            "BaseSettings",
+            "SettingsConfigDict"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings",
+            "StationConfig",
+            "StationsFile"
+          ]
+        }
+      ],
+      "exports": [
+        "TelegramSettings",
+        "load_stations",
+        "load_settings",
+        "load_telegram_settings"
+      ],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "shared/db.py": {
+      "filePath": "shared/db.py",
+      "contentHash": "bf29193eb61d4ae823211ef0a82b5b6d34a3a3358b76321c1fe77366644508a3",
+      "functions": [
+        {
+          "name": "_is_busy_error",
+          "params": [
+            "exc"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "retry_on_busy",
+          "params": [
+            "max_retries",
+            "base_delay"
+          ],
+          "returnType": "Callable[[Callable[P, R]], Callable[P, R]]",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "get_connection",
+          "params": [
+            "db_path",
+            "read_only"
+          ],
+          "returnType": "sqlite3.Connection",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "checkpoint_wal",
+          "params": [
+            "db_path",
+            "mode"
+          ],
+          "returnType": "WalCheckpointResult",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "transaction",
+          "params": [
+            "conn"
+          ],
+          "returnType": "Iterator[sqlite3.Connection]",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_migration_files",
+          "params": [],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_applied_versions",
+          "params": [
+            "conn"
+          ],
+          "returnType": "set[int]",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "migrate",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "list_tables",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "list[str]",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "WalCheckpointResult",
+          "methods": [],
+          "properties": [
+            "busy",
+            "log_frames",
+            "checkpointed_frames"
+          ],
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "imports": [
+        {
+          "source": "functools",
+          "specifiers": [
+            "functools"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "collections.abc",
+          "specifiers": [
+            "Callable",
+            "Iterator"
+          ]
+        },
+        {
+          "source": "contextlib",
+          "specifiers": [
+            "contextmanager"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Literal",
+            "ParamSpec",
+            "TypeVar"
+          ]
+        }
+      ],
+      "exports": [
+        "_is_busy_error",
+        "retry_on_busy",
+        "WalCheckpointResult",
+        "get_connection",
+        "checkpoint_wal",
+        "transaction",
+        "_migration_files",
+        "_applied_versions",
+        "migrate",
+        "list_tables"
+      ],
+      "totalLines": 180,
+      "hasStructuralAnalysis": true
+    },
+    "shared/__init__.py": {
+      "filePath": "shared/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "shared/logging.py": {
+      "filePath": "shared/logging.py",
+      "contentHash": "3f129f62ed373b8f9c2d7209284b08397025297cbe2f708b2b1969d898d9c173",
+      "functions": [
+        {
+          "name": "setup_logging",
+          "params": [
+            "service_name",
+            "level",
+            "stream"
+          ],
+          "returnType": "logging.Logger",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [
+        {
+          "name": "JsonFormatter",
+          "methods": [
+            "__init__",
+            "format"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        }
+      ],
+      "exports": [
+        "JsonFormatter",
+        "setup_logging"
+      ],
+      "totalLines": 77,
+      "hasStructuralAnalysis": true
+    },
+    "shared/metrics.py": {
+      "filePath": "shared/metrics.py",
+      "contentHash": "db1e418286bae4c48a349a30d21e33e3be3fc78287eb927ee3d1e140b5da74c7",
+      "functions": [
+        {
+          "name": "start_metrics_server",
+          "params": [
+            "port"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "increment_chunks_processed",
+          "params": [
+            "service",
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_chunks_dropped",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_chunk_files_deleted",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "set_asr_rtf_avg",
+          "params": [
+            "value"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "set_station_last_chunk_timestamp",
+          "params": [
+            "station",
+            "timestamp"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "set_wal_checkpoint_metrics",
+          "params": [
+            "result"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "set_queue_pending_hours",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "refresh_station_metrics",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "refresh_dashboard_metrics",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "configure_dashboard_metrics",
+          "params": [
+            "db_path",
+            "refresh_interval_seconds"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "prometheus_client",
+          "specifiers": [
+            "Counter",
+            "Gauge",
+            "start_http_server"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "WalCheckpointResult",
+            "get_connection"
+          ]
+        }
+      ],
+      "exports": [
+        "start_metrics_server",
+        "increment_chunks_processed",
+        "increment_chunks_dropped",
+        "increment_chunk_files_deleted",
+        "set_asr_rtf_avg",
+        "set_station_last_chunk_timestamp",
+        "set_wal_checkpoint_metrics",
+        "set_queue_pending_hours",
+        "refresh_station_metrics",
+        "refresh_dashboard_metrics",
+        "configure_dashboard_metrics"
+      ],
+      "totalLines": 176,
+      "hasStructuralAnalysis": true
+    },
+    "shared/migrations/001_initial.sql": {
+      "filePath": "shared/migrations/001_initial.sql",
+      "contentHash": "f6df31db9cde04c29701244b2c2efb9bc29f6d424763d7f144e5aefdab37fcd1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "shared/migrations/002_transcript_segments.sql": {
+      "filePath": "shared/migrations/002_transcript_segments.sql",
+      "contentHash": "4f9b54825e8a20e86618dc68be7da7bdac8bb5b5a653bff18c55c5ab17f5fa9a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": true
+    },
+    "shared/models.py": {
+      "filePath": "shared/models.py",
+      "contentHash": "1527c02c45ab71ce97633209a2e11d9d53aa99d1962adc482bfb667d29b65742",
+      "functions": [
+        {
+          "name": "detection_from_extraction",
+          "params": [
+            "chunk_id",
+            "extraction",
+            "canonical_ad_id"
+          ],
+          "returnType": "Detection",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "parse_key_claims_json",
+          "params": [
+            "raw"
+          ],
+          "returnType": "list[str]",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkStatus",
+          "methods": [],
+          "properties": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "Station",
+          "methods": [],
+          "properties": [
+            "id",
+            "name",
+            "url",
+            "format",
+            "enabled"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "CanonicalAd",
+          "methods": [],
+          "properties": [
+            "id",
+            "company_name",
+            "phone_norm",
+            "category",
+            "first_seen",
+            "last_seen",
+            "airing_count",
+            "archived_audio_path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "Chunk",
+          "methods": [],
+          "properties": [
+            "id",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status",
+            "error",
+            "known_ad_id"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "Transcript",
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "text",
+            "asr_duration_ms",
+            "segments_json"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Detection",
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "canonical_ad_id",
+            "is_ad",
+            "ad_category",
+            "company_name",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "key_claims",
+            "confidence",
+            "alerted"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "Gap",
+          "methods": [],
+          "properties": [
+            "id",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "reason"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "Fingerprint",
+          "methods": [],
+          "properties": [
+            "id",
+            "canonical_ad_id",
+            "chromaprint_vector",
+            "duration"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "StatusEntry",
+          "methods": [],
+          "properties": [
+            "key",
+            "value",
+            "updated_at"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "AdExtraction",
+          "methods": [],
+          "properties": [
+            "is_ad",
+            "ad_category",
+            "company_name",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "key_claims",
+            "confidence"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "AdExtractionWithMetadata",
+          "methods": [],
+          "properties": [
+            "station",
+            "timestamp"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "StationConfig",
+          "methods": [],
+          "properties": [
+            "name",
+            "url",
+            "format",
+            "enabled"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "StationsFile",
+          "methods": [],
+          "properties": [
+            "stations"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "PipelineSettings",
+          "methods": [],
+          "properties": [
+            "chunk_len",
+            "overlap",
+            "retention_hours",
+            "dedup_window_days",
+            "confidence_threshold",
+            "fuzzy_match_threshold",
+            "queue_max_hours",
+            "station_down_alert_minutes",
+            "same_station_airing_window_seconds",
+            "asr_model",
+            "asr_compute_type",
+            "dashboard_host",
+            "dashboard_port",
+            "db_path",
+            "chunks_dir"
+          ],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "enum",
+          "specifiers": [
+            "Enum"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "BaseModel",
+            "Field"
+          ]
+        }
+      ],
+      "exports": [
+        "ChunkStatus",
+        "Station",
+        "CanonicalAd",
+        "Chunk",
+        "Transcript",
+        "Detection",
+        "Gap",
+        "Fingerprint",
+        "StatusEntry",
+        "AdExtraction",
+        "AdExtractionWithMetadata",
+        "StationConfig",
+        "StationsFile",
+        "PipelineSettings",
+        "detection_from_extraction",
+        "parse_key_claims_json"
+      ],
+      "totalLines": 171,
+      "hasStructuralAnalysis": true
+    },
+    "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt": {
+      "filePath": "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt",
+      "contentHash": "a5112e32cca67498296f9c8b26ef64c89cd6076f4fa77298de2625a3d34e608b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/credit_union_interview_negative.txt": {
+      "filePath": "tests/fixtures/extraction_eval/credit_union_interview_negative.txt",
+      "contentHash": "0324633befa7fd77392a8b23a8f9e76f3ed2df1d19db54e7c2f5d3e6ce561b4a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/homefront_mortgage_positive.txt": {
+      "filePath": "tests/fixtures/extraction_eval/homefront_mortgage_positive.txt",
+      "contentHash": "0c44d55f3795473d6e02c7eb6716316b1ba06fb10ec515be389f7e837b8a62de",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/liberty_funding_group_positive.txt": {
+      "filePath": "tests/fixtures/extraction_eval/liberty_funding_group_positive.txt",
+      "contentHash": "edd3d5bed471caa60f89b043a61acf248c597679197b51bc779edccce24d51b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/manifest.json": {
+      "filePath": "tests/fixtures/extraction_eval/manifest.json",
+      "contentHash": "b71c86e41da78578f743bd0443d2640c78d22df3f849a1013abf95f58fbbc5ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 153,
+      "hasStructuralAnalysis": true
+    },
+    "tests/fixtures/extraction_eval/news_interest_rates_negative.txt": {
+      "filePath": "tests/fixtures/extraction_eval/news_interest_rates_negative.txt",
+      "contentHash": "b92d8e245924d182383ab88527b057def7112419cbf35cc484feb2b47ea1c09d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/rapid_relief_capital_positive.txt": {
+      "filePath": "tests/fixtures/extraction_eval/rapid_relief_capital_positive.txt",
+      "contentHash": "34a4710124848944010d6f113511696905e106e04f80435498e35b287fc3330b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/extraction_eval/talkshow_sba_loans_negative.txt": {
+      "filePath": "tests/fixtures/extraction_eval/talkshow_sba_loans_negative.txt",
+      "contentHash": "fe7b1a2c17a2ab58062c97eeabce31340609a82b41b3066e0aa0d3b58c3ae7c2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "tests/fixtures/__init__.py": {
+      "filePath": "tests/fixtures/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "tests/fixtures/seed_dashboard.py": {
+      "filePath": "tests/fixtures/seed_dashboard.py",
+      "contentHash": "a28f7f2bb482033df4d698c96470c516f14c4f016cdc6381c54f452fce12174b",
+      "functions": [
+        {
+          "name": "_write_silent_wav",
+          "params": [
+            "path",
+            "duration_s"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "seed_dashboard_db",
+          "params": [
+            "db_path",
+            "archive_dir"
+          ],
+          "returnType": "dict[str, int]",
+          "exported": true,
+          "lineCount": 110
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "wave",
+          "specifiers": [
+            "wave"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        }
+      ],
+      "exports": [
+        "_write_silent_wav",
+        "seed_dashboard_db"
+      ],
+      "totalLines": 137,
+      "hasStructuralAnalysis": true
+    },
+    "tests/__init__.py": {
+      "filePath": "tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_alerter.py": {
+      "filePath": "tests/test_alerter.py",
+      "contentHash": "70c81ffeac27ff1d4ba17b10f639f3f9b7441d91ab9bacc8e9d7fe41a452ce59",
+      "functions": [
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_seed_chunk",
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "_seed_detection",
+          "params": [
+            "conn",
+            "chunk_id",
+            "canonical_ad_id",
+            "company_name",
+            "alerted"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "_seed_canonical_ad",
+          "params": [
+            "conn",
+            "company_name",
+            "archived_audio_path"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "_seed_transcript",
+          "params": [
+            "conn",
+            "chunk_id",
+            "text"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_set_status",
+          "params": [
+            "conn",
+            "key",
+            "value",
+            "updated_at"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "_today_date",
+          "params": [
+            "ts"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 55
+        },
+        {
+          "name": "test_first_seen_alert_includes_transcript_excerpt",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 42
+        },
+        {
+          "name": "test_station_down_alert_sends_once_per_outage",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 46
+        },
+        {
+          "name": "test_queue_drop_alert_reports_new_drops_once",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 57
+        },
+        {
+          "name": "test_daily_digest_only_sends_once_per_day",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 39
+        }
+      ],
+      "classes": [
+        {
+          "name": "TelegramRecorder",
+          "methods": [
+            "__init__",
+            "transport"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "httpx",
+          "specifiers": [
+            "httpx"
+          ]
+        },
+        {
+          "source": "alerter.service",
+          "specifiers": [
+            "AlerterService"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "TelegramSettings"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        }
+      ],
+      "exports": [
+        "_seed_station",
+        "_seed_chunk",
+        "_seed_detection",
+        "_seed_canonical_ad",
+        "_seed_transcript",
+        "_set_status",
+        "TelegramRecorder",
+        "_today_date",
+        "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+        "test_first_seen_alert_includes_transcript_excerpt",
+        "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+        "test_station_down_alert_sends_once_per_outage",
+        "test_queue_drop_alert_reports_new_drops_once",
+        "test_daily_digest_only_sends_once_per_day"
+      ],
+      "totalLines": 434,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_asr_benchmark.py": {
+      "filePath": "tests/test_asr_benchmark.py",
+      "contentHash": "0db1b4ddd488594183bd5dfef27edeee26e7ddc8f768e7dd565bb339f0f3f2a2",
+      "functions": [
+        {
+          "name": "_fake_factory",
+          "params": [
+            "model_name",
+            "compute_type"
+          ],
+          "returnType": "_FakeWhisperModel",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_run_benchmark_returns_rtf_rows",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "test_main_json_output",
+          "params": [
+            "tmp_path",
+            "capsys"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeWhisperModel",
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 15
+        }
+      ],
+      "imports": [
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.asr_benchmark",
+          "specifiers": [
+            "main",
+            "run_benchmark"
+          ]
+        }
+      ],
+      "exports": [
+        "_FakeWhisperModel",
+        "_fake_factory",
+        "test_run_benchmark_returns_rtf_rows",
+        "test_main_json_output"
+      ],
+      "totalLines": 88,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_config.py": {
+      "filePath": "tests/test_config.py",
+      "contentHash": "d1f082a60aa602281cf0e296f85347cbd08f092470031f47283eebe6ba0518dd",
+      "functions": [
+        {
+          "name": "test_load_stations_from_repo_config",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_load_settings_from_repo_config",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_load_settings_chunks_dir_env_override",
+          "params": [
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_load_settings_dashboard_env_override",
+          "params": [
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_load_settings_asr_env_override",
+          "params": [
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_load_stations_from_custom_yaml",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "test_telegram_settings_optional",
+          "params": [
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings",
+            "load_stations",
+            "load_telegram_settings"
+          ]
+        }
+      ],
+      "exports": [
+        "test_load_stations_from_repo_config",
+        "test_load_settings_from_repo_config",
+        "test_load_settings_chunks_dir_env_override",
+        "test_load_settings_dashboard_env_override",
+        "test_load_settings_asr_env_override",
+        "test_load_stations_from_custom_yaml",
+        "test_telegram_settings_optional"
+      ],
+      "totalLines": 81,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_dashboard.py": {
+      "filePath": "tests/test_dashboard.py",
+      "contentHash": "2f09db86fbd36f3578ed2f8c75e91afb319b10aab200221027563fe3523cecd1",
+      "functions": [
+        {
+          "name": "empty_db",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "seeded",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ],
+          "returnType": "tuple[Path, dict[str, int]]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "missing_db",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_all_html_routes_200_on_empty_db",
+          "params": [
+            "empty_db"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_all_html_routes_200_on_seeded_db",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_ad_detail_200_seeded",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_ad_detail_404_unknown",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_missing_db_shows_no_database_page",
+          "params": [
+            "missing_db"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_health_json_empty_db",
+          "params": [
+            "empty_db"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_health_json_missing_db",
+          "params": [
+            "missing_db"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_health_pending_count_seeded",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_audio_serves_seeded_file",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_audio_path_traversal_rejected",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_audio_missing_db",
+          "params": [
+            "missing_db"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_dashboard_never_opens_writable_connection",
+          "params": [
+            "seeded",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "test_ads_htmx_partial",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "fastapi.testclient",
+          "specifiers": [
+            "TestClient"
+          ]
+        },
+        {
+          "source": "dashboard",
+          "specifiers": [
+            "queries"
+          ]
+        },
+        {
+          "source": "dashboard.main",
+          "specifiers": [
+            "create_app"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate"
+          ]
+        },
+        {
+          "source": "tests.fixtures.seed_dashboard",
+          "specifiers": [
+            "seed_dashboard_db"
+          ]
+        }
+      ],
+      "exports": [
+        "empty_db",
+        "seeded",
+        "missing_db",
+        "test_all_html_routes_200_on_empty_db",
+        "test_all_html_routes_200_on_seeded_db",
+        "test_ad_detail_200_seeded",
+        "test_ad_detail_404_unknown",
+        "test_missing_db_shows_no_database_page",
+        "test_health_json_empty_db",
+        "test_health_json_missing_db",
+        "test_health_pending_count_seeded",
+        "test_audio_serves_seeded_file",
+        "test_audio_path_traversal_rejected",
+        "test_audio_missing_db",
+        "test_dashboard_never_opens_writable_connection",
+        "test_ads_htmx_partial"
+      ],
+      "totalLines": 153,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_db.py": {
+      "filePath": "tests/test_db.py",
+      "contentHash": "c154cfeb41be8e0f7e6a88b9064779dd95b8dee5ac521b253b17fbb918f81e30",
+      "functions": [
+        {
+          "name": "test_migrate_creates_all_tables",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_migrate_is_idempotent",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_wal_and_busy_timeout",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_read_only_connection",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "test_checkpoint_wal_returns_result",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_retry_on_busy_retries_then_succeeds",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_retry_on_busy_reraises_non_busy_errors",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_concurrent_writes_retry_on_sqlite_busy",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 64
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "EXPECTED_TABLES",
+            "WalCheckpointResult",
+            "checkpoint_wal",
+            "get_connection",
+            "list_tables",
+            "migrate",
+            "retry_on_busy",
+            "transaction"
+          ]
+        }
+      ],
+      "exports": [
+        "test_migrate_creates_all_tables",
+        "test_migrate_is_idempotent",
+        "test_wal_and_busy_timeout",
+        "test_read_only_connection",
+        "test_checkpoint_wal_returns_result",
+        "test_retry_on_busy_retries_then_succeeds",
+        "test_retry_on_busy_reraises_non_busy_errors",
+        "test_concurrent_writes_retry_on_sqlite_busy"
+      ],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_dedup.py": {
+      "filePath": "tests/test_dedup.py",
+      "contentHash": "157f079cc24eeb87e005c75d168769779dbef36ed1edb989697b04e2f4d7c314",
+      "functions": [
+        {
+          "name": "db_path",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "settings",
+          "params": [],
+          "returnType": "PipelineSettings",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "_seed_chunk",
+          "params": [
+            "db_path",
+            "tmp_path",
+            "station_name",
+            "start_ts",
+            "end_ts"
+          ],
+          "returnType": "tuple[int, Path]",
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "_loan_extraction",
+          "params": [],
+          "returnType": "AdExtraction",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 45
+        },
+        {
+          "name": "test_same_ad_after_window_counts_new_airing",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_cross_station_airings_within_window_count_separately",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_distinct_ads_do_not_merge_when_category_differs",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 27
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeClipper",
+          "methods": [
+            "__init__",
+            "__call__"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.dedup",
+          "specifiers": [
+            "DetectionPersister",
+            "estimate_ad_bounds"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "TranscriptSegment"
+          ]
+        }
+      ],
+      "exports": [
+        "FakeClipper",
+        "db_path",
+        "settings",
+        "_seed_station",
+        "_seed_chunk",
+        "_loan_extraction",
+        "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+        "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+        "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+        "test_same_ad_after_window_counts_new_airing",
+        "test_cross_station_airings_within_window_count_separately",
+        "test_distinct_ads_do_not_merge_when_category_differs",
+        "test_non_ads_and_low_confidence_ads_are_not_persisted"
+      ],
+      "totalLines": 315,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_e2e_smoke.py": {
+      "filePath": "tests/test_e2e_smoke.py",
+      "contentHash": "20622292197cabbbf8f1a7983f447da5e7a57740a88ac079574f80ecc769fdbf",
+      "functions": [
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_seed_chunk",
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "_set_status",
+          "params": [
+            "conn",
+            "key",
+            "value",
+            "updated_at"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "_today_date",
+          "params": [
+            "ts"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_copy_clipper",
+          "params": [
+            "source",
+            "dest",
+            "start_sec",
+            "end_sec"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_smoke_worker_then_alerter_dry_run",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 101
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeTranscriber",
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "FakeExtractor",
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "alerter.service",
+          "specifiers": [
+            "AlerterService"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "TelegramSettings"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.consumer",
+          "specifiers": [
+            "ChunkConsumer"
+          ]
+        },
+        {
+          "source": "worker.dedup",
+          "specifiers": [
+            "DetectionPersister"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "TranscriptSegment",
+            "TranscriptionResult"
+          ]
+        }
+      ],
+      "exports": [
+        "FakeTranscriber",
+        "FakeExtractor",
+        "_seed_station",
+        "_seed_chunk",
+        "_set_status",
+        "_today_date",
+        "_copy_clipper",
+        "test_smoke_worker_then_alerter_dry_run"
+      ],
+      "totalLines": 202,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_extraction_eval.py": {
+      "filePath": "tests/test_extraction_eval.py",
+      "contentHash": "e7d2881e88f29db44f0e6a8ae9ea2b045e0238b7ebb3a3a5a43516552296aa09",
+      "functions": [
+        {
+          "name": "_load_eval_fixtures",
+          "params": [],
+          "returnType": "list[EvalFixture]",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "_company_tokens",
+          "params": [
+            "value"
+          ],
+          "returnType": "set[str]",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "_company_match",
+          "params": [
+            "actual",
+            "expected"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_extraction_eval_phone_normalization_matches_ground_truth",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [
+        {
+          "name": "EvalFixture",
+          "methods": [],
+          "properties": [
+            "fixture_id",
+            "transcript",
+            "expected_is_ad",
+            "expected_company_name",
+            "expected_phone",
+            "mock_response"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_MockOllamaHTTP",
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        },
+        {
+          "source": "worker.extract",
+          "specifiers": [
+            "OllamaExtractor",
+            "normalize_phone_number"
+          ]
+        }
+      ],
+      "exports": [
+        "EvalFixture",
+        "_load_eval_fixtures",
+        "_company_tokens",
+        "_company_match",
+        "_MockOllamaHTTP",
+        "test_extraction_eval_manifest_has_phase_11b_coverage",
+        "test_extraction_eval_phone_normalization_matches_ground_truth",
+        "test_extraction_eval_mock_extractor_meets_scoring_rubric"
+      ],
+      "totalLines": 111,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_extract.py": {
+      "filePath": "tests/test_extract.py",
+      "contentHash": "5dd62aab02c165916c71a3119dc15c0b570244d6a94190b4832cca2c533c6158",
+      "functions": [
+        {
+          "name": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_prompt_few_shot_example_three_uses_normalized_phone",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "test_schema_is_strict_and_only_contains_llm_fields",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 32
+        },
+        {
+          "name": "test_ollama_extractor_raises_after_retry_exhausted",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 30
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeOllamaHTTP",
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction"
+          ]
+        },
+        {
+          "source": "worker.extract",
+          "specifiers": [
+            "OllamaExtractor",
+            "build_extraction_prompt",
+            "extraction_json_schema",
+            "normalize_phone_number"
+          ]
+        }
+      ],
+      "exports": [
+        "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+        "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+        "test_prompt_few_shot_example_three_uses_normalized_phone",
+        "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+        "test_schema_is_strict_and_only_contains_llm_fields",
+        "FakeOllamaHTTP",
+        "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+        "test_ollama_extractor_raises_after_retry_exhausted",
+        "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad"
+      ],
+      "totalLines": 146,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_fingerprint.py": {
+      "filePath": "tests/test_fingerprint.py",
+      "contentHash": "aef626e87ec71cbcf8f3d6ad44c7401e3c3f0ee9ca17b7631e04724707907231",
+      "functions": [
+        {
+          "name": "_make_vector",
+          "params": [
+            "length",
+            "seed"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "db_path",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "settings",
+          "params": [],
+          "returnType": "PipelineSettings",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_seed_chunk",
+          "params": [
+            "db_path",
+            "tmp_path",
+            "station_id",
+            "start_ts"
+          ],
+          "returnType": "tuple[int, Path]",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "_seed_canonical_with_fingerprint",
+          "params": [
+            "db_path",
+            "vector"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_best_sliding_match_finds_known_ad_at_offset",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "test_best_sliding_match_rejects_low_similarity",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_best_sliding_match_rejects_borderline_threshold_score",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "params": [
+            "offset_frames",
+            "offset_seconds"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeFingerprintBackend",
+          "methods": [
+            "__init__",
+            "compute"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.fingerprint",
+          "specifiers": [
+            "FingerprintAnnotator",
+            "FingerprintMatch",
+            "best_sliding_match",
+            "decode_fingerprint_vector",
+            "encode_fingerprint_vector"
+          ]
+        }
+      ],
+      "exports": [
+        "FakeFingerprintBackend",
+        "_make_vector",
+        "db_path",
+        "settings",
+        "_seed_station",
+        "_seed_chunk",
+        "_seed_canonical_with_fingerprint",
+        "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+        "test_best_sliding_match_finds_known_ad_at_offset",
+        "test_best_sliding_match_rejects_low_similarity",
+        "test_best_sliding_match_rejects_borderline_threshold_score",
+        "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+        "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+        "test_annotator_marks_known_ad_and_records_fast_path_detection",
+        "test_known_ad_inside_same_station_window_does_not_increment_airing_count"
+      ],
+      "totalLines": 272,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_ingestor.py": {
+      "filePath": "tests/test_ingestor.py",
+      "contentHash": "d1126f1d5f5679dcc80960143fabf056fa81be9907f7d8d62d2be95da9a51213",
+      "functions": [
+        {
+          "name": "_write_silent_wav",
+          "params": [
+            "path",
+            "duration_sec",
+            "sample_rate"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "_conn",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "sqlite3.Connection",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 33
+        },
+        {
+          "name": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 34
+        },
+        {
+          "name": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "test_create_station_ingestors_skips_disabled_stations",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeClock",
+          "methods": [
+            "__init__",
+            "time",
+            "sleep"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "FakeRunner",
+          "methods": [
+            "__init__",
+            "record_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 35
+        }
+      ],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "wave",
+          "specifiers": [
+            "wave"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "ingestor.ffmpeg",
+          "specifiers": [
+            "FfmpegChunkRunner",
+            "build_ffmpeg_command",
+            "get_wav_duration_seconds",
+            "is_valid_chunk_duration"
+          ]
+        },
+        {
+          "source": "ingestor.supervisor",
+          "specifiers": [
+            "BackoffPolicy",
+            "StationIngestor",
+            "create_station_ingestors"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings",
+            "StationConfig"
+          ]
+        }
+      ],
+      "exports": [
+        "_write_silent_wav",
+        "FakeClock",
+        "FakeRunner",
+        "_conn",
+        "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+        "test_is_valid_chunk_duration_uses_two_second_tolerance",
+        "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+        "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+        "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+        "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+        "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+        "test_create_station_ingestors_skips_disabled_stations"
+      ],
+      "totalLines": 335,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_janitor.py": {
+      "filePath": "tests/test_janitor.py",
+      "contentHash": "0f38b41290211c6a7505ae98758d8ef729379fc72a13b53a9f3458dbc6181f79",
+      "functions": [
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_seed_chunk",
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "db_path",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "settings",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "PipelineSettings",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_delete_after_processing_leaves_db_row",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 48
+        },
+        {
+          "name": "test_sweep_orphans_removes_untracked_files",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "test_janitor_never_deletes_ad_archive_files",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_cleanup_dropped_files_removes_wav",
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "test_run_sweep_runs_passive_wal_checkpoint",
+          "params": [
+            "db_path",
+            "settings",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "test_passive_wal_checkpoint_continues_on_failure",
+          "params": [
+            "db_path",
+            "settings",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "ChunkStatus",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.janitor",
+          "specifiers": [
+            "ChunkJanitor",
+            "delete_chunk_file"
+          ]
+        }
+      ],
+      "exports": [
+        "_seed_station",
+        "_seed_chunk",
+        "db_path",
+        "settings",
+        "test_delete_chunk_file_removes_wav_and_is_idempotent",
+        "test_delete_after_processing_leaves_db_row",
+        "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+        "test_sweep_orphans_removes_untracked_files",
+        "test_janitor_never_deletes_ad_archive_files",
+        "test_cleanup_dropped_files_removes_wav",
+        "test_run_sweep_runs_passive_wal_checkpoint",
+        "test_passive_wal_checkpoint_continues_on_failure"
+      ],
+      "totalLines": 264,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_logging.py": {
+      "filePath": "tests/test_logging.py",
+      "contentHash": "5a57d7bf034e15f1e838378f66d6375535a872ae5c432524eb8e9d5fe4c83aa6",
+      "functions": [
+        {
+          "name": "test_json_log_includes_service_name",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "io",
+          "specifiers": [
+            "StringIO"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        }
+      ],
+      "exports": [
+        "test_json_log_includes_service_name"
+      ],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_metrics.py": {
+      "filePath": "tests/test_metrics.py",
+      "contentHash": "8d4714103292a3b44d9af0ae999e173fec05bff5ac3fa32345042d6e991bdaa3",
+      "functions": [
+        {
+          "name": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "WalCheckpointResult"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "SQLITE_WAL_BUSY",
+            "SQLITE_WAL_CHECKPOINTED_FRAMES",
+            "SQLITE_WAL_LOG_FRAMES",
+            "set_wal_checkpoint_metrics"
+          ]
+        }
+      ],
+      "exports": [
+        "test_set_wal_checkpoint_metrics_updates_gauges"
+      ],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_models.py": {
+      "filePath": "tests/test_models.py",
+      "contentHash": "cb96d34f96539d54704bec0f31b4bd6217b5fc77ffa820bc69bdf37e9aa7c95d",
+      "functions": [
+        {
+          "name": "test_ad_extraction_validates_core_fields",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_ad_extraction_rejects_invalid_confidence",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_metadata_not_in_llm_schema",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_metadata_model_extends_extraction",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "test_detection_from_extraction",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_chunk_status_enum",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "ValidationError"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "AdExtractionWithMetadata",
+            "ChunkStatus",
+            "Detection",
+            "detection_from_extraction"
+          ]
+        }
+      ],
+      "exports": [
+        "test_ad_extraction_validates_core_fields",
+        "test_ad_extraction_rejects_invalid_confidence",
+        "test_metadata_not_in_llm_schema",
+        "test_metadata_model_extends_extraction",
+        "test_detection_from_extraction",
+        "test_chunk_status_enum"
+      ],
+      "totalLines": 72,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_worker_consumer.py": {
+      "filePath": "tests/test_worker_consumer.py",
+      "contentHash": "afae83a0847981949578b8cf1dec4ba16ddfe7e22b768ba56e941a3181b7cecf",
+      "functions": [
+        {
+          "name": "_seed_station",
+          "params": [
+            "conn",
+            "name"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_insert_chunk",
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "worker_db",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "settings",
+          "params": [],
+          "returnType": "PipelineSettings",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "test_consumer_claim_transcript_and_done",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 49
+        },
+        {
+          "name": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 42
+        },
+        {
+          "name": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "test_drop_oldest_overflow_writes_gaps",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 56
+        },
+        {
+          "name": "test_atomic_claim_two_threads_never_duplicate",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 54
+        },
+        {
+          "name": "test_missing_audio_file_dropped_loop_continues",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 47
+        },
+        {
+          "name": "test_transcription_failure_dropped_loop_continues",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 50
+        },
+        {
+          "name": "test_run_once_returns_false_when_queue_empty",
+          "params": [
+            "worker_db",
+            "settings"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 52
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeTranscriber",
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 36
+        },
+        {
+          "name": "FakeExtractor",
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "FakeDetectionPersister",
+          "methods": [
+            "__init__",
+            "record_extraction"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "FakeFingerprintAnnotator",
+          "methods": [
+            "__init__",
+            "annotate_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "migrate",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "ChunkStatus",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.consumer",
+          "specifiers": [
+            "ChunkConsumer"
+          ]
+        },
+        {
+          "source": "worker.fingerprint",
+          "specifiers": [
+            "FingerprintMatch"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "TranscriptSegment",
+            "TranscriptionResult"
+          ]
+        }
+      ],
+      "exports": [
+        "FakeTranscriber",
+        "FakeExtractor",
+        "FakeDetectionPersister",
+        "FakeFingerprintAnnotator",
+        "_seed_station",
+        "_insert_chunk",
+        "worker_db",
+        "settings",
+        "test_consumer_claim_transcript_and_done",
+        "test_consumer_runs_extraction_and_dedup_after_transcription",
+        "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+        "test_drop_oldest_overflow_writes_gaps",
+        "test_atomic_claim_two_threads_never_duplicate",
+        "test_missing_audio_file_dropped_loop_continues",
+        "test_transcription_failure_dropped_loop_continues",
+        "test_run_once_returns_false_when_queue_empty",
+        "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript"
+      ],
+      "totalLines": 575,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "8c9db10c19d1cb5ec93824606b089efbc8e2450221dc2008221f7cafd445aa92",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": false
+    },
+    ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md": {
+      "filePath": ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md",
+      "contentHash": "5abaa14d1803839a0cfb60ba08423a0f107842cae6e1b95492316bbd2d466bf6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md": {
+      "filePath": ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md",
+      "contentHash": "2ac6be3139e021184cf6ce77431356d5caba4449775db02eaed9f5f1c3a0b62b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    ".windsurf/plans/handoff-wp9-dashboard-6165b3.md": {
+      "filePath": ".windsurf/plans/handoff-wp9-dashboard-6165b3.md",
+      "contentHash": "011916bd12ac7bc6575ca30b05cd96fcf94de0e9b8b48a6038327d6f1a1b313e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "worker/asr_benchmark.py": {
+      "filePath": "worker/asr_benchmark.py",
+      "contentHash": "4504ccc81a85ed64f2332d382f694420ff68047cb33905bed3f75df7c9238246",
+      "functions": [
+        {
+          "name": "run_benchmark",
+          "params": [
+            "audio_path",
+            "models",
+            "compute_type",
+            "settings",
+            "model_factory"
+          ],
+          "returnType": "list[dict[str, float | str | int]]",
+          "exported": true,
+          "lineCount": 31
+        },
+        {
+          "name": "build_parser",
+          "params": [],
+          "returnType": "argparse.ArgumentParser",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "argparse",
+          "specifiers": [
+            "argparse"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any",
+            "Callable"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "Transcriber",
+            "TranscriptionResult"
+          ]
+        }
+      ],
+      "exports": [
+        "run_benchmark",
+        "build_parser",
+        "main"
+      ],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    "worker/consumer.py": {
+      "filePath": "worker/consumer.py",
+      "contentHash": "d424c061685d89caa3e316c46ef9e0f25fea1941af7cca9359d63ab61419d16d",
+      "functions": [
+        {
+          "name": "_merge_contiguous_ranges",
+          "params": [
+            "rows"
+          ],
+          "returnType": "list[tuple[float, float]]",
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "create_consumer",
+          "params": [
+            "db_path",
+            "settings",
+            "transcriber",
+            "extractor",
+            "detection_persister",
+            "fingerprint_annotator",
+            "poll_interval_sec"
+          ],
+          "returnType": "ChunkConsumer",
+          "exported": true,
+          "lineCount": 24
+        }
+      ],
+      "classes": [
+        {
+          "name": "ClaimedChunk",
+          "methods": [
+            "audio_duration_sec"
+          ],
+          "properties": [
+            "id",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "ExtractionBackend",
+          "methods": [
+            "extract"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "DetectionPersistenceBackend",
+          "methods": [
+            "record_extraction"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "FingerprintAnnotationBackend",
+          "methods": [
+            "annotate_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "ChunkConsumer",
+          "methods": [
+            "__init__",
+            "run",
+            "run_once",
+            "_enforce_drop_oldest",
+            "_insert_backlog_gaps",
+            "_claim_chunk",
+            "_process_claimed",
+            "_persist_success",
+            "_mark_dropped",
+            "_update_rtf_avg"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 287
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any",
+            "Protocol"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "retry_on_busy",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "increment_chunks_dropped",
+            "increment_chunks_processed",
+            "set_asr_rtf_avg",
+            "set_queue_pending_hours"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "ChunkStatus",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.dedup",
+          "specifiers": [
+            "DetectionPersister"
+          ]
+        },
+        {
+          "source": "worker.extract",
+          "specifiers": [
+            "OllamaExtractor"
+          ]
+        },
+        {
+          "source": "worker.fingerprint",
+          "specifiers": [
+            "FingerprintAnnotator",
+            "FingerprintMatch"
+          ]
+        },
+        {
+          "source": "worker.janitor",
+          "specifiers": [
+            "ChunkJanitor"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "Transcriber",
+            "TranscriptionResult",
+            "WhisperBackend"
+          ]
+        }
+      ],
+      "exports": [
+        "ClaimedChunk",
+        "ExtractionBackend",
+        "DetectionPersistenceBackend",
+        "FingerprintAnnotationBackend",
+        "ChunkConsumer",
+        "_merge_contiguous_ranges",
+        "create_consumer"
+      ],
+      "totalLines": 415,
+      "hasStructuralAnalysis": true
+    },
+    "worker/dedup.py": {
+      "filePath": "worker/dedup.py",
+      "contentHash": "7015487741670f2806e8a34336a0a432980aeed6b3b34b7d3806d74f916f4014",
+      "functions": [
+        {
+          "name": "_norm_text",
+          "params": [
+            "value"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_token_overlap_score",
+          "params": [
+            "segment_text",
+            "needles"
+          ],
+          "returnType": "int",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "estimate_ad_bounds",
+          "params": [
+            "segments",
+            "extraction",
+            "chunk_duration_sec",
+            "padding_sec"
+          ],
+          "returnType": "tuple[float, float]",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "ffmpeg_clip",
+          "params": [
+            "source",
+            "dest",
+            "start_sec",
+            "end_sec"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "classes": [
+        {
+          "name": "DetectionPersister",
+          "methods": [
+            "__init__",
+            "record_extraction",
+            "_chunk_row",
+            "_find_matching_canonical",
+            "_canonical_score",
+            "_create_canonical",
+            "_has_recent_same_station_airing",
+            "_insert_detection"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 211
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "shutil",
+          "specifiers": [
+            "shutil"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "collections.abc",
+          "specifiers": [
+            "Callable",
+            "Sequence"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "retry_on_busy",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction",
+            "PipelineSettings"
+          ]
+        },
+        {
+          "source": "worker.extract",
+          "specifiers": [
+            "normalize_phone_number"
+          ]
+        },
+        {
+          "source": "worker.transcribe",
+          "specifiers": [
+            "TranscriptSegment"
+          ]
+        }
+      ],
+      "exports": [
+        "_norm_text",
+        "_token_overlap_score",
+        "estimate_ad_bounds",
+        "ffmpeg_clip",
+        "DetectionPersister"
+      ],
+      "totalLines": 329,
+      "hasStructuralAnalysis": true
+    },
+    "worker/Dockerfile": {
+      "filePath": "worker/Dockerfile",
+      "contentHash": "d418359ddee6439c36c426b0fe6da01d361783c457770809bbaba634cb490019",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "worker/extract.py": {
+      "filePath": "worker/extract.py",
+      "contentHash": "dc93029fc332d18eb2c843e0831463ad845c2341c96af160b697d1fcb76d70bf",
+      "functions": [
+        {
+          "name": "extraction_json_schema",
+          "params": [],
+          "returnType": "dict[str, Any]",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "build_extraction_prompt",
+          "params": [
+            "transcript_text"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "_toll_free_prefix",
+          "params": [
+            "digits"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "_accept_spelled_digits",
+          "params": [
+            "digits"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_has_explicit_digits_or_vanity",
+          "params": [
+            "raw"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_parse_spelled_phone",
+          "params": [
+            "text"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 25
+        },
+        {
+          "name": "_parse_digits_and_vanity",
+          "params": [
+            "raw"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "normalize_phone_number",
+          "params": [
+            "raw"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_load_response_json",
+          "params": [
+            "raw_response"
+          ],
+          "returnType": "dict[str, Any]",
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "classes": [
+        {
+          "name": "OllamaHTTPClient",
+          "methods": [
+            "generate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "UrllibOllamaHTTPClient",
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "OllamaExtractor",
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 39
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "urllib.error",
+          "specifiers": [
+            "urllib.error"
+          ]
+        },
+        {
+          "source": "urllib.request",
+          "specifiers": [
+            "urllib.request"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any",
+            "Protocol"
+          ]
+        },
+        {
+          "source": "pydantic",
+          "specifiers": [
+            "ValidationError"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "AdExtraction"
+          ]
+        }
+      ],
+      "exports": [
+        "OllamaHTTPClient",
+        "UrllibOllamaHTTPClient",
+        "extraction_json_schema",
+        "build_extraction_prompt",
+        "_toll_free_prefix",
+        "_accept_spelled_digits",
+        "_has_explicit_digits_or_vanity",
+        "_parse_spelled_phone",
+        "_parse_digits_and_vanity",
+        "normalize_phone_number",
+        "_load_response_json",
+        "OllamaExtractor"
+      ],
+      "totalLines": 250,
+      "hasStructuralAnalysis": true
+    },
+    "worker/fingerprint.py": {
+      "filePath": "worker/fingerprint.py",
+      "contentHash": "412579fbe17a6bdc5421279a48fe6173d109864b74513169af2f5a69bc4668e9",
+      "functions": [
+        {
+          "name": "encode_fingerprint_vector",
+          "params": [
+            "vector"
+          ],
+          "returnType": "bytes",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "decode_fingerprint_vector",
+          "params": [
+            "blob"
+          ],
+          "returnType": "list[int]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_frame_similarity",
+          "params": [
+            "left",
+            "right"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "_window_similarity",
+          "params": [
+            "chunk_window",
+            "candidate"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "best_sliding_match",
+          "params": [
+            "chunk_vector",
+            "candidates",
+            "threshold",
+            "frames_per_second"
+          ],
+          "returnType": "FingerprintMatch | None",
+          "exported": true,
+          "lineCount": 28
+        }
+      ],
+      "classes": [
+        {
+          "name": "FingerprintBackend",
+          "methods": [
+            "compute"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "FingerprintMatch",
+          "methods": [
+            "canonical_ad_id"
+          ],
+          "properties": [
+            "candidate_id",
+            "vector",
+            "duration",
+            "score",
+            "offset_frames",
+            "offset_seconds"
+          ],
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "FpcalcBackend",
+          "methods": [
+            "compute"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "FingerprintAnnotator",
+          "methods": [
+            "__init__",
+            "annotate_chunk",
+            "add_fingerprint_for_canonical",
+            "_load_candidates",
+            "_chunk_row",
+            "_record_known_ad",
+            "_has_recent_same_station_airing"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 141
+        }
+      ],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "struct",
+          "specifiers": [
+            "struct"
+          ]
+        },
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Protocol"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "get_connection",
+            "retry_on_busy",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        }
+      ],
+      "exports": [
+        "FingerprintBackend",
+        "FingerprintMatch",
+        "encode_fingerprint_vector",
+        "decode_fingerprint_vector",
+        "_frame_similarity",
+        "_window_similarity",
+        "best_sliding_match",
+        "FpcalcBackend",
+        "FingerprintAnnotator"
+      ],
+      "totalLines": 250,
+      "hasStructuralAnalysis": true
+    },
+    "worker/__init__.py": {
+      "filePath": "worker/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "worker/janitor.py": {
+      "filePath": "worker/janitor.py",
+      "contentHash": "86bc3994e339beaf67a50eb7c128e17007206dba2446eae29c404b26afc0987c",
+      "functions": [
+        {
+          "name": "delete_chunk_file",
+          "params": [
+            "path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkJanitor",
+          "methods": [
+            "__init__",
+            "delete_after_processing",
+            "expire_stale_pending",
+            "cleanup_dropped_files",
+            "sweep_orphans",
+            "passive_wal_checkpoint",
+            "run_sweep",
+            "_known_chunk_paths",
+            "_is_protected_path"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 150
+        }
+      ],
+      "imports": [
+        {
+          "source": "logging",
+          "specifiers": [
+            "logging"
+          ]
+        },
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "collections.abc",
+          "specifiers": [
+            "Callable"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "checkpoint_wal",
+            "get_connection",
+            "retry_on_busy",
+            "transaction"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "increment_chunk_files_deleted",
+            "set_wal_checkpoint_metrics"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "ChunkStatus",
+            "PipelineSettings"
+          ]
+        }
+      ],
+      "exports": [
+        "delete_chunk_file",
+        "ChunkJanitor"
+      ],
+      "totalLines": 178,
+      "hasStructuralAnalysis": true
+    },
+    "worker/__main__.py": {
+      "filePath": "worker/__main__.py",
+      "contentHash": "a3217b61dfd2863049ac499b267daa3b3824337bdaadade97e780c201e6a9c47",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "signal",
+          "specifiers": [
+            "signal"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "threading",
+          "specifiers": [
+            "threading"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings"
+          ]
+        },
+        {
+          "source": "shared.db",
+          "specifiers": [
+            "migrate"
+          ]
+        },
+        {
+          "source": "shared.logging",
+          "specifiers": [
+            "setup_logging"
+          ]
+        },
+        {
+          "source": "shared.metrics",
+          "specifiers": [
+            "start_metrics_server"
+          ]
+        },
+        {
+          "source": "worker.consumer",
+          "specifiers": [
+            "create_consumer"
+          ]
+        }
+      ],
+      "exports": [
+        "main"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "worker/transcribe.py": {
+      "filePath": "worker/transcribe.py",
+      "contentHash": "073973c4a3c027fc3c6b93eeb1e9840d034bef65bab1e0df25a55171c765b0a6",
+      "functions": [
+        {
+          "name": "_default_model_factory",
+          "params": [
+            "model_name",
+            "compute_type"
+          ],
+          "returnType": "Any",
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "TranscriptSegment",
+          "methods": [],
+          "properties": [
+            "start",
+            "end",
+            "text"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "TranscriptionResult",
+          "methods": [
+            "rtf"
+          ],
+          "properties": [
+            "text",
+            "segments",
+            "audio_duration_sec",
+            "wall_time_sec"
+          ],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "WhisperBackend",
+          "methods": [
+            "transcribe"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "Transcriber",
+          "methods": [
+            "__init__",
+            "_get_model",
+            "transcribe"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 51
+        }
+      ],
+      "imports": [
+        {
+          "source": "time",
+          "specifiers": [
+            "time"
+          ]
+        },
+        {
+          "source": "dataclasses",
+          "specifiers": [
+            "dataclass"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "typing",
+          "specifiers": [
+            "Any",
+            "Callable",
+            "Protocol"
+          ]
+        },
+        {
+          "source": "shared.models",
+          "specifiers": [
+            "PipelineSettings"
+          ]
+        }
+      ],
+      "exports": [
+        "TranscriptSegment",
+        "TranscriptionResult",
+        "WhisperBackend",
+        "_default_model_factory",
+        "Transcriber"
+      ],
+      "totalLines": 95,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

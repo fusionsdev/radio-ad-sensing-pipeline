@@ -1,0 +1,98 @@
+# Prometheus alert rules. Surface via Grafana panels in v1; Alertmanager is
+# deferred — the alerter service handles ops notifications via Telegram.
+#
+# Verify: promtool check rules monitoring/alerts.yml
+
+groups:
+  - name: pipeline-saturation
+    interval: 30s
+    rules:
+      # The chunks table backlog exceeds queue_max_hours (default 2h).
+      # A small headroom is normal; an hour-long saturation means the worker
+      # is falling behind (likely ASR too slow or LLM not responding).
+      - alert: QueueSaturated
+        expr: pipeline_queue_pending_hours > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pipeline queue saturated ({{ $value | humanizeDuration }})"
+          description: "Pending chunks exceed the queue_max_hours threshold. Worker may be falling behind."
+
+      # Queue older than retention (default 48h) — chunks are being dropped
+      # because nothing is processing them. This is the "drop-oldest" policy
+      # kicking in; alerter should have sent an ops alert already.
+      - alert: QueueDroppingOldest
+        expr: increase(pipeline_chunks_dropped_total[10m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pipeline is dropping old chunks"
+          description: "{{ $value }} chunks dropped in the last 10 minutes. Worker is not keeping up."
+
+  - name: stations
+    interval: 30s
+    rules:
+      # A station has been down (no successful chunk in the window) for longer
+      # than the operator-configured station_down_alert_minutes (default 15m).
+      - alert: StationDown
+        expr: |
+          (time() - pipeline_station_last_chunk_timestamp_seconds > 900)
+          and on(station) (pipeline_station_enabled == 1)
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Station {{ $labels.station }} down >15min"
+          description: "No successful chunk from station {{ $labels.station }} in over 15 minutes."
+
+  - name: worker-health
+    interval: 30s
+    rules:
+      # Worker is alive (heartbeat from prometheus_client process collector) but
+      # is not processing anything for >5 minutes. May be stuck on a bad chunk.
+      - alert: WorkerStalled
+        expr: increase(pipeline_chunks_processed_total{service="worker"}[5m]) == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Worker has not processed any chunk in 5 minutes"
+          description: "Worker process is up but no chunks have been consumed. Check worker logs."
+
+      # ASR is slower than real-time (RTF > 1.0). With medium.en int8 we expect
+      # ~0.1; a sustained >1.0 means the GPU is overloaded.
+      - alert: ASRSlow
+        expr: pipeline_asr_rtf_avg > 1.0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "ASR real-time factor >1.0 (currently {{ $value }})"
+          description: "ASR is slower than real-time. GPU may be contended with Ollama or model is too large for current station count."
+
+  - name: gpu
+    interval: 30s
+    rules:
+      # Sustained GPU temp >85°C — usually harmless on datacenter parts but
+      # worth surfacing if it persists; performance may be throttling.
+      - alert: GPUHot
+        expr: DCGM_FI_DEV_GPU_TEMP > 85
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU temperature >85°C (currently {{ $value }}°C)"
+          description: "Sustained high GPU temperature. Check airflow and verify Ollama + worker are not over-subscribing VRAM."
+
+      # VRAM usage above 11GB of the 12GB budget — risk of OOM if either
+      # model grows or a new model is loaded.
+      - alert: VRAMNearFull
+        expr: DCGM_FI_DEV_FB_USED / (DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) > 0.92
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU memory >92% used"
+          description: "Whisper + Ollama together are nearing the 12GB VRAM budget. Risk of OOM if model size or station count grows."

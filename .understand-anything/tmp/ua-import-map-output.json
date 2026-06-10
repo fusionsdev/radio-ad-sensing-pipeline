@@ -1,0 +1,364 @@
+{
+  "scriptCompleted": true,
+  "stats": {
+    "filesScanned": 209,
+    "filesWithImports": 38,
+    "totalEdges": 107
+  },
+  "importMap": {
+    "AGENTS.md": [],
+    ".agents/skills/caveman/SKILL.md": [],
+    ".agents/skills/design-an-interface/SKILL.md": [],
+    ".agents/skills/diagnose/scripts/hitl-loop.template.sh": [],
+    ".agents/skills/diagnose/SKILL.md": [],
+    ".agents/skills/edit-article/SKILL.md": [],
+    ".agents/skills/git-guardrails-claude-code/scripts/block-dangerous-git.sh": [],
+    ".agents/skills/git-guardrails-claude-code/SKILL.md": [],
+    ".agents/skills/grill-me/SKILL.md": [],
+    ".agents/skills/grill-with-docs/ADR-FORMAT.md": [],
+    ".agents/skills/grill-with-docs/CONTEXT-FORMAT.md": [],
+    ".agents/skills/grill-with-docs/SKILL.md": [],
+    ".agents/skills/handoff/SKILL.md": [],
+    ".agents/skills/hermes-dispatch/PROMPTS.md": [],
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.ps1": [],
+    ".agents/skills/hermes-dispatch/scripts/hermes-review.sh": [],
+    ".agents/skills/hermes-dispatch/SKILL.md": [],
+    ".agents/skills/improve-codebase-architecture/DEEPENING.md": [],
+    ".agents/skills/improve-codebase-architecture/HTML-REPORT.md": [],
+    ".agents/skills/improve-codebase-architecture/INTERFACE-DESIGN.md": [],
+    ".agents/skills/improve-codebase-architecture/LANGUAGE.md": [],
+    ".agents/skills/improve-codebase-architecture/SKILL.md": [],
+    ".agents/skills/migrate-to-shoehorn/SKILL.md": [],
+    ".agents/skills/obsidian-vault/SKILL.md": [],
+    ".agents/skills/prototype/LOGIC.md": [],
+    ".agents/skills/prototype/SKILL.md": [],
+    ".agents/skills/prototype/UI.md": [],
+    ".agents/skills/qa/SKILL.md": [],
+    ".agents/skills/request-refactor-plan/SKILL.md": [],
+    ".agents/skills/review/SKILL.md": [],
+    ".agents/skills/scaffold-exercises/SKILL.md": [],
+    ".agents/skills/setup-matt-pocock-skills/domain.md": [],
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-github.md": [],
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md": [],
+    ".agents/skills/setup-matt-pocock-skills/issue-tracker-local.md": [],
+    ".agents/skills/setup-matt-pocock-skills/SKILL.md": [],
+    ".agents/skills/setup-matt-pocock-skills/triage-labels.md": [],
+    ".agents/skills/setup-pre-commit/SKILL.md": [],
+    ".agents/skills/tdd/deep-modules.md": [],
+    ".agents/skills/tdd/interface-design.md": [],
+    ".agents/skills/tdd/mocking.md": [],
+    ".agents/skills/tdd/refactoring.md": [],
+    ".agents/skills/tdd/SKILL.md": [],
+    ".agents/skills/tdd/tests.md": [],
+    ".agents/skills/teach/GLOSSARY-FORMAT.md": [],
+    ".agents/skills/teach/LEARNING-RECORD-FORMAT.md": [],
+    ".agents/skills/teach/MISSION-FORMAT.md": [],
+    ".agents/skills/teach/RESOURCES-FORMAT.md": [],
+    ".agents/skills/teach/SKILL.md": [],
+    ".agents/skills/to-issues/SKILL.md": [],
+    ".agents/skills/to-prd/SKILL.md": [],
+    ".agents/skills/triage/AGENT-BRIEF.md": [],
+    ".agents/skills/triage/OUT-OF-SCOPE.md": [],
+    ".agents/skills/triage/SKILL.md": [],
+    ".agents/skills/ubiquitous-language/SKILL.md": [],
+    ".agents/skills/write-a-skill/SKILL.md": [],
+    ".agents/skills/writing-beats/SKILL.md": [],
+    ".agents/skills/writing-fragments/SKILL.md": [],
+    ".agents/skills/writing-shape/SKILL.md": [],
+    ".agents/skills/zoom-out/SKILL.md": [],
+    "alerter/Dockerfile": [],
+    "alerter/__init__.py": [],
+    "alerter/__main__.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/logging.py",
+      "shared/metrics.py"
+    ],
+    "alerter/service.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ],
+    "config/settings.yaml": [],
+    "config/stations.yaml": [],
+    ".cursor/rules/project-conventions.mdc": [],
+    ".cursor/rules/project-plugins-mcp.mdc": [],
+    ".cursor/rules/project-skills.mdc": [],
+    "dashboard/Dockerfile": [],
+    "dashboard/__init__.py": [],
+    "dashboard/__main__.py": [
+      "shared/config.py"
+    ],
+    "dashboard/main.py": [
+      "dashboard/__init__.py",
+      "dashboard/queries.py",
+      "shared/config.py",
+      "shared/metrics.py"
+    ],
+    "dashboard/queries.py": [
+      "shared/db.py"
+    ],
+    "dashboard/templates/ad_detail.html": [],
+    "dashboard/templates/ads.html": [],
+    "dashboard/templates/base.html": [],
+    "dashboard/templates/gaps.html": [],
+    "dashboard/templates/index.html": [],
+    "dashboard/templates/no_database.html": [],
+    "dashboard/templates/partials/ads_rows.html": [],
+    "dashboard/templates/stations.html": [],
+    "docker-compose.prod.yml": [],
+    "docker-compose.windows-dev.yml": [],
+    "docker-compose.yml": [],
+    ".dockerignore": [],
+    ".env.example": [],
+    "final-install-list.md": [],
+    "ingestor/Dockerfile": [],
+    "ingestor/ffmpeg.py": [
+      "shared/models.py"
+    ],
+    "ingestor/__init__.py": [],
+    "ingestor/__main__.py": [
+      "ingestor/supervisor.py",
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py"
+    ],
+    "ingestor/repository.py": [
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "ingestor/supervisor.py": [
+      "ingestor/ffmpeg.py",
+      "ingestor/repository.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ],
+    "monitoring/alerts.yml": [],
+    "monitoring/grafana/dashboards/pipeline.json": [],
+    "monitoring/grafana/provisioning/dashboards/default.yml": [],
+    "monitoring/grafana/provisioning/datasources/prometheus.yml": [],
+    "monitoring/__init__.py": [],
+    "monitoring/prometheus.yml": [],
+    "plan/ca-tx-ingestor-smoke-20260610.md": [],
+    "plan/codex-batch3-dispatch.md": [],
+    "plan/codex-batch3-wp10b-prompt.txt": [],
+    "plan/codex-batch3-wp5-prompt.txt": [],
+    "plan/codex-batch3-wp6-prompt.txt": [],
+    "plan/codex-batch3-wp8-prompt.txt": [],
+    "plan/codex-batch4-wp11a-prompt.txt": [],
+    "plan/codex-batch4-wp11b-prompt.txt": [],
+    "plan/codex-batch4-wp7b-prompt.txt": [],
+    "plan/codex-batch4-wp8-prompt.txt": [],
+    "plan/codex-log-wp10b-r2.txt": [],
+    "plan/codex-log-wp10b.txt": [],
+    "plan/codex-log-wp11a.txt": [],
+    "plan/codex-log-wp11b.txt": [],
+    "plan/codex-log-wp5.txt": [],
+    "plan/codex-log-wp6-r2.txt": [],
+    "plan/codex-log-wp6.txt": [],
+    "plan/codex-log-wp7b.txt": [],
+    "plan/codex-log-wp8-fix.txt": [],
+    "plan/codex-log-wp8-r2.txt": [],
+    "plan/codex-log-wp8.txt": [],
+    "plan/codex-out-wp10b.md": [],
+    "plan/codex-out-wp11a.md": [],
+    "plan/codex-out-wp11b.md": [],
+    "plan/codex-out-wp5.md": [],
+    "plan/codex-out-wp6.md": [],
+    "plan/codex-out-wp7b.md": [],
+    "plan/codex-out-wp8-fix.md": [],
+    "plan/codex-out-wp8.md": [],
+    "plan/codexplan.md": [],
+    "plan/gpt-minimax-routing-6165b3.md": [],
+    "plan/handoff-batch1-sessions-6165b3.md": [],
+    "plan/handoff-ca-tx-smoke-20260610.md": [],
+    "plan/handoff-phase1-scaffold-db-6165b3.md": [],
+    "plan/_hermes-prompt-wp13.txt": [],
+    "plan/hermes-review-wp13-20260610-0846.md": [],
+    "PLAN.md": [],
+    "plan/opus-review-plan-6165b3.md": [],
+    "plan/phase1-report.md": [],
+    "plan/radio-ad-sensing-pipeline-6165b3.md": [],
+    "plan/work-dispatch-6165b3.md": [],
+    "plan/wp10a-report.md": [],
+    "plan/wp10b-report.md": [],
+    "plan/wp11a-report.md": [],
+    "plan/wp11b-report.md": [],
+    "plan/wp12-report.md": [],
+    "plan/wp13-hardening-report.md": [],
+    "plan/wp2-report.md": [],
+    "plan/wp3-report.md": [],
+    "plan/wp4-report.md": [],
+    "plan/wp5-report.md": [],
+    "plan/wp6-report.md": [],
+    "plan/wp7a-report.md": [],
+    "plan/wp7b-docker-smoke-20260610.md": [],
+    "plan/wp7b-report.md": [],
+    "plan/wp8-report.md": [],
+    "plan/wp9-report.md": [],
+    "pyproject.toml": [],
+    "README.md": [],
+    "scripts/run_worker_until_empty.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "worker/consumer.py"
+    ],
+    "shared/config.py": [
+      "shared/models.py"
+    ],
+    "shared/db.py": [],
+    "shared/__init__.py": [],
+    "shared/logging.py": [
+      "shared/logging.py"
+    ],
+    "shared/metrics.py": [
+      "shared/db.py"
+    ],
+    "shared/migrations/001_initial.sql": [],
+    "shared/migrations/002_transcript_segments.sql": [],
+    "shared/models.py": [],
+    "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt": [],
+    "tests/fixtures/extraction_eval/credit_union_interview_negative.txt": [],
+    "tests/fixtures/extraction_eval/homefront_mortgage_positive.txt": [],
+    "tests/fixtures/extraction_eval/liberty_funding_group_positive.txt": [],
+    "tests/fixtures/extraction_eval/manifest.json": [],
+    "tests/fixtures/extraction_eval/news_interest_rates_negative.txt": [],
+    "tests/fixtures/extraction_eval/rapid_relief_capital_positive.txt": [],
+    "tests/fixtures/extraction_eval/talkshow_sba_loans_negative.txt": [],
+    "tests/fixtures/__init__.py": [],
+    "tests/fixtures/seed_dashboard.py": [
+      "shared/db.py"
+    ],
+    "tests/__init__.py": [],
+    "tests/test_alerter.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/db.py"
+    ],
+    "tests/test_asr_benchmark.py": [
+      "shared/models.py",
+      "worker/asr_benchmark.py"
+    ],
+    "tests/test_config.py": [
+      "shared/config.py"
+    ],
+    "tests/test_dashboard.py": [
+      "dashboard/__init__.py",
+      "dashboard/main.py",
+      "dashboard/queries.py",
+      "shared/db.py",
+      "tests/fixtures/seed_dashboard.py"
+    ],
+    "tests/test_db.py": [
+      "shared/db.py"
+    ],
+    "tests/test_dedup.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/dedup.py",
+      "worker/transcribe.py"
+    ],
+    "tests/test_e2e_smoke.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/db.py",
+      "shared/models.py",
+      "worker/consumer.py",
+      "worker/dedup.py",
+      "worker/transcribe.py"
+    ],
+    "tests/test_extraction_eval.py": [
+      "worker/extract.py"
+    ],
+    "tests/test_extract.py": [
+      "shared/models.py",
+      "worker/extract.py"
+    ],
+    "tests/test_fingerprint.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/fingerprint.py"
+    ],
+    "tests/test_ingestor.py": [
+      "ingestor/ffmpeg.py",
+      "ingestor/supervisor.py",
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "tests/test_janitor.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/janitor.py"
+    ],
+    "tests/test_logging.py": [
+      "shared/logging.py"
+    ],
+    "tests/test_metrics.py": [
+      "shared/db.py",
+      "shared/metrics.py"
+    ],
+    "tests/test_models.py": [
+      "shared/models.py"
+    ],
+    "tests/test_worker_consumer.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/consumer.py",
+      "worker/fingerprint.py",
+      "worker/transcribe.py"
+    ],
+    ".understand-anything/.understandignore": [],
+    ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md": [],
+    ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md": [],
+    ".windsurf/plans/handoff-wp9-dashboard-6165b3.md": [],
+    "worker/asr_benchmark.py": [
+      "shared/config.py",
+      "shared/models.py",
+      "worker/transcribe.py"
+    ],
+    "worker/consumer.py": [
+      "shared/db.py",
+      "shared/metrics.py",
+      "shared/models.py",
+      "worker/dedup.py",
+      "worker/extract.py",
+      "worker/fingerprint.py",
+      "worker/janitor.py",
+      "worker/transcribe.py"
+    ],
+    "worker/dedup.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/extract.py",
+      "worker/transcribe.py"
+    ],
+    "worker/Dockerfile": [],
+    "worker/extract.py": [
+      "shared/models.py"
+    ],
+    "worker/fingerprint.py": [
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "worker/__init__.py": [],
+    "worker/janitor.py": [
+      "shared/db.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ],
+    "worker/__main__.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py",
+      "worker/consumer.py"
+    ],
+    "worker/transcribe.py": [
+      "shared/models.py"
+    ]
+  }
+}

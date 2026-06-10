@@ -1,0 +1,10 @@
+{% for ad in ads %}
+<tr>
+  <td><a class="row-link" href="/ads/{{ ad.id }}">{{ ad.company_name or "—" }}</a></td>
+  <td>{{ ad.category or "—" }}</td>
+  <td>{{ ad.phone_norm or "—" }}</td>
+  <td>{{ format_ts(ad.first_seen) }}</td>
+  <td>{{ format_ts(ad.last_seen) }}</td>
+  <td>{{ ad.airing_count }}</td>
+</tr>
+{% endfor %}

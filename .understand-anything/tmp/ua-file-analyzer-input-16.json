@@ -1,0 +1,42 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/teach/GLOSSARY-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 35,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/teach/LEARNING-RECORD-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 46,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/teach/MISSION-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 31,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/teach/RESOURCES-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/teach/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 113,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/teach/GLOSSARY-FORMAT.md": [],
+    ".agents/skills/teach/LEARNING-RECORD-FORMAT.md": [],
+    ".agents/skills/teach/MISSION-FORMAT.md": [],
+    ".agents/skills/teach/RESOURCES-FORMAT.md": [],
+    ".agents/skills/teach/SKILL.md": []
+  }
+}

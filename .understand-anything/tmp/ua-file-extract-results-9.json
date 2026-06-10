@@ -1,0 +1,93 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 1,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "worker/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 43,
+      "nonEmptyLines": 35,
+      "services": [
+        {
+          "name": "base",
+          "image": "python:3.11-slim",
+          "ports": [],
+          "startLine": 3,
+          "endLine": 44
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM python:3.11-slim AS base",
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "ENV PYTHONUNBUFFERED=1 \\",
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "RUN apt-get update \\",
+          "startLine": 12,
+          "endLine": 12
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "COPY pyproject.toml README.md ./",
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "COPY shared/ ./shared/",
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "COPY worker/ ./worker/",
+          "startLine": 25,
+          "endLine": 25
+        },
+        {
+          "name": "COPY config/ ./config/",
+          "startLine": 26,
+          "endLine": 26
+        },
+        {
+          "name": "RUN pip install --upgrade pip \\",
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "ENV LD_LIBRARY_PATH=/usr/local/lib/python3.11/site-packages/nvid",
+          "startLine": 35,
+          "endLine": 35
+        },
+        {
+          "name": "HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \\",
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "CMD [\"python\", \"-m\", \"worker\", \"data/pipeline.db\"]",
+          "startLine": 43,
+          "endLine": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 1,
+        "stepCount": 12
+      }
+    }
+  ]
+}

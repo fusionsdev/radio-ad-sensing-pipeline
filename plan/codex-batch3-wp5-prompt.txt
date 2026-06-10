@@ -1,0 +1,13 @@
+Batch 3 Session A — WP-5 Dedup fix-then-ship (GPT high).
+
+Read: PLAN.md Phase 5, plan/opus-review-plan-6165b3.md WP-5, plan/work-dispatch-6165b3.md, worker/dedup.py, tests/test_dedup.py.
+
+Implement Opus fix list:
+H1 — When phone_norm differs on both sides, omit phone from weighted score (or fuzzy tolerance); do NOT score 0×3.0. Align PLAN "dedup doesn't rely on exact phone match".
+M2 — Category mismatch should score 0 or be excluded, not 55.
+Add regression tests: mangled phone same ad merges; distinct ads don't merge; same-station >180s airing_count+1; cross-station within 3min two airings.
+Write plan/wp5-report.md.
+Update plan/opus-review-plan-6165b3.md WP-5 to ship if done.
+
+Verify: .venv\Scripts\pytest tests/test_dedup.py -v && .venv\Scripts\pytest -q
+Minimal diff. Do not touch ingestor/dashboard/compose unless required.

@@ -1,0 +1,1600 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 5,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "dashboard/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "dashboard/main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 136,
+      "nonEmptyLines": 114,
+      "functions": [
+        {
+          "name": "create_app",
+          "startLine": 20,
+          "endLine": 116,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "_no_database",
+          "startLine": 119,
+          "endLine": 120,
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "_format_ts",
+          "startLine": 123,
+          "endLine": 126,
+          "params": [
+            "ts"
+          ]
+        },
+        {
+          "name": "_format_age",
+          "startLine": 129,
+          "endLine": 136,
+          "params": [
+            "seconds"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "create_app",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "_no_database",
+          "line": 119,
+          "isDefault": false
+        },
+        {
+          "name": "_format_ts",
+          "line": 123,
+          "isDefault": false
+        },
+        {
+          "name": "_format_age",
+          "line": 129,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "create_app",
+          "callee": "load_settings",
+          "lineNumber": 21
+        },
+        {
+          "caller": "create_app",
+          "callee": "(PROJECT_ROOT / settings.db_path).resolve",
+          "lineNumber": 25
+        },
+        {
+          "caller": "create_app",
+          "callee": "FastAPI",
+          "lineNumber": 28
+        },
+        {
+          "caller": "create_app",
+          "callee": "start_metrics_server",
+          "lineNumber": 29
+        },
+        {
+          "caller": "create_app",
+          "callee": "configure_dashboard_metrics",
+          "lineNumber": 30
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 32
+        },
+        {
+          "caller": "health",
+          "callee": "JSONResponse",
+          "lineNumber": 34
+        },
+        {
+          "caller": "health",
+          "callee": "queries.fetch_health",
+          "lineNumber": 34
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 36
+        },
+        {
+          "caller": "audio",
+          "callee": "queries.db_exists",
+          "lineNumber": 38
+        },
+        {
+          "caller": "audio",
+          "callee": "HTTPException",
+          "lineNumber": 39
+        },
+        {
+          "caller": "audio",
+          "callee": "queries.resolve_audio_path",
+          "lineNumber": 40
+        },
+        {
+          "caller": "audio",
+          "callee": "HTTPException",
+          "lineNumber": 42
+        },
+        {
+          "caller": "audio",
+          "callee": "FileResponse",
+          "lineNumber": 43
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 45
+        },
+        {
+          "caller": "index",
+          "callee": "queries.db_exists",
+          "lineNumber": 47
+        },
+        {
+          "caller": "index",
+          "callee": "_no_database",
+          "lineNumber": 48
+        },
+        {
+          "caller": "index",
+          "callee": "queries.fetch_overview",
+          "lineNumber": 49
+        },
+        {
+          "caller": "index",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 50
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 56
+        },
+        {
+          "caller": "ads_list",
+          "callee": "queries.db_exists",
+          "lineNumber": 58
+        },
+        {
+          "caller": "ads_list",
+          "callee": "_no_database",
+          "lineNumber": 59
+        },
+        {
+          "caller": "ads_list",
+          "callee": "queries.fetch_ads_page",
+          "lineNumber": 60
+        },
+        {
+          "caller": "ads_list",
+          "callee": "max",
+          "lineNumber": 61
+        },
+        {
+          "caller": "ads_list",
+          "callee": "request.headers.get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "ads_list",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 70
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 72
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "queries.db_exists",
+          "lineNumber": 74
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "_no_database",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "queries.fetch_ad_detail",
+          "lineNumber": 76
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "HTTPException",
+          "lineNumber": 78
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "queries.resolve_audio_path",
+          "lineNumber": 79
+        },
+        {
+          "caller": "ad_detail",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 82
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 93
+        },
+        {
+          "caller": "stations",
+          "callee": "queries.db_exists",
+          "lineNumber": 95
+        },
+        {
+          "caller": "stations",
+          "callee": "_no_database",
+          "lineNumber": 96
+        },
+        {
+          "caller": "stations",
+          "callee": "queries.fetch_stations",
+          "lineNumber": 97
+        },
+        {
+          "caller": "stations",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 98
+        },
+        {
+          "caller": "create_app",
+          "callee": "app.get",
+          "lineNumber": 104
+        },
+        {
+          "caller": "gaps",
+          "callee": "queries.db_exists",
+          "lineNumber": 106
+        },
+        {
+          "caller": "gaps",
+          "callee": "_no_database",
+          "lineNumber": 107
+        },
+        {
+          "caller": "gaps",
+          "callee": "queries.fetch_gaps",
+          "lineNumber": 108
+        },
+        {
+          "caller": "gaps",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 109
+        },
+        {
+          "caller": "_no_database",
+          "callee": "TEMPLATES.TemplateResponse",
+          "lineNumber": 120
+        },
+        {
+          "caller": "_format_ts",
+          "callee": "datetime.fromtimestamp(ts, tz=UTC).strftime",
+          "lineNumber": 126
+        },
+        {
+          "caller": "_format_ts",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 126
+        },
+        {
+          "caller": "_format_age",
+          "callee": "int",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_format_age",
+          "callee": "int",
+          "lineNumber": 135
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "dashboard/queries.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 299,
+      "nonEmptyLines": 267,
+      "functions": [
+        {
+          "name": "_start_of_today_ts",
+          "startLine": 51,
+          "endLine": 54,
+          "params": []
+        },
+        {
+          "name": "_forty_eight_hours_ago",
+          "startLine": 57,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "db_exists",
+          "startLine": 61,
+          "endLine": 62,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "fetch_overview",
+          "startLine": 65,
+          "endLine": 114,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "fetch_ads_page",
+          "startLine": 117,
+          "endLine": 143,
+          "params": [
+            "db_path",
+            "page"
+          ]
+        },
+        {
+          "name": "fetch_ad_detail",
+          "startLine": 146,
+          "endLine": 203,
+          "params": [
+            "db_path",
+            "ad_id"
+          ]
+        },
+        {
+          "name": "fetch_stations",
+          "startLine": 206,
+          "endLine": 225,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "fetch_gaps",
+          "startLine": 228,
+          "endLine": 242,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "fetch_health",
+          "startLine": 245,
+          "endLine": 255,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "resolve_audio_path",
+          "startLine": 258,
+          "endLine": 290,
+          "params": [
+            "db_path",
+            "resource_id"
+          ]
+        },
+        {
+          "name": "_readonly",
+          "startLine": 294,
+          "endLine": 299,
+          "params": [
+            "db_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "OverviewStats",
+          "startLine": 19,
+          "endLine": 24,
+          "methods": [],
+          "properties": [
+            "chunks_today",
+            "detections_today",
+            "ads_total",
+            "queue_depth",
+            "station_health"
+          ]
+        },
+        {
+          "name": "AdRow",
+          "startLine": 28,
+          "endLine": 35,
+          "methods": [],
+          "properties": [
+            "id",
+            "company_name",
+            "category",
+            "phone_norm",
+            "first_seen",
+            "last_seen",
+            "airing_count"
+          ]
+        },
+        {
+          "name": "DetectionRow",
+          "startLine": 39,
+          "endLine": 48,
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "company_name",
+            "offer_summary",
+            "confidence",
+            "alerted",
+            "transcript_excerpt",
+            "station_name",
+            "chunk_start_ts"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "OverviewStats",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "AdRow",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "DetectionRow",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "_start_of_today_ts",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "_forty_eight_hours_ago",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "db_exists",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_overview",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_ads_page",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_ad_detail",
+          "line": 146,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_stations",
+          "line": 206,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_gaps",
+          "line": 228,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_health",
+          "line": 245,
+          "isDefault": false
+        },
+        {
+          "name": "resolve_audio_path",
+          "line": 258,
+          "isDefault": false
+        },
+        {
+          "name": "_readonly",
+          "line": 293,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_start_of_today_ts",
+          "callee": "datetime.now",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_start_of_today_ts",
+          "callee": "now.replace",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_start_of_today_ts",
+          "callee": "start.timestamp",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_forty_eight_hours_ago",
+          "callee": "time.time",
+          "lineNumber": 58
+        },
+        {
+          "caller": "db_exists",
+          "callee": "db_path.exists",
+          "lineNumber": 62
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "_start_of_today_ts",
+          "lineNumber": 66
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "time.time",
+          "lineNumber": 67
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "_readonly",
+          "lineNumber": 68
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) FROM chunks WHERE start_ts >= ?\",\n            (today,),\n        ).fetchone",
+          "lineNumber": 69
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute",
+          "lineNumber": 69
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT COUNT(*) FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            WHERE c.start_ts >= ?\n            \"\"\",\n            (today,),\n        ).fetchone",
+          "lineNumber": 73
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute",
+          "lineNumber": 73
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM canonical_ads\").fetchone",
+          "lineNumber": 81
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute",
+          "lineNumber": 81
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) FROM chunks WHERE status = 'pending'\"\n        ).fetchone",
+          "lineNumber": 82
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute",
+          "lineNumber": 82
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT s.id, s.name, s.enabled,\n                   MAX(c.end_ts) AS last_chunk_ts\n            FROM stations s\n            LEFT JOIN chunks c ON c.station_id = s.id\n            GROUP BY s.id\n            ORDER BY s.name\n            \"\"\"\n        ).fetchall",
+          "lineNumber": 85
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "conn.execute",
+          "lineNumber": 85
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "station_health.append",
+          "lineNumber": 99
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "bool",
+          "lineNumber": 103
+        },
+        {
+          "caller": "fetch_overview",
+          "callee": "OverviewStats",
+          "lineNumber": 108
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "max",
+          "lineNumber": 118
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "_readonly",
+          "lineNumber": 119
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM canonical_ads\").fetchone",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "conn.execute",
+          "lineNumber": 120
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT id, company_name, category, phone_norm,\n                   first_seen, last_seen, airing_count\n            FROM canonical_ads\n            ORDER BY last_seen DESC\n            LIMIT ? OFFSET ?\n            \"\"\",\n            (ADS_PAGE_SIZE, offset),\n        ).fetchall",
+          "lineNumber": 121
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "conn.execute",
+          "lineNumber": 121
+        },
+        {
+          "caller": "fetch_ads_page",
+          "callee": "AdRow",
+          "lineNumber": 132
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "_readonly",
+          "lineNumber": 149
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT id, company_name, category, phone_norm,\n                   first_seen, last_seen, airing_count, archived_audio_path\n            FROM canonical_ads WHERE id = ?\n            \"\"\",\n            (ad_id,),\n        ).fetchone",
+          "lineNumber": 150
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "conn.execute",
+          "lineNumber": 150
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "AdRow",
+          "lineNumber": 160
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT d.id, d.chunk_id, d.company_name, d.offer_summary,\n                   d.confidence, d.alerted, d.key_claims,\n                   t.text AS transcript_text,\n                   s.name AS station_name, c.start_ts AS chunk_start_ts\n            FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            JOIN stations s ON s.id = c.station_id\n            LEFT JOIN transcripts t ON t.chunk_id = d.chunk_id\n            WHERE d.canonical_ad_id = ?\n            ORDER BY c.start_ts DESC\n            \"\"\",\n            (ad_id,),\n        ).fetchall",
+          "lineNumber": 170
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "conn.execute",
+          "lineNumber": 170
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "len",
+          "lineNumber": 188
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "detections.append",
+          "lineNumber": 190
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "DetectionRow",
+          "lineNumber": 191
+        },
+        {
+          "caller": "fetch_ad_detail",
+          "callee": "bool",
+          "lineNumber": 197
+        },
+        {
+          "caller": "fetch_stations",
+          "callee": "time.time",
+          "lineNumber": 207
+        },
+        {
+          "caller": "fetch_stations",
+          "callee": "_readonly",
+          "lineNumber": 208
+        },
+        {
+          "caller": "fetch_stations",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT s.id, s.name, s.enabled, s.url,\n                   MAX(c.end_ts) AS last_chunk_ts,\n                   SUM(CASE WHEN c.start_ts >= ? THEN 1 ELSE 0 END) AS chunks_24h,\n                   (\n                     SELECT COUNT(*) FROM gaps g\n                     WHERE g.station_id = s.id AND g.start_ts >= ?\n                   ) AS gaps_24h\n            FROM stations s\n            LEFT JOIN chunks c ON c.station_id = s.id\n            GROUP BY s.id\n            ORDER BY s.name\n            \"\"\",\n            (since_24h, since_24h),\n        ).fetchall",
+          "lineNumber": 209
+        },
+        {
+          "caller": "fetch_stations",
+          "callee": "conn.execute",
+          "lineNumber": 209
+        },
+        {
+          "caller": "fetch_stations",
+          "callee": "dict",
+          "lineNumber": 225
+        },
+        {
+          "caller": "fetch_gaps",
+          "callee": "_forty_eight_hours_ago",
+          "lineNumber": 229
+        },
+        {
+          "caller": "fetch_gaps",
+          "callee": "_readonly",
+          "lineNumber": 230
+        },
+        {
+          "caller": "fetch_gaps",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT g.id, g.station_id, s.name AS station_name,\n                   g.start_ts, g.end_ts, g.reason\n            FROM gaps g\n            JOIN stations s ON s.id = g.station_id\n            WHERE g.start_ts >= ?\n            ORDER BY g.start_ts DESC\n            \"\"\",\n            (since,),\n        ).fetchall",
+          "lineNumber": 231
+        },
+        {
+          "caller": "fetch_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 231
+        },
+        {
+          "caller": "fetch_gaps",
+          "callee": "dict",
+          "lineNumber": 242
+        },
+        {
+          "caller": "fetch_health",
+          "callee": "db_exists",
+          "lineNumber": 246
+        },
+        {
+          "caller": "fetch_health",
+          "callee": "_readonly",
+          "lineNumber": 249
+        },
+        {
+          "caller": "fetch_health",
+          "callee": "conn.execute(\n                \"SELECT COUNT(*) FROM chunks WHERE status = 'pending'\"\n            ).fetchone",
+          "lineNumber": 250
+        },
+        {
+          "caller": "fetch_health",
+          "callee": "conn.execute",
+          "lineNumber": 250
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "AD_ARCHIVE_DIR.resolve",
+          "lineNumber": 260
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "_readonly",
+          "lineNumber": 261
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT ca.archived_audio_path\n            FROM detections d\n            JOIN canonical_ads ca ON ca.id = d.canonical_ad_id\n            WHERE d.id = ?\n            \"\"\",\n            (resource_id,),\n        ).fetchone",
+          "lineNumber": 262
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "conn.execute",
+          "lineNumber": 262
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "conn.execute(\n                \"SELECT archived_audio_path FROM canonical_ads WHERE id = ?\",\n                (resource_id,),\n            ).fetchone",
+          "lineNumber": 272
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "conn.execute",
+          "lineNumber": 272
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "Path",
+          "lineNumber": 279
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "candidate.is_absolute",
+          "lineNumber": 280
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "(PROJECT_ROOT / candidate).resolve",
+          "lineNumber": 281
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "candidate.resolve",
+          "lineNumber": 283
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "candidate.relative_to",
+          "lineNumber": 285
+        },
+        {
+          "caller": "resolve_audio_path",
+          "callee": "candidate.is_file",
+          "lineNumber": 288
+        },
+        {
+          "caller": "_readonly",
+          "callee": "get_connection",
+          "lineNumber": 295
+        },
+        {
+          "caller": "_readonly",
+          "callee": "connection.close",
+          "lineNumber": 299
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 14,
+        "functionCount": 11,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "tests/fixtures/seed_dashboard.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 136,
+      "nonEmptyLines": 121,
+      "functions": [
+        {
+          "name": "_write_silent_wav",
+          "startLine": 16,
+          "endLine": 24,
+          "params": [
+            "path",
+            "duration_s"
+          ]
+        },
+        {
+          "name": "seed_dashboard_db",
+          "startLine": 27,
+          "endLine": 136,
+          "params": [
+            "db_path",
+            "archive_dir"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_write_silent_wav",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "seed_dashboard_db",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_write_silent_wav",
+          "callee": "path.parent.mkdir",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "int",
+          "lineNumber": 19
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "wave.open",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "str",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setnchannels",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setsampwidth",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setframerate",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.writeframes",
+          "lineNumber": 24
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "migrate",
+          "lineNumber": 30
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "time.time",
+          "lineNumber": 31
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "_write_silent_wav",
+          "lineNumber": 33
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "str",
+          "lineNumber": 34
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "audio_abs.resolve",
+          "lineNumber": 34
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "get_connection",
+          "lineNumber": 36
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "transaction",
+          "lineNumber": 38
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 39
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 43
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute(\n                \"SELECT id FROM stations WHERE name = 'news-talk'\"\n            ).fetchone",
+          "lineNumber": 47
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 47
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 51
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute(\"SELECT id FROM canonical_ads\").fetchone",
+          "lineNumber": 68
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 68
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "enumerate",
+          "lineNumber": 70
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 73
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute(\"SELECT id FROM chunks ORDER BY id\").fetchall",
+          "lineNumber": 88
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 88
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 92
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 101
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "json.dumps",
+          "lineNumber": 115
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute(\"SELECT id FROM detections\").fetchone",
+          "lineNumber": 119
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 119
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.execute",
+          "lineNumber": 121
+        },
+        {
+          "caller": "seed_dashboard_db",
+          "callee": "conn.close",
+          "lineNumber": 136
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_dashboard.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 152,
+      "nonEmptyLines": 112,
+      "functions": [
+        {
+          "name": "empty_db",
+          "startLine": 19,
+          "endLine": 22,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "seeded",
+          "startLine": 26,
+          "endLine": 31,
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "missing_db",
+          "startLine": 35,
+          "endLine": 36,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_all_html_routes_200_on_empty_db",
+          "startLine": 39,
+          "endLine": 43,
+          "params": [
+            "empty_db"
+          ]
+        },
+        {
+          "name": "test_all_html_routes_200_on_seeded_db",
+          "startLine": 46,
+          "endLine": 51,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_ad_detail_200_seeded",
+          "startLine": 54,
+          "endLine": 59,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_ad_detail_404_unknown",
+          "startLine": 62,
+          "endLine": 65,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_missing_db_shows_no_database_page",
+          "startLine": 68,
+          "endLine": 72,
+          "params": [
+            "missing_db"
+          ]
+        },
+        {
+          "name": "test_health_json_empty_db",
+          "startLine": 75,
+          "endLine": 79,
+          "params": [
+            "empty_db"
+          ]
+        },
+        {
+          "name": "test_health_json_missing_db",
+          "startLine": 82,
+          "endLine": 85,
+          "params": [
+            "missing_db"
+          ]
+        },
+        {
+          "name": "test_health_pending_count_seeded",
+          "startLine": 88,
+          "endLine": 93,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_audio_serves_seeded_file",
+          "startLine": 96,
+          "endLine": 101,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_audio_path_traversal_rejected",
+          "startLine": 104,
+          "endLine": 116,
+          "params": [
+            "seeded"
+          ]
+        },
+        {
+          "name": "test_audio_missing_db",
+          "startLine": 119,
+          "endLine": 121,
+          "params": [
+            "missing_db"
+          ]
+        },
+        {
+          "name": "test_dashboard_never_opens_writable_connection",
+          "startLine": 124,
+          "endLine": 143,
+          "params": [
+            "seeded",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_ads_htmx_partial",
+          "startLine": 146,
+          "endLine": 152,
+          "params": [
+            "seeded"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "empty_db",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "seeded",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "missing_db",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "test_all_html_routes_200_on_empty_db",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "test_all_html_routes_200_on_seeded_db",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "test_ad_detail_200_seeded",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "test_ad_detail_404_unknown",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "test_missing_db_shows_no_database_page",
+          "line": 68,
+          "isDefault": false
+        },
+        {
+          "name": "test_health_json_empty_db",
+          "line": 75,
+          "isDefault": false
+        },
+        {
+          "name": "test_health_json_missing_db",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "test_health_pending_count_seeded",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "test_audio_serves_seeded_file",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "test_audio_path_traversal_rejected",
+          "line": 104,
+          "isDefault": false
+        },
+        {
+          "name": "test_audio_missing_db",
+          "line": 119,
+          "isDefault": false
+        },
+        {
+          "name": "test_dashboard_never_opens_writable_connection",
+          "line": 124,
+          "isDefault": false
+        },
+        {
+          "name": "test_ads_htmx_partial",
+          "line": 146,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "empty_db",
+          "callee": "migrate",
+          "lineNumber": 21
+        },
+        {
+          "caller": "seeded",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 28
+        },
+        {
+          "caller": "seeded",
+          "callee": "seed_dashboard_db",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_all_html_routes_200_on_empty_db",
+          "callee": "TestClient",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_all_html_routes_200_on_empty_db",
+          "callee": "create_app",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_all_html_routes_200_on_empty_db",
+          "callee": "client.get",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_all_html_routes_200_on_seeded_db",
+          "callee": "TestClient",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_all_html_routes_200_on_seeded_db",
+          "callee": "create_app",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_all_html_routes_200_on_seeded_db",
+          "callee": "client.get",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_ad_detail_200_seeded",
+          "callee": "TestClient",
+          "lineNumber": 56
+        },
+        {
+          "caller": "test_ad_detail_200_seeded",
+          "callee": "create_app",
+          "lineNumber": 56
+        },
+        {
+          "caller": "test_ad_detail_200_seeded",
+          "callee": "client.get",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_ad_detail_404_unknown",
+          "callee": "TestClient",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_ad_detail_404_unknown",
+          "callee": "create_app",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_ad_detail_404_unknown",
+          "callee": "client.get",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_missing_db_shows_no_database_page",
+          "callee": "TestClient",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_missing_db_shows_no_database_page",
+          "callee": "create_app",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_missing_db_shows_no_database_page",
+          "callee": "client.get",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_health_json_empty_db",
+          "callee": "TestClient",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_health_json_empty_db",
+          "callee": "create_app",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_health_json_empty_db",
+          "callee": "client.get(\"/health\").json",
+          "lineNumber": 77
+        },
+        {
+          "caller": "test_health_json_empty_db",
+          "callee": "client.get",
+          "lineNumber": 77
+        },
+        {
+          "caller": "test_health_json_missing_db",
+          "callee": "TestClient",
+          "lineNumber": 83
+        },
+        {
+          "caller": "test_health_json_missing_db",
+          "callee": "create_app",
+          "lineNumber": 83
+        },
+        {
+          "caller": "test_health_json_missing_db",
+          "callee": "client.get(\"/health\").json",
+          "lineNumber": 84
+        },
+        {
+          "caller": "test_health_json_missing_db",
+          "callee": "client.get",
+          "lineNumber": 84
+        },
+        {
+          "caller": "test_health_pending_count_seeded",
+          "callee": "TestClient",
+          "lineNumber": 90
+        },
+        {
+          "caller": "test_health_pending_count_seeded",
+          "callee": "create_app",
+          "lineNumber": 90
+        },
+        {
+          "caller": "test_health_pending_count_seeded",
+          "callee": "client.get(\"/health\").json",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_health_pending_count_seeded",
+          "callee": "client.get",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_audio_serves_seeded_file",
+          "callee": "TestClient",
+          "lineNumber": 98
+        },
+        {
+          "caller": "test_audio_serves_seeded_file",
+          "callee": "create_app",
+          "lineNumber": 98
+        },
+        {
+          "caller": "test_audio_serves_seeded_file",
+          "callee": "client.get",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_audio_serves_seeded_file",
+          "callee": "response.headers.get",
+          "lineNumber": 101
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "get_connection",
+          "lineNumber": 106
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "conn.execute",
+          "lineNumber": 108
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "conn.commit",
+          "lineNumber": 112
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "conn.close",
+          "lineNumber": 114
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "TestClient",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "create_app",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_audio_path_traversal_rejected",
+          "callee": "client.get",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_audio_missing_db",
+          "callee": "TestClient",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_audio_missing_db",
+          "callee": "create_app",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_audio_missing_db",
+          "callee": "client.get",
+          "lineNumber": 121
+        },
+        {
+          "caller": "strict_get_connection",
+          "callee": "AssertionError",
+          "lineNumber": 134
+        },
+        {
+          "caller": "strict_get_connection",
+          "callee": "original",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_dashboard_never_opens_writable_connection",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_dashboard_never_opens_writable_connection",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 139
+        },
+        {
+          "caller": "test_dashboard_never_opens_writable_connection",
+          "callee": "TestClient",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_dashboard_never_opens_writable_connection",
+          "callee": "create_app",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_dashboard_never_opens_writable_connection",
+          "callee": "client.get",
+          "lineNumber": 142
+        },
+        {
+          "caller": "test_ads_htmx_partial",
+          "callee": "TestClient",
+          "lineNumber": 148
+        },
+        {
+          "caller": "test_ads_htmx_partial",
+          "callee": "create_app",
+          "lineNumber": 148
+        },
+        {
+          "caller": "test_ads_htmx_partial",
+          "callee": "client.get",
+          "lineNumber": 149
+        },
+        {
+          "caller": "test_ads_htmx_partial",
+          "callee": "response.text.lower",
+          "lineNumber": 152
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 16,
+        "functionCount": 16,
+        "classCount": 0
+      }
+    }
+  ]
+}

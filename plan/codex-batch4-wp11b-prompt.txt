@@ -1,0 +1,15 @@
+Batch 4 Session D — WP-11b Extraction eval set (GPT high).
+
+Read: PLAN.md Phase 11, worker/extract.py, tests/test_extract.py, plan/wp4-report.md.
+
+Create tests/fixtures/extraction_eval/ with real loan-ad-style transcript fixtures:
+- At least 4 positive ads (clear CTA, phone, offer)
+- At least 3 negative (loan talk show / news, no commercial)
+- JSON manifest with expected is_ad, company_name rough match, phone if present
+
+Add tests/test_extraction_eval.py that runs normalize + optional mock OllamaExtractor against fixtures with scoring rubric (pass if is_ad correct, phone norm reasonable).
+
+No live Ollama required in CI — use mock backend returning fixture-shaped JSON for extractor tests; eval set documents ground truth for manual Ollama runs.
+
+Verify: .venv\Scripts\pytest tests/test_extraction_eval.py -v && pytest -q
+Write plan/wp11b-report.md.

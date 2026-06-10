@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}No Database — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>Database</h2>
+  <p class="empty">No database yet. Run migrations first:</p>
+  <pre style="color: var(--muted); font-size: 0.85rem;">python -c "from shared.db import migrate; migrate('data/pipeline.db')"</pre>
+  <p style="color: var(--muted); font-size: 0.9rem;">Pipeline phases 2–6 will populate stations, chunks, and detections.</p>
+</div>
+{% endblock %}

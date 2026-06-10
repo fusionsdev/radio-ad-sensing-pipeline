@@ -1,0 +1,37 @@
+---
+description: Core project context and agent behavior for radio-ad-sensing-pipeline
+alwaysApply: true
+---
+
+# Radio Ad-Sensing Pipeline — Agent Conventions
+
+## Canonical docs (read first)
+
+0. `AGENTS.md` — **session memory**: current phase, state, checklist (read every session)
+1. `PLAN.md` — architecture, schema, phases, risks (do not re-litigate)
+2. `plan/handoff-*.md` — phase scope for current work
+3. `plan/phase1-report.md` — Phase 1 completion record
+
+## Code layout
+
+- `shared/` — import-light; DB, models, config, logging (no GPU/ML deps)
+- `config/stations.yaml`, `config/settings.yaml` — runtime config
+- `data/` — gitignored runtime (DB, chunks, archives)
+- Service stubs: `ingestor/`, `worker/`, `alerter/`, `dashboard/`, `monitoring/`
+
+## Hard constraints
+
+- SQLite: WAL + `shared/db.py` `retry_on_busy`; keep transactions short
+- `fingerprints.chromaprint_vector` = BLOB feature vector, not hash
+- LLM schema: no `station`/`timestamp` in extraction — metadata only
+- Telegram: outbound-only; secrets in `.env` never committed
+- Implement **one phase at a time** per handoff scope
+
+## Verification before "done"
+
+```bash
+.venv\Scripts\pytest
+.venv\Scripts\python -c "from shared.db import migrate; migrate('data/test.db')"
+```
+
+Report deviations in `plan/` when closing a phase.

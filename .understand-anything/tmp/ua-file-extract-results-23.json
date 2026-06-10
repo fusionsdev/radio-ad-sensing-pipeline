@@ -1,0 +1,893 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 16,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "plan/wp10a-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 163,
+      "nonEmptyLines": 129,
+      "sections": [
+        {
+          "heading": "WP-10a Report — Monitoring Config (Prometheus + Grafana + DCGM)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Metric naming convention (followed by WP-10b)",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Service ports (/metrics endpoints)",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "Compose additions",
+          "level": 2,
+          "line": 59
+        },
+        {
+          "heading": "Verification (M3 verify commands)",
+          "level": 2,
+          "line": 70
+        },
+        {
+          "heading": "Alert rules (overview)",
+          "level": 2,
+          "line": 108
+        },
+        {
+          "heading": "Dashboard panels (overview)",
+          "level": 2,
+          "line": 121
+        },
+        {
+          "heading": "Out of scope (deferred)",
+          "level": 2,
+          "line": 138
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 150
+        },
+        {
+          "heading": "Next",
+          "level": 2,
+          "line": 157
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "plan/wp10b-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 36,
+      "nonEmptyLines": 25,
+      "sections": [
+        {
+          "heading": "WP-10b Report — Instrument Metrics",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Delivered",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "Metrics wired",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "plan/wp11a-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 21,
+      "nonEmptyLines": 14,
+      "sections": [
+        {
+          "heading": "WP-11a Report — Tests + Hardening",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "plan/wp11b-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 53,
+      "nonEmptyLines": 35,
+      "sections": [
+        {
+          "heading": "WP-11b Report — Extraction Eval Set",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "Eval corpus",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Scoring rubric",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Verification results",
+          "level": 2,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "plan/wp12-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 76,
+      "nonEmptyLines": 54,
+      "sections": [
+        {
+          "heading": "WP-12 Report — Ingestion & RAM Disk Storage",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "Janitor rules",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Docker tmpfs",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 50
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Manual verify (GPU host)",
+          "level": 2,
+          "line": 64
+        },
+        {
+          "heading": "Next",
+          "level": 2,
+          "line": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "plan/wp13-hardening-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 48,
+      "nonEmptyLines": 35,
+      "sections": [
+        {
+          "heading": "WP-13 Production Hardening Report",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Verify commands",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Hermes review gate",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Files changed",
+          "level": 2,
+          "line": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "plan/wp2-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 74,
+      "nonEmptyLines": 52,
+      "sections": [
+        {
+          "heading": "WP-2 Report — Ingestor fix-then-ship",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Fixes applied",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "New / updated tests",
+          "level": 3,
+          "line": 44
+        },
+        {
+          "heading": "Live smoke (F6)",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "Notes for Opus re-review",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Next step",
+          "level": 2,
+          "line": 72
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "plan/wp3-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 79,
+      "nonEmptyLines": 59,
+      "sections": [
+        {
+          "heading": "WP-3 Report — Worker Consumer (Phase 3 + integrated pipeline)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Pipeline flow (`_process_claimed`)",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "RTF notes",
+          "level": 2,
+          "line": 58
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 65
+        },
+        {
+          "heading": "G2 — Scope decision: **Option (a) — accept WP-3→5 merge in consumer**",
+          "level": 3,
+          "line": 67
+        },
+        {
+          "heading": "Extraction failure semantics (G4)",
+          "level": 3,
+          "line": 71
+        },
+        {
+          "heading": "Next phase",
+          "level": 2,
+          "line": 75
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "plan/wp4-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 58,
+      "nonEmptyLines": 41,
+      "sections": [
+        {
+          "heading": "WP-4 Report — LLM Extraction (Phase 4 fix-then-ship)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Fixes applied",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Key behavior changes",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "plan/wp5-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 63,
+      "nonEmptyLines": 44,
+      "sections": [
+        {
+          "heading": "WP-5 Report — Dedup (Phase 5 fix-then-ship)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Fixes applied",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Key behavior changes",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 54
+        },
+        {
+          "heading": "Deviations",
+          "level": 2,
+          "line": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "plan/wp6-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 53,
+      "nonEmptyLines": 39,
+      "sections": [
+        {
+          "heading": "WP-6 Report — Alerter (Phase 6)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "What changed",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "Behavior details",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 45
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 50
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "plan/wp7a-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 115,
+      "nonEmptyLines": 91,
+      "sections": [
+        {
+          "heading": "WP-7a Report — Docker Skeleton",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Services",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Networking",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "Volumes",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "Healthchecks (each runs every 30s, 3 retries, 10s start grace)",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Restart policy",
+          "level": 2,
+          "line": 60
+        },
+        {
+          "heading": "Build verification (M3 verify command)",
+          "level": 2,
+          "line": 65
+        },
+        {
+          "heading": "Out of scope (deferred)",
+          "level": 2,
+          "line": 81
+        },
+        {
+          "heading": "Deviations from handoff intent",
+          "level": 2,
+          "line": 96
+        },
+        {
+          "heading": "Next",
+          "level": 2,
+          "line": 111
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "plan/wp7b-docker-smoke-20260610.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 50,
+      "nonEmptyLines": 38,
+      "sections": [
+        {
+          "heading": "WP-7b Docker Smoke — Windows GPU Host",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Fixes applied (uncommitted)",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Windows caveats",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Linux GPU host (production)",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Not done this session",
+          "level": 2,
+          "line": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "plan/wp7b-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 70,
+      "nonEmptyLines": 52,
+      "sections": [
+        {
+          "heading": "WP-7b Report — Docker Finalize",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Compose changes",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "Manual verify steps",
+          "level": 2,
+          "line": 47
+        },
+        {
+          "heading": "Next",
+          "level": 2,
+          "line": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "plan/wp8-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 45,
+      "nonEmptyLines": 31,
+      "sections": [
+        {
+          "heading": "WP-8 Report — Fingerprint Annotation",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Scope",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Changes",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Behavior verified",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Verification",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "plan/wp9-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 108,
+      "nonEmptyLines": 79,
+      "sections": [
+        {
+          "heading": "WP-9 Completion Report — Read-only Web Dashboard",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Routes",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 42
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "Run",
+          "level": 2,
+          "line": 67
+        },
+        {
+          "heading": "Deviations from handoff / PLAN.md",
+          "level": 2,
+          "line": 87
+        },
+        {
+          "heading": "Out of scope (unchanged)",
+          "level": 2,
+          "line": 97
+        },
+        {
+          "heading": "Next",
+          "level": 2,
+          "line": 106
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    }
+  ]
+}

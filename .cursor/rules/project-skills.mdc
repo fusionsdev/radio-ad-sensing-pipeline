@@ -1,0 +1,49 @@
+---
+description: Contextual routing for project agent skills in .agents/skills/
+alwaysApply: true
+---
+
+# Project Skills — Use by Context
+
+Read the matching `SKILL.md` under `.agents/skills/<name>/` **before** acting. Do not improvise when a skill applies.
+
+**Source of truth:** `final-install-list.md` and `PLAN.md` § Dev Tooling Setup.
+
+## Active skills (16 kept + caveman)
+
+| Skill | Trigger | Action |
+|---|---|---|
+| `hermes-dispatch` | After WP close, before merge, "hermes review", "ส่ง hermes" | Read skill → bundle + `hermes run` → parse VERDICT |
+| `tdd` | New feature, bugfix, "red-green-refactor", DB/worker logic | Read skill → vertical-slice RED→GREEN |
+| `diagnose` | Bug, failure, regression, "debug/diagnose" | Read skill → reproduce→minimise→fix loop |
+| `review` | Review branch/PR/WIP, end of phase | Read skill → standards + spec review |
+| `handoff` | End of session/phase, new agent pickup | Read skill → write handoff in `plan/` |
+| `grill-me` | Stress-test a plan before coding | Read skill → interview user |
+| `grill-with-docs` | Plan vs domain docs/ADR | Read skill → challenge against glossary |
+| `prototype` | Explore design/UI/state before commit | Read skill → throwaway prototype |
+| `improve-codebase-architecture` | Refactor, deepen modules, AI-navigability | Read skill → read `PLAN.md` first |
+| `zoom-out` | Lost in details, need big picture | Read skill → architecture overview |
+| `to-issues` | Break plan/spec into tickets | Read skill → tracer-bullet slices |
+| `to-prd` | Turn conversation into PRD | Read skill → publish to issue tracker |
+| `triage` | Create/triage issues, AFK agent prep | Read skill → state machine workflow |
+| `setup-matt-pocock-skills` | Wire issue tracker for other skills | Read skill once per tracker choice |
+| `setup-pre-commit` | User wants commit-time lint/test hooks | Read skill → Husky + lint-staged |
+| `write-a-skill` | Author or edit a skill | Read skill → proper SKILL.md structure |
+| `caveman` | User says "caveman", "less tokens", `/caveman*` | Read skill → terse output mode |
+
+## Do NOT use (removed from this project)
+
+`design-an-interface`, `qa`, `request-refactor-plan`, `ubiquitous-language`, `edit-article`, `obsidian-vault`, `writing-*`, `git-guardrails-claude-code`, `migrate-to-shoehorn`, `scaffold-exercises`, `teach` — unless user explicitly re-enables.
+
+## Phase-aware defaults (`PLAN.md`)
+
+| Phase | Prefer |
+|---|---|
+| 1 Scaffold+DB | `tdd`, `review`, `handoff` — **done**; report in `plan/phase1-report.md` |
+| 2 Ingestor | `tdd` + `diagnose`; read `PLAN.md` ingestor section |
+| 3–5 Worker | `tdd`; Context7 for faster-whisper/Ollama docs |
+| 6 Alerter | `tdd`; Telegram outbound only |
+| 7 Docker | `review` before merge |
+| 8+ Observability/UI | `prototype` (dashboard), `review` |
+
+Before any phase: read `PLAN.md` and latest `plan/handoff-*.md`. Do not re-litigate agreed decisions.

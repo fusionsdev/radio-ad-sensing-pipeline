@@ -1,0 +1,160 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 49,
+      "nonEmptyLines": 35,
+      "sections": [
+        {
+          "heading": "Handoff: Phase 1 — Scaffold + DB",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Context",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Scope — Phase 1 ONLY",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Constraints / gotchas",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Suggested skills",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "After Phase 1",
+          "level": 2,
+          "line": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 50,
+      "nonEmptyLines": 36,
+      "sections": [
+        {
+          "heading": "Handoff: WP-3 — ASR Worker (Phase 3)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Context (read first)",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Scope — WP-3 ONLY",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Tests (no GPU in CI)",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Out of scope",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Report back",
+          "level": 2,
+          "line": 48
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": ".windsurf/plans/handoff-wp9-dashboard-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 47,
+      "nonEmptyLines": 33,
+      "sections": [
+        {
+          "heading": "Handoff: WP-9 — Read-only Web Dashboard (Phase 9)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Context (read first)",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Scope — WP-9 ONLY",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Tests",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Out of scope",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "Report back",
+          "level": 2,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    }
+  ]
+}

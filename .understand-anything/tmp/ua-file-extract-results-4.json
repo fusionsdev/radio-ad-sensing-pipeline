@@ -1,0 +1,2945 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "shared/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 179,
+      "nonEmptyLines": 147,
+      "functions": [
+        {
+          "name": "_is_busy_error",
+          "startLine": 34,
+          "endLine": 36,
+          "params": [
+            "exc"
+          ]
+        },
+        {
+          "name": "retry_on_busy",
+          "startLine": 39,
+          "endLine": 64,
+          "params": [
+            "max_retries",
+            "base_delay"
+          ]
+        },
+        {
+          "name": "get_connection",
+          "startLine": 76,
+          "endLine": 95,
+          "params": [
+            "db_path",
+            "read_only"
+          ]
+        },
+        {
+          "name": "checkpoint_wal",
+          "startLine": 98,
+          "endLine": 115,
+          "params": [
+            "db_path",
+            "mode"
+          ]
+        },
+        {
+          "name": "transaction",
+          "startLine": 119,
+          "endLine": 126,
+          "params": [
+            "conn"
+          ]
+        },
+        {
+          "name": "_migration_files",
+          "startLine": 129,
+          "endLine": 130,
+          "params": []
+        },
+        {
+          "name": "_applied_versions",
+          "startLine": 133,
+          "endLine": 143,
+          "params": [
+            "conn"
+          ]
+        },
+        {
+          "name": "migrate",
+          "startLine": 147,
+          "endLine": 167,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "list_tables",
+          "startLine": 170,
+          "endLine": 179,
+          "params": [
+            "db_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "WalCheckpointResult",
+          "startLine": 68,
+          "endLine": 73,
+          "methods": [],
+          "properties": [
+            "busy",
+            "log_frames",
+            "checkpointed_frames"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_is_busy_error",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "retry_on_busy",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "WalCheckpointResult",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "get_connection",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "checkpoint_wal",
+          "line": 98,
+          "isDefault": false
+        },
+        {
+          "name": "transaction",
+          "line": 118,
+          "isDefault": false
+        },
+        {
+          "name": "_migration_files",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "_applied_versions",
+          "line": 133,
+          "isDefault": false
+        },
+        {
+          "name": "migrate",
+          "line": 146,
+          "isDefault": false
+        },
+        {
+          "name": "list_tables",
+          "line": 170,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_is_busy_error",
+          "callee": "str(exc).lower",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_is_busy_error",
+          "callee": "str",
+          "lineNumber": 35
+        },
+        {
+          "caller": "decorator",
+          "callee": "functools.wraps",
+          "lineNumber": 47
+        },
+        {
+          "caller": "wrapper",
+          "callee": "range",
+          "lineNumber": 50
+        },
+        {
+          "caller": "wrapper",
+          "callee": "func",
+          "lineNumber": 52
+        },
+        {
+          "caller": "wrapper",
+          "callee": "_is_busy_error",
+          "lineNumber": 54
+        },
+        {
+          "caller": "wrapper",
+          "callee": "time.sleep",
+          "lineNumber": 59
+        },
+        {
+          "caller": "get_connection",
+          "callee": "Path",
+          "lineNumber": 82
+        },
+        {
+          "caller": "get_connection",
+          "callee": "path.resolve",
+          "lineNumber": 85
+        },
+        {
+          "caller": "get_connection",
+          "callee": "sqlite3.connect",
+          "lineNumber": 86
+        },
+        {
+          "caller": "get_connection",
+          "callee": "path.parent.mkdir",
+          "lineNumber": 88
+        },
+        {
+          "caller": "get_connection",
+          "callee": "sqlite3.connect",
+          "lineNumber": 89
+        },
+        {
+          "caller": "get_connection",
+          "callee": "conn.execute",
+          "lineNumber": 93
+        },
+        {
+          "caller": "get_connection",
+          "callee": "conn.execute",
+          "lineNumber": 94
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "get_connection",
+          "lineNumber": 104
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "conn.execute(f\"PRAGMA wal_checkpoint({mode})\").fetchone",
+          "lineNumber": 106
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "conn.execute",
+          "lineNumber": 106
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "RuntimeError",
+          "lineNumber": 108
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "WalCheckpointResult",
+          "lineNumber": 109
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "bool",
+          "lineNumber": 110
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "int",
+          "lineNumber": 111
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "int",
+          "lineNumber": 112
+        },
+        {
+          "caller": "checkpoint_wal",
+          "callee": "conn.close",
+          "lineNumber": 115
+        },
+        {
+          "caller": "transaction",
+          "callee": "conn.commit",
+          "lineNumber": 123
+        },
+        {
+          "caller": "transaction",
+          "callee": "conn.rollback",
+          "lineNumber": 125
+        },
+        {
+          "caller": "_migration_files",
+          "callee": "sorted",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_migration_files",
+          "callee": "MIGRATIONS_DIR.glob",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_applied_versions",
+          "callee": "conn.execute",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_applied_versions",
+          "callee": "conn.execute(\"SELECT version FROM schema_migrations\").fetchall",
+          "lineNumber": 142
+        },
+        {
+          "caller": "_applied_versions",
+          "callee": "conn.execute",
+          "lineNumber": 142
+        },
+        {
+          "caller": "migrate",
+          "callee": "get_connection",
+          "lineNumber": 150
+        },
+        {
+          "caller": "migrate",
+          "callee": "_applied_versions",
+          "lineNumber": 152
+        },
+        {
+          "caller": "migrate",
+          "callee": "_migration_files",
+          "lineNumber": 153
+        },
+        {
+          "caller": "migrate",
+          "callee": "int",
+          "lineNumber": 154
+        },
+        {
+          "caller": "migrate",
+          "callee": "migration_file.stem.split",
+          "lineNumber": 154
+        },
+        {
+          "caller": "migrate",
+          "callee": "migration_file.read_text",
+          "lineNumber": 157
+        },
+        {
+          "caller": "migrate",
+          "callee": "conn.executescript",
+          "lineNumber": 158
+        },
+        {
+          "caller": "migrate",
+          "callee": "conn.execute",
+          "lineNumber": 159
+        },
+        {
+          "caller": "migrate",
+          "callee": "time.time",
+          "lineNumber": 161
+        },
+        {
+          "caller": "migrate",
+          "callee": "conn.commit",
+          "lineNumber": 163
+        },
+        {
+          "caller": "migrate",
+          "callee": "applied.append",
+          "lineNumber": 164
+        },
+        {
+          "caller": "migrate",
+          "callee": "conn.close",
+          "lineNumber": 166
+        },
+        {
+          "caller": "list_tables",
+          "callee": "get_connection",
+          "lineNumber": 172
+        },
+        {
+          "caller": "list_tables",
+          "callee": "conn.execute(\n            \"SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'\"\n        ).fetchall",
+          "lineNumber": 174
+        },
+        {
+          "caller": "list_tables",
+          "callee": "conn.execute",
+          "lineNumber": 174
+        },
+        {
+          "caller": "list_tables",
+          "callee": "sorted",
+          "lineNumber": 177
+        },
+        {
+          "caller": "list_tables",
+          "callee": "conn.close",
+          "lineNumber": 179
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 10,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 178,
+      "nonEmptyLines": 139,
+      "functions": [
+        {
+          "name": "test_migrate_creates_all_tables",
+          "startLine": 23,
+          "endLine": 30,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_migrate_is_idempotent",
+          "startLine": 33,
+          "endLine": 39,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_wal_and_busy_timeout",
+          "startLine": 42,
+          "endLine": 53,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_read_only_connection",
+          "startLine": 56,
+          "endLine": 69,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_checkpoint_wal_returns_result",
+          "startLine": 72,
+          "endLine": 89,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_retry_on_busy_retries_then_succeeds",
+          "startLine": 92,
+          "endLine": 103,
+          "params": []
+        },
+        {
+          "name": "test_retry_on_busy_reraises_non_busy_errors",
+          "startLine": 106,
+          "endLine": 112,
+          "params": []
+        },
+        {
+          "name": "test_concurrent_writes_retry_on_sqlite_busy",
+          "startLine": 115,
+          "endLine": 178,
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_migrate_creates_all_tables",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "test_migrate_is_idempotent",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "test_wal_and_busy_timeout",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "test_read_only_connection",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "test_checkpoint_wal_returns_result",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "test_retry_on_busy_retries_then_succeeds",
+          "line": 92,
+          "isDefault": false
+        },
+        {
+          "name": "test_retry_on_busy_reraises_non_busy_errors",
+          "line": 106,
+          "isDefault": false
+        },
+        {
+          "name": "test_concurrent_writes_retry_on_sqlite_busy",
+          "line": 115,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_migrate_creates_all_tables",
+          "callee": "migrate",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_migrate_creates_all_tables",
+          "callee": "list_tables",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_migrate_is_idempotent",
+          "callee": "migrate",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_migrate_is_idempotent",
+          "callee": "migrate",
+          "lineNumber": 36
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "migrate",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "get_connection",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "conn.execute(\"PRAGMA journal_mode\").fetchone",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "conn.execute",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "conn.execute(\"PRAGMA busy_timeout\").fetchone",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "conn.execute",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_wal_and_busy_timeout",
+          "callee": "conn.close",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "migrate",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "get_connection",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.execute(\"PRAGMA journal_mode\").fetchone",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.execute",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.execute(\"PRAGMA busy_timeout\").fetchone",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.execute",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "pytest.raises",
+          "lineNumber": 66
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.execute",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_read_only_connection",
+          "callee": "conn.close",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "migrate",
+          "lineNumber": 74
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "get_connection",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "writer.execute",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "writer.commit",
+          "lineNumber": 81
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "writer.close",
+          "lineNumber": 83
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "checkpoint_wal",
+          "lineNumber": 85
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "isinstance",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_checkpoint_wal_returns_result",
+          "callee": "isinstance",
+          "lineNumber": 87
+        },
+        {
+          "caller": "test_retry_on_busy_retries_then_succeeds",
+          "callee": "retry_on_busy",
+          "lineNumber": 95
+        },
+        {
+          "caller": "flaky",
+          "callee": "sqlite3.OperationalError",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_retry_on_busy_retries_then_succeeds",
+          "callee": "flaky",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_retry_on_busy_reraises_non_busy_errors",
+          "callee": "retry_on_busy",
+          "lineNumber": 107
+        },
+        {
+          "caller": "broken",
+          "callee": "sqlite3.OperationalError",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_retry_on_busy_reraises_non_busy_errors",
+          "callee": "pytest.raises",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_retry_on_busy_reraises_non_busy_errors",
+          "callee": "broken",
+          "lineNumber": 112
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "migrate",
+          "lineNumber": 117
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "threading.Event",
+          "lineNumber": 121
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "threading.Event",
+          "lineNumber": 122
+        },
+        {
+          "caller": "fake_sleep",
+          "callee": "sleep_calls.append",
+          "lineNumber": 126
+        },
+        {
+          "caller": "fake_sleep",
+          "callee": "saw_busy.set",
+          "lineNumber": 127
+        },
+        {
+          "caller": "fake_sleep",
+          "callee": "release_retry.wait",
+          "lineNumber": 128
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 130
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "retry_on_busy",
+          "lineNumber": 132
+        },
+        {
+          "caller": "insert_station",
+          "callee": "sqlite3.connect",
+          "lineNumber": 135
+        },
+        {
+          "caller": "insert_station",
+          "callee": "transaction",
+          "lineNumber": 137
+        },
+        {
+          "caller": "insert_station",
+          "callee": "conn.execute",
+          "lineNumber": 138
+        },
+        {
+          "caller": "insert_station",
+          "callee": "conn.close",
+          "lineNumber": 143
+        },
+        {
+          "caller": "run_worker",
+          "callee": "insert_station",
+          "lineNumber": 147
+        },
+        {
+          "caller": "run_worker",
+          "callee": "errors.append",
+          "lineNumber": 149
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "threading.Thread",
+          "lineNumber": 151
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "get_connection",
+          "lineNumber": 153
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "locker.execute",
+          "lineNumber": 155
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "thread.start",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "saw_busy.wait",
+          "lineNumber": 157
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "locker.commit",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "release_retry.set",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "locker.close",
+          "lineNumber": 161
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "thread.join",
+          "lineNumber": 162
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "threading.Thread",
+          "lineNumber": 164
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "follow_up.start",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "follow_up.join",
+          "lineNumber": 166
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "pytest.approx",
+          "lineNumber": 170
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "get_connection",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM stations\").fetchone",
+          "lineNumber": 175
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "conn.execute",
+          "lineNumber": 175
+        },
+        {
+          "caller": "test_concurrent_writes_retry_on_sqlite_busy",
+          "callee": "conn.close",
+          "lineNumber": 178
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_fingerprint.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 271,
+      "nonEmptyLines": 223,
+      "functions": [
+        {
+          "name": "_make_vector",
+          "startLine": 32,
+          "endLine": 38,
+          "params": [
+            "length",
+            "seed"
+          ]
+        },
+        {
+          "name": "db_path",
+          "startLine": 42,
+          "endLine": 45,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "settings",
+          "startLine": 49,
+          "endLine": 50,
+          "params": []
+        },
+        {
+          "name": "_seed_station",
+          "startLine": 53,
+          "endLine": 58,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_seed_chunk",
+          "startLine": 61,
+          "endLine": 77,
+          "params": [
+            "db_path",
+            "tmp_path",
+            "station_id",
+            "start_ts"
+          ]
+        },
+        {
+          "name": "_seed_canonical_with_fingerprint",
+          "startLine": 80,
+          "endLine": 97,
+          "params": [
+            "db_path",
+            "vector"
+          ]
+        },
+        {
+          "name": "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+          "startLine": 100,
+          "endLine": 102,
+          "params": []
+        },
+        {
+          "name": "test_best_sliding_match_finds_known_ad_at_offset",
+          "startLine": 105,
+          "endLine": 120,
+          "params": []
+        },
+        {
+          "name": "test_best_sliding_match_rejects_low_similarity",
+          "startLine": 123,
+          "endLine": 131,
+          "params": []
+        },
+        {
+          "name": "test_best_sliding_match_rejects_borderline_threshold_score",
+          "startLine": 134,
+          "endLine": 144,
+          "params": []
+        },
+        {
+          "name": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "startLine": 155,
+          "endLine": 174,
+          "params": [
+            "offset_frames",
+            "offset_seconds"
+          ]
+        },
+        {
+          "name": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "startLine": 177,
+          "endLine": 198,
+          "params": []
+        },
+        {
+          "name": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "startLine": 201,
+          "endLine": 234,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "startLine": 237,
+          "endLine": 271,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeFingerprintBackend",
+          "startLine": 22,
+          "endLine": 29,
+          "methods": [
+            "__init__",
+            "compute"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FakeFingerprintBackend",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "_make_vector",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "db_path",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "settings",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_station",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_chunk",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_canonical_with_fingerprint",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+          "line": 100,
+          "isDefault": false
+        },
+        {
+          "name": "test_best_sliding_match_finds_known_ad_at_offset",
+          "line": 105,
+          "isDefault": false
+        },
+        {
+          "name": "test_best_sliding_match_rejects_low_similarity",
+          "line": 123,
+          "isDefault": false
+        },
+        {
+          "name": "test_best_sliding_match_rejects_borderline_threshold_score",
+          "line": 134,
+          "isDefault": false
+        },
+        {
+          "name": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "line": 147,
+          "isDefault": false
+        },
+        {
+          "name": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "line": 177,
+          "isDefault": false
+        },
+        {
+          "name": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "line": 201,
+          "isDefault": false
+        },
+        {
+          "name": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "line": 237,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "compute",
+          "callee": "self.calls.append",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_make_vector",
+          "callee": "range",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_make_vector",
+          "callee": "vector.append",
+          "lineNumber": 37
+        },
+        {
+          "caller": "db_path",
+          "callee": "migrate",
+          "lineNumber": 44
+        },
+        {
+          "caller": "settings",
+          "callee": "PipelineSettings",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "int",
+          "lineNumber": 58
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 58
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 58
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 62
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "audio.write_bytes",
+          "lineNumber": 63
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "get_connection",
+          "lineNumber": 64
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "transaction",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 67
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "str",
+          "lineNumber": 72
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.close",
+          "lineNumber": 76
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "get_connection",
+          "lineNumber": 81
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "transaction",
+          "lineNumber": 83
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "conn.execute",
+          "lineNumber": 84
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "int",
+          "lineNumber": 90
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 90
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "conn.execute",
+          "lineNumber": 90
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "conn.execute",
+          "lineNumber": 91
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "encode_fingerprint_vector",
+          "lineNumber": 93
+        },
+        {
+          "caller": "_seed_canonical_with_fingerprint",
+          "callee": "conn.close",
+          "lineNumber": 96
+        },
+        {
+          "caller": "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+          "callee": "decode_fingerprint_vector",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_encode_decode_fingerprint_vector_roundtrip_signed_ints",
+          "callee": "encode_fingerprint_vector",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_best_sliding_match_finds_known_ad_at_offset",
+          "callee": "best_sliding_match",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_best_sliding_match_finds_known_ad_at_offset",
+          "callee": "FingerprintMatch",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_best_sliding_match_rejects_low_similarity",
+          "callee": "best_sliding_match",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_best_sliding_match_rejects_low_similarity",
+          "callee": "FingerprintMatch",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_best_sliding_match_rejects_borderline_threshold_score",
+          "callee": "best_sliding_match",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_best_sliding_match_rejects_borderline_threshold_score",
+          "callee": "FingerprintMatch",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "callee": "_make_vector",
+          "lineNumber": 159
+        },
+        {
+          "caller": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "callee": "_make_vector",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "callee": "len",
+          "lineNumber": 161
+        },
+        {
+          "caller": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "callee": "best_sliding_match",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_best_sliding_match_finds_embedded_clip_at_realistic_offsets",
+          "callee": "FingerprintMatch",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "_make_vector",
+          "lineNumber": 178
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "_make_vector",
+          "lineNumber": 179
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "len",
+          "lineNumber": 180
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "FingerprintMatch",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "_make_vector",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "range",
+          "lineNumber": 183
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "candidates.append",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "FingerprintMatch",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "time.perf_counter",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "best_sliding_match",
+          "lineNumber": 188
+        },
+        {
+          "caller": "test_best_sliding_match_stays_within_cpu_budget_for_100_candidates",
+          "callee": "time.perf_counter",
+          "lineNumber": 194
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "_seed_canonical_with_fingerprint",
+          "lineNumber": 207
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "get_connection",
+          "lineNumber": 208
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "transaction",
+          "lineNumber": 210
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "_seed_station",
+          "lineNumber": 211
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.close",
+          "lineNumber": 213
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "_seed_chunk",
+          "lineNumber": 214
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "FakeFingerprintBackend",
+          "lineNumber": 215
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "FingerprintAnnotator",
+          "lineNumber": 216
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "annotator.annotate_chunk",
+          "lineNumber": 218
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "get_connection",
+          "lineNumber": 223
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute(\"SELECT known_ad_id FROM chunks WHERE id = ?\", (chunk_id,)).fetchone",
+          "lineNumber": 225
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute",
+          "lineNumber": 225
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute(\"SELECT canonical_ad_id, is_ad FROM detections\").fetchone",
+          "lineNumber": 227
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute",
+          "lineNumber": 227
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute(\"SELECT airing_count, last_seen FROM canonical_ads WHERE id = ?\", (canonical_id,)).fetchone",
+          "lineNumber": 230
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.execute",
+          "lineNumber": 230
+        },
+        {
+          "caller": "test_annotator_marks_known_ad_and_records_fast_path_detection",
+          "callee": "conn.close",
+          "lineNumber": 234
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "_seed_canonical_with_fingerprint",
+          "lineNumber": 243
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "get_connection",
+          "lineNumber": 244
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "transaction",
+          "lineNumber": 246
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "_seed_station",
+          "lineNumber": 247
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.close",
+          "lineNumber": 249
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "_seed_chunk",
+          "lineNumber": 250
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "get_connection",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "transaction",
+          "lineNumber": 253
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute",
+          "lineNumber": 254
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute",
+          "lineNumber": 258
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.close",
+          "lineNumber": 260
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "_seed_chunk",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "FingerprintAnnotator",
+          "lineNumber": 262
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "FakeFingerprintBackend",
+          "lineNumber": 262
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "annotator.annotate_chunk",
+          "lineNumber": 264
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "get_connection",
+          "lineNumber": 266
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute(\"SELECT airing_count FROM canonical_ads WHERE id = ?\", (canonical_id,)).fetchone",
+          "lineNumber": 268
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute",
+          "lineNumber": 268
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM detections WHERE canonical_ad_id = ?\", (canonical_id,)).fetchone",
+          "lineNumber": 269
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.execute",
+          "lineNumber": 269
+        },
+        {
+          "caller": "test_known_ad_inside_same_station_window_does_not_increment_airing_count",
+          "callee": "conn.close",
+          "lineNumber": 271
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 15,
+        "functionCount": 14,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_janitor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 263,
+      "nonEmptyLines": 213,
+      "functions": [
+        {
+          "name": "_seed_station",
+          "startLine": 16,
+          "endLine": 21,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_seed_chunk",
+          "startLine": 24,
+          "endLine": 40,
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ]
+        },
+        {
+          "name": "db_path",
+          "startLine": 44,
+          "endLine": 47,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "settings",
+          "startLine": 51,
+          "endLine": 55,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "startLine": 58,
+          "endLine": 64,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_delete_after_processing_leaves_db_row",
+          "startLine": 67,
+          "endLine": 102,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "startLine": 105,
+          "endLine": 152,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_sweep_orphans_removes_untracked_files",
+          "startLine": 155,
+          "endLine": 168,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_janitor_never_deletes_ad_archive_files",
+          "startLine": 171,
+          "endLine": 188,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_cleanup_dropped_files_removes_wav",
+          "startLine": 191,
+          "endLine": 219,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_run_sweep_runs_passive_wal_checkpoint",
+          "startLine": 222,
+          "endLine": 248,
+          "params": [
+            "db_path",
+            "settings",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_passive_wal_checkpoint_continues_on_failure",
+          "startLine": 251,
+          "endLine": 263,
+          "params": [
+            "db_path",
+            "settings",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_seed_station",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_chunk",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "db_path",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "settings",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "test_delete_after_processing_leaves_db_row",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "line": 105,
+          "isDefault": false
+        },
+        {
+          "name": "test_sweep_orphans_removes_untracked_files",
+          "line": 155,
+          "isDefault": false
+        },
+        {
+          "name": "test_janitor_never_deletes_ad_archive_files",
+          "line": 171,
+          "isDefault": false
+        },
+        {
+          "name": "test_cleanup_dropped_files_removes_wav",
+          "line": 191,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_sweep_runs_passive_wal_checkpoint",
+          "line": 222,
+          "isDefault": false
+        },
+        {
+          "name": "test_passive_wal_checkpoint_continues_on_failure",
+          "line": 251,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "int",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 33
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 40
+        },
+        {
+          "caller": "db_path",
+          "callee": "migrate",
+          "lineNumber": 46
+        },
+        {
+          "caller": "settings",
+          "callee": "PipelineSettings",
+          "lineNumber": 52
+        },
+        {
+          "caller": "settings",
+          "callee": "str",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "callee": "wav.write_bytes",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "callee": "delete_chunk_file",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "callee": "wav.exists",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_delete_chunk_file_removes_wav_and_is_idempotent",
+          "callee": "delete_chunk_file",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "chunks_dir.mkdir",
+          "lineNumber": 73
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "wav.parent.mkdir",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "wav.write_bytes",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "get_connection",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "transaction",
+          "lineNumber": 80
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "_seed_station",
+          "lineNumber": 81
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "_seed_chunk",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "str",
+          "lineNumber": 85
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "conn.close",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "ChunkJanitor",
+          "lineNumber": 93
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "janitor.delete_after_processing",
+          "lineNumber": 94
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "wav.exists",
+          "lineNumber": 95
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "get_connection",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "conn.execute(\"SELECT id FROM chunks WHERE id = ?\", (chunk_id,)).fetchone",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "conn.execute",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_delete_after_processing_leaves_db_row",
+          "callee": "conn.close",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "chunks_dir.mkdir",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "wav.write_bytes",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "get_connection",
+          "lineNumber": 118
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "transaction",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "_seed_station",
+          "lineNumber": 121
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "_seed_chunk",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "str",
+          "lineNumber": 125
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.close",
+          "lineNumber": 130
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "ChunkJanitor",
+          "lineNumber": 132
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "janitor.expire_stale_pending",
+          "lineNumber": 133
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "wav.exists",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "get_connection",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.execute(\n            \"SELECT status, error FROM chunks WHERE path = ?\",\n            (str(wav),),\n        ).fetchone",
+          "lineNumber": 139
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.execute",
+          "lineNumber": 139
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "str",
+          "lineNumber": 141
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.execute(\n            \"SELECT reason FROM gaps WHERE station_id = ?\",\n            (station_id,),\n        ).fetchone",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.execute",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_expire_stale_pending_marks_dropped_logs_gap_and_deletes_file",
+          "callee": "conn.close",
+          "lineNumber": 152
+        },
+        {
+          "caller": "test_sweep_orphans_removes_untracked_files",
+          "callee": "orphan.parent.mkdir",
+          "lineNumber": 162
+        },
+        {
+          "caller": "test_sweep_orphans_removes_untracked_files",
+          "callee": "orphan.write_bytes",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_sweep_orphans_removes_untracked_files",
+          "callee": "ChunkJanitor",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_sweep_orphans_removes_untracked_files",
+          "callee": "janitor.sweep_orphans",
+          "lineNumber": 166
+        },
+        {
+          "caller": "test_sweep_orphans_removes_untracked_files",
+          "callee": "orphan.exists",
+          "lineNumber": 168
+        },
+        {
+          "caller": "test_janitor_never_deletes_ad_archive_files",
+          "callee": "archive_dir.mkdir",
+          "lineNumber": 177
+        },
+        {
+          "caller": "test_janitor_never_deletes_ad_archive_files",
+          "callee": "archived.write_bytes",
+          "lineNumber": 179
+        },
+        {
+          "caller": "test_janitor_never_deletes_ad_archive_files",
+          "callee": "ChunkJanitor",
+          "lineNumber": 181
+        },
+        {
+          "caller": "test_janitor_never_deletes_ad_archive_files",
+          "callee": "janitor.delete_after_processing",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_janitor_never_deletes_ad_archive_files",
+          "callee": "archived.exists",
+          "lineNumber": 188
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "chunks_dir.mkdir",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "wav.write_bytes",
+          "lineNumber": 199
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "get_connection",
+          "lineNumber": 201
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "transaction",
+          "lineNumber": 203
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "_seed_station",
+          "lineNumber": 204
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "_seed_chunk",
+          "lineNumber": 205
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "str",
+          "lineNumber": 208
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "time.time",
+          "lineNumber": 209
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "time.time",
+          "lineNumber": 210
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "conn.close",
+          "lineNumber": 214
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "ChunkJanitor",
+          "lineNumber": 216
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "janitor.cleanup_dropped_files",
+          "lineNumber": 217
+        },
+        {
+          "caller": "test_cleanup_dropped_files_removes_wav",
+          "callee": "wav.exists",
+          "lineNumber": 219
+        },
+        {
+          "caller": "fake_checkpoint",
+          "callee": "calls.append",
+          "lineNumber": 230
+        },
+        {
+          "caller": "fake_checkpoint",
+          "callee": "WalCheckpointResult",
+          "lineNumber": 233
+        },
+        {
+          "caller": "test_run_sweep_runs_passive_wal_checkpoint",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 235
+        },
+        {
+          "caller": "fake_metrics",
+          "callee": "metrics.append",
+          "lineNumber": 239
+        },
+        {
+          "caller": "fake_metrics",
+          "callee": "int",
+          "lineNumber": 239
+        },
+        {
+          "caller": "test_run_sweep_runs_passive_wal_checkpoint",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 241
+        },
+        {
+          "caller": "test_run_sweep_runs_passive_wal_checkpoint",
+          "callee": "ChunkJanitor",
+          "lineNumber": 243
+        },
+        {
+          "caller": "test_run_sweep_runs_passive_wal_checkpoint",
+          "callee": "janitor.run_sweep",
+          "lineNumber": 244
+        },
+        {
+          "caller": "boom",
+          "callee": "sqlite3.OperationalError",
+          "lineNumber": 257
+        },
+        {
+          "caller": "test_passive_wal_checkpoint_continues_on_failure",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 259
+        },
+        {
+          "caller": "test_passive_wal_checkpoint_continues_on_failure",
+          "callee": "ChunkJanitor",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_passive_wal_checkpoint_continues_on_failure",
+          "callee": "janitor.passive_wal_checkpoint",
+          "lineNumber": 262
+        },
+        {
+          "caller": "test_passive_wal_checkpoint_continues_on_failure",
+          "callee": "janitor.run_sweep",
+          "lineNumber": 263
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 12,
+        "functionCount": 12,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "worker/fingerprint.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 249,
+      "nonEmptyLines": 216,
+      "functions": [
+        {
+          "name": "encode_fingerprint_vector",
+          "startLine": 39,
+          "endLine": 43,
+          "params": [
+            "vector"
+          ]
+        },
+        {
+          "name": "decode_fingerprint_vector",
+          "startLine": 46,
+          "endLine": 52,
+          "params": [
+            "blob"
+          ]
+        },
+        {
+          "name": "_frame_similarity",
+          "startLine": 55,
+          "endLine": 57,
+          "params": [
+            "left",
+            "right"
+          ]
+        },
+        {
+          "name": "_window_similarity",
+          "startLine": 60,
+          "endLine": 63,
+          "params": [
+            "chunk_window",
+            "candidate"
+          ]
+        },
+        {
+          "name": "best_sliding_match",
+          "startLine": 66,
+          "endLine": 93,
+          "params": [
+            "chunk_vector",
+            "candidates",
+            "threshold",
+            "frames_per_second"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FingerprintBackend",
+          "startLine": 19,
+          "endLine": 20,
+          "methods": [
+            "compute"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FingerprintMatch",
+          "startLine": 24,
+          "endLine": 36,
+          "methods": [
+            "canonical_ad_id"
+          ],
+          "properties": [
+            "candidate_id",
+            "vector",
+            "duration",
+            "score",
+            "offset_frames",
+            "offset_seconds"
+          ]
+        },
+        {
+          "name": "FpcalcBackend",
+          "startLine": 96,
+          "endLine": 106,
+          "methods": [
+            "compute"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FingerprintAnnotator",
+          "startLine": 109,
+          "endLine": 249,
+          "methods": [
+            "__init__",
+            "annotate_chunk",
+            "add_fingerprint_for_canonical",
+            "_load_candidates",
+            "_chunk_row",
+            "_record_known_ad",
+            "_has_recent_same_station_airing"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FingerprintBackend",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "FingerprintMatch",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "encode_fingerprint_vector",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "decode_fingerprint_vector",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "_frame_similarity",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "_window_similarity",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "best_sliding_match",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "FpcalcBackend",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "FingerprintAnnotator",
+          "line": 109,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "encode_fingerprint_vector",
+          "callee": "struct.pack",
+          "lineNumber": 43
+        },
+        {
+          "caller": "encode_fingerprint_vector",
+          "callee": "len",
+          "lineNumber": 43
+        },
+        {
+          "caller": "decode_fingerprint_vector",
+          "callee": "len",
+          "lineNumber": 50
+        },
+        {
+          "caller": "decode_fingerprint_vector",
+          "callee": "ValueError",
+          "lineNumber": 51
+        },
+        {
+          "caller": "decode_fingerprint_vector",
+          "callee": "list",
+          "lineNumber": 52
+        },
+        {
+          "caller": "decode_fingerprint_vector",
+          "callee": "struct.unpack",
+          "lineNumber": 52
+        },
+        {
+          "caller": "decode_fingerprint_vector",
+          "callee": "len",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_frame_similarity",
+          "callee": "xor.bit_count",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "len",
+          "lineNumber": 61
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "len",
+          "lineNumber": 61
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "sum",
+          "lineNumber": 63
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "_frame_similarity",
+          "lineNumber": 63
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "zip",
+          "lineNumber": 63
+        },
+        {
+          "caller": "_window_similarity",
+          "callee": "len",
+          "lineNumber": 63
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "len",
+          "lineNumber": 77
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "len",
+          "lineNumber": 77
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "range",
+          "lineNumber": 79
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "len",
+          "lineNumber": 79
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "len",
+          "lineNumber": 79
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "len",
+          "lineNumber": 80
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "_window_similarity",
+          "lineNumber": 81
+        },
+        {
+          "caller": "best_sliding_match",
+          "callee": "FingerprintMatch",
+          "lineNumber": 83
+        },
+        {
+          "caller": "compute",
+          "callee": "str",
+          "lineNumber": 100
+        },
+        {
+          "caller": "compute",
+          "callee": "subprocess.run",
+          "lineNumber": 101
+        },
+        {
+          "caller": "compute",
+          "callee": "json.loads",
+          "lineNumber": 102
+        },
+        {
+          "caller": "compute",
+          "callee": "data.get",
+          "lineNumber": 103
+        },
+        {
+          "caller": "compute",
+          "callee": "isinstance",
+          "lineNumber": 104
+        },
+        {
+          "caller": "compute",
+          "callee": "ValueError",
+          "lineNumber": 105
+        },
+        {
+          "caller": "compute",
+          "callee": "int",
+          "lineNumber": 106
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 121
+        },
+        {
+          "caller": "__init__",
+          "callee": "FpcalcBackend",
+          "lineNumber": 123
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "self.backend.compute",
+          "lineNumber": 129
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "get_connection",
+          "lineNumber": 130
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "transaction",
+          "lineNumber": 132
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "self._load_candidates",
+          "lineNumber": 133
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "best_sliding_match",
+          "lineNumber": 134
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "self._chunk_row",
+          "lineNumber": 142
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "self._record_known_ad",
+          "lineNumber": 143
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "conn.close",
+          "lineNumber": 146
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "self.backend.compute",
+          "lineNumber": 150
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "get_connection",
+          "lineNumber": 151
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "transaction",
+          "lineNumber": 153
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 154
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "encode_fingerprint_vector",
+          "lineNumber": 156
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "int",
+          "lineNumber": 158
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 158
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 158
+        },
+        {
+          "caller": "add_fingerprint_for_canonical",
+          "callee": "conn.close",
+          "lineNumber": 160
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "conn.execute(\n            \"SELECT canonical_ad_id, chromaprint_vector, duration FROM fingerprints\"\n        ).fetchall",
+          "lineNumber": 163
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "conn.execute",
+          "lineNumber": 163
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "FingerprintMatch",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "int",
+          "lineNumber": 168
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "decode_fingerprint_vector",
+          "lineNumber": 169
+        },
+        {
+          "caller": "_load_candidates",
+          "callee": "float",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "conn.execute(\n            \"SELECT id, station_id, start_ts FROM chunks WHERE id = ?\",\n            (chunk_id,),\n        ).fetchone",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "conn.execute",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "ValueError",
+          "lineNumber": 181
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "self._has_recent_same_station_airing",
+          "lineNumber": 185
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "conn.execute(\n            \"SELECT company_name, phone_norm, category FROM canonical_ads WHERE id = ?\",\n            (canonical_ad_id,),\n        ).fetchone",
+          "lineNumber": 186
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 186
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "ValueError",
+          "lineNumber": 191
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 193
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 197
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "json.dumps",
+          "lineNumber": 212
+        },
+        {
+          "caller": "_record_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 217
+        },
+        {
+          "caller": "_has_recent_same_station_airing",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT 1\n            FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            WHERE d.canonical_ad_id = ?\n              AND c.station_id = ?\n              AND ABS(c.start_ts - ?) <= ?\n            LIMIT 1\n            \"\"\",\n            (\n                canonical_ad_id,\n                chunk[\"station_id\"],\n                chunk[\"start_ts\"],\n                self.settings.same_station_airing_window_seconds,\n            ),\n        ).fetchone",
+          "lineNumber": 232
+        },
+        {
+          "caller": "_has_recent_same_station_airing",
+          "callee": "conn.execute",
+          "lineNumber": 232
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 9,
+        "functionCount": 5,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "worker/janitor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 177,
+      "nonEmptyLines": 157,
+      "functions": [
+        {
+          "name": "delete_chunk_file",
+          "startLine": 18,
+          "endLine": 25,
+          "params": [
+            "path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkJanitor",
+          "startLine": 28,
+          "endLine": 177,
+          "methods": [
+            "__init__",
+            "delete_after_processing",
+            "expire_stale_pending",
+            "cleanup_dropped_files",
+            "sweep_orphans",
+            "passive_wal_checkpoint",
+            "run_sweep",
+            "_known_chunk_paths",
+            "_is_protected_path"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "delete_chunk_file",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "ChunkJanitor",
+          "line": 28,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "delete_chunk_file",
+          "callee": "Path",
+          "lineNumber": 20
+        },
+        {
+          "caller": "delete_chunk_file",
+          "callee": "file_path.is_file",
+          "lineNumber": 21
+        },
+        {
+          "caller": "delete_chunk_file",
+          "callee": "file_path.unlink",
+          "lineNumber": 23
+        },
+        {
+          "caller": "delete_chunk_file",
+          "callee": "increment_chunk_files_deleted",
+          "lineNumber": 24
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 40
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 42
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path(archive_dir).resolve",
+          "lineNumber": 43
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 43
+        },
+        {
+          "caller": "delete_after_processing",
+          "callee": "Path(path).resolve",
+          "lineNumber": 48
+        },
+        {
+          "caller": "delete_after_processing",
+          "callee": "Path",
+          "lineNumber": 48
+        },
+        {
+          "caller": "delete_after_processing",
+          "callee": "self._is_protected_path",
+          "lineNumber": 49
+        },
+        {
+          "caller": "delete_after_processing",
+          "callee": "delete_chunk_file",
+          "lineNumber": 51
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "self._now",
+          "lineNumber": 56
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "get_connection",
+          "lineNumber": 57
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "conn.execute(\n                \"\"\"\n                SELECT id, station_id, path, start_ts, end_ts\n                FROM chunks\n                WHERE status = ?\n                  AND start_ts < ?\n                \"\"\",\n                (ChunkStatus.PENDING.value, cutoff),\n            ).fetchall",
+          "lineNumber": 60
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "conn.execute",
+          "lineNumber": 60
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "transaction",
+          "lineNumber": 72
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "conn.execute",
+          "lineNumber": 74
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "conn.execute",
+          "lineNumber": 82
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "delete_chunk_file",
+          "lineNumber": 89
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "conn.close",
+          "lineNumber": 92
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "logger.info",
+          "lineNumber": 95
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "len",
+          "lineNumber": 97
+        },
+        {
+          "caller": "expire_stale_pending",
+          "callee": "len",
+          "lineNumber": 99
+        },
+        {
+          "caller": "cleanup_dropped_files",
+          "callee": "get_connection",
+          "lineNumber": 104
+        },
+        {
+          "caller": "cleanup_dropped_files",
+          "callee": "conn.execute(\n                \"\"\"\n                SELECT path\n                FROM chunks\n                WHERE status = ?\n                \"\"\",\n                (ChunkStatus.DROPPED.value,),\n            ).fetchall",
+          "lineNumber": 107
+        },
+        {
+          "caller": "cleanup_dropped_files",
+          "callee": "conn.execute",
+          "lineNumber": 107
+        },
+        {
+          "caller": "cleanup_dropped_files",
+          "callee": "delete_chunk_file",
+          "lineNumber": 116
+        },
+        {
+          "caller": "cleanup_dropped_files",
+          "callee": "conn.close",
+          "lineNumber": 119
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "self.chunks_dir.is_dir",
+          "lineNumber": 124
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "self._known_chunk_paths",
+          "lineNumber": 127
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "self.chunks_dir.rglob",
+          "lineNumber": 129
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "file_path.resolve",
+          "lineNumber": 130
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "self._is_protected_path",
+          "lineNumber": 131
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "str",
+          "lineNumber": 133
+        },
+        {
+          "caller": "sweep_orphans",
+          "callee": "delete_chunk_file",
+          "lineNumber": 133
+        },
+        {
+          "caller": "passive_wal_checkpoint",
+          "callee": "checkpoint_wal",
+          "lineNumber": 140
+        },
+        {
+          "caller": "passive_wal_checkpoint",
+          "callee": "set_wal_checkpoint_metrics",
+          "lineNumber": 141
+        },
+        {
+          "caller": "passive_wal_checkpoint",
+          "callee": "logger.debug",
+          "lineNumber": 143
+        },
+        {
+          "caller": "passive_wal_checkpoint",
+          "callee": "logger.warning",
+          "lineNumber": 152
+        },
+        {
+          "caller": "run_sweep",
+          "callee": "self.passive_wal_checkpoint",
+          "lineNumber": 158
+        },
+        {
+          "caller": "run_sweep",
+          "callee": "self.expire_stale_pending",
+          "lineNumber": 159
+        },
+        {
+          "caller": "run_sweep",
+          "callee": "self.cleanup_dropped_files",
+          "lineNumber": 160
+        },
+        {
+          "caller": "run_sweep",
+          "callee": "self.sweep_orphans",
+          "lineNumber": 161
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "get_connection",
+          "lineNumber": 165
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "conn.execute(\"SELECT path FROM chunks\").fetchall",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "conn.execute",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "conn.close",
+          "lineNumber": 169
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "str",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "Path(row[\"path\"]).resolve",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_known_chunk_paths",
+          "callee": "Path",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_is_protected_path",
+          "callee": "path.relative_to",
+          "lineNumber": 174
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    }
+  ]
+}

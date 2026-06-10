@@ -1,0 +1,66 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "shared/db.py",
+      "language": "python",
+      "sizeLines": 179,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_db.py",
+      "language": "python",
+      "sizeLines": 178,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_fingerprint.py",
+      "language": "python",
+      "sizeLines": 271,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_janitor.py",
+      "language": "python",
+      "sizeLines": 263,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/fingerprint.py",
+      "language": "python",
+      "sizeLines": 249,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/janitor.py",
+      "language": "python",
+      "sizeLines": 177,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "shared/db.py": [],
+    "tests/test_db.py": [
+      "shared/db.py"
+    ],
+    "tests/test_fingerprint.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/fingerprint.py"
+    ],
+    "tests/test_janitor.py": [
+      "shared/db.py",
+      "shared/models.py",
+      "worker/janitor.py"
+    ],
+    "worker/fingerprint.py": [
+      "shared/db.py",
+      "shared/models.py"
+    ],
+    "worker/janitor.py": [
+      "shared/db.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ]
+  }
+}

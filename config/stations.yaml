@@ -1,0 +1,141 @@
+# Operator-maintained station list. Set enabled: true per station for live ingest.
+# Verified 2026-06-10 from this host (ffmpeg/ffprobe). Broken URLs kept disabled for URL rot tracking.
+
+stations:
+  # --- California (Los Angeles) ---
+  - name: kfi-am-640
+    url: http://stream.revma.ihrhls.com/zc177
+    format: aac
+    enabled: false  # empty_chunk loop from Docker host (2026-06-10); re-enable after stream fix
+
+  - name: knx-news-1070
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/KNXAM.mp3
+    format: mp3
+    enabled: false  # 404 from StreamTheWorld API (2026-06-10); KNX FM simulcast ended — find Audacy direct URL
+
+  - name: knx-news-1070-aac
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/KNXAM_SC
+    format: aac
+    enabled: false  # 404 (2026-06-10)
+
+  - name: kabc-am-790
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/KABCAM.mp3
+    format: mp3
+    enabled: false  # empty_chunk loop from Docker host (2026-06-10); re-enable after stream fix
+
+  # --- Texas (Dallas–Fort Worth) ---
+  - name: klif-am-570
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3
+    format: mp3
+    enabled: true  # Cumulus news/talk; KLIFAMAAC mount 404 — use KLIFAM (verified 2026-06-10)
+
+  - name: klif-am-570-aac
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAMAAC_SC
+    format: aac
+    enabled: false  # works via ffprobe; mp3 redirect preferred for ingestor parity with WBAP
+
+  - name: wbap-am-820
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3
+    format: mp3
+    enabled: true
+
+  - name: wbap-am-820-aac
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM_SC
+    format: aac
+    enabled: false  # ffprobe reports mp3 redirect; kept for operator swap tests
+
+  # --- Texas (Austin) ---
+  - name: klbj-am-590
+    url: http://playerservices.streamtheworld.com/pls/KLBJAMAAC.pls
+    format: aac
+    enabled: false  # 403 from StreamTheWorld on this host (2026-06-10); iHeart id 6053 triton PLS
+
+  - name: klbj-am-590-legacy
+    url: http://playerservices.streamtheworld.com/pls/KLBJAM.pls
+    format: mp3
+    enabled: false  # 403 on mp3 redirect; superseded by KLBJAMAAC per iHeart API
+
+  # --- Texas (Houston) ---
+  - name: ktrh-am-740
+    url: http://stream.revma.ihrhls.com/zc2285
+    format: aac
+    enabled: true  # iHeart id 2285; ffmpeg 5s chunk OK (verified 2026-06-10)
+
+  # --- Texas (San Antonio) ---
+  - name: woai-am-1200
+    url: http://stream.revma.ihrhls.com/zc2361
+    format: aac
+    enabled: true  # iHeart id 2361; ffmpeg 5s chunk OK (verified 2026-06-10)
+
+  # --- Florida (Tampa & Miami) ---
+  - name: wlrn-913
+    url: http://stream.wlrn.mobi/WLRNFMMP3
+    format: mp3
+    enabled: false  # 404 (2026-06-10); use WLRN app/site for current authenticated URL
+
+  - name: whbo-1040
+    url: https://ice41.securenetsystems.net/WHBO
+    format: aac
+    enabled: true
+
+  - name: whbo-1040-legacy
+    url: http://1.ice1.firststreaming.com/whbo_am.mp3
+    format: mp3
+    enabled: false  # DNS fail (2026-06-10)
+
+  - name: wgul-860
+    url: http://208.80.52.107/WGULAM_SC
+    format: aac
+    enabled: false  # 403 (2026-06-10); no working SecureNet mount found yet
+
+  # --- Illinois (Chicago) ---
+  - name: wbbm-am-780
+    url: http://16843.live.streamtheworld.com/WBBMAM_SC
+    format: aac
+    enabled: false  # TCP fail from this host (2026-06-10); Audacy app only — try STW redirect later
+
+  - name: wgn-am-720
+    url: http://provisioning.streamtheworld.com/pls/WGNPLUSAM.pls
+    format: mp3
+    enabled: false  # PLS returns no audio stream to ffmpeg/ffprobe (2026-06-10)
+
+  # --- Georgia (Atlanta) ---
+  - name: wsb-am-750
+    url: http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3
+    format: mp3
+    enabled: true
+
+  # --- Michigan (Detroit) ---
+  - name: wjr-am-760
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WJRAM.mp3
+    format: mp3
+    enabled: false  # 403 Forbidden (2026-06-10)
+
+  - name: wwj-am-950
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WWJAM.mp3
+    format: mp3
+    enabled: false  # 404 Not Found (2026-06-10)
+
+  # --- North Carolina (Charlotte) ---
+  - name: wbt-am-1110
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WBTAM.mp3
+    format: mp3
+    enabled: false  # 403 Forbidden (2026-06-10)
+
+  # --- Ohio (Cleveland) ---
+  - name: wtam-am-1100
+    url: http://stream.revma.ihrhls.com/zc1757
+    format: aac
+    enabled: true
+
+  # --- Indiana (Indianapolis) ---
+  - name: wibc-fm-931
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3
+    format: mp3
+    enabled: true
+
+  # --- Tennessee (Nashville) ---
+  - name: wwtn-fm-997
+    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3
+    format: mp3
+    enabled: true

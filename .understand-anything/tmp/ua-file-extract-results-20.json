@@ -1,0 +1,63 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "dashboard/templates/ad_detail.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 37,
+      "nonEmptyLines": 36,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/ads.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 24,
+      "nonEmptyLines": 24,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/base.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 52,
+      "nonEmptyLines": 52,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/gaps.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 22,
+      "nonEmptyLines": 22,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/index.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 29,
+      "nonEmptyLines": 28,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/no_database.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 10,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "dashboard/templates/stations.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 23,
+      "nonEmptyLines": 23,
+      "metrics": {}
+    }
+  ]
+}

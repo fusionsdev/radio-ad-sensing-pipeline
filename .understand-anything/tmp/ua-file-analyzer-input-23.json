@@ -1,0 +1,119 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "plan/wp10a-report.md",
+      "language": "markdown",
+      "sizeLines": 163,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp10b-report.md",
+      "language": "markdown",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp11a-report.md",
+      "language": "markdown",
+      "sizeLines": 21,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp11b-report.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp12-report.md",
+      "language": "markdown",
+      "sizeLines": 76,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp13-hardening-report.md",
+      "language": "markdown",
+      "sizeLines": 48,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp2-report.md",
+      "language": "markdown",
+      "sizeLines": 74,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp3-report.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp4-report.md",
+      "language": "markdown",
+      "sizeLines": 58,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp5-report.md",
+      "language": "markdown",
+      "sizeLines": 63,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp6-report.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp7a-report.md",
+      "language": "markdown",
+      "sizeLines": 115,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp7b-docker-smoke-20260610.md",
+      "language": "markdown",
+      "sizeLines": 50,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp7b-report.md",
+      "language": "markdown",
+      "sizeLines": 70,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp8-report.md",
+      "language": "markdown",
+      "sizeLines": 45,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/wp9-report.md",
+      "language": "markdown",
+      "sizeLines": 108,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "plan/wp10a-report.md": [],
+    "plan/wp10b-report.md": [],
+    "plan/wp11a-report.md": [],
+    "plan/wp11b-report.md": [],
+    "plan/wp12-report.md": [],
+    "plan/wp13-hardening-report.md": [],
+    "plan/wp2-report.md": [],
+    "plan/wp3-report.md": [],
+    "plan/wp4-report.md": [],
+    "plan/wp5-report.md": [],
+    "plan/wp6-report.md": [],
+    "plan/wp7a-report.md": [],
+    "plan/wp7b-docker-smoke-20260610.md": [],
+    "plan/wp7b-report.md": [],
+    "plan/wp8-report.md": [],
+    "plan/wp9-report.md": []
+  }
+}

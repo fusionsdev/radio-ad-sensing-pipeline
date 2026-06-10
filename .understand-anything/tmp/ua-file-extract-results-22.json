@@ -1,0 +1,758 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "plan/codex-log-wp8-r2.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 2987,
+      "nonEmptyLines": 2748,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp8.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 36,
+      "nonEmptyLines": 31,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-out-wp10b.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 22,
+      "nonEmptyLines": 19,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp11a.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp11b.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 9,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp5.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 8,
+      "nonEmptyLines": 5,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp6.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 20,
+      "nonEmptyLines": 17,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp7b.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 13,
+      "nonEmptyLines": 8,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp8-fix.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 9,
+      "nonEmptyLines": 6,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codex-out-wp8.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 32,
+      "nonEmptyLines": 21,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/codexplan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 33,
+      "nonEmptyLines": 24,
+      "sections": [
+        {
+          "heading": "**Production Hardening Plan — SQLite WAL, Storage, ASR Benchmark**",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "**Summary**",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "**Key Changes**",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "**Test Plan**",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "**Assumptions**",
+          "level": 2,
+          "line": 27
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "plan/gpt-minimax-routing-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 172,
+      "nonEmptyLines": 128,
+      "sections": [
+        {
+          "heading": "Model Routing: GPT (high + mini) และ MiniMax M3",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "สถานะจาก reports (สรุป)",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "Wave 1 — Fix-then-ship (ขนาน 4 สาย, ส่งทันที)",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "1a. GPT mini → WP-2 Ingestor fixes (F1–F7)",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "1b. Composer 2.5 → WP-3 report + scope doc",
+          "level": 3,
+          "line": 42
+        },
+        {
+          "heading": "1c. Composer 2.5 → WP-9 Dashboard fix (F8)",
+          "level": 3,
+          "line": 52
+        },
+        {
+          "heading": "1d. MiniMax M3 → WP-7a Docker fixes (F5 + F6)",
+          "level": 3,
+          "line": 60
+        },
+        {
+          "heading": "Wave 2 — Opus review gate (หลัง Wave 1 หรือขนานกับ 1a–1d ถ้าไม่ block)",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "Wave 3 — งานใหม่ (หลัง Opus ship WP-4/5)",
+          "level": 2,
+          "line": 83
+        },
+        {
+          "heading": "Wave 4 — ปิดโปรเจกต์",
+          "level": 2,
+          "line": 93
+        },
+        {
+          "heading": "Tier mapping",
+          "level": 2,
+          "line": 99
+        },
+        {
+          "heading": "งานของ GPT high (Heavy — 2 งานคงเหลือ)",
+          "level": 2,
+          "line": 107
+        },
+        {
+          "heading": "งานของ GPT mini (Mid — 3 งาน)",
+          "level": 2,
+          "line": 116
+        },
+        {
+          "heading": "งานของ MiniMax M3 (Light — 3 งาน)",
+          "level": 2,
+          "line": 124
+        },
+        {
+          "heading": "WP-11 Tests + hardening — แบ่งสองส่วน",
+          "level": 2,
+          "line": 134
+        },
+        {
+          "heading": "ลำดับส่งงาน (ปัจจุบัน)",
+          "level": 2,
+          "line": 139
+        },
+        {
+          "heading": "Handoffs / reports",
+          "level": 2,
+          "line": 162
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 17
+      }
+    },
+    {
+      "path": "plan/handoff-batch1-sessions-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 196,
+      "nonEmptyLines": 144,
+      "sections": [
+        {
+          "heading": "Batch 1 — Handoff Prompts (4 sessions ขนาน)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Session 1 — GPT mini → WP-2 Ingestor fix-then-ship",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Session 2 — Composer 2.5 → WP-3 G1–G4 + WP-9 F8",
+          "level": 2,
+          "line": 64
+        },
+        {
+          "heading": "Session 3 — MiniMax M3 → WP-7a F5–F6",
+          "level": 2,
+          "line": 110
+        },
+        {
+          "heading": "Session 4 — Opus / High thinking → WP-4 Deep Review (read-only)",
+          "level": 2,
+          "line": 151
+        },
+        {
+          "heading": "หลัง Batch 1 เสร็จ",
+          "level": 2,
+          "line": 187
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "plan/handoff-ca-tx-smoke-20260610.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 67,
+      "nonEmptyLines": 51,
+      "sections": [
+        {
+          "heading": "Handoff — CA+TX Operator Smoke Session",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Goal achieved",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "What changed (uncommitted)",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Runtime state",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Station URL maintenance",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Next session (recommended order)",
+          "level": 2,
+          "line": 44
+        },
+        {
+          "heading": "Verify before claiming done",
+          "level": 2,
+          "line": 52
+        },
+        {
+          "heading": "Suggested skills",
+          "level": 2,
+          "line": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "plan/handoff-phase1-scaffold-db-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 49,
+      "nonEmptyLines": 35,
+      "sections": [
+        {
+          "heading": "Handoff: Phase 1 — Scaffold + DB",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Context",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Scope — Phase 1 ONLY",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Acceptance criteria",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "Constraints / gotchas",
+          "level": 2,
+          "line": 35
+        },
+        {
+          "heading": "Suggested skills",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "After Phase 1",
+          "level": 2,
+          "line": 47
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "plan/hermes-review-wp13-20260610-0846.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 98,
+      "nonEmptyLines": 86,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "plan/opus-review-plan-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 87,
+      "nonEmptyLines": 71,
+      "sections": [
+        {
+          "heading": "Opus Review Plan — ตรวจงานทุก WP แบบลดหลั่นตามความเสี่ยง",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "หลักการ",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "ระดับความลึก",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "ตาราง review ราย WP",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "จังหวะ review (อัปเดต 2026-06-10 — ดู `plan/work-dispatch-6165b3.md`)",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Prompt template สำหรับ Opus",
+          "level": 2,
+          "line": 56
+        },
+        {
+          "heading": "Review checklist (อัปเดตหลังตรวจแต่ละงาน)",
+          "level": 2,
+          "line": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "plan/phase1-report.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 199,
+      "nonEmptyLines": 148,
+      "sections": [
+        {
+          "heading": "Phase 1 Completion Report — Scaffold + DB",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Summary",
+          "level": 2,
+          "line": 11
+        },
+        {
+          "heading": "Deliverables",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "1. Repository scaffold",
+          "level": 3,
+          "line": 19
+        },
+        {
+          "heading": "2. `shared/db.py`",
+          "level": 3,
+          "line": 37
+        },
+        {
+          "heading": "3. `shared/models.py`",
+          "level": 3,
+          "line": 63
+        },
+        {
+          "heading": "4. Config loading",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "5. `shared/logging.py`",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "6. Project plumbing",
+          "level": 3,
+          "line": 85
+        },
+        {
+          "heading": "7. Tests",
+          "level": 3,
+          "line": 96
+        },
+        {
+          "heading": "Test results",
+          "level": 2,
+          "line": 107
+        },
+        {
+          "heading": "Acceptance criteria verification",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Deviations from `PLAN.md` / handoff",
+          "level": 2,
+          "line": 133
+        },
+        {
+          "heading": "Constraints satisfied",
+          "level": 2,
+          "line": 150
+        },
+        {
+          "heading": "Files added or modified (Phase 1)",
+          "level": 2,
+          "line": 159
+        },
+        {
+          "heading": "Next phase",
+          "level": 2,
+          "line": 189
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 16
+      }
+    },
+    {
+      "path": "plan/radio-ad-sensing-pipeline-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 143,
+      "nonEmptyLines": 118,
+      "sections": [
+        {
+          "heading": "Autonomous Radio Ad-Sensing Pipeline",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Agreed Decisions (from grilling session)",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 24
+        },
+        {
+          "heading": "Repository Layout",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "Database Schema (core tables)",
+          "level": 2,
+          "line": 73
+        },
+        {
+          "heading": "Implementation Phases",
+          "level": 2,
+          "line": 84
+        },
+        {
+          "heading": "Key Risks / Mitigations",
+          "level": 2,
+          "line": 98
+        },
+        {
+          "heading": "Dev Tooling Setup (from `final-install-list.md`)",
+          "level": 2,
+          "line": 110
+        },
+        {
+          "heading": "Installed now",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "Deferred installs",
+          "level": 3,
+          "line": 121
+        },
+        {
+          "heading": "Skills kept (14, from `mattpocock/skills`)",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "Out of Scope (deferred)",
+          "level": 2,
+          "line": 138
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "plan/work-dispatch-6165b3.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 178,
+      "nonEmptyLines": 128,
+      "sections": [
+        {
+          "heading": "Work Dispatch — หลังอ่าน Reports + Opus Review Gate (2026-06-10)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "สถานะปัจจุบัน",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Batch 1 — แก้ fix-then-ship (ขนาน 4 สาย, ทำก่อน review รอบ 2)",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "สาย A — WP-2 Ingestor fixes → **GPT mini**",
+          "level": 3,
+          "line": 31
+        },
+        {
+          "heading": "สาย B — WP-3 Report + scope alignment → **Composer 2.5**",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "สาย C — WP-7a Docker fixes → **MiniMax M3**",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "สาย D — WP-9 Dashboard test fix → **Composer 2.5**",
+          "level": 3,
+          "line": 79
+        },
+        {
+          "heading": "Batch 2 — Opus review (หลัง Batch 1 ship หรือขนานถ้าไม่ block)",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "Batch 3 — Implement งานใหม่ (หลัง WP-4/5 review pass)",
+          "level": 2,
+          "line": 109
+        },
+        {
+          "heading": "Batch 1 — ✅ เสร็จแล้ว (2026-06-10, 4 session ขนาน)",
+          "level": 2,
+          "line": 121
+        },
+        {
+          "heading": "Batch 2 — ✅ เสร็จแล้ว (2026-06-10)",
+          "level": 2,
+          "line": 132
+        },
+        {
+          "heading": "Batch 3 — ✅ เสร็จแล้ว (Codex CLI + Cursor)",
+          "level": 2,
+          "line": 141
+        },
+        {
+          "heading": "Batch 4 — ✅ เสร็จแล้ว (Codex CLI, 2026-06-10)",
+          "level": 2,
+          "line": 145
+        },
+        {
+          "heading": "Reports ที่ต้องสร้าง/อัปเดต",
+          "level": 2,
+          "line": 161
+        },
+        {
+          "heading": "อัปเดต AGENTS.md (หลัง Batch 1)",
+          "level": 2,
+          "line": 173
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 15
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+data/
+plan/_hermes-bundle*.md
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.understand-anything/intermediate/
+.understand-anything/diff-overlay.json
+.understand-anything/.graph-stale

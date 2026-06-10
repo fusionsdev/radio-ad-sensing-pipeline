@@ -1,0 +1,39 @@
+# Production override — named volume for SQLite + ad_archive (not bind mount ./data).
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  ingestor:
+    volumes:
+      - pipeline_data:/app/data
+      - chunk-tmpfs:/app/chunks
+      - ./config:/app/config:ro
+
+  worker:
+    volumes:
+      - pipeline_data:/app/data
+      - chunk-tmpfs:/app/chunks
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+      - CHUNKS_DIR=/app/chunks
+      - OLLAMA_HOST=http://ollama:11434
+      - ASR_MODEL=${ASR_MODEL:-}
+      - ASR_COMPUTE_TYPE=${ASR_COMPUTE_TYPE:-}
+
+  alerter:
+    volumes:
+      - pipeline_data:/app/data
+      - ./config:/app/config:ro
+
+  dashboard:
+    volumes:
+      - pipeline_data:/app/data
+      - ./config:/app/config:ro
+
+  pipeline-migrate:
+    volumes:
+      - pipeline_data:/app/data
+      - ./config:/app/config:ro
+
+volumes:
+  pipeline_data:

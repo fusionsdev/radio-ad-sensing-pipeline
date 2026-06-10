@@ -1,0 +1,147 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "plan/codex-log-wp8-r2.txt",
+      "language": "txt",
+      "sizeLines": 2987,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp8.txt",
+      "language": "txt",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp10b.md",
+      "language": "markdown",
+      "sizeLines": 21,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp11a.md",
+      "language": "markdown",
+      "sizeLines": 16,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp11b.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp5.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp6.md",
+      "language": "markdown",
+      "sizeLines": 19,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp7b.md",
+      "language": "markdown",
+      "sizeLines": 12,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp8-fix.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-out-wp8.md",
+      "language": "markdown",
+      "sizeLines": 31,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codexplan.md",
+      "language": "markdown",
+      "sizeLines": 33,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/gpt-minimax-routing-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 172,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/handoff-batch1-sessions-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 196,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/handoff-ca-tx-smoke-20260610.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/handoff-phase1-scaffold-db-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/hermes-review-wp13-20260610-0846.md",
+      "language": "markdown",
+      "sizeLines": 98,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/opus-review-plan-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 87,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/phase1-report.md",
+      "language": "markdown",
+      "sizeLines": 199,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/radio-ad-sensing-pipeline-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 143,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/work-dispatch-6165b3.md",
+      "language": "markdown",
+      "sizeLines": 178,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "plan/codex-log-wp8-r2.txt": [],
+    "plan/codex-log-wp8.txt": [],
+    "plan/codex-out-wp10b.md": [],
+    "plan/codex-out-wp11a.md": [],
+    "plan/codex-out-wp11b.md": [],
+    "plan/codex-out-wp5.md": [],
+    "plan/codex-out-wp6.md": [],
+    "plan/codex-out-wp7b.md": [],
+    "plan/codex-out-wp8-fix.md": [],
+    "plan/codex-out-wp8.md": [],
+    "plan/codexplan.md": [],
+    "plan/gpt-minimax-routing-6165b3.md": [],
+    "plan/handoff-batch1-sessions-6165b3.md": [],
+    "plan/handoff-ca-tx-smoke-20260610.md": [],
+    "plan/handoff-phase1-scaffold-db-6165b3.md": [],
+    "plan/hermes-review-wp13-20260610-0846.md": [],
+    "plan/opus-review-plan-6165b3.md": [],
+    "plan/phase1-report.md": [],
+    "plan/radio-ad-sensing-pipeline-6165b3.md": [],
+    "plan/work-dispatch-6165b3.md": []
+  }
+}

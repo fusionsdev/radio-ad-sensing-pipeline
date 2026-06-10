@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ ad.company_name or "Ad" }} — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<p><a href="/ads">← Back to ads</a></p>
+<div class="card" style="margin-bottom: 1.5rem;">
+  <h2>{{ ad.company_name or "Unknown" }}</h2>
+  <p style="color: var(--muted); margin: 0.25rem 0;">
+    {{ ad.category or "—" }} · {{ ad.phone_norm or "—" }} · {{ ad.airing_count }} airing(s)
+  </p>
+  <p style="font-size: 0.85rem; color: var(--muted);">
+    First {{ format_ts(ad.first_seen) }} · Last {{ format_ts(ad.last_seen) }}
+  </p>
+  {% if has_audio %}
+  <audio controls src="/audio/{{ ad.id }}"></audio>
+  {% endif %}
+</div>
+
+<h2 style="font-size: 1rem;">Detections</h2>
+{% if detections %}
+<table>
+  <thead><tr><th>Station</th><th>Time</th><th>Confidence</th><th>Offer</th><th>Transcript</th></tr></thead>
+  <tbody>
+    {% for d in detections %}
+    <tr>
+      <td>{{ d.station_name or "—" }}</td>
+      <td>{{ format_ts(d.chunk_start_ts) }}</td>
+      <td>{% if d.confidence is not none %}{{ "%.0f"|format(d.confidence * 100) }}%{% else %}—{% endif %}</td>
+      <td>{{ d.offer_summary or "—" }}</td>
+      <td style="max-width: 280px;">{{ d.transcript_excerpt or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No detections linked to this ad.</p>
+{% endif %}
+{% endblock %}

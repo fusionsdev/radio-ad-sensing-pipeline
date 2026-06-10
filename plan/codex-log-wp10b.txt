@@ -1,0 +1,431 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: h:\DEV\projects\radio-ad-sensing-pipeline
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eaee2-bb16-7bb0-9e12-d349586f194d
+--------
+user
+Batch 3 Session D — WP-10b Instrument metrics (MiniMax/light).
+
+Read: plan/wp10a-report.md metric table + ports, plan/work-dispatch-6165b3.md.
+
+Add prometheus_client /metrics to ingestor, worker, alerter, dashboard on ports 9101-9104 per wp10a-report.
+Metric names MUST match convention: pipeline_queue_pending_hours, pipeline_chunks_processed_total{service}, pipeline_chunks_dropped_total, pipeline_asr_rtf_avg, pipeline_station_last_chunk_timestamp_seconds{station}, etc.
+Do not instrument hot loops with heavy work — counters/gauges only.
+shared/metrics.py helper OK if import-light.
+
+Verify: pytest -q still passes; optional smoke curl localhost if servers start in test.
+
+Write brief notes in plan/wp10b-report.md.
+
+hook: SessionStart
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’m reading the WP-10a context and the phase handoff first so we can add metrics in the right places without drifting into Phase 11 work. Then I’ll patch the four services, keep `shared/` import-light, and run the test suite plus a quick verification pass.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content -Raw plan/wp10a-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-ChildItem -Force' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content -Raw plan/work-dispatch-6165b3.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1716ms:
+# WP-10a Report — Monitoring Config (Prometheus + Grafana + DCGM)
+
+**Date:** 2026-06-10
+**Status:** Complete
+**Routing:** MiniMax M3 (Light — declarative config, standard compose+prometheus+grafana patterns)
+
+## Scope
+
+Prometheus + Grafana + dcgm-exporter wired into the existing compose stack from
+WP-7a. Alert rules + Grafana dashboard provisioned as code (no UI clicks
+required on first boot).
+
+## Deliverables
+
+| Item | Path |
+|---|---|
+| Prometheus scrape config | `monitoring/prometheus.yml` |
+| Alert rules (4 groups, 7 rules) | `monitoring/alerts.yml` |
+| Grafana datasource provisioning | `monitoring/grafana/provisioning/datasources/prometheus.yml` |
+| Grafana dashboard provider | `monitoring/grafana/provisioning/dashboards/default.yml` |
+| Grafana dashboard (10 panels) | `monitoring/grafana/dashboards/pipeline.json` |
+| Compose services (prometheus, grafana, dcgm-exporter) | appended to `docker-compose.yml` |
+| Grafana admin password env | appended to `.env.example` |
+
+## Metric naming convention (followed by WP-10b)
+
+The dashboard and alert rules pin a fixed metric namespace. WP-10b **must** emit
+these exact metric names in each service:
+
+| Metric | Type | Emitted by | Labels |
+|---|---|---|---|
+| `pipeline_queue_pending_hours` | gauge | worker (or ingestor) | — |
+| `pipeline_chunks_processed_total` | counter | worker | `service` |
+| `pipeline_chunks_dropped_total` | counter | worker | — |
+| `pipeline_asr_rtf_avg` | gauge | worker | — |
+| `pipeline_llm_extraction_duration_seconds` | histogram | worker (later WP) | — |
+| `pipeline_detections_total` | counter | worker (later WP) | — |
+| `pipeline_station_last_chunk_timestamp_seconds` | gauge | ingestor | `station` |
+| `DCGM_FI_DEV_GPU_UTIL` | gauge | dcgm-exporter | `gpu` |
+| `DCGM_FI_DEV_FB_USED` / `DCGM_FI_DEV_FB_FREE` | gauge | dcgm-exporter | `gpu` |
+| `DCGM_FI_DEV_GPU_TEMP` | gauge | dcgm-exporter | `gpu` |
+
+The `service` label on `pipeline_chunks_processed_total` is what feeds the
+"Chunks processed / hour (by service)" panel — WP-10b must label the worker
+counter with `service="worker"` and the alerter's analogous counter with
+`service="alerter"`.
+
+## Service ports (/metrics endpoints)
+
+These must be exposed by WP-10b in each service via `prometheus_client.start_http_server`:
+
+| Service | Port | Rationale |
+|---|---|---|
+| ingestor | 9101 | Convention: node_exporter-style |
+| worker | 9102 | One above ingestor |
+| alerter | 9103 | One above worker |
+| dashboard | 9104 | One above alerter |
+
+## Compose additions
+
+| Service | Image | GPU | Port (host) |
+|---|---|---|---|
+| `prometheus` | `prom/prometheus:latest` | — | `127.0.0.1:9090` |
+| `grafana` | `grafana/grafana:latest` | — | `127.0.0.1:3000` |
+| `dcgm-exporter` | `nvcr.io/nvidia/k8s/dcgm-exporter:latest` | NVIDIA | — (scraped internally on `:9400`) |
+
+Both `prometheus` and `grafana` bind to `127.0.0.1` on the host (LAN-only,
+matching the dashboard's exposure model — see PLAN §"Dashboard exposure").
+
+## Verification (M3 verify commands)
+
+```bash
+$ docker compose config --quiet
+(exit 0, no output)
+
+$ docker compose config --services
+pipeline-migrate
+dashboard
+dcgm-exporter
+ingestor
+ollama
+worker
+alerter
+prometheus
+grafana
+ollama-pull
+```
+
+Static structural checks (Python + pyyaml, since promtool is not in the
+operator's local PATH on Windows):
+
+```text
+jobs:    ['ingestor', 'worker', 'alerter', 'dashboard', 'dcgm', 'prometheus']
+alerts:  7
+panels:  10
+```
+
+`promtool check config` and `promtool check rules` were not run in this
+session because the host does not have the prometheus binary available; the
+WP-7b operator will re-run them inside the running prometheus container once
+the stack is up:
+
+```bash
+docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
+docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
+```
+
+## Alert rules (overview)
+
+| Group | Rules | What it catches |
+|---|---|---|
+| `pipeline-saturation` | 2 | Queue backing up past 2h, or chunks being dropped |
+| `stations` | 1 | Any station silent for >15min |
+| `worker-health` | 2 | Worker process up but stalled, or ASR RTF >1.0 |
+| `gpu` | 2 | GPU temp >85°C sustained, or VRAM >92% |
+
+Total: **7 firing-condition rules**. Alertmanager is intentionally absent
+(WP-10a scope). The alerter service handles operational notifications via
+Telegram directly (per PLAN §"Observability" — daily digest + ops alerts).
+
+## Dashboard panels (overview)
+
+| # | Type | Title |
+|---|---|---|
+| 1 | stat | Queue depth (pending hours) |
+| 2 | timeseries | Chunks processed / hour (by service) |
+| 3 | timeseries | Chunks dropped / 10m |
+| 4 | timeseries | ASR real-time factor |
+| 5 | timeseries | LLM extraction latency (p50 / p95) |
+| 6 | timeseries | Detections / hour |
+| 7 | timeseries | Station uptime (last chunk ago) |
+| 8 | timeseries | GPU utilization (DCGM) |
+| 9 | timeseries | GPU memory used (DCGM) |
+| 10 | stat | Active alerts (firing count) |
+
+Time range defaults to last 6h, refresh 30s.
+
+## Out of scope (deferred)
+
+- **Alertmanager** — the pipeline's "ops" alerts (station down, queue drop)
+  go through the alerter service, not Alertmanager. If/when we add email
+  or PagerDuty routing, this is where Alertmanager plugs in.
+- **Ollama `/metrics`** — Ollama's metrics endpoint is uncommented in
+  `prometheus.yml` but not enabled by default; will be turned on after
+  WP-4 is shipping.
+- **Recording rules** — long-term, complex aggregations will be precomputed
+  for faster dashboard loads. Not needed at 4-10 stations.
+- **TLS / auth on Prometheus** — bound to 127.0.0.1 only, like Grafana.
+
+## Deviations
+
+- `GRAFANA_ADMIN_PASSWORD` defaults to `admin` for dev. WP-7b (operator) must
+  override this in `.env` before any non-localhost exposure.
+- dcgm-exporter is given `cap_add: SYS_ADMIN` per its docs. Some hardened
+  hosts may not allow this; if so, switch to a privileged mode override.
+
+## Next
+
+- WP-10b (this agent, M3, **deferred until ingestor + alerter exist**) —
+  instrument every service with `prometheus_client.start_http_server` using
+  the metric names + port numbers pinned in this report.
+- WP-7b (operator, GPT mini) — live `docker compose up` + verify that
+  prometheus, grafana, and dcgm-exporter come up healthy.
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1949ms:
+# Work Dispatch — หลังอ่าน Reports + Opus Review Gate (2026-06-10)
+
+อัปเดตจาก `plan/opus-review-plan-6165b3.md`, reports ทั้งหมดใน `plan/wp*-report.md`, และ trace โค้ดจริง (`pytest` 58/58).
+
+**หลักการแจกงาน:** fix-then-ship ส่งกลับผู้ทำเดิม → Opus review งานที่ยังไม่ตรวจ → implement งานใหม่ตาม dependency
+
+---
+
+## สถานะปัจจุบัน
+
+| WP | Report | Opus verdict | โค้ดมีจริง | Tests |
+|---|---|---|---|---|
+| WP-1 | `phase1-report.md` | ✅ ship | ✅ | ✅ |
+| WP-2 | ❌ ไม่มี | 🔧 fix-then-ship | ✅ ingestor/ | 4 tests |
+| WP-3 | `wp3-report.md` (**ล้าสมัย**) | 🔧 fix-then-ship | ✅ consumer = full pipeline | 8 tests |
+| WP-4 | ❌ ไม่มี | ⏳ needs Deep review | ✅ extract.py | 5 tests |
+| WP-5 | ❌ ไม่มี | ⏳ needs Deep review | ✅ dedup.py | 5 tests |
+| WP-6 | ❌ ไม่มี | ⏳ not started | ❌ alerter stub | 0 |
+| WP-7a | `wp7a-report.md` | 🔧 fix-then-ship | ✅ compose | config only |
+| WP-7b | ❌ ไม่มี | ⏳ not started | partial | — |
+| WP-8 | ❌ ไม่มี | ⏳ needs Deep review | ✅ fingerprint.py | 5 tests |
+| WP-9 | `wp9-report.md` | 🔧 fix-then-ship | ✅ dashboard/ | 13 tests |
+| WP-10a | `wp10a-report.md` | ⏳ needs Spot-check | ✅ monitoring/ | static |
+| WP-10b | ❌ | ⏳ deferred | ❌ no /metrics | 0 |
+| WP-11 | ❌ | ⏳ not started | partial gaps | — |
+
+---
+
+## Batch 1 — แก้ fix-then-ship (ขนาน 4 สาย, ทำก่อน review รอบ 2)
+
+### สาย A — WP-2 Ingestor fixes → **GPT mini**
+
+**Owner:** GPT mini (ผู้ทำเดิม)  
+**Blocked by:** ไม่มี  
+**Verify:** `pytest tests/test_ingestor.py -v` + ส่ง `plan/wp2-report.md`
+
+| ID | แก้อะไร | หลักฐาน |
+|---|---|---|
+| **F1** | `subprocess.run` ใน `ingestor/ffmpeg.py` ไม่มี timeout → ffmpeg hang บน EOF-reconnect, backoff/gap ไม่ถึง | `FfmpegChunkRunner.record_chunk` L83 |
+| **F2** | SIGTERM ไม่หยุด ffmpeg กลาง chunk — ใช้ `Popen` + process group, supervisor shutdown ฆ่า child | `ingestor/supervisor.py`, `ingestor/__main__.py` |
+| **F3** | ไม่ validate duration ไฟล์ partial — ตรวจ WAV ≈ `chunk_len` ก่อน enqueue | `StationIngestor.run_once` L106 |
+| **F4** | ไม่ reap zombie — cleanup subprocess ใน `finally` ทุก path | `ingestor/ffmpeg.py` |
+| **F5** | Test stride 83s ด้วย fixture WAV จริง (ffprobe/wave) ไม่ใช่แค่ assert sleep | `tests/test_ingestor.py` |
+| **F6** | Live smoke 5 นาที + บันทึกใน report (chunks/gaps rows) | manual |
+| **F7** | เขียน `plan/wp2-report.md` | deliverable |
+
+---
+
+### สาย B — WP-3 Report + scope alignment → **Composer 2.5**
+
+**Owner:** Composer 2.5 (ผู้ทำเดิม)  
+**Blocked by:** ไม่มี (doc + tests เท่านั้น ไม่แตะ algorithm)
+
+| ID | แก้อะไร | หลักฐาน |
+|---|---|---|
+| **G1** | อัปเดต `plan/wp3-report.md` — `create_consumer()` wire extract+dedup+fingerprint แล้ว | `worker/consumer.py` L365–388 |
+| **G2** | ตัดสินใจ scope: (a) ยอมรับ WP-3→5 merge ใน consumer แล้วอัปเดต handoff หรือ (b) แยก default เป็น ASR-only factory | handoff vs code |
+| **G3** | Test: `known_ad` fingerprint hit → skip LLM แต่ยัง transcribe + `done` | `_process_claimed` L200–243 |
+| **G4** | Test: extraction failure → chunk `dropped` เป็นที่ตั้งใจหรือควร `done`+log? ตรง PLAN | L237–243 |
+
+**Verify:** `pytest tests/test_worker_consumer.py -v`
+
+---
+
+### สาย C — WP-7a Docker fixes → **MiniMax M3**
+
+**Owner:** MiniMax M3 (ผู้ทำเดิม)  
+**Blocked by:** ไม่มี
+
+| ID | แก้อะไร | หลักฐาน |
+|---|---|---|
+| **F5** | `DASHBOARD_HOST` ใน compose ไม่มีผล — `load_settings()` อ่าน yaml อย่างเดียว; wire env → `PipelineSettings` หรือ mount override | `docker-compose.yml` L150, `shared/config.py` |
+| **F6** | `alerter/Dockerfile` CMD `python -m alerter` แต่ไม่มี `__main__.py`; healthcheck บังคับ token (ขัด WP-6 dry-run) → placeholder entrypoint + healthcheck ที่ pass เมื่อ import ได้ | `alerter/`, compose L117–122 |
+
+**Verify:** `docker compose config --quiet`
+
+---
+
+### สาย D — WP-9 Dashboard test fix → **Composer 2.5**
+
+**Owner:** Composer 2.5 (ผู้ทำเดิม)  
+**Blocked by:** ไม่มี
+
+| ID | แก้อะไร | หลักฐาน |
+|---|---|---|
+| **F8** | `test_dashboard_never_opens_writable_connection` false-positive — patch `dashboard.queries.get_connection` (import ตรง) ไม่ใช่แค่ `shared.db`; หรือ audit wrapper ใน `create_app` | `tests/test_dashboard.py` L124–141, `queries.py` L11 |
+
+**Verify:** `pytest tests/test_dashboard.py::test_dashboard_never_opens_writable_connection -v`
+
+---
+
+## Batch 2 — Opus review (หลัง Batch 1 ship หรือขนานถ้าไม่ block)
+
+ลำดับตามความเสี่ยง — ใช้ prompt template ใน `opus-review-plan-6165b3.md`
+
+| ลำดับ | WP | ระดับ | เงื่อนไข |
+|---|---|---|---|
+| 1 | **WP-2** re-review | Deep | หลัง F1–F7 |
+| 2 | **WP-4** LLM extraction | Deep | ไม่มี report — trace `worker/extract.py` + `tests/test_extract.py` |
+| 3 | **WP-5** Dedup | Deep | หลัง WP-4 pass; trace `worker/dedup.py` |
+| 4 | **WP-8** Fingerprint | Deep (เข้มสุด) | หลัง WP-5; ขอ fixture เสียง offset |
+| 5 | **WP-3** re-review | Deep | หลัง G1–G4 |
+| 6 | **WP-9** re-review | Standard | หลัง F8 |
+| 7 | **WP-7a** re-review | Spot-check | หลัง F5–F6 |
+| 8 | **WP-10a** | Spot-check | มี `wp10a-report.md` แล้ว — ยังไม่ตรวจ |
+
+---
+
+## Batch 3 — Implement งานใหม่ (หลัง WP-4/5 review pass)
+
+| WP | Owner | Blocked by | งาน |
+|---|---|---|---|
+| **WP-6** Alerter | GPT mini | WP-5 ship (ต้องมี detections จริง) | Telegram first-seen, ops >15min, digest, dry-run |
+| **WP-7b** Docker finalize | GPT mini | WP-6 stub มี entrypoint, WP-2 F1–F2 | NVIDIA worker, `docker compose up`, healthy |
+| **WP-10b** Instrument metrics | MiniMax M3 | WP-6 + ingestor metrics ports | `pipeline_*` ตาม `wp10a-report.md` metric table |
+| **WP-11a** e2e + Phase 1 gaps | GPT mini | WP-6 ship | concurrent retry test, `import json` ใน models.py |
+| **WP-11b** extraction eval set | GPT high | WP-4 ship | fixture transcripts + scoring rubric |
+
+---
+
+## Batch 1 — ✅ เสร็จแล้ว (2026-06-10, 4 session ขนาน)
+
+| Session | Owner | ผล | Tests |
+|---|---|---|---|
+| S1 | GPT mini | WP-2 F1–F7 ✅ `plan/wp2-report.md` | ingestor 8 tests |
+| S2 | Composer 2.5 | WP-3 G1–G4 + WP-9 F8 ✅ | worker+dashboard 22 |
+| S3 | MiniMax M3 | WP-7a F5–F6 ✅ | config 5 + compose config |
+| S4 | Opus | WP-4 Deep review → **fix-then-ship** N1–N4 | extract 5/5 |
+
+**รวม:** `pytest` **64/64 passed**
+
+## Batch 2 — ✅ เสร็จแล้ว (2026-06-10)
+
+| Session | ผล |
+|---|---|
+| WP-4 N1–N4 | ✅ ship — `plan/wp4-report.md`, 67 pytest |
+| Re-review WP-2,3,9,7a | ✅ ทั้ง 4 ship |
+| WP-5 Deep review | 🔧 fix-then-ship (H1 phone scoring) |
+| WP-10a Spot-check | ✅ ship (F1 datasource uid, F2 VRAM PromQL) |
+
+## ถัดไป (Batch 3 — เปิดขนานได้)
+
+```
+Session A  GPT high   → WP-5 H1–H6 (dedup phone scoring + tests + wp5-report)
+Session B  Opus       → WP-8 Deep review (fingerprint.py)
+Session C  GPT mini   → WP-6 Alerter (Telegram, dry-run)
+Session D  MiniMax M3 → WP-10b metrics (หลัง WP-6 มี service จริง — หรือขนานถ้า stub พอ)
+```
+
+หลัง Batch 3 → WP-7b, WP-11, Opus re-review WP-5/8
+
+---
+
+## Reports ที่ต้องสร้าง/อัปเดต
+
+| ไฟล์ | ใคร | เมื่อไหร่ |
+|---|---|---|
+| `plan/wp2-report.md` | GPT mini | หลัง F1–F7 |
+| `plan/wp3-report.md` (revise) | Composer 2.5 | หลัง G1–G4 |
+| `plan/wp4-report.md` | GPT high | หลัง Opus review pass หรือพร้อม review |
+| `plan/wp5-report.md` | GPT high | หลัง WP-4 |
+| `plan/wp8-report.md` | GPT high | หลัง WP-5 |
+
+---
+
+## อัปเดต AGENTS.md (หลัง Batch 1)
+
+- Tests: 58/58
+- WP-9, WP-7a, WP-10a: done แต่รอ fix-then-ship
+- Phase 2 ingestor: implemented, ไม่ ship จนกว่า Opus re-review
+- Worker: ASR + extract + dedup + fingerprint ใน consumer (scope drift จาก WP-3 handoff)
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1959ms:
+
+        Directory: H:\DEV\projects\radio-ad-sensing-pipeline
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d----         10/6/2569      3:07                  .agents
+d----         10/6/2569      7:06                  alerter
+d----         10/6/2569      4:15                  .claude
+d----         10/6/2569      5:10                  config
+d----         10/6/2569      5:17                  .cursor
+d----         10/6/2569      5:54                  dashboard
+d----         10/6/2569      6:28                  data
+d--h-         10/6/2569      6:29                  .git
+d----         10/6/2569      5:59                  ingestor
+d----         10/6/2569      5:57                  monitoring
+d----         10/6/2569      7:16                  plan
+d----         10/6/2569      5:11                  .pytest_cache
+d----         10/6/2569      5:11                  shared
+d----         10/6/2569      6:13                󰙨  tests
+d----         10/6/2569      5:11                  .venv
+d----         10/6/2569      5:06                  .windsurf
+d----         10/6/2569      6:14                  worker
+-a---         10/6/2569      6:37           4070   AGENTS.md
+-a---         10/6/2569      7:06          11829   docker-compose.yml
+-a---         10/6/2569      5:53            438   .dockerignore
+-a---         10/6/2569      6:36            442   .env.example
+-a---         10/6/2569      4:16           3852   final-install-list.md
+-a---         10/6/2569      5:10            124   .gitignore
+-a---         10/6/2569      4:43          12360   PLAN.md
+-a---         10/6/2569      6:09            743   pyproject.toml
+-a---         10/6/2569      6:10            994 󰪷  README.md
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed

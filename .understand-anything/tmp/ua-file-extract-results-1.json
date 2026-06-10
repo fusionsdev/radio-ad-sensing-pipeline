@@ -1,0 +1,3160 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 13,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "alerter/__main__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 24,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 16,
+          "endLine": 31,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "setup_logging",
+          "lineNumber": 17
+        },
+        {
+          "caller": "main",
+          "callee": "start_metrics_server",
+          "lineNumber": 18
+        },
+        {
+          "caller": "main",
+          "callee": "load_settings",
+          "lineNumber": 19
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "AlerterService",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "threading.Event",
+          "lineNumber": 23
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "stop_event.set",
+          "lineNumber": 26
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 28
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 29
+        },
+        {
+          "caller": "main",
+          "callee": "service.run",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "alerter/service.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 513,
+      "nonEmptyLines": 469,
+      "classes": [
+        {
+          "name": "FirstSeenAlert",
+          "startLine": 29,
+          "endLine": 44,
+          "methods": [],
+          "properties": [
+            "detection_id",
+            "chunk_id",
+            "station_name",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "company_name",
+            "ad_category",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "confidence",
+            "archived_audio_path"
+          ]
+        },
+        {
+          "name": "StationDownAlert",
+          "startLine": 48,
+          "endLine": 53,
+          "methods": [],
+          "properties": [
+            "station_id",
+            "station_name",
+            "outage_start_ts",
+            "last_chunk_ts",
+            "latest_gap_ts"
+          ]
+        },
+        {
+          "name": "TelegramBotApi",
+          "startLine": 56,
+          "endLine": 101,
+          "methods": [
+            "__init__",
+            "close",
+            "send_message",
+            "send_audio"
+          ],
+          "properties": []
+        },
+        {
+          "name": "AlerterService",
+          "startLine": 104,
+          "endLine": 513,
+          "methods": [
+            "__init__",
+            "close",
+            "run",
+            "poll_once",
+            "_load_first_seen_alerts",
+            "_load_station_down_alerts",
+            "_outage_start_ts",
+            "_load_queue_drop_alert",
+            "_load_daily_digest",
+            "_send_first_seen_alert",
+            "_send_station_down_alert",
+            "_send_queue_drop_alert",
+            "_send_daily_digest",
+            "_format_first_seen_message",
+            "_resolve_audio_path",
+            "_format_confidence",
+            "_format_ts",
+            "_status_value",
+            "_mark_detection_alerted",
+            "_mark_station_down_alerted",
+            "_mark_status"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FirstSeenAlert",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "StationDownAlert",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "TelegramBotApi",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "AlerterService",
+          "line": 104,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "httpx.Client",
+          "lineNumber": 66
+        },
+        {
+          "caller": "close",
+          "callee": "self._client.close",
+          "lineNumber": 73
+        },
+        {
+          "caller": "send_message",
+          "callee": "self._client.post",
+          "lineNumber": 76
+        },
+        {
+          "caller": "send_message",
+          "callee": "response.raise_for_status",
+          "lineNumber": 84
+        },
+        {
+          "caller": "send_message",
+          "callee": "response.json",
+          "lineNumber": 85
+        },
+        {
+          "caller": "send_message",
+          "callee": "payload.get",
+          "lineNumber": 86
+        },
+        {
+          "caller": "send_message",
+          "callee": "RuntimeError",
+          "lineNumber": 87
+        },
+        {
+          "caller": "send_audio",
+          "callee": "audio_path.open",
+          "lineNumber": 90
+        },
+        {
+          "caller": "send_audio",
+          "callee": "self._client.post",
+          "lineNumber": 97
+        },
+        {
+          "caller": "send_audio",
+          "callee": "response.raise_for_status",
+          "lineNumber": 98
+        },
+        {
+          "caller": "send_audio",
+          "callee": "response.json",
+          "lineNumber": 99
+        },
+        {
+          "caller": "send_audio",
+          "callee": "payload.get",
+          "lineNumber": 100
+        },
+        {
+          "caller": "send_audio",
+          "callee": "RuntimeError",
+          "lineNumber": 101
+        },
+        {
+          "caller": "__init__",
+          "callee": "load_settings",
+          "lineNumber": 118
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 119
+        },
+        {
+          "caller": "__init__",
+          "callee": "load_telegram_settings",
+          "lineNumber": 120
+        },
+        {
+          "caller": "__init__",
+          "callee": "setup_logging",
+          "lineNumber": 122
+        },
+        {
+          "caller": "__init__",
+          "callee": "TelegramBotApi",
+          "lineNumber": 128
+        },
+        {
+          "caller": "__init__",
+          "callee": "self.log.info",
+          "lineNumber": 134
+        },
+        {
+          "caller": "close",
+          "callee": "self._client.close",
+          "lineNumber": 138
+        },
+        {
+          "caller": "run",
+          "callee": "self.poll_once",
+          "lineNumber": 144
+        },
+        {
+          "caller": "run",
+          "callee": "time.sleep",
+          "lineNumber": 146
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.wait",
+          "lineNumber": 148
+        },
+        {
+          "caller": "run",
+          "callee": "self.close",
+          "lineNumber": 151
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self.clock",
+          "lineNumber": 155
+        },
+        {
+          "caller": "poll_once",
+          "callee": "get_connection",
+          "lineNumber": 157
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._load_first_seen_alerts",
+          "lineNumber": 159
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._send_first_seen_alert",
+          "lineNumber": 161
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._mark_detection_alerted",
+          "lineNumber": 162
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._load_station_down_alerts",
+          "lineNumber": 165
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._send_station_down_alert",
+          "lineNumber": 167
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._mark_station_down_alerted",
+          "lineNumber": 168
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._load_queue_drop_alert",
+          "lineNumber": 171
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._send_queue_drop_alert",
+          "lineNumber": 172
+        },
+        {
+          "caller": "poll_once",
+          "callee": "transaction",
+          "lineNumber": 173
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._mark_status",
+          "lineNumber": 174
+        },
+        {
+          "caller": "poll_once",
+          "callee": "str",
+          "lineNumber": 177
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._load_daily_digest",
+          "lineNumber": 182
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._send_daily_digest",
+          "lineNumber": 183
+        },
+        {
+          "caller": "poll_once",
+          "callee": "transaction",
+          "lineNumber": 184
+        },
+        {
+          "caller": "poll_once",
+          "callee": "self._mark_status",
+          "lineNumber": 185
+        },
+        {
+          "caller": "poll_once",
+          "callee": "conn.close",
+          "lineNumber": 188
+        },
+        {
+          "caller": "poll_once",
+          "callee": "set_queue_pending_hours",
+          "lineNumber": 189
+        },
+        {
+          "caller": "poll_once",
+          "callee": "sum",
+          "lineNumber": 190
+        },
+        {
+          "caller": "poll_once",
+          "callee": "summary.values",
+          "lineNumber": 190
+        },
+        {
+          "caller": "poll_once",
+          "callee": "increment_chunks_processed",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT d.id AS detection_id,\n                   d.chunk_id,\n                   d.company_name,\n                   d.ad_category,\n                   d.phone_number,\n                   d.website,\n                   d.offer_summary,\n                   d.confidence,\n                   c.id AS chunk_row_id,\n                   c.station_id,\n                   c.start_ts,\n                   c.end_ts,\n                   s.name AS station_name,\n                   ca.archived_audio_path\n            FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            JOIN stations s ON s.id = c.station_id\n            LEFT JOIN canonical_ads ca ON ca.id = d.canonical_ad_id\n            WHERE d.alerted = 0 AND d.is_ad = 1\n            ORDER BY d.id\n            \"\"\"\n        ).fetchall",
+          "lineNumber": 196
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "conn.execute",
+          "lineNumber": 196
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "FirstSeenAlert",
+          "lineNumber": 221
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "int",
+          "lineNumber": 222
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "int",
+          "lineNumber": 223
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "int",
+          "lineNumber": 225
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "float",
+          "lineNumber": 226
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "float",
+          "lineNumber": 227
+        },
+        {
+          "caller": "_load_first_seen_alerts",
+          "callee": "float",
+          "lineNumber": 233
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT s.id AS station_id,\n                   s.name AS station_name,\n                   MAX(c.end_ts) AS last_chunk_ts\n            FROM stations s\n            LEFT JOIN chunks c ON c.station_id = s.id\n            WHERE s.enabled = 1\n            GROUP BY s.id\n            ORDER BY s.name\n            \"\"\"\n        ).fetchall",
+          "lineNumber": 241
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "conn.execute",
+          "lineNumber": 241
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "int",
+          "lineNumber": 255
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "float",
+          "lineNumber": 256
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "self._outage_start_ts",
+          "lineNumber": 257
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "self._status_value",
+          "lineNumber": 263
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "conn.execute(\n                \"\"\"\n                SELECT MAX(start_ts) AS latest_gap_ts\n                FROM gaps\n                WHERE station_id = ? AND reason = 'stream_down'\n                \"\"\",\n                (station_id,),\n            ).fetchone",
+          "lineNumber": 265
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "conn.execute",
+          "lineNumber": 265
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "alerts.append",
+          "lineNumber": 273
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "StationDownAlert",
+          "lineNumber": 274
+        },
+        {
+          "caller": "_load_station_down_alerts",
+          "callee": "float",
+          "lineNumber": 279
+        },
+        {
+          "caller": "_outage_start_ts",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT MIN(start_ts) AS outage_start_ts\n            FROM gaps\n            WHERE station_id = ?\n              AND reason = 'stream_down'\n              AND start_ts >= ?\n            \"\"\",\n            (station_id, cutoff),\n        ).fetchone",
+          "lineNumber": 286
+        },
+        {
+          "caller": "_outage_start_ts",
+          "callee": "conn.execute",
+          "lineNumber": 286
+        },
+        {
+          "caller": "_outage_start_ts",
+          "callee": "float",
+          "lineNumber": 298
+        },
+        {
+          "caller": "_outage_start_ts",
+          "callee": "float",
+          "lineNumber": 300
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "conn.execute(\n            \"SELECT MAX(id) AS last_id FROM chunks WHERE status = 'dropped'\"\n        ).fetchone",
+          "lineNumber": 304
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "conn.execute",
+          "lineNumber": 304
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "int",
+          "lineNumber": 310
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "self._status_value",
+          "lineNumber": 311
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "str",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT id, path, error\n            FROM chunks\n            WHERE status = 'dropped' AND id > ?\n            ORDER BY id\n            \"\"\",\n            (int(marker) if marker and marker.isdigit() else 0,),\n        ).fetchall",
+          "lineNumber": 314
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "conn.execute",
+          "lineNumber": 314
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "int",
+          "lineNumber": 321
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "marker.isdigit",
+          "lineNumber": 321
+        },
+        {
+          "caller": "_load_queue_drop_alert",
+          "callee": "len",
+          "lineNumber": 326
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp(now_ts, tz=UTC).date().isoformat",
+          "lineNumber": 331
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp(now_ts, tz=UTC).date",
+          "lineNumber": 331
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 331
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "self._status_value",
+          "lineNumber": 332
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp(now_ts, tz=UTC).replace(hour=0, minute=0, second=0, microsecond=0).timestamp",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp(now_ts, tz=UTC).replace",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT COUNT(*)\n            FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            WHERE d.alerted = 1 AND c.start_ts >= ?\n            \"\"\",\n            (since,),\n        ).fetchone",
+          "lineNumber": 335
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute",
+          "lineNumber": 335
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) FROM chunks WHERE status = 'pending'\"\n        ).fetchone",
+          "lineNumber": 344
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute",
+          "lineNumber": 344
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) FROM chunks WHERE status = 'dropped' AND start_ts >= ?\",\n            (since,),\n        ).fetchone",
+          "lineNumber": 347
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "conn.execute",
+          "lineNumber": 347
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "self._load_station_down_alerts",
+          "lineNumber": 351
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "int",
+          "lineNumber": 354
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "int",
+          "lineNumber": 355
+        },
+        {
+          "caller": "_load_daily_digest",
+          "callee": "int",
+          "lineNumber": 356
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self._format_first_seen_message",
+          "lineNumber": 361
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self.log.info",
+          "lineNumber": 363
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self._resolve_audio_path",
+          "lineNumber": 365
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self.log.info",
+          "lineNumber": 367
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self._client.send_message",
+          "lineNumber": 371
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self._resolve_audio_path",
+          "lineNumber": 373
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self._client.send_audio",
+          "lineNumber": 375
+        },
+        {
+          "caller": "_send_first_seen_alert",
+          "callee": "self.log.exception",
+          "lineNumber": 378
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "int",
+          "lineNumber": 382
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "self._format_ts",
+          "lineNumber": 386
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "self._format_ts",
+          "lineNumber": 388
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "self.log.info",
+          "lineNumber": 391
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "self._client.send_message",
+          "lineNumber": 395
+        },
+        {
+          "caller": "_send_station_down_alert",
+          "callee": "self.log.exception",
+          "lineNumber": 398
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "self._format_ts",
+          "lineNumber": 406
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "\", \".join",
+          "lineNumber": 409
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "sorted",
+          "lineNumber": 409
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "set",
+          "lineNumber": 409
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "self.log.info",
+          "lineNumber": 412
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "self._client.send_message",
+          "lineNumber": 416
+        },
+        {
+          "caller": "_send_queue_drop_alert",
+          "callee": "self.log.exception",
+          "lineNumber": 419
+        },
+        {
+          "caller": "_send_daily_digest",
+          "callee": "len",
+          "lineNumber": 428
+        },
+        {
+          "caller": "_send_daily_digest",
+          "callee": "\", \".join",
+          "lineNumber": 431
+        },
+        {
+          "caller": "_send_daily_digest",
+          "callee": "self.log.info",
+          "lineNumber": 434
+        },
+        {
+          "caller": "_send_daily_digest",
+          "callee": "self._client.send_message",
+          "lineNumber": 438
+        },
+        {
+          "caller": "_send_daily_digest",
+          "callee": "self.log.exception",
+          "lineNumber": 441
+        },
+        {
+          "caller": "_format_first_seen_message",
+          "callee": "self._format_confidence",
+          "lineNumber": 452
+        },
+        {
+          "caller": "_format_first_seen_message",
+          "callee": "self._format_ts",
+          "lineNumber": 453
+        },
+        {
+          "caller": "_format_first_seen_message",
+          "callee": "lines.append",
+          "lineNumber": 456
+        },
+        {
+          "caller": "_format_first_seen_message",
+          "callee": "\"\\n\".join",
+          "lineNumber": 457
+        },
+        {
+          "caller": "_resolve_audio_path",
+          "callee": "Path",
+          "lineNumber": 462
+        },
+        {
+          "caller": "_resolve_audio_path",
+          "callee": "path.is_absolute",
+          "lineNumber": 463
+        },
+        {
+          "caller": "_resolve_audio_path",
+          "callee": "(PROJECT_ROOT / path).resolve",
+          "lineNumber": 464
+        },
+        {
+          "caller": "_resolve_audio_path",
+          "callee": "path.resolve",
+          "lineNumber": 466
+        },
+        {
+          "caller": "_resolve_audio_path",
+          "callee": "path.is_file",
+          "lineNumber": 467
+        },
+        {
+          "caller": "_format_ts",
+          "callee": "datetime.fromtimestamp(timestamp, tz=UTC).isoformat",
+          "lineNumber": 479
+        },
+        {
+          "caller": "_format_ts",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 479
+        },
+        {
+          "caller": "_status_value",
+          "callee": "conn.execute(\"SELECT value FROM status WHERE key = ?\", (key,)).fetchone",
+          "lineNumber": 482
+        },
+        {
+          "caller": "_status_value",
+          "callee": "conn.execute",
+          "lineNumber": 482
+        },
+        {
+          "caller": "_mark_detection_alerted",
+          "callee": "transaction",
+          "lineNumber": 488
+        },
+        {
+          "caller": "_mark_detection_alerted",
+          "callee": "conn.execute",
+          "lineNumber": 489
+        },
+        {
+          "caller": "_mark_station_down_alerted",
+          "callee": "transaction",
+          "lineNumber": 495
+        },
+        {
+          "caller": "_mark_station_down_alerted",
+          "callee": "self._mark_status",
+          "lineNumber": 496
+        },
+        {
+          "caller": "_mark_status",
+          "callee": "conn.execute",
+          "lineNumber": 504
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "dashboard/__main__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 10,
+          "endLine": 18,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "load_settings",
+          "lineNumber": 11
+        },
+        {
+          "caller": "main",
+          "callee": "uvicorn.run",
+          "lineNumber": 12
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "ingestor/__main__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 52,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 19,
+          "endLine": 62,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "setup_logging",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "start_metrics_server",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "load_settings",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 23
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 23
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 23
+        },
+        {
+          "caller": "main",
+          "callee": "migrate",
+          "lineNumber": 24
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 26
+        },
+        {
+          "caller": "main",
+          "callee": "chunks_dir.mkdir",
+          "lineNumber": 27
+        },
+        {
+          "caller": "main",
+          "callee": "load_stations",
+          "lineNumber": 29
+        },
+        {
+          "caller": "main",
+          "callee": "create_station_ingestors",
+          "lineNumber": 30
+        },
+        {
+          "caller": "main",
+          "callee": "threading.Event",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "stop_event.set",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "getattr",
+          "lineNumber": 43
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "callable",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "terminate",
+          "lineNumber": 45
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 47
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 48
+        },
+        {
+          "caller": "main",
+          "callee": "threading.Thread",
+          "lineNumber": 51
+        },
+        {
+          "caller": "main",
+          "callee": "thread.start",
+          "lineNumber": 60
+        },
+        {
+          "caller": "main",
+          "callee": "thread.join",
+          "lineNumber": 62
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "scripts/run_worker_until_empty.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 98,
+      "nonEmptyLines": 81,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 16,
+          "endLine": 94,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "setup_logging",
+          "lineNumber": 17
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 18
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 18
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 18
+        },
+        {
+          "caller": "main",
+          "callee": "migrate",
+          "lineNumber": 19
+        },
+        {
+          "caller": "main",
+          "callee": "load_settings",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "os.environ.get(\"ASR_DEVICE\", \"\").lower",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "os.environ.get",
+          "lineNumber": 21
+        },
+        {
+          "caller": "model_factory",
+          "callee": "WhisperModel",
+          "lineNumber": 27
+        },
+        {
+          "caller": "model_factory",
+          "callee": "WhisperModel",
+          "lineNumber": 28
+        },
+        {
+          "caller": "main",
+          "callee": "__import__(\"worker.transcribe\", fromlist=[\"Transcriber\"]).Transcriber",
+          "lineNumber": 32
+        },
+        {
+          "caller": "main",
+          "callee": "__import__",
+          "lineNumber": 32
+        },
+        {
+          "caller": "main",
+          "callee": "create_consumer",
+          "lineNumber": 37
+        },
+        {
+          "caller": "main",
+          "callee": "int",
+          "lineNumber": 39
+        },
+        {
+          "caller": "main",
+          "callee": "os.environ.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "main",
+          "callee": "time.time",
+          "lineNumber": 42
+        },
+        {
+          "caller": "main",
+          "callee": "consumer.run_once",
+          "lineNumber": 44
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 46
+        },
+        {
+          "caller": "main",
+          "callee": "get_connection",
+          "lineNumber": 51
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute(\n                \"SELECT COUNT(*) FROM chunks WHERE status = 'pending'\"\n            ).fetchone",
+          "lineNumber": 53
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 53
+        },
+        {
+          "caller": "main",
+          "callee": "conn.close",
+          "lineNumber": 57
+        },
+        {
+          "caller": "main",
+          "callee": "time.sleep",
+          "lineNumber": 61
+        },
+        {
+          "caller": "main",
+          "callee": "time.time",
+          "lineNumber": 63
+        },
+        {
+          "caller": "main",
+          "callee": "get_connection",
+          "lineNumber": 64
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 68
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM transcripts\").fetchone",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM detections\").fetchone",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM canonical_ads\").fetchone",
+          "lineNumber": 74
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 74
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute(\n            \"SELECT error, COUNT(*) FROM chunks WHERE status = 'dropped' GROUP BY error\"\n        ).fetchall",
+          "lineNumber": 75
+        },
+        {
+          "caller": "main",
+          "callee": "conn.execute",
+          "lineNumber": 75
+        },
+        {
+          "caller": "main",
+          "callee": "conn.close",
+          "lineNumber": 79
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 81
+        },
+        {
+          "caller": "main",
+          "callee": "round",
+          "lineNumber": 84
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "shared/config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 61,
+      "nonEmptyLines": 45,
+      "functions": [
+        {
+          "name": "load_stations",
+          "startLine": 29,
+          "endLine": 33,
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "load_settings",
+          "startLine": 36,
+          "endLine": 57,
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "load_telegram_settings",
+          "startLine": 60,
+          "endLine": 61,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "TelegramSettings",
+          "startLine": 17,
+          "endLine": 26,
+          "methods": [],
+          "properties": [
+            "telegram_bot_token",
+            "telegram_chat_id"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "TelegramSettings",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "load_stations",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "load_settings",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "load_telegram_settings",
+          "line": 60,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "load_stations",
+          "callee": "config_path.open",
+          "lineNumber": 31
+        },
+        {
+          "caller": "load_stations",
+          "callee": "yaml.safe_load",
+          "lineNumber": 32
+        },
+        {
+          "caller": "load_stations",
+          "callee": "StationsFile.model_validate",
+          "lineNumber": 33
+        },
+        {
+          "caller": "load_settings",
+          "callee": "config_path.open",
+          "lineNumber": 38
+        },
+        {
+          "caller": "load_settings",
+          "callee": "yaml.safe_load",
+          "lineNumber": 39
+        },
+        {
+          "caller": "load_settings",
+          "callee": "PipelineSettings.model_validate",
+          "lineNumber": 40
+        },
+        {
+          "caller": "load_settings",
+          "callee": "os.environ.get",
+          "lineNumber": 44
+        },
+        {
+          "caller": "load_settings",
+          "callee": "os.environ.get",
+          "lineNumber": 46
+        },
+        {
+          "caller": "load_settings",
+          "callee": "int",
+          "lineNumber": 47
+        },
+        {
+          "caller": "load_settings",
+          "callee": "os.environ.get",
+          "lineNumber": 48
+        },
+        {
+          "caller": "load_settings",
+          "callee": "os.environ.get",
+          "lineNumber": 50
+        },
+        {
+          "caller": "load_settings",
+          "callee": "os.environ.get",
+          "lineNumber": 52
+        },
+        {
+          "caller": "load_settings",
+          "callee": "settings.model_copy",
+          "lineNumber": 55
+        },
+        {
+          "caller": "load_telegram_settings",
+          "callee": "TelegramSettings",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "shared/logging.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "setup_logging",
+          "startLine": 59,
+          "endLine": 76,
+          "params": [
+            "service_name",
+            "level",
+            "stream"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "JsonFormatter",
+          "startLine": 12,
+          "endLine": 56,
+          "methods": [
+            "__init__",
+            "format"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "JsonFormatter",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "setup_logging",
+          "line": 59,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 16
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 16
+        },
+        {
+          "caller": "format",
+          "callee": "datetime.fromtimestamp(record.created, tz=UTC).isoformat",
+          "lineNumber": 21
+        },
+        {
+          "caller": "format",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 21
+        },
+        {
+          "caller": "format",
+          "callee": "record.getMessage",
+          "lineNumber": 25
+        },
+        {
+          "caller": "format",
+          "callee": "self.formatException",
+          "lineNumber": 28
+        },
+        {
+          "caller": "format",
+          "callee": "record.__dict__.items",
+          "lineNumber": 29
+        },
+        {
+          "caller": "format",
+          "callee": "key.startswith",
+          "lineNumber": 30
+        },
+        {
+          "caller": "format",
+          "callee": "json.dumps",
+          "lineNumber": 56
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "logging.StreamHandler",
+          "lineNumber": 66
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "handler.setFormatter",
+          "lineNumber": 67
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "JsonFormatter",
+          "lineNumber": 67
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "logging.getLogger",
+          "lineNumber": 69
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "root.handlers.clear",
+          "lineNumber": 70
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "root.addHandler",
+          "lineNumber": 71
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "root.setLevel",
+          "lineNumber": 72
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "logging.getLogger",
+          "lineNumber": 74
+        },
+        {
+          "caller": "setup_logging",
+          "callee": "logger.setLevel",
+          "lineNumber": 75
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "shared/metrics.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 175,
+      "nonEmptyLines": 142,
+      "functions": [
+        {
+          "name": "start_metrics_server",
+          "startLine": 61,
+          "endLine": 67,
+          "params": [
+            "port"
+          ]
+        },
+        {
+          "name": "increment_chunks_processed",
+          "startLine": 70,
+          "endLine": 71,
+          "params": [
+            "service",
+            "amount"
+          ]
+        },
+        {
+          "name": "increment_chunks_dropped",
+          "startLine": 74,
+          "endLine": 75,
+          "params": [
+            "amount"
+          ]
+        },
+        {
+          "name": "increment_chunk_files_deleted",
+          "startLine": 78,
+          "endLine": 79,
+          "params": [
+            "amount"
+          ]
+        },
+        {
+          "name": "set_asr_rtf_avg",
+          "startLine": 82,
+          "endLine": 83,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "set_station_last_chunk_timestamp",
+          "startLine": 86,
+          "endLine": 87,
+          "params": [
+            "station",
+            "timestamp"
+          ]
+        },
+        {
+          "name": "set_wal_checkpoint_metrics",
+          "startLine": 90,
+          "endLine": 93,
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "set_queue_pending_hours",
+          "startLine": 96,
+          "endLine": 114,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "refresh_station_metrics",
+          "startLine": 117,
+          "endLine": 142,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "refresh_dashboard_metrics",
+          "startLine": 145,
+          "endLine": 147,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "configure_dashboard_metrics",
+          "startLine": 150,
+          "endLine": 175,
+          "params": [
+            "db_path",
+            "refresh_interval_seconds"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "start_metrics_server",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "increment_chunks_processed",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "increment_chunks_dropped",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "increment_chunk_files_deleted",
+          "line": 78,
+          "isDefault": false
+        },
+        {
+          "name": "set_asr_rtf_avg",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "set_station_last_chunk_timestamp",
+          "line": 86,
+          "isDefault": false
+        },
+        {
+          "name": "set_wal_checkpoint_metrics",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "set_queue_pending_hours",
+          "line": 96,
+          "isDefault": false
+        },
+        {
+          "name": "refresh_station_metrics",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "refresh_dashboard_metrics",
+          "line": 145,
+          "isDefault": false
+        },
+        {
+          "name": "configure_dashboard_metrics",
+          "line": 150,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "start_metrics_server",
+          "callee": "start_http_server",
+          "lineNumber": 66
+        },
+        {
+          "caller": "start_metrics_server",
+          "callee": "_STARTED_PORTS.add",
+          "lineNumber": 67
+        },
+        {
+          "caller": "increment_chunks_processed",
+          "callee": "CHUNKS_PROCESSED_TOTAL.labels(service=service).inc",
+          "lineNumber": 71
+        },
+        {
+          "caller": "increment_chunks_processed",
+          "callee": "CHUNKS_PROCESSED_TOTAL.labels",
+          "lineNumber": 71
+        },
+        {
+          "caller": "increment_chunks_dropped",
+          "callee": "CHUNKS_DROPPED_TOTAL.inc",
+          "lineNumber": 75
+        },
+        {
+          "caller": "increment_chunk_files_deleted",
+          "callee": "CHUNK_FILES_DELETED_TOTAL.inc",
+          "lineNumber": 79
+        },
+        {
+          "caller": "set_asr_rtf_avg",
+          "callee": "ASR_RTF_AVG.set",
+          "lineNumber": 83
+        },
+        {
+          "caller": "set_station_last_chunk_timestamp",
+          "callee": "STATION_LAST_CHUNK_TIMESTAMP_SECONDS.labels(station=station).set",
+          "lineNumber": 87
+        },
+        {
+          "caller": "set_station_last_chunk_timestamp",
+          "callee": "STATION_LAST_CHUNK_TIMESTAMP_SECONDS.labels",
+          "lineNumber": 87
+        },
+        {
+          "caller": "set_wal_checkpoint_metrics",
+          "callee": "SQLITE_WAL_LOG_FRAMES.set",
+          "lineNumber": 91
+        },
+        {
+          "caller": "set_wal_checkpoint_metrics",
+          "callee": "SQLITE_WAL_CHECKPOINTED_FRAMES.set",
+          "lineNumber": 92
+        },
+        {
+          "caller": "set_wal_checkpoint_metrics",
+          "callee": "SQLITE_WAL_BUSY.set",
+          "lineNumber": 93
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "get_connection",
+          "lineNumber": 100
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT COALESCE(SUM(end_ts - start_ts), 0.0) AS pending_seconds\n            FROM chunks\n            WHERE status = 'pending'\n            \"\"\"\n        ).fetchone",
+          "lineNumber": 101
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "conn.execute",
+          "lineNumber": 101
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "float",
+          "lineNumber": 108
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "conn.close",
+          "lineNumber": 113
+        },
+        {
+          "caller": "set_queue_pending_hours",
+          "callee": "QUEUE_PENDING_HOURS.set",
+          "lineNumber": 114
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "get_connection",
+          "lineNumber": 121
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT s.name AS station_name, MAX(c.end_ts) AS last_chunk_ts\n            FROM stations s\n            LEFT JOIN chunks c ON c.station_id = s.id\n            WHERE s.enabled = 1\n            GROUP BY s.id, s.name\n            ORDER BY s.name\n            \"\"\"\n        ).fetchall",
+          "lineNumber": 122
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "conn.execute",
+          "lineNumber": 122
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "conn.close",
+          "lineNumber": 136
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "set_station_last_chunk_timestamp",
+          "lineNumber": 142
+        },
+        {
+          "caller": "refresh_station_metrics",
+          "callee": "float",
+          "lineNumber": 142
+        },
+        {
+          "caller": "refresh_dashboard_metrics",
+          "callee": "set_queue_pending_hours",
+          "lineNumber": 146
+        },
+        {
+          "caller": "refresh_dashboard_metrics",
+          "callee": "refresh_station_metrics",
+          "lineNumber": 147
+        },
+        {
+          "caller": "configure_dashboard_metrics",
+          "callee": "Path",
+          "lineNumber": 157
+        },
+        {
+          "caller": "configure_dashboard_metrics",
+          "callee": "_DASHBOARD_REFRESH_THREAD.is_alive",
+          "lineNumber": 160
+        },
+        {
+          "caller": "_run",
+          "callee": "refresh_dashboard_metrics",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_run",
+          "callee": "time.sleep",
+          "lineNumber": 168
+        },
+        {
+          "caller": "configure_dashboard_metrics",
+          "callee": "threading.Thread",
+          "lineNumber": 170
+        },
+        {
+          "caller": "configure_dashboard_metrics",
+          "callee": "_DASHBOARD_REFRESH_THREAD.start",
+          "lineNumber": 175
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 11,
+        "functionCount": 11,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_alerter.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 382,
+      "nonEmptyLines": 330,
+      "functions": [
+        {
+          "name": "_seed_station",
+          "startLine": 16,
+          "endLine": 21,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_seed_chunk",
+          "startLine": 24,
+          "endLine": 40,
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ]
+        },
+        {
+          "name": "_seed_detection",
+          "startLine": 43,
+          "endLine": 71,
+          "params": [
+            "conn",
+            "chunk_id",
+            "canonical_ad_id",
+            "company_name",
+            "alerted"
+          ]
+        },
+        {
+          "name": "_seed_canonical_ad",
+          "startLine": 74,
+          "endLine": 96,
+          "params": [
+            "conn",
+            "company_name",
+            "archived_audio_path"
+          ]
+        },
+        {
+          "name": "_set_status",
+          "startLine": 99,
+          "endLine": 109,
+          "params": [
+            "conn",
+            "key",
+            "value",
+            "updated_at"
+          ]
+        },
+        {
+          "name": "_today_date",
+          "startLine": 132,
+          "endLine": 133,
+          "params": [
+            "ts"
+          ]
+        },
+        {
+          "name": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "startLine": 136,
+          "endLine": 190,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "startLine": 193,
+          "endLine": 234,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_station_down_alert_sends_once_per_outage",
+          "startLine": 237,
+          "endLine": 282,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_queue_drop_alert_reports_new_drops_once",
+          "startLine": 285,
+          "endLine": 341,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_daily_digest_only_sends_once_per_day",
+          "startLine": 344,
+          "endLine": 382,
+          "params": [
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TelegramRecorder",
+          "startLine": 112,
+          "endLine": 129,
+          "methods": [
+            "__init__",
+            "transport"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_seed_station",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_chunk",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_detection",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_canonical_ad",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "_set_status",
+          "line": 99,
+          "isDefault": false
+        },
+        {
+          "name": "TelegramRecorder",
+          "line": 112,
+          "isDefault": false
+        },
+        {
+          "name": "_today_date",
+          "line": 132,
+          "isDefault": false
+        },
+        {
+          "name": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "line": 193,
+          "isDefault": false
+        },
+        {
+          "name": "test_station_down_alert_sends_once_per_outage",
+          "line": 237,
+          "isDefault": false
+        },
+        {
+          "name": "test_queue_drop_alert_reports_new_drops_once",
+          "line": 285,
+          "isDefault": false
+        },
+        {
+          "name": "test_daily_digest_only_sends_once_per_day",
+          "line": 344,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "int",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 33
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_seed_detection",
+          "callee": "conn.execute",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_seed_detection",
+          "callee": "json.dumps",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_seed_detection",
+          "callee": "int",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_seed_detection",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_seed_detection",
+          "callee": "conn.execute",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_seed_canonical_ad",
+          "callee": "conn.execute",
+          "lineNumber": 80
+        },
+        {
+          "caller": "_seed_canonical_ad",
+          "callee": "int",
+          "lineNumber": 96
+        },
+        {
+          "caller": "_seed_canonical_ad",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 96
+        },
+        {
+          "caller": "_seed_canonical_ad",
+          "callee": "conn.execute",
+          "lineNumber": 96
+        },
+        {
+          "caller": "_set_status",
+          "callee": "conn.execute",
+          "lineNumber": 100
+        },
+        {
+          "caller": "handler",
+          "callee": "request.read",
+          "lineNumber": 118
+        },
+        {
+          "caller": "handler",
+          "callee": "self.requests.append",
+          "lineNumber": 119
+        },
+        {
+          "caller": "handler",
+          "callee": "dict",
+          "lineNumber": 123
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 127
+        },
+        {
+          "caller": "transport",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 129
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp(ts, tz=UTC).date().isoformat",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp(ts, tz=UTC).date",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 133
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "migrate",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "archive.write_bytes",
+          "lineNumber": 142
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "get_connection",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "transaction",
+          "lineNumber": 147
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_seed_station",
+          "lineNumber": 148
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_seed_chunk",
+          "lineNumber": 149
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "str",
+          "lineNumber": 152
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_seed_canonical_ad",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "str",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_seed_detection",
+          "lineNumber": 157
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_set_status",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "_today_date",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "conn.close",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "TelegramRecorder",
+          "lineNumber": 162
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "AlerterService",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "TelegramSettings",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "recorder.transport",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "service.poll_once",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "len",
+          "lineNumber": 178
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "recorder.requests[0][1].endswith",
+          "lineNumber": 179
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "recorder.requests[1][1].endswith",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "get_connection",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "conn.execute(\"SELECT alerted FROM detections\").fetchone",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "conn.execute",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_first_seen_alert_sends_message_and_audio_and_marks_alerted",
+          "callee": "conn.close",
+          "lineNumber": 190
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "migrate",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "get_connection",
+          "lineNumber": 200
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "transaction",
+          "lineNumber": 202
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_seed_station",
+          "lineNumber": 203
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_seed_chunk",
+          "lineNumber": 204
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "str",
+          "lineNumber": 207
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_seed_canonical_ad",
+          "lineNumber": 211
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_seed_detection",
+          "lineNumber": 212
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_set_status",
+          "lineNumber": 213
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "_today_date",
+          "lineNumber": 213
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "conn.close",
+          "lineNumber": 215
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "AlerterService",
+          "lineNumber": 217
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "TelegramSettings",
+          "lineNumber": 219
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "service.poll_once",
+          "lineNumber": 226
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "get_connection",
+          "lineNumber": 229
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "conn.execute(\"SELECT alerted FROM detections\").fetchone",
+          "lineNumber": 231
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "conn.execute",
+          "lineNumber": 231
+        },
+        {
+          "caller": "test_dry_run_without_token_marks_alerted_and_does_not_crash",
+          "callee": "conn.close",
+          "lineNumber": 234
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "migrate",
+          "lineNumber": 239
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "get_connection",
+          "lineNumber": 244
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "transaction",
+          "lineNumber": 246
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "_seed_station",
+          "lineNumber": 247
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "_seed_chunk",
+          "lineNumber": 248
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "str",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "conn.execute",
+          "lineNumber": 255
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "_set_status",
+          "lineNumber": 259
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "_today_date",
+          "lineNumber": 259
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "conn.close",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "TelegramRecorder",
+          "lineNumber": 263
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "AlerterService",
+          "lineNumber": 264
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "TelegramSettings",
+          "lineNumber": 266
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "recorder.transport",
+          "lineNumber": 270
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "service.poll_once",
+          "lineNumber": 274
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "len",
+          "lineNumber": 276
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "recorder.requests[0][3].lower",
+          "lineNumber": 277
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "service.poll_once",
+          "lineNumber": 280
+        },
+        {
+          "caller": "test_station_down_alert_sends_once_per_outage",
+          "callee": "len",
+          "lineNumber": 282
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "migrate",
+          "lineNumber": 287
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "get_connection",
+          "lineNumber": 291
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "transaction",
+          "lineNumber": 293
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "_seed_station",
+          "lineNumber": 294
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "_seed_chunk",
+          "lineNumber": 295
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "str",
+          "lineNumber": 298
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "_set_status",
+          "lineNumber": 303
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "_today_date",
+          "lineNumber": 303
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "conn.close",
+          "lineNumber": 305
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "TelegramRecorder",
+          "lineNumber": 307
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "AlerterService",
+          "lineNumber": 308
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "TelegramSettings",
+          "lineNumber": 310
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "recorder.transport",
+          "lineNumber": 314
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "service.poll_once",
+          "lineNumber": 318
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "len",
+          "lineNumber": 320
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "recorder.requests[0][3].lower",
+          "lineNumber": 321
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "get_connection",
+          "lineNumber": 324
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "transaction",
+          "lineNumber": 326
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "_seed_chunk",
+          "lineNumber": 327
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "str",
+          "lineNumber": 330
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "conn.close",
+          "lineNumber": 336
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "service.poll_once",
+          "lineNumber": 338
+        },
+        {
+          "caller": "test_queue_drop_alert_reports_new_drops_once",
+          "callee": "len",
+          "lineNumber": 340
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "migrate",
+          "lineNumber": 346
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "get_connection",
+          "lineNumber": 349
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "transaction",
+          "lineNumber": 351
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "_seed_station",
+          "lineNumber": 352
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "_seed_chunk",
+          "lineNumber": 353
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "str",
+          "lineNumber": 356
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "conn.close",
+          "lineNumber": 361
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "TelegramRecorder",
+          "lineNumber": 363
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "AlerterService",
+          "lineNumber": 364
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "TelegramSettings",
+          "lineNumber": 366
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "recorder.transport",
+          "lineNumber": 370
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "service.poll_once",
+          "lineNumber": 374
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "len",
+          "lineNumber": 376
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "service.poll_once",
+          "lineNumber": 380
+        },
+        {
+          "caller": "test_daily_digest_only_sends_once_per_day",
+          "callee": "len",
+          "lineNumber": 382
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 12,
+        "functionCount": 11,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 62,
+      "functions": [
+        {
+          "name": "test_load_stations_from_repo_config",
+          "startLine": 12,
+          "endLine": 18,
+          "params": []
+        },
+        {
+          "name": "test_load_settings_from_repo_config",
+          "startLine": 21,
+          "endLine": 31,
+          "params": []
+        },
+        {
+          "name": "test_load_settings_chunks_dir_env_override",
+          "startLine": 34,
+          "endLine": 37,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_load_settings_dashboard_env_override",
+          "startLine": 40,
+          "endLine": 45,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_load_settings_asr_env_override",
+          "startLine": 48,
+          "endLine": 53,
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_load_stations_from_custom_yaml",
+          "startLine": 56,
+          "endLine": 72,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_telegram_settings_optional",
+          "startLine": 75,
+          "endLine": 80,
+          "params": [
+            "monkeypatch"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_load_stations_from_repo_config",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "test_load_settings_from_repo_config",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "test_load_settings_chunks_dir_env_override",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "test_load_settings_dashboard_env_override",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "test_load_settings_asr_env_override",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "test_load_stations_from_custom_yaml",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "test_telegram_settings_optional",
+          "line": 75,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_load_stations_from_repo_config",
+          "callee": "load_stations",
+          "lineNumber": 13
+        },
+        {
+          "caller": "test_load_stations_from_repo_config",
+          "callee": "len",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_load_stations_from_repo_config",
+          "callee": "isinstance",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_load_settings_from_repo_config",
+          "callee": "load_settings",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_load_settings_chunks_dir_env_override",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_load_settings_chunks_dir_env_override",
+          "callee": "load_settings",
+          "lineNumber": 36
+        },
+        {
+          "caller": "test_load_settings_dashboard_env_override",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 41
+        },
+        {
+          "caller": "test_load_settings_dashboard_env_override",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_load_settings_dashboard_env_override",
+          "callee": "load_settings",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_load_settings_asr_env_override",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_load_settings_asr_env_override",
+          "callee": "monkeypatch.setenv",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_load_settings_asr_env_override",
+          "callee": "load_settings",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_load_stations_from_custom_yaml",
+          "callee": "yaml_path.write_text",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_load_stations_from_custom_yaml",
+          "callee": "\"\"\"\nstations:\n  - name: test-fm\n    url: https://radio.example/stream\n    format: aac\n    enabled: true\n\"\"\".strip",
+          "lineNumber": 59
+        },
+        {
+          "caller": "test_load_stations_from_custom_yaml",
+          "callee": "load_stations",
+          "lineNumber": 68
+        },
+        {
+          "caller": "test_load_stations_from_custom_yaml",
+          "callee": "len",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_telegram_settings_optional",
+          "callee": "monkeypatch.delenv",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_telegram_settings_optional",
+          "callee": "monkeypatch.delenv",
+          "lineNumber": 77
+        },
+        {
+          "caller": "test_telegram_settings_optional",
+          "callee": "load_telegram_settings",
+          "lineNumber": 78
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_logging.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 15,
+      "functions": [
+        {
+          "name": "test_json_log_includes_service_name",
+          "startLine": 12,
+          "endLine": 21,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_json_log_includes_service_name",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "StringIO",
+          "lineNumber": 13
+        },
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "setup_logging",
+          "lineNumber": 14
+        },
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "logger.info",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "json.loads",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "stream.getvalue().strip",
+          "lineNumber": 17
+        },
+        {
+          "caller": "test_json_log_includes_service_name",
+          "callee": "stream.getvalue",
+          "lineNumber": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_metrics.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 25,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "startLine": 14,
+          "endLine": 25,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "set_wal_checkpoint_metrics",
+          "lineNumber": 15
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "WalCheckpointResult",
+          "lineNumber": 16
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "SQLITE_WAL_LOG_FRAMES._value.get",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "SQLITE_WAL_CHECKPOINTED_FRAMES._value.get",
+          "lineNumber": 19
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "SQLITE_WAL_BUSY._value.get",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "set_wal_checkpoint_metrics",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "WalCheckpointResult",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_set_wal_checkpoint_metrics_updates_gauges",
+          "callee": "SQLITE_WAL_BUSY._value.get",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "worker/__main__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 40,
+      "nonEmptyLines": 27,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 19,
+          "endLine": 36,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "setup_logging",
+          "lineNumber": 20
+        },
+        {
+          "caller": "main",
+          "callee": "start_metrics_server",
+          "lineNumber": 21
+        },
+        {
+          "caller": "main",
+          "callee": "Path",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 22
+        },
+        {
+          "caller": "main",
+          "callee": "migrate",
+          "lineNumber": 23
+        },
+        {
+          "caller": "main",
+          "callee": "load_settings",
+          "lineNumber": 25
+        },
+        {
+          "caller": "main",
+          "callee": "create_consumer",
+          "lineNumber": 26
+        },
+        {
+          "caller": "main",
+          "callee": "threading.Event",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_shutdown",
+          "callee": "stop_event.set",
+          "lineNumber": 31
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 33
+        },
+        {
+          "caller": "main",
+          "callee": "signal.signal",
+          "lineNumber": 34
+        },
+        {
+          "caller": "main",
+          "callee": "consumer.run",
+          "lineNumber": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    }
+  ]
+}

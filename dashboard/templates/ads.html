@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Ads — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Canonical ads ({{ total }})</h2>
+{% if total == 0 %}
+<p class="empty">No ads detected yet. Run the ingestor and worker pipeline first.</p>
+{% else %}
+<table>
+  <thead>
+    <tr><th>Company</th><th>Category</th><th>Phone</th><th>First seen</th><th>Last seen</th><th>Airings</th></tr>
+  </thead>
+  <tbody id="ads-table-body">
+    {% include "partials/ads_rows.html" %}
+  </tbody>
+</table>
+<div class="pager">
+  <button {% if page <= 1 %}disabled{% endif %}
+    hx-get="/ads?page={{ page - 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">Prev</button>
+  <span>Page {{ page }} / {{ total_pages }}</span>
+  <button {% if page >= total_pages %}disabled{% endif %}
+    hx-get="/ads?page={{ page + 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">Next</button>
+</div>
+{% endif %}
+{% endblock %}

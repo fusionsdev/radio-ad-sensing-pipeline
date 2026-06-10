@@ -1,0 +1,12 @@
+Batch 3 Session D — WP-10b Instrument metrics (MiniMax/light).
+
+Read: plan/wp10a-report.md metric table + ports, plan/work-dispatch-6165b3.md.
+
+Add prometheus_client /metrics to ingestor, worker, alerter, dashboard on ports 9101-9104 per wp10a-report.
+Metric names MUST match convention: pipeline_queue_pending_hours, pipeline_chunks_processed_total{service}, pipeline_chunks_dropped_total, pipeline_asr_rtf_avg, pipeline_station_last_chunk_timestamp_seconds{station}, etc.
+Do not instrument hot loops with heavy work — counters/gauges only.
+shared/metrics.py helper OK if import-light.
+
+Verify: pytest -q still passes; optional smoke curl localhost if servers start in test.
+
+Write brief notes in plan/wp10b-report.md.

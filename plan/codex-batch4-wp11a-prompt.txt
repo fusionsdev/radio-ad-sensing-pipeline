@@ -1,0 +1,13 @@
+Batch 4 Session C — WP-11a Tests + hardening (GPT mini).
+
+Read: PLAN.md Phase 11, plan/opus-review-plan-6165b3.md WP-1 note (Phase 1 gaps), tests/test_db.py.
+
+Implement:
+1. Fix test_concurrent_writes to actually exercise @retry_on_busy retry path (provably retries on SQLITE_BUSY, not just lucky barrier timing)
+2. Move `import json` out of parse_key_claims_json() to module top in shared/models.py
+3. Add e2e smoke test tests/test_e2e_smoke.py: seed chunk → FakeTranscriber/Extractor/Persister through consumer OR minimal vertical slice ingest enqueue + worker process + alerter dry-run poll — all in-process with tmp_path DB, no GPU, no live stream
+
+Keep tests fast (<5s total for e2e). No new heavy deps.
+
+Verify: .venv\Scripts\pytest -q
+Write plan/wp11a-report.md (brief).

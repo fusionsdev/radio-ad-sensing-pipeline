@@ -1,0 +1,49 @@
+---
+description: Contextual routing for installed plugins, MCP servers, and deferred tooling
+alwaysApply: true
+---
+
+# Plugins & MCP — Use by Context
+
+**Source of truth:** `final-install-list.md`, `PLAN.md` § Dev Tooling Setup.
+
+## Installed now — when to use
+
+| Tool | Type | Use when | How |
+|---|---|---|---|
+| **caveman** (JuliusBrussee) | Skill pack | User wants terse replies or `/caveman-commit`, `/caveman-review`, `/caveman-stats` | Read `.agents/skills/caveman/SKILL.md` |
+| **headroom** | MCP (input compressor) | Large codebase reads, long chat, many file/tool results before next step | `headroom` MCP tools if available; else note in summary |
+
+## Cursor MCP plugins (enabled in workspace)
+
+| Server | Use when | Prefer over |
+|---|---|---|
+| `plugin-context7-plugin-context7` | Library/API docs: pydantic, pytest, ffmpeg, faster-whisper, Ollama, FastAPI, prometheus-client | Training-data guesses |
+| `plugin-exa-exa` | Live web facts, recent releases, URLs user shares, unfamiliar APIs | Guessing versions/behavior |
+| `plugin-linear-linear` | Issues/PRs on Linear | Ad-hoc issue tracking |
+| `plugin-notion-workspace-notion` | Notion tasks/docs user references | — |
+| `plugin-datadog-datadog` | Production metrics/logs (post-deploy) | — |
+
+**Project-relevant Context7 targets (Phases 2–10):** ffmpeg flags, faster-whisper, Ollama structured output, rapidfuzz, chromaprint/pyacoustid, FastAPI+HTMX, prometheus-client.
+
+**Exa:** stream-ingest patterns, GPU VRAM budgets, radio pipeline prior art — not for code already in repo.
+
+## Deferred — enable when threshold met
+
+| Tool | Enable when | Purpose |
+|---|---|---|
+| `Egonex-AI/Understand-Anything` | **Now** (Phase 1 done) — onboarding, architecture tours, large refactors | Codebase knowledge graph |
+| `oraios/serena` | Codebase grows past ~20 modules | Semantic code retrieval |
+| `upstash/context7` | Redundant if Cursor Context7 MCP works | Latest lib docs |
+| `doobidoo/mcp-memory-service` | Only if headroom memory insufficient | Cross-session memory |
+
+## Decision order
+
+1. **In-repo answer?** → Read `PLAN.md`, `plan/`, source — no MCP.
+2. **Library how-to?** → Context7 MCP.
+3. **External/current facts?** → Exa MCP.
+4. **Huge context?** → Headroom before bulk reads.
+5. **Terse output?** → Caveman (user-triggered only).
+6. **Structured workflow?** → Project skill from `project-skills` rule.
+
+Always check MCP tool schema in `mcps/<server>/tools/` before calling.

@@ -1,0 +1,2987 @@
+OpenAI Codex v0.139.0
+--------
+workdir: h:\DEV\projects\radio-ad-sensing-pipeline
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eaeeb-2029-7592-8dc0-3039843b6d07
+--------
+user
+Batch 3 Session B — WP-8 Fingerprint Deep REVIEW (read-only, no source edits).
+
+Read: PLAN.md Phase 8, plan/opus-review-plan-6165b3.md WP-8 row, worker/fingerprint.py, tests/test_fingerprint.py.
+
+Deep review: sliding-window offset-tolerant match (90s chunk vs 30s clip at any offset), threshold true-match and near-miss tests, false known_ad must not lose transcript, CPU budget.
+
+Run: .venv\Scripts\pytest tests/test_fingerprint.py -v && pytest -q
+
+Output findings by severity with file:line, spec checklist, test gaps, verdict ship/fix-then-ship/rework with numbered fixes.
+You MAY update only plan/opus-review-plan-6165b3.md WP-8 checklist line.
+
+
+hook: SessionStart
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’m treating this as a strict read-only review pass on WP-8: I’ll read the phase/spec files, inspect the fingerprint implementation and tests, then run the requested test commands and report findings with concrete file references.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content AGENTS.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "Get-Content C:\\Users\\Barbara\\.agents\\skills\\review\\SKILL.md" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "Get-Content tests\\test_fingerprint.py" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content PLAN.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "Get-Content .cursor\\rules\\project-skills.mdc" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "Get-Content worker\\fingerprint.py" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "Get-Content plan\\opus-review-plan-6165b3.md" in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1356ms:
+# Agent Memory — Radio Ad-Sensing Pipeline
+
+**Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
+
+## Current state (2026-06-10)
+
+| Item | Status |
+|---|---|
+| **Phase 1** (Scaffold + DB) | ✅ **DONE** — `plan/phase1-report.md` |
+| **WP-9** (Dashboard) | ✅ **DONE** — `plan/wp9-report.md` |
+| **WP-7a** (Docker skeleton) | ✅ **DONE** — `plan/wp7a-report.md` |
+| **WP-10a** (Monitoring config) | ✅ **DONE** — `plan/wp10a-report.md` |
+| **WP-10b** (Instrument metrics) | ⏳ Deferred — waits for ingestor + alerter to exist |
+| **Tests** | 37/37 passing (`pytest`) |
+| **DB migrate** | `python -c "from shared.db import migrate; migrate('data/pipeline.db')"` |
+
+## Canonical docs (read before coding)
+
+1. `PLAN.md` — architecture, schema, all 11 phases, risks — **do not re-litigate**
+2. `plan/handoff-phase1-scaffold-db-6165b3.md` — Phase 1 scope (complete)
+3. `.windsurf/plans/handoff-wp9-dashboard-6165b3.md` — WP-9 dashboard scope (complete)
+4. `plan/phase1-report.md`, `plan/wp9-report.md` — completion reports
+5. `final-install-list.md` — skills + plugins installed
+
+## Cursor rules (auto-loaded)
+
+`.cursor/rules/` — always apply:
+
+- `project-conventions.mdc` — layout, constraints, verify commands
+- `project-skills.mdc` — when to use each skill in `.agents/skills/`
+- `project-plugins-mcp.mdc` — when to use Context7, Exa, headroom, caveman
+
+## Key technical facts (don't forget)
+
+- **Stack:** Python 3.11+, SQLite WAL, faster-whisper + Ollama/Qwen (later), Telegram outbound, FastAPI dashboard ✅ (`python -m dashboard`)
+- **docker-compose.yml** 10 services (ingestor/worker/alerter/dashboard/ollama/ollama-pull/pipeline-migrate/prometheus/grafana/dcgm-exporter) — see `plan/wp7a-report.md`
+- **.env.example** now includes `GRAFANA_ADMIN_USER/PASSWORD`, `DASHBOARD_HOST/PORT`
+- **`shared/`** must stay import-light — no GPU/ML deps
+- **SQLite concurrency:** `shared/db.py` → WAL + `busy_timeout=5000` + `@retry_on_busy`
+- **`fingerprints.chromaprint_vector`** = BLOB feature vector, not hash
+- **LLM schema** excludes `station`/`timestamp` — metadata injected separately
+- **Queue:** `chunks` table (pending/processing/done/dropped), no Redis
+- **Chunk defaults:** 90s length, 7s overlap (`config/settings.yaml`)
+
+## Installed tooling
+
+| Tool | When to use |
+|---|---|
+| Skills (`.agents/skills/`) | See `project-skills.mdc` — read SKILL.md before acting |
+| **caveman** | User says "caveman" / less tokens |
+| **headroom** MCP | Large context reads |
+| **Context7** MCP | Library docs (ffmpeg, whisper, Ollama…) |
+| **Exa** MCP | Live web facts, URLs |
+| **Understand-Anything** | Codebase tours — eligible now Phase 1 done |
+
+## Phase roadmap (next actions)
+
+```
+✅ 1 Scaffold+DB
+→  2 Ingestor      ffmpeg, 90s chunks, enqueue, gaps, supervisor backoff
+   3 Worker ASR    faster-whisper, drop-oldest queue
+   4 Extraction    Ollama JSON schema
+   5 Dedup         rapidfuzz, ad clip archive
+   6 Alerter       Telegram first-seen + ops + digest
+   7 Docker        Compose + NVIDIA
+   8 Fingerprint   chromaprint annotation
+   9 Dashboard     FastAPI + HTMX read-only ✅ WP-9 done
+  10 Prometheus    metrics + Grafana
+  11 Tests         hardening + e2e smoke
+```
+
+## Repo layout (implemented)
+
+```
+config/          stations.yaml, settings.yaml
+shared/          db.py, models.py, config.py, logging.py, migrations/
+ingestor/        stub (Phase 2)
+worker/          stub
+alerter/         stub
+dashboard/       FastAPI + Jinja2/HTMX (read-only) ✅
+monitoring/      stub
+tests/           37 tests (incl. dashboard + worker)
+data/            gitignored runtime
+```
+
+## Session checklist for agent
+
+- [ ] Read this file + relevant `plan/handoff-*.md`
+- [ ] Confirm current phase scope — don't jump ahead
+- [ ] Use skill from `.agents/skills/` when trigger matches
+- [ ] Run `pytest` before claiming done
+- [ ] Update `plan/` report or handoff when closing a phase
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1565ms:
+---
+name: review
+description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+---
+
+# Review
+
+Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
+
+- **Standards** — does the code conform to this repo's documented coding standards?
+- **Spec** — does the code faithfully implement the originating issue / PRD / spec?
+
+Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+
+The issue tracker should have been provided to you — run `/setup-matt-pocock-skills` if `docs/agents/issue-tracker.md` is missing.
+
+## Process
+
+### Gate-review mode (work-package / acceptance review)
+
+When the user asks you to act as a review gate for a work package, phase, handoff, or implementation report, adapt the normal branch-review flow:
+
+1. Read the architecture/decision doc first and do **not** re-litigate settled decisions.
+2. Read the work-package handoff/spec next, then the implementer's report/claims. If the canonical report file is missing, say so and review against the provided handoff/claims instead of blocking on ceremony.
+3. Build an acceptance-criteria checklist from the spec plus the user's focus areas.
+4. Verify every criterion yourself with commands and targeted probes; passing unit tests is not enough for Deep reviews.
+5. Prefer adversarial smoke tests for process/concurrency/failure-path claims (timeouts, EOF, partial output, restart behavior, duplicate consumers, path traversal, etc.).
+6. Report findings ordered by severity, each with `file:line` evidence and the observed command/probe result. End with exactly one verdict: `ship`, `fix-then-ship`, or `rework`.
+7. If the review plan includes a checklist, update it after the review.
+
+For streaming/ffmpeg ingestor reviews, see `references/ingestor-review-probes.md` for durable adversarial probes and common pitfalls.
+
+### 1. Pin the fixed point
+
+Whatever the user said is the fixed point — a commit SHA, branch name, tag, `main`, `HEAD~5`, etc. Don't be opinionated; pass it through. If they didn't specify one, ask: "Review against what — a branch, a commit, or `main`?" Don't proceed until you have it.
+
+Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
+
+### 2. Identify the spec source
+
+Look for the originating spec, in this order:
+
+1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.) — fetch via the workflow in `docs/agents/issue-tracker.md`.
+2. A path the user passed as an argument.
+3. A PRD/spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
+4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+
+### 3. Identify the standards sources
+
+Anything in the repo that documents how code should be written. Common locations:
+
+- `CLAUDE.md`, `AGENTS.md`
+- `CONTRIBUTING.md`
+- `CONTEXT.md`, `CONTEXT-MAP.md`, per-context `CONTEXT.md` files
+- `docs/adr/` (architectural decisions are standards)
+- `.editorconfig`, `eslint.config.*`, `biome.json`, `prettier.config.*`, `tsconfig.json` (machine-enforced standards — note them but don't re-check what tooling already checks)
+- Any `STYLE.md`, `STANDARDS.md`, `STYLEGUIDE.md`, or similar at the repo root or under `docs/`
+
+Collect the list of files. The **Standards** sub-agent will read them.
+
+### 4. Spawn both sub-agents in parallel
+
+Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
+
+**Standards sub-agent prompt** — include:
+
+- The full diff command and commit list.
+- The list of standards-source files you found in step 3.
+- The brief: "Read the standards docs. Then read the diff. Report — per file/hunk where relevant — every place the diff violates a documented standard. Cite the standard (file + the rule). Distinguish hard violations from judgement calls. Skip anything tooling enforces. Under 400 words."
+
+**Spec sub-agent prompt** — include:
+
+- The diff command and commit list.
+- The path or fetched contents of the spec.
+- The brief: "Read the spec. Then read the diff. Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+
+If the spec is missing, skip the Spec sub-agent and note this in the final report.
+
+### 5. Aggregate
+
+Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate so the user can see them independently.
+
+End with a one-line summary: total findings per axis, and the worst single issue (if any) flagged.
+
+## Why two axes
+
+A change can pass one axis and fail the other:
+
+- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
+- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
+
+Reporting them separately stops one axis from masking the other.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1774ms:
+"""Tests for WP-8 offset-tolerant chromaprint matching and known-ad annotation."""
+
+from __future__ import annotations
+
+import sqlite3
+from pathlib import Path
+
+import pytest
+
+from shared.db import get_connection, migrate, transaction
+from shared.models import PipelineSettings
+from worker.fingerprint import (
+    FingerprintAnnotator,
+    FingerprintMatch,
+    best_sliding_match,
+    decode_fingerprint_vector,
+    encode_fingerprint_vector,
+)
+
+
+class FakeFingerprintBackend:
+    def __init__(self, vector: list[int]) -> None:
+        self.vector = vector
+        self.calls: list[Path] = []
+
+    def compute(self, audio_path: Path) -> list[int]:
+        self.calls.append(audio_path)
+        return self.vector
+
+
+@pytest.fixture
+def db_path(tmp_path: Path) -> Path:
+    path = tmp_path / "fingerprint.db"
+    migrate(path)
+    return path
+
+
+@pytest.fixture
+def settings() -> PipelineSettings:
+    return PipelineSettings(same_station_airing_window_seconds=180)
+
+
+def _seed_station(conn: sqlite3.Connection, name: str = "talk-a") -> int:
+    conn.execute(
+        "INSERT INTO stations (name, url, enabled) VALUES (?, ?, 1)",
+        (name, f"https://example.com/{name}"),
+    )
+    return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+
+
+def _seed_chunk(db_path: Path, tmp_path: Path, *, station_id: int, start_ts: float) -> tuple[int, Path]:
+    audio = tmp_path / f"chunk-{int(start_ts)}.wav"
+    audio.write_bytes(b"fake wav")
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute(
+                """
+                INSERT INTO chunks (station_id, path, start_ts, end_ts, status)
+                VALUES (?, ?, ?, ?, 'pending')
+                """,
+                (station_id, str(audio), start_ts, start_ts + 90.0),
+            )
+            chunk_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+    finally:
+        conn.close()
+    return chunk_id, audio
+
+
+def _seed_canonical_with_fingerprint(db_path: Path, vector: list[int]) -> int:
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute(
+                """
+                INSERT INTO canonical_ads (company_name, phone_norm, category, first_seen, last_seen, airing_count)
+                VALUES ('Rapid Capital', '8005551212', 'business_funding', 1000.0, 1000.0, 0)
+                """
+            )
+            canonical_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+            conn.execute(
+                "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+                (canonical_id, encode_fingerprint_vector(vector), 30.0),
+            )
+    finally:
+        conn.close()
+    return canonical_id
+
+
+def test_encode_decode_fingerprint_vector_roundtrip_signed_ints() -> None:
+    vector = [0, 1, -1, 2**31 - 1, -(2**31)]
+    assert decode_fingerprint_vector(encode_fingerprint_vector(vector)) == vector
+
+
+def test_best_sliding_match_finds_known_ad_at_offset() -> None:
+    known = [0x11111111, 0x22222222, 0x33333333, 0x44444444]
+    chunk = [0x99999999, 0x88888888, *known, 0x77777777]
+
+    match = best_sliding_match(
+        chunk,
+        [FingerprintMatch(candidate_id=42, vector=known, duration=30.0)],
+        threshold=0.99,
+        frames_per_second=4.0,
+    )
+
+    assert match is not None
+    assert match.canonical_ad_id == 42
+    assert match.offset_frames == 2
+    assert match.offset_seconds == 0.5
+    assert match.score == 1.0
+
+
+def test_best_sliding_match_rejects_low_similarity() -> None:
+    known = [0x00000000, 0x00000000, 0x00000000]
+    chunk = [0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF]
+
+    assert best_sliding_match(
+        chunk,
+        [FingerprintMatch(candidate_id=7, vector=known, duration=20.0)],
+        threshold=0.95,
+    ) is None
+
+
+def test_annotator_marks_known_ad_and_records_fast_path_detection(
+    db_path: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    known = [10, 20, 30, 40]
+    canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+    finally:
+        conn.close()
+    chunk_id, audio = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2000.0)
+    backend = FakeFingerprintBackend([1, 2, *known, 3, 4])
+    annotator = FingerprintAnnotator(db_path, settings, backend=backend, threshold=0.99)
+
+    match = annotator.annotate_chunk(chunk_id, audio)
+
+    assert match is not None
+    assert match.canonical_ad_id == canonical_id
+    assert backend.calls == [audio]
+    conn = get_connection(db_path)
+    try:
+        chunk = conn.execute("SELECT known_ad_id FROM chunks WHERE id = ?", (chunk_id,)).fetchone()
+        assert chunk["known_ad_id"] == canonical_id
+        detection = conn.execute("SELECT canonical_ad_id, is_ad FROM detections").fetchone()
+        assert detection["canonical_ad_id"] == canonical_id
+        assert detection["is_ad"] == 1
+        canonical = conn.execute("SELECT airing_count, last_seen FROM canonical_ads WHERE id = ?", (canonical_id,)).fetchone()
+        assert canonical["airing_count"] == 1
+        assert canonical["last_seen"] == 2000.0
+    finally:
+        conn.close()
+
+
+def test_known_ad_inside_same_station_window_does_not_increment_airing_count(
+    db_path: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    known = [10, 20, 30, 40]
+    canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+    finally:
+        conn.close()
+    previous_chunk_id, _ = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2000.0)
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute(
+                "INSERT INTO detections (chunk_id, canonical_ad_id, is_ad) VALUES (?, ?, 1)",
+                (previous_chunk_id, canonical_id),
+            )
+            conn.execute("UPDATE canonical_ads SET airing_count = 1 WHERE id = ?", (canonical_id,))
+    finally:
+        conn.close()
+    chunk_id, audio = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2060.0)
+    annotator = FingerprintAnnotator(db_path, settings, backend=FakeFingerprintBackend([*known]), threshold=0.99)
+
+    assert annotator.annotate_chunk(chunk_id, audio) is not None
+
+    conn = get_connection(db_path)
+    try:
+        assert conn.execute("SELECT airing_count FROM canonical_ads WHERE id = ?", (canonical_id,)).fetchone()[0] == 1
+        assert conn.execute("SELECT COUNT(*) FROM detections WHERE canonical_ad_id = ?", (canonical_id,)).fetchone()[0] == 2
+    finally:
+        conn.close()
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2030ms:
+# Autonomous Radio Ad-Sensing Pipeline
+
+A fully local Docker Compose pipeline on Ubuntu (12GB NVIDIA GPU) that ingests 4–10 U.S. News/Talk radio streams 24/7, chunks and transcribes them with faster-whisper, extracts loan/funding ad details with a local Qwen2.5-7B via Ollama, dedups fuzzily (boosted by chromaprint audio fingerprinting), stores everything in SQLite, sends first-seen alerts via the Telegram Bot API, and exposes a read-only FastAPI dashboard plus Prometheus/Grafana monitoring.
+
+## Agreed Decisions (from grilling session)
+
+| Branch | Decision |
+|---|---|
+| Scale | 4–10 concurrent stations, single GPU box |
+| Segmentation | Fixed 60–120s chunks with 5–10s overlap; transcribe everything |
+| ASR | faster-whisper `medium.en`, int8_float16 (~1.5GB VRAM, ~10x RT) |
+| LLM | Ollama + Qwen2.5-7B-Instruct Q4_K_M (~5GB VRAM), JSON-schema structured output |
+| Schema | LLM extracts: is_ad, ad_category, company_name, phone_number, website, offer_summary, key_claims, confidence — `station`/`timestamp` are injected from chunk metadata, never asked of the LLM |
+| Dedup | Fuzzy (rapidfuzz >85% on transcript + normalized company/phone/category); alert first sighting per ad per N days; store every airing linked to canonical ad; same ad + same station within 3min counts as **one** airing (overlap de-double-count) |
+| Storage | SQLite (WAL); raw chunks kept 24–48h; detected-ad audio archived permanently; transcripts forever |
+| Deployment | Docker Compose: ingestor, worker (GPU), alerter, ollama; NVIDIA container toolkit; restart:always + healthchecks |
+| Ingestion resilience | `stations.yaml` config; ffmpeg reconnect + supervisor loop w/ backoff; gap logging; ops alert if station down >15min |
+| Telegram | Outbound-only Bot API (sendMessage + audio clip); no inbound webhook |
+| Backlog | Bounded queue (~2h); drop-oldest with gap log + ops alert |
+| Observability | Structured JSON logs, status table in SQLite, daily Telegram digest + Prometheus metrics & Grafana dashboards |
+| Audio pre-filter | Chromaprint fingerprinting as **annotation only** — tags repeats of known produced spots to skip redundant LLM calls and strengthen dedup; everything still transcribed (zero recall loss) |
+| Web dashboard | FastAPI + Jinja2/HTMX, read-only, LAN-only: detections feed w/ audio playback, canonical ads w/ airing frequency, station health, gap timeline |
+
+## Architecture
+
+```
+stations.yaml ──> [ingestor]  ffmpeg per station ──> chunks/ (WAV/Opus on disk)
+                                                        │ (SQLite-backed work queue)
+                  [worker]    fingerprint ─> faster-whisper ─> Ollama extract ─> fuzzy dedup ─> detections
+                                                        │
+                  [alerter]   reads unalerted detections ──> Telegram Bot API (first-seen + ops + daily digest)
+                  [janitor]   (in worker) retention cleanup, gap detection, status rollup
+                  [dashboard] FastAPI + HTMX (read-only, SQLite) ──> LAN browser
+                  [prometheus]<── /metrics from ingestor, worker, alerter, dashboard
+                  [grafana]   dashboards: queue depth, GPU util (dcgm/nvidia-smi exporter),
+                              detections/hr, station uptime, ASR/LLM latency
+```
+
+- **Queue**: a `chunks` table in SQLite (status: pending/processing/done/dropped). File-system chunks referenced by path. No Redis/Celery.
+- **SQLite concurrency**: 3 writer processes (ingestor, worker, alerter) on one DB — WAL mode + `busy_timeout=5000` + retry-on-`SQLITE_BUSY` wrapper in `shared/db.py`; keep transactions short; dashboard opens read-only connections.
+- **VRAM budget**: ~1.5GB Whisper + ~5GB LLM + overhead ≈ 8GB, safe on 12GB. Fingerprinting (chromaprint) is CPU-only.
+- **Fingerprint flow** (in worker, before ASR): compute chromaprint feature vector of chunk → **offset-tolerant match** against stored fingerprints of archived ad clips (sliding-window correlation over chromaprint vectors — a whole-chunk hash will never match a 30s ad at a random offset inside a 90s chunk) → on hit, record airing immediately and mark chunk `known_ad`; transcription still runs, but the LLM extraction step is skipped for `known_ad` chunks. If sliding-window chromaprint proves too weak, fall back to landmark hashing (audfprint-style) in a later iteration.
+- **Ad clip boundaries**: when a new ad is detected, map the LLM-flagged ad text back to Whisper **segment timestamps** to cut the ad clip from the chunk for archiving/fingerprinting (±2s padding).
+- **Metrics**: each Python service exposes `/metrics` via `prometheus-client`; GPU metrics via `nvidia-dcgm-exporter` (or `nvidia-smi`-based exporter); Grafana provisioned with datasource + dashboards as code.
+
+## Repository Layout
+
+```
+radio-ad-sensing-pipeline/
+├── docker-compose.yml
+├── .env.example              # TELEGRAM_BOT_TOKEN, CHAT_ID, etc.
+├── config/
+│   ├── stations.yaml         # name, url, format, enabled
+│   └── settings.yaml         # chunk_len, overlap, retention, dedup window, thresholds
+├── ingestor/                 # ffmpeg supervisor per station, chunk writer, gap logger
+├── worker/                   # queue consumer: fingerprint -> transcribe -> extract -> persist
+│   ├── fingerprint.py        # chromaprint (pyacoustid/fpcalc) compute + match vs known ads
+│   ├── transcribe.py         # faster-whisper wrapper
+│   ├── extract.py            # Ollama client, JSON-schema prompt, validation (pydantic)
+│   └── dedup.py              # rapidfuzz matching against canonical ads
+├── alerter/                  # Telegram sender: ad alerts, ops alerts, daily digest
+├── dashboard/                # FastAPI + Jinja2/HTMX read-only UI
+│   ├── main.py               # routes: /, /ads, /ads/{id}, /stations, /gaps, /audio/{id}
+│   └── templates/
+├── monitoring/
+│   ├── prometheus.yml        # scrape configs
+│   └── grafana/              # provisioned datasource + dashboard JSON
+├── shared/                   # db.py (schema + migrations), models.py, queue.py, logging, metrics.py
+├── data/                     # SQLite db, chunks/, ad_archive/   (volume)
+└── tests/
+```
+
+## Database Schema (core tables)
+
+- `stations` — id, name, url, enabled
+- `chunks` — id, station_id, path, start_ts, end_ts, status, error
+- `transcripts` — chunk_id, text, asr_duration_ms
+- `canonical_ads` — id, company_name, phone_norm, category, first_seen, last_seen, airing_count, archived_audio_path
+- `detections` — id, chunk_id, canonical_ad_id (nullable until matched), full JSON fields, confidence, alerted(bool)
+- `gaps` — station_id, start_ts, end_ts, reason (stream down / dropped backlog)
+- `fingerprints` — canonical_ad_id, chromaprint_vector (blob), duration; `chunks` gains `known_ad_id` (nullable)
+- `status` — rolling counters for digest/health
+
+## Implementation Phases
+
+1. **Scaffold + DB** — repo layout, SQLite schema/migrations, settings/stations config loading, structured logging.
+2. **Ingestor** — ffmpeg subprocess per station (reconnect flags), 90s chunks w/ 7s overlap, enqueue rows, gap logging, supervisor backoff.
+3. **Worker: ASR** — faster-whisper medium.en int8; bounded-queue consumer; drop-oldest policy.
+4. **Worker: extraction** — Ollama structured-output call with core-field schema; pydantic validation; retry-once on invalid JSON; phone-number normalization (spelled-out → digits).
+5. **Dedup + persistence** — rapidfuzz match vs canonical_ads within N-day window; create/attach detections; 3-min same-station airing window to avoid overlap double-count; cut ad clip via Whisper segment timestamps and archive it.
+6. **Alerter** — first-seen Telegram alert (formatted message + audio file), ops alerts (station down >15min, queue drops), daily digest.
+7. **Dockerization** — Compose with NVIDIA runtime for worker, official Ollama image w/ model pull, healthchecks, restart policies, volumes.
+8. **Fingerprint annotation** — chromaprint vector per chunk; offset-tolerant sliding-window match vs `fingerprints` of canonical ad clips; auto-fingerprint newly archived ad audio; skip LLM on `known_ad` chunks; airing counter fast-path.
+9. **Web dashboard** — FastAPI + Jinja2/HTMX service: detections feed with audio playback (serves from `ad_archive/`), canonical-ad table with airing frequency, station health page, gap timeline. Read-only, bound to LAN interface.
+10. **Prometheus + Grafana** — `prometheus-client` metrics in all services (queue depth, chunks processed, ASR/LLM latency histograms, detections, station uptime, drops); dcgm-exporter for GPU; Prometheus + Grafana containers with provisioned dashboards and basic alert rules (queue saturation, station down).
+11. **Tests + hardening** — unit tests for dedup/normalization/schema validation/fingerprint matching; fixture transcripts (real loan-ad copy) as an extraction eval set; end-to-end smoke test with a recorded stream sample.
+
+## Key Risks / Mitigations
+
+- **Whisper mangles phone numbers** — normalize spelled-out numbers; dedup doesn't rely on exact phone match.
+- **LLM false positives** (show segments about loans vs actual ads) — prompt includes ad-signal cues (call to action, phone/URL, "sponsored"); confidence field; threshold before alerting.
+- **Ads split across chunk boundaries** — 5–10s overlap + dedup absorbs duplicates from overlap.
+- **Stream URL rot** — gap logging + >15min down ops alert surfaces it fast; URLs are operator-maintained in `stations.yaml`.
+- **GPU contention** — single worker process serializes Whisper batches; Ollama keep_alive pins the LLM; both fit in 12GB.
+- **ASR throughput has zero headroom at 10 stations** — 10 stations × real-time + ~8% overlap exceeds the ~10x RT budget of medium.en. Mitigations, in order: batched inference (BatchedInferencePipeline), drop overlap to 5s, fall back to `small.en` above 8 stations. Validate measured RTF in Phase 3 before committing to station count.
+- **SQLite write contention** — WAL + busy_timeout + retry wrapper (see Architecture); if contention still bites, funnel all writes through the worker process.
+- **Fingerprint false matches** (similar jingles/spot variants) — conservative match threshold; transcription always runs, so a false `known_ad` tag only skips extraction for that airing, never loses audio/transcript.
+- **Dashboard exposure** — read-only, no auth, so bind to LAN/localhost only; Grafana gets its own login.
+
+## Dev Tooling Setup (from `final-install-list.md`)
+
+Agent/dev tooling that accompanies this project — 14 skills kept + 2 repos installed now, 4 deferred.
+
+### Installed now
+
+| Repo | Type | Install |
+|---|---|---|
+| `JuliusBrussee/caveman` | Skill pack (output token saver; replaces old caveman; adds `/caveman`, `/caveman-commit`, `/caveman-review`, `/caveman-stats`, `/caveman-compress`) | `irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 \| iex` |
+| `chopratejas/headroom` | MCP server (input token compressor) | `pip install "headroom-ai[mcp]"` + `headroom mcp install` |
+
+### Deferred installs
+
+| Repo | When |
+|---|---|
+| `Egonex-AI/Understand-Anything` | After Phase 1 scaffold exists (needs code to graph) |
+| `oraios/serena` | When codebase grows (semantic code retrieval) |
+| `upstash/context7` | Anytime, for latest library docs |
+| `doobidoo/mcp-memory-service` | Maybe unnecessary if headroom's cross-agent memory suffices |
+
+### Skills kept (14, from `mattpocock/skills`)
+
+- **engineering**: `diagnose`, `grill-with-docs`, `improve-codebase-architecture`, `prototype`, `review`, `setup-matt-pocock-skills`, `tdd`, `to-issues`, `to-prd`, `triage`, `zoom-out`
+- **productivity**: `grill-me`, `handoff`, `write-a-skill`
+- **misc**: `setup-pre-commit`
+
+14 skills removed (writing/personal/deprecated ones) from `.agents/skills/`, `.qoder/skills/`, and `skills-lock.json` — full list in `final-install-list.md`.
+
+## Out of Scope (deferred)
+
+- PostgreSQL, multi-box scaling
+- Inbound Telegram bot commands
+- Dashboard write/ops controls (enable/disable stations, mute ads) — possible phase 2
+- Hard audio pre-filtering (skipping transcription) — fingerprinting is annotation-only by design
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2161ms:
+---
+description: Contextual routing for project agent skills in .agents/skills/
+alwaysApply: true
+---
+
+# Project Skills — Use by Context
+
+Read the matching `SKILL.md` under `.agents/skills/<name>/` **before** acting. Do not improvise when a skill applies.
+
+**Source of truth:** `final-install-list.md` and `PLAN.md` § Dev Tooling Setup.
+
+## Active skills (15 kept + caveman)
+
+| Skill | Trigger | Action |
+|---|---|---|
+| `tdd` | New feature, bugfix, "red-green-refactor", DB/worker logic | Read skill → vertical-slice RED→GREEN |
+| `diagnose` | Bug, failure, regression, "debug/diagnose" | Read skill → reproduce→minimise→fix loop |
+| `review` | Review branch/PR/WIP, end of phase | Read skill → standards + spec review |
+| `handoff` | End of session/phase, new agent pickup | Read skill → write handoff in `plan/` |
+| `grill-me` | Stress-test a plan before coding | Read skill → interview user |
+| `grill-with-docs` | Plan vs domain docs/ADR | Read skill → challenge against glossary |
+| `prototype` | Explore design/UI/state before commit | Read skill → throwaway prototype |
+| `improve-codebase-architecture` | Refactor, deepen modules, AI-navigability | Read skill → read `PLAN.md` first |
+| `zoom-out` | Lost in details, need big picture | Read skill → architecture overview |
+| `to-issues` | Break plan/spec into tickets | Read skill → tracer-bullet slices |
+| `to-prd` | Turn conversation into PRD | Read skill → publish to issue tracker |
+| `triage` | Create/triage issues, AFK agent prep | Read skill → state machine workflow |
+| `setup-matt-pocock-skills` | Wire issue tracker for other skills | Read skill once per tracker choice |
+| `setup-pre-commit` | User wants commit-time lint/test hooks | Read skill → Husky + lint-staged |
+| `write-a-skill` | Author or edit a skill | Read skill → proper SKILL.md structure |
+| `caveman` | User says "caveman", "less tokens", `/caveman*` | Read skill → terse output mode |
+
+## Do NOT use (removed from this project)
+
+`design-an-interface`, `qa`, `request-refactor-plan`, `ubiquitous-language`, `edit-article`, `obsidian-vault`, `writing-*`, `git-guardrails-claude-code`, `migrate-to-shoehorn`, `scaffold-exercises`, `teach` — unless user explicitly re-enables.
+
+## Phase-aware defaults (`PLAN.md`)
+
+| Phase | Prefer |
+|---|---|
+| 1 Scaffold+DB | `tdd`, `review`, `handoff` — **done**; report in `plan/phase1-report.md` |
+| 2 Ingestor | `tdd` + `diagnose`; read `PLAN.md` ingestor section |
+| 3–5 Worker | `tdd`; Context7 for faster-whisper/Ollama docs |
+| 6 Alerter | `tdd`; Telegram outbound only |
+| 7 Docker | `review` before merge |
+| 8+ Observability/UI | `prototype` (dashboard), `review` |
+
+Before any phase: read `PLAN.md` and latest `plan/handoff-*.md`. Do not re-litigate agreed decisions.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2396ms:
+"""WP-8 chromaprint computation and offset-tolerant known-ad annotation."""
+
+from __future__ import annotations
+
+import json
+import sqlite3
+import struct
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Protocol
+
+from shared.db import get_connection, retry_on_busy, transaction
+from shared.models import PipelineSettings
+
+DEFAULT_FRAMES_PER_SECOND = 4.0
+
+
+class FingerprintBackend(Protocol):
+    def compute(self, audio_path: Path) -> list[int]: ...
+
+
+@dataclass(frozen=True)
+class FingerprintMatch:
+    """Candidate fingerprint plus the best offset/score after matching."""
+
+    candidate_id: int
+    vector: list[int]
+    duration: float
+    score: float = 0.0
+    offset_frames: int = 0
+    offset_seconds: float = 0.0
+
+    @property
+    def canonical_ad_id(self) -> int:
+        return self.candidate_id
+
+
+def encode_fingerprint_vector(vector: list[int]) -> bytes:
+    """Encode signed 32-bit chromaprint feature integers for SQLite BLOB storage."""
+    if not vector:
+        return b""
+    return struct.pack(f"<{len(vector)}i", *vector)
+
+
+def decode_fingerprint_vector(blob: bytes) -> list[int]:
+    """Decode signed 32-bit chromaprint feature integers from SQLite BLOB storage."""
+    if not blob:
+        return []
+    if len(blob) % 4 != 0:
+        raise ValueError("fingerprint blob length must be divisible by 4")
+    return list(struct.unpack(f"<{len(blob) // 4}i", blob))
+
+
+def _frame_similarity(left: int, right: int) -> float:
+    xor = (left ^ right) & 0xFFFFFFFF
+    return 1.0 - (xor.bit_count() / 32.0)
+
+
+def _window_similarity(chunk_window: list[int], candidate: list[int]) -> float:
+    if not chunk_window or len(chunk_window) != len(candidate):
+        return 0.0
+    return sum(_frame_similarity(left, right) for left, right in zip(chunk_window, candidate, strict=True)) / len(candidate)
+
+
+def best_sliding_match(
+    chunk_vector: list[int],
+    candidates: list[FingerprintMatch],
+    *,
+    threshold: float = 0.88,
+    frames_per_second: float = DEFAULT_FRAMES_PER_SECOND,
+) -> FingerprintMatch | None:
+    """Find the best offset-tolerant match for an ad fingerprint inside a larger chunk."""
+    best: FingerprintMatch | None = None
+    for candidate in candidates:
+        needle = candidate.vector
+        if not needle or len(needle) > len(chunk_vector):
+            continue
+        for offset in range(0, len(chunk_vector) - len(needle) + 1):
+            window = chunk_vector[offset : offset + len(needle)]
+            score = _window_similarity(window, needle)
+            if best is None or score > best.score:
+                best = FingerprintMatch(
+                    candidate_id=candidate.candidate_id,
+                    vector=needle,
+                    duration=candidate.duration,
+                    score=score,
+                    offset_frames=offset,
+                    offset_seconds=offset / frames_per_second if frames_per_second else 0.0,
+                )
+    if best is None or best.score < threshold:
+        return None
+    return best
+
+
+class FpcalcBackend:
+    """Compute raw chromaprint vectors with the fpcalc CLI."""
+
+    def compute(self, audio_path: Path) -> list[int]:
+        command = ["fpcalc", "-raw", "-json", str(audio_path)]
+        result = subprocess.run(command, check=True, capture_output=True, text=True)  # noqa: S603
+        data = json.loads(result.stdout)
+        fingerprint = data.get("fingerprint")
+        if not isinstance(fingerprint, list):
+            raise ValueError("fpcalc JSON did not contain a raw fingerprint list")
+        return [int(item) for item in fingerprint]
+
+
+class FingerprintAnnotator:
+    """Compute a chunk fingerprint, match against canonical ads, and record known-ad airings."""
+
+    def __init__(
+        self,
+        db_path: str | Path,
+        settings: PipelineSettings,
+        *,
+        backend: FingerprintBackend | None = None,
+        threshold: float = 0.88,
+        frames_per_second: float = DEFAULT_FRAMES_PER_SECOND,
+    ) -> None:
+        self.db_path = Path(db_path)
+        self.settings = settings
+        self.backend = backend or FpcalcBackend()
+        self.threshold = threshold
+        self.frames_per_second = frames_per_second
+
+    @retry_on_busy(max_retries=8, base_delay=0.01)
+    def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
+        chunk_vector = self.backend.compute(audio_path)
+        conn = get_connection(self.db_path)
+        try:
+            with transaction(conn):
+                candidates = self._load_candidates(conn)
+                match = best_sliding_match(
+                    chunk_vector,
+                    candidates,
+                    threshold=self.threshold,
+                    frames_per_second=self.frames_per_second,
+                )
+                if match is None:
+                    return None
+                chunk = self._chunk_row(conn, chunk_id)
+                self._record_known_ad(conn, chunk, match.canonical_ad_id)
+                return match
+        finally:
+            conn.close()
+
+    def add_fingerprint_for_canonical(self, canonical_ad_id: int, audio_path: Path, *, duration: float) -> int:
+        """Compute and store a fingerprint for a newly archived canonical ad clip."""
+        vector = self.backend.compute(audio_path)
+        conn = get_connection(self.db_path)
+        try:
+            with transaction(conn):
+                conn.execute(
+                    "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+                    (canonical_ad_id, encode_fingerprint_vector(vector), duration),
+                )
+                return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+        finally:
+            conn.close()
+
+    def _load_candidates(self, conn: sqlite3.Connection) -> list[FingerprintMatch]:
+        rows = conn.execute(
+            "SELECT canonical_ad_id, chromaprint_vector, duration FROM fingerprints"
+        ).fetchall()
+        return [
+            FingerprintMatch(
+                candidate_id=int(row["canonical_ad_id"]),
+                vector=decode_fingerprint_vector(row["chromaprint_vector"]),
+                duration=float(row["duration"]),
+            )
+            for row in rows
+        ]
+
+    def _chunk_row(self, conn: sqlite3.Connection, chunk_id: int) -> sqlite3.Row:
+        row = conn.execute(
+            "SELECT id, station_id, start_ts FROM chunks WHERE id = ?",
+            (chunk_id,),
+        ).fetchone()
+        if row is None:
+            raise ValueError(f"chunk not found: {chunk_id}")
+        return row
+
+    def _record_known_ad(self, conn: sqlite3.Connection, chunk: sqlite3.Row, canonical_ad_id: int) -> None:
+        duplicate_airing = self._has_recent_same_station_airing(conn, canonical_ad_id, chunk)
+        canonical = conn.execute(
+            "SELECT company_name, phone_norm, category FROM canonical_ads WHERE id = ?",
+            (canonical_ad_id,),
+        ).fetchone()
+        if canonical is None:
+            raise ValueError(f"canonical ad not found: {canonical_ad_id}")
+
+        conn.execute(
+            "UPDATE chunks SET known_ad_id = ? WHERE id = ?",
+            (canonical_ad_id, chunk["id"]),
+        )
+        conn.execute(
+            """
+            INSERT INTO detections (
+                chunk_id, canonical_ad_id, is_ad, ad_category, company_name, phone_number,
+                offer_summary, key_claims, confidence, alerted
+            )
+            VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, 0)
+            """,
+            (
+                chunk["id"],
+                canonical_ad_id,
+                canonical["category"],
+                canonical["company_name"],
+                canonical["phone_norm"],
+                "known ad matched by chromaprint",
+                json.dumps([]),
+                1.0,
+            ),
+        )
+        increment = 0 if duplicate_airing else 1
+        conn.execute(
+            """
+            UPDATE canonical_ads
+            SET last_seen = MAX(last_seen, ?), airing_count = airing_count + ?
+            WHERE id = ?
+            """,
+            (chunk["start_ts"], increment, canonical_ad_id),
+        )
+
+    def _has_recent_same_station_airing(
+        self,
+        conn: sqlite3.Connection,
+        canonical_ad_id: int,
+        chunk: sqlite3.Row,
+    ) -> bool:
+        row = conn.execute(
+            """
+            SELECT 1
+            FROM detections d
+            JOIN chunks c ON c.id = d.chunk_id
+            WHERE d.canonical_ad_id = ?
+              AND c.station_id = ?
+              AND ABS(c.start_ts - ?) <= ?
+            LIMIT 1
+            """,
+            (
+                canonical_ad_id,
+                chunk["station_id"],
+                chunk["start_ts"],
+                self.settings.same_station_airing_window_seconds,
+            ),
+        ).fetchone()
+        return row is not None
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2574ms:
+# Opus Review Plan — ตรวจงานทุก WP แบบลดหลั่นตามความเสี่ยง
+
+Opus เป็น review gate ของทุก work package โดยใช้ความลึก 3 ระดับ (Deep / Standard / Spot-check) ตามความเสี่ยงของงาน เพื่อคุมคุณภาพครบทุกชิ้นโดยไม่เปลือง token
+
+## หลักการ
+
+- **ตรวจหลังผู้ทำส่ง report** (`plan/wpN-report.md`) — ไม่เชื่อรายงาน ต้อง trace โค้ดจริง + รัน verify commands เอง (แบบเดียวกับที่ตรวจ Phase 1)
+- **สองแกนเสมอ**: (1) Spec — ตรงกับ handoff + `PLAN.md` ไหม (2) Standards — โค้ดสะอาด, ใช้ `shared/` ไม่ reimplement, `shared/` ยัง import-light
+- **ผล review**: ship / fix-then-ship (รายการแก้ส่งกลับผู้ทำเดิม) / rework (ส่ง tier สูงขึ้นทำใหม่)
+- ทุก review จบด้วยอัปเดต checklist ในไฟล์นี้
+
+## ระดับความลึก
+
+| ระดับ | ทำอะไร | ใช้กับ |
+|---|---|---|
+| **Deep** | trace ทุก code path end-to-end, ไล่ edge cases, ตรวจ concurrency/failure paths, ตรวจว่า tests exercise path จริง (ไม่ mock จนไร้ความหมาย), รัน pytest + adversarial input | งานที่ผิดแล้วลามทั้งระบบ |
+| **Standard** | อ่าน diff ทั้งหมด + trace เฉพาะ critical path, รัน pytest + manual smoke 1 รอบ, ตรวจ acceptance criteria ทีละข้อ | งาน implement ตาม spec |
+| **Spot-check** | รัน verify commands + สุ่มอ่าน 2–3 จุดที่ผิดบ่อย (path, env var, port, ชื่อ metric) | งาน declarative/config |
+
+## ตาราง review ราย WP
+
+| WP | ผู้ทำ | ระดับ | จุดที่ Opus ต้องเพ่งเป็นพิเศษ | Verify commands |
+|---|---|---|---|---|
+| **WP-1** Scaffold+DB | Cursor | ~~Deep~~ **ตรวจแล้ว** ✅ | ค้างแก้: concurrent test ไม่ exercise retry path, `import json` กลางไฟล์ — มอบ GPT mini ใน WP-11 | `pytest` |
+| **WP-2** Ingestor | GPT mini | **Deep** | reconnect/backoff ไม่ spin-loop, partial chunk ตอน stream ตาย, gap log ครบช่วง, ffmpeg zombie process, chunk timestamp ไม่ drift | `pytest`; รัน ingestor กับ stream จริง 5 นาที แล้วดู `chunks`/`gaps` |
+| **WP-3** ASR worker | Composer 2.5 | **Deep** | atomic claim (สอง consumer ห้ามชน), drop-oldest นับ backlog ถูก, segments_json เก็บ timestamps ครบ (WP-5 ต้องใช้), RTF logging, model mock ใน test ไม่กลบ logic จริง | `pytest`; ตรวจ migration 002 |
+| **WP-4** LLM extraction | GPT high | **Deep** | prompt กัน false positive (รายการคุยเรื่องเงินกู้ ≠ โฆษณา), JSON schema ตรง `AdExtraction`, retry-on-invalid-JSON, phone normalization edge cases ("eight hundred" → 800), ห้ามมี station/timestamp ใน prompt schema | `pytest`; รัน eval set ถ้ามีแล้ว |
+| **WP-5** Dedup | GPT high | **Deep** | fuzzy threshold ไม่ over/under-merge, 3-min airing window ทำงานข้าม chunk overlap, ตัด clip จาก segment timestamps ±2s ถูกต้อง, `airing_count` ไม่เฟ้อ | `pytest` + fixture transcripts ซ้ำ ๆ |
+| **WP-6** Alerter | GPT mini | **Standard** | alert เฉพาะ first-seen, `alerted` flag กันส่งซ้ำหลัง restart, ops alert >15min ไม่ spam ทุก loop, token ไม่หลุดใน log | `pytest`; dry-run กับ mock Telegram API |
+| **WP-7a** Docker skeleton | MiniMax M3 | **Spot-check** | volume paths ตรง `data/`, service names ตรงแผน 7 ตัว, healthcheck ไม่ fail ตอน boot ช้า | `docker compose config` |
+| **WP-7b** Docker finalize | GPT mini | **Standard** | NVIDIA runtime เฉพาะ worker, Ollama pull model ตอน start, restart policy, `.env` ไม่ bake ลง image | `docker compose up` + `docker compose ps` ทุกตัว healthy |
+| **WP-8** Fingerprint | GPT high | **Deep (เข้มสุด)** | sliding-window matching ถูกหลัก (chunk 90s vs clip 30s ที่ offset ใด ๆ), threshold มี test ทั้ง true-match และ near-miss, false `known_ad` ไม่ทำข้อมูลหาย (transcription ยังรัน), CPU time ต่อ chunk ไม่กิน budget | `pytest` + fixture เสียงจริง: คลิปเดียวกันฝังที่ offset ต่างกัน |
+| **WP-9** Dashboard | Composer 2.5 | **Standard** | read-only จริงทุก connection, `/audio` กัน path traversal, ทุกหน้า render ได้บน DB ว่าง, ไม่มี write path | `pytest`; เปิดทุก route บน empty DB |
+| **WP-10a** Monitoring config | MiniMax M3 | **Spot-check** | scrape targets ตรงชื่อ service ใน compose, datasource UID ตรง dashboard JSON | `promtool check config`; Grafana ขึ้น dashboard ไม่ error |
+| **WP-10b** Instrument metrics | MiniMax M3 | **Spot-check** | ชื่อ metric ตรง convention (`pipeline_*`), ไม่ instrument ใน hot loop จน latency เพิ่ม | `curl /metrics` ทุก service เทียบรายการชื่อ |
+| **WP-11** Tests+hardening | GPT mini + high | **Standard** | e2e smoke ครอบ ingest→transcribe→extract→alert จริง, แก้ 2 จุดค้างจาก WP-1 review แล้ว, eval set มีเกณฑ์ให้คะแนนชัด | `pytest` ทั้ง suite + e2e |
+
+## จังหวะ review (อัปเดต 2026-06-10 — ดู `plan/work-dispatch-6165b3.md`)
+
+```
+Batch 1 (fix-then-ship, ขนาน 4 สาย):
+  GPT mini      → WP-2 F1–F7 (ffmpeg timeout, zombie, partial chunk, wp2-report)
+  Composer 2.5  → WP-3 G1–G4 (report stale) + WP-9 F8 (read-only test)
+  MiniMax M3    → WP-7a F5–F6 (dashboard bind env, alerter Dockerfile/healthcheck)
+  Opus (ขนาน)   → WP-4 Deep review (โค้ดมีแล้ว ไม่มี report)
+
+Batch 2 (re-review หลัง Batch 1):
+  WP-2 Deep → WP-4 (ถ้ายังไม่เสร็จ) → WP-5 Deep → WP-8 Deep → WP-3/9/7a/10a
+
+Batch 3 (implement ใหม่):
+  GPT mini  → WP-6, WP-7b, WP-11a smoke
+  GPT high  → WP-11b eval set
+  MiniMax M3 → WP-10b metrics
+```
+
+## Prompt template สำหรับ Opus
+
+```
+Act as the review gate. Read these in order:
+1. PLAN.md (architecture + decisions — do not re-litigate)
+2. .windsurf/plans/handoff-wpN-...-6165b3.md (spec for this WP)
+3. plan/wpN-report.md (implementer's claims)
+Then review at [Deep/Standard/Spot-check] level per
+C:\Users\Barbara\.windsurf\plans\opus-review-plan-6165b3.md:
+- Verify every acceptance criterion yourself (run commands, don't trust the report)
+- Trace the focus areas listed for this WP
+- Output: findings ordered by severity, each with file:line evidence,
+  then verdict: ship / fix-then-ship (with fix list) / rework
+```
+
+## Review checklist (อัปเดตหลังตรวจแต่ละงาน)
+
+- [x] WP-1 — ✅ ship (2 จุดค้างโอนเข้า WP-11)
+- [x] WP-2 — ✅ **ship** (Batch 2 Opus Deep re-review): F1–F5/F7 verified, 8/8 ingestor pytest; F6 smoke skipped
+- [x] WP-3 — ✅ **ship** (Batch 2 Opus Deep re-review): G1–G4 verified, 9/9 worker pytest; create_consumer wired
+- [x] WP-4 — ✅ **ship** (Batch 2 fix-then-ship): N1 vanity fallback, N2 toll-free prefix relax, N3 regression tests, N4 few-shot ex.3 phone; `plan/wp4-report.md`; 67/67 pytest pass
+- [x] WP-5 — ✅ **ship** (Batch 3 fix-then-ship): H1 omit mismatched phone weight, M2 category mismatch = 0, regression tests for mangled phone, distinct ads, same-station >180s, cross-station within 3min; `plan/wp5-report.md`; 69/69 pytest pass
+- [ ] WP-6 — Standard ⏳ GPT mini หลัง WP-5 ship (alerter ยัง stub)
+- [x] WP-7a — ✅ **ship** (Batch 2 Spot-check): F5/F6 verified, compose config OK
+- [ ] WP-7b — Standard ⏳ GPT mini หลัง WP-6 entrypoint
+- [ ] WP-8 — Deep (เข้มสุด) ⏳ หลัง WP-5 (fingerprint.py; ไม่มี wp8-report)
+- [x] WP-9 — ✅ **ship** (Batch 2 Standard re-review): F8 + 13/13 dashboard pytest
+- [x] WP-10a — ✅ **ship** (Batch 2 Spot-check + F1 uid:prometheus, F2 VRAMNearFull parens)
+- [ ] WP-10b — Spot-check
+- [ ] WP-11 — Standard + ปิด checklist
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+I’ve got the spec and the WP-8 code under review now. Next I’m tracing how `known_ad` is actually consumed in the worker so I can verify the “transcription still runs” guarantee instead of inferring it from `fingerprint.py` alone.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content tests'"\\test_fingerprint.py | ForEach-Object { '{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'rg -n "known_ad|annotate_chunk|FingerprintAnnotator|fingerprint" worker tests shared' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content worker'"\\fingerprint.py | ForEach-Object { '{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content plan'"\\opus-review-plan-6165b3.md | ForEach-Object { '{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content PLAN.md | ForEach-Object { '"'{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1254ms:
+   1: """Tests for WP-8 offset-tolerant chromaprint matching and known-ad annotation."""
+   2: 
+   3: from __future__ import annotations
+   4: 
+   5: import sqlite3
+   6: from pathlib import Path
+   7: 
+   8: import pytest
+   9: 
+  10: from shared.db import get_connection, migrate, transaction
+  11: from shared.models import PipelineSettings
+  12: from worker.fingerprint import (
+  13:     FingerprintAnnotator,
+  14:     FingerprintMatch,
+  15:     best_sliding_match,
+  16:     decode_fingerprint_vector,
+  17:     encode_fingerprint_vector,
+  18: )
+  19: 
+  20: 
+  21: class FakeFingerprintBackend:
+  22:     def __init__(self, vector: list[int]) -> None:
+  23:         self.vector = vector
+  24:         self.calls: list[Path] = []
+  25: 
+  26:     def compute(self, audio_path: Path) -> list[int]:
+  27:         self.calls.append(audio_path)
+  28:         return self.vector
+  29: 
+  30: 
+  31: @pytest.fixture
+  32: def db_path(tmp_path: Path) -> Path:
+  33:     path = tmp_path / "fingerprint.db"
+  34:     migrate(path)
+  35:     return path
+  36: 
+  37: 
+  38: @pytest.fixture
+  39: def settings() -> PipelineSettings:
+  40:     return PipelineSettings(same_station_airing_window_seconds=180)
+  41: 
+  42: 
+  43: def _seed_station(conn: sqlite3.Connection, name: str = "talk-a") -> int:
+  44:     conn.execute(
+  45:         "INSERT INTO stations (name, url, enabled) VALUES (?, ?, 1)",
+  46:         (name, f"https://example.com/{name}"),
+  47:     )
+  48:     return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+  49: 
+  50: 
+  51: def _seed_chunk(db_path: Path, tmp_path: Path, *, station_id: int, start_ts: float) -> tuple[int, Path]:
+  52:     audio = tmp_path / f"chunk-{int(start_ts)}.wav"
+  53:     audio.write_bytes(b"fake wav")
+  54:     conn = get_connection(db_path)
+  55:     try:
+  56:         with transaction(conn):
+  57:             conn.execute(
+  58:                 """
+  59:                 INSERT INTO chunks (station_id, path, start_ts, end_ts, status)
+  60:                 VALUES (?, ?, ?, ?, 'pending')
+  61:                 """,
+  62:                 (station_id, str(audio), start_ts, start_ts + 90.0),
+  63:             )
+  64:             chunk_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+  65:     finally:
+  66:         conn.close()
+  67:     return chunk_id, audio
+  68: 
+  69: 
+  70: def _seed_canonical_with_fingerprint(db_path: Path, vector: list[int]) -> int:
+  71:     conn = get_connection(db_path)
+  72:     try:
+  73:         with transaction(conn):
+  74:             conn.execute(
+  75:                 """
+  76:                 INSERT INTO canonical_ads (company_name, phone_norm, category, first_seen, last_seen, airing_count)
+  77:                 VALUES ('Rapid Capital', '8005551212', 'business_funding', 1000.0, 1000.0, 0)
+  78:                 """
+  79:             )
+  80:             canonical_id = int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+  81:             conn.execute(
+  82:                 "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+  83:                 (canonical_id, encode_fingerprint_vector(vector), 30.0),
+  84:             )
+  85:     finally:
+  86:         conn.close()
+  87:     return canonical_id
+  88: 
+  89: 
+  90: def test_encode_decode_fingerprint_vector_roundtrip_signed_ints() -> None:
+  91:     vector = [0, 1, -1, 2**31 - 1, -(2**31)]
+  92:     assert decode_fingerprint_vector(encode_fingerprint_vector(vector)) == vector
+  93: 
+  94: 
+  95: def test_best_sliding_match_finds_known_ad_at_offset() -> None:
+  96:     known = [0x11111111, 0x22222222, 0x33333333, 0x44444444]
+  97:     chunk = [0x99999999, 0x88888888, *known, 0x77777777]
+  98: 
+  99:     match = best_sliding_match(
+ 100:         chunk,
+ 101:         [FingerprintMatch(candidate_id=42, vector=known, duration=30.0)],
+ 102:         threshold=0.99,
+ 103:         frames_per_second=4.0,
+ 104:     )
+ 105: 
+ 106:     assert match is not None
+ 107:     assert match.canonical_ad_id == 42
+ 108:     assert match.offset_frames == 2
+ 109:     assert match.offset_seconds == 0.5
+ 110:     assert match.score == 1.0
+ 111: 
+ 112: 
+ 113: def test_best_sliding_match_rejects_low_similarity() -> None:
+ 114:     known = [0x00000000, 0x00000000, 0x00000000]
+ 115:     chunk = [0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF]
+ 116: 
+ 117:     assert best_sliding_match(
+ 118:         chunk,
+ 119:         [FingerprintMatch(candidate_id=7, vector=known, duration=20.0)],
+ 120:         threshold=0.95,
+ 121:     ) is None
+ 122: 
+ 123: 
+ 124: def test_annotator_marks_known_ad_and_records_fast_path_detection(
+ 125:     db_path: Path,
+ 126:     settings: PipelineSettings,
+ 127:     tmp_path: Path,
+ 128: ) -> None:
+ 129:     known = [10, 20, 30, 40]
+ 130:     canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+ 131:     conn = get_connection(db_path)
+ 132:     try:
+ 133:         with transaction(conn):
+ 134:             station_id = _seed_station(conn)
+ 135:     finally:
+ 136:         conn.close()
+ 137:     chunk_id, audio = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2000.0)
+ 138:     backend = FakeFingerprintBackend([1, 2, *known, 3, 4])
+ 139:     annotator = FingerprintAnnotator(db_path, settings, backend=backend, threshold=0.99)
+ 140: 
+ 141:     match = annotator.annotate_chunk(chunk_id, audio)
+ 142: 
+ 143:     assert match is not None
+ 144:     assert match.canonical_ad_id == canonical_id
+ 145:     assert backend.calls == [audio]
+ 146:     conn = get_connection(db_path)
+ 147:     try:
+ 148:         chunk = conn.execute("SELECT known_ad_id FROM chunks WHERE id = ?", (chunk_id,)).fetchone()
+ 149:         assert chunk["known_ad_id"] == canonical_id
+ 150:         detection = conn.execute("SELECT canonical_ad_id, is_ad FROM detections").fetchone()
+ 151:         assert detection["canonical_ad_id"] == canonical_id
+ 152:         assert detection["is_ad"] == 1
+ 153:         canonical = conn.execute("SELECT airing_count, last_seen FROM canonical_ads WHERE id = ?", (canonical_id,)).fetchone()
+ 154:         assert canonical["airing_count"] == 1
+ 155:         assert canonical["last_seen"] == 2000.0
+ 156:     finally:
+ 157:         conn.close()
+ 158: 
+ 159: 
+ 160: def test_known_ad_inside_same_station_window_does_not_increment_airing_count(
+ 161:     db_path: Path,
+ 162:     settings: PipelineSettings,
+ 163:     tmp_path: Path,
+ 164: ) -> None:
+ 165:     known = [10, 20, 30, 40]
+ 166:     canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+ 167:     conn = get_connection(db_path)
+ 168:     try:
+ 169:         with transaction(conn):
+ 170:             station_id = _seed_station(conn)
+ 171:     finally:
+ 172:         conn.close()
+ 173:     previous_chunk_id, _ = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2000.0)
+ 174:     conn = get_connection(db_path)
+ 175:     try:
+ 176:         with transaction(conn):
+ 177:             conn.execute(
+ 178:                 "INSERT INTO detections (chunk_id, canonical_ad_id, is_ad) VALUES (?, ?, 1)",
+ 179:                 (previous_chunk_id, canonical_id),
+ 180:             )
+ 181:             conn.execute("UPDATE canonical_ads SET airing_count = 1 WHERE id = ?", (canonical_id,))
+ 182:     finally:
+ 183:         conn.close()
+ 184:     chunk_id, audio = _seed_chunk(db_path, tmp_path, station_id=station_id, start_ts=2060.0)
+ 185:     annotator = FingerprintAnnotator(db_path, settings, backend=FakeFingerprintBackend([*known]), threshold=0.99)
+ 186: 
+ 187:     assert annotator.annotate_chunk(chunk_id, audio) is not None
+ 188: 
+ 189:     conn = get_connection(db_path)
+ 190:     try:
+ 191:         assert conn.execute("SELECT airing_count FROM canonical_ads WHERE id = ?", (canonical_id,)).fetchone()[0] == 1
+ 192:         assert conn.execute("SELECT COUNT(*) FROM detections WHERE canonical_ad_id = ?", (canonical_id,)).fetchone()[0] == 2
+ 193:     finally:
+ 194:         conn.close()
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1414ms:
+worker\fingerprint.py:25:    """Candidate fingerprint plus the best offset/score after matching."""
+worker\fingerprint.py:39:def encode_fingerprint_vector(vector: list[int]) -> bytes:
+worker\fingerprint.py:46:def decode_fingerprint_vector(blob: bytes) -> list[int]:
+worker\fingerprint.py:51:        raise ValueError("fingerprint blob length must be divisible by 4")
+worker\fingerprint.py:73:    """Find the best offset-tolerant match for an ad fingerprint inside a larger chunk."""
+worker\fingerprint.py:103:        fingerprint = data.get("fingerprint")
+worker\fingerprint.py:104:        if not isinstance(fingerprint, list):
+worker\fingerprint.py:105:            raise ValueError("fpcalc JSON did not contain a raw fingerprint list")
+worker\fingerprint.py:106:        return [int(item) for item in fingerprint]
+worker\fingerprint.py:109:class FingerprintAnnotator:
+worker\fingerprint.py:110:    """Compute a chunk fingerprint, match against canonical ads, and record known-ad airings."""
+worker\fingerprint.py:128:    def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
+worker\fingerprint.py:143:                self._record_known_ad(conn, chunk, match.canonical_ad_id)
+worker\fingerprint.py:148:    def add_fingerprint_for_canonical(self, canonical_ad_id: int, audio_path: Path, *, duration: float) -> int:
+worker\fingerprint.py:149:        """Compute and store a fingerprint for a newly archived canonical ad clip."""
+worker\fingerprint.py:155:                    "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+worker\fingerprint.py:156:                    (canonical_ad_id, encode_fingerprint_vector(vector), duration),
+worker\fingerprint.py:164:            "SELECT canonical_ad_id, chromaprint_vector, duration FROM fingerprints"
+worker\fingerprint.py:169:                vector=decode_fingerprint_vector(row["chromaprint_vector"]),
+worker\fingerprint.py:184:    def _record_known_ad(self, conn: sqlite3.Connection, chunk: sqlite3.Row, canonical_ad_id: int) -> None:
+worker\fingerprint.py:194:            "UPDATE chunks SET known_ad_id = ? WHERE id = ?",
+tests\test_worker_consumer.py:15:from worker.fingerprint import FingerprintMatch
+tests\test_worker_consumer.py:99:class FakeFingerprintAnnotator:
+tests\test_worker_consumer.py:104:    def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
+tests\test_worker_consumer.py:243:def test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad(
+tests\test_worker_consumer.py:267:    fingerprint = FakeFingerprintAnnotator(FingerprintMatch(candidate_id=7, vector=[1, 2, 3], duration=30.0, score=1.0))
+tests\test_worker_consumer.py:275:        fingerprint_annotator=fingerprint,
+tests\test_worker_consumer.py:280:    assert fingerprint.calls == [(chunk_id, audio)]
+shared\models.py:45:    known_ad_id: int | None = None
+tests\test_fingerprint.py:12:from worker.fingerprint import (
+tests\test_fingerprint.py:13:    FingerprintAnnotator,
+tests\test_fingerprint.py:16:    decode_fingerprint_vector,
+tests\test_fingerprint.py:17:    encode_fingerprint_vector,
+tests\test_fingerprint.py:33:    path = tmp_path / "fingerprint.db"
+tests\test_fingerprint.py:70:def _seed_canonical_with_fingerprint(db_path: Path, vector: list[int]) -> int:
+tests\test_fingerprint.py:82:                "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+tests\test_fingerprint.py:83:                (canonical_id, encode_fingerprint_vector(vector), 30.0),
+tests\test_fingerprint.py:90:def test_encode_decode_fingerprint_vector_roundtrip_signed_ints() -> None:
+tests\test_fingerprint.py:92:    assert decode_fingerprint_vector(encode_fingerprint_vector(vector)) == vector
+tests\test_fingerprint.py:95:def test_best_sliding_match_finds_known_ad_at_offset() -> None:
+tests\test_fingerprint.py:124:def test_annotator_marks_known_ad_and_records_fast_path_detection(
+tests\test_fingerprint.py:130:    canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+tests\test_fingerprint.py:139:    annotator = FingerprintAnnotator(db_path, settings, backend=backend, threshold=0.99)
+tests\test_fingerprint.py:141:    match = annotator.annotate_chunk(chunk_id, audio)
+tests\test_fingerprint.py:148:        chunk = conn.execute("SELECT known_ad_id FROM chunks WHERE id = ?", (chunk_id,)).fetchone()
+tests\test_fingerprint.py:149:        assert chunk["known_ad_id"] == canonical_id
+tests\test_fingerprint.py:160:def test_known_ad_inside_same_station_window_does_not_increment_airing_count(
+tests\test_fingerprint.py:166:    canonical_id = _seed_canonical_with_fingerprint(db_path, known)
+tests\test_fingerprint.py:185:    annotator = FingerprintAnnotator(db_path, settings, backend=FakeFingerprintBackend([*known]), threshold=0.99)
+tests\test_fingerprint.py:187:    assert annotator.annotate_chunk(chunk_id, audio) is not None
+worker\consumer.py:17:from worker.fingerprint import FingerprintAnnotator, FingerprintMatch
+worker\consumer.py:64:    def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None: ...
+worker\consumer.py:78:        fingerprint_annotator: FingerprintAnnotationBackend | None = None,
+worker\consumer.py:86:        self.fingerprint_annotator = fingerprint_annotator
+worker\consumer.py:200:        known_ad_match: FingerprintMatch | None = None
+worker\consumer.py:201:        if self.fingerprint_annotator is not None:
+worker\consumer.py:203:                known_ad_match = self.fingerprint_annotator.annotate_chunk(chunk.id, audio_path)
+worker\consumer.py:206:                    "fingerprint annotation failed; continuing with ASR/LLM path",
+worker\consumer.py:225:            known_ad_match is None
+worker\consumer.py:372:    fingerprint_annotator: FingerprintAnnotationBackend | None = None,
+worker\consumer.py:375:    """Factory for production consumer with default ASR, extraction, dedup, and fingerprint backends."""
+worker\consumer.py:379:    annotator = fingerprint_annotator or FingerprintAnnotator(db_path, settings)
+worker\consumer.py:386:        fingerprint_annotator=annotator,
+shared\db.py:25:    "fingerprints",
+shared\migrations\001_initial.sql:28:    known_ad_id INTEGER REFERENCES canonical_ads(id)
+shared\migrations\001_initial.sql:66:CREATE TABLE IF NOT EXISTS fingerprints (
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1527ms:
+   1: """WP-8 chromaprint computation and offset-tolerant known-ad annotation."""
+   2: 
+   3: from __future__ import annotations
+   4: 
+   5: import json
+   6: import sqlite3
+   7: import struct
+   8: import subprocess
+   9: from dataclasses import dataclass
+  10: from pathlib import Path
+  11: from typing import Protocol
+  12: 
+  13: from shared.db import get_connection, retry_on_busy, transaction
+  14: from shared.models import PipelineSettings
+  15: 
+  16: DEFAULT_FRAMES_PER_SECOND = 4.0
+  17: 
+  18: 
+  19: class FingerprintBackend(Protocol):
+  20:     def compute(self, audio_path: Path) -> list[int]: ...
+  21: 
+  22: 
+  23: @dataclass(frozen=True)
+  24: class FingerprintMatch:
+  25:     """Candidate fingerprint plus the best offset/score after matching."""
+  26: 
+  27:     candidate_id: int
+  28:     vector: list[int]
+  29:     duration: float
+  30:     score: float = 0.0
+  31:     offset_frames: int = 0
+  32:     offset_seconds: float = 0.0
+  33: 
+  34:     @property
+  35:     def canonical_ad_id(self) -> int:
+  36:         return self.candidate_id
+  37: 
+  38: 
+  39: def encode_fingerprint_vector(vector: list[int]) -> bytes:
+  40:     """Encode signed 32-bit chromaprint feature integers for SQLite BLOB storage."""
+  41:     if not vector:
+  42:         return b""
+  43:     return struct.pack(f"<{len(vector)}i", *vector)
+  44: 
+  45: 
+  46: def decode_fingerprint_vector(blob: bytes) -> list[int]:
+  47:     """Decode signed 32-bit chromaprint feature integers from SQLite BLOB storage."""
+  48:     if not blob:
+  49:         return []
+  50:     if len(blob) % 4 != 0:
+  51:         raise ValueError("fingerprint blob length must be divisible by 4")
+  52:     return list(struct.unpack(f"<{len(blob) // 4}i", blob))
+  53: 
+  54: 
+  55: def _frame_similarity(left: int, right: int) -> float:
+  56:     xor = (left ^ right) & 0xFFFFFFFF
+  57:     return 1.0 - (xor.bit_count() / 32.0)
+  58: 
+  59: 
+  60: def _window_similarity(chunk_window: list[int], candidate: list[int]) -> float:
+  61:     if not chunk_window or len(chunk_window) != len(candidate):
+  62:         return 0.0
+  63:     return sum(_frame_similarity(left, right) for left, right in zip(chunk_window, candidate, strict=True)) / len(candidate)
+  64: 
+  65: 
+  66: def best_sliding_match(
+  67:     chunk_vector: list[int],
+  68:     candidates: list[FingerprintMatch],
+  69:     *,
+  70:     threshold: float = 0.88,
+  71:     frames_per_second: float = DEFAULT_FRAMES_PER_SECOND,
+  72: ) -> FingerprintMatch | None:
+  73:     """Find the best offset-tolerant match for an ad fingerprint inside a larger chunk."""
+  74:     best: FingerprintMatch | None = None
+  75:     for candidate in candidates:
+  76:         needle = candidate.vector
+  77:         if not needle or len(needle) > len(chunk_vector):
+  78:             continue
+  79:         for offset in range(0, len(chunk_vector) - len(needle) + 1):
+  80:             window = chunk_vector[offset : offset + len(needle)]
+  81:             score = _window_similarity(window, needle)
+  82:             if best is None or score > best.score:
+  83:                 best = FingerprintMatch(
+  84:                     candidate_id=candidate.candidate_id,
+  85:                     vector=needle,
+  86:                     duration=candidate.duration,
+  87:                     score=score,
+  88:                     offset_frames=offset,
+  89:                     offset_seconds=offset / frames_per_second if frames_per_second else 0.0,
+  90:                 )
+  91:     if best is None or best.score < threshold:
+  92:         return None
+  93:     return best
+  94: 
+  95: 
+  96: class FpcalcBackend:
+  97:     """Compute raw chromaprint vectors with the fpcalc CLI."""
+  98: 
+  99:     def compute(self, audio_path: Path) -> list[int]:
+ 100:         command = ["fpcalc", "-raw", "-json", str(audio_path)]
+ 101:         result = subprocess.run(command, check=True, capture_output=True, text=True)  # noqa: S603
+ 102:         data = json.loads(result.stdout)
+ 103:         fingerprint = data.get("fingerprint")
+ 104:         if not isinstance(fingerprint, list):
+ 105:             raise ValueError("fpcalc JSON did not contain a raw fingerprint list")
+ 106:         return [int(item) for item in fingerprint]
+ 107: 
+ 108: 
+ 109: class FingerprintAnnotator:
+ 110:     """Compute a chunk fingerprint, match against canonical ads, and record known-ad airings."""
+ 111: 
+ 112:     def __init__(
+ 113:         self,
+ 114:         db_path: str | Path,
+ 115:         settings: PipelineSettings,
+ 116:         *,
+ 117:         backend: FingerprintBackend | None = None,
+ 118:         threshold: float = 0.88,
+ 119:         frames_per_second: float = DEFAULT_FRAMES_PER_SECOND,
+ 120:     ) -> None:
+ 121:         self.db_path = Path(db_path)
+ 122:         self.settings = settings
+ 123:         self.backend = backend or FpcalcBackend()
+ 124:         self.threshold = threshold
+ 125:         self.frames_per_second = frames_per_second
+ 126: 
+ 127:     @retry_on_busy(max_retries=8, base_delay=0.01)
+ 128:     def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
+ 129:         chunk_vector = self.backend.compute(audio_path)
+ 130:         conn = get_connection(self.db_path)
+ 131:         try:
+ 132:             with transaction(conn):
+ 133:                 candidates = self._load_candidates(conn)
+ 134:                 match = best_sliding_match(
+ 135:                     chunk_vector,
+ 136:                     candidates,
+ 137:                     threshold=self.threshold,
+ 138:                     frames_per_second=self.frames_per_second,
+ 139:                 )
+ 140:                 if match is None:
+ 141:                     return None
+ 142:                 chunk = self._chunk_row(conn, chunk_id)
+ 143:                 self._record_known_ad(conn, chunk, match.canonical_ad_id)
+ 144:                 return match
+ 145:         finally:
+ 146:             conn.close()
+ 147: 
+ 148:     def add_fingerprint_for_canonical(self, canonical_ad_id: int, audio_path: Path, *, duration: float) -> int:
+ 149:         """Compute and store a fingerprint for a newly archived canonical ad clip."""
+ 150:         vector = self.backend.compute(audio_path)
+ 151:         conn = get_connection(self.db_path)
+ 152:         try:
+ 153:             with transaction(conn):
+ 154:                 conn.execute(
+ 155:                     "INSERT INTO fingerprints (canonical_ad_id, chromaprint_vector, duration) VALUES (?, ?, ?)",
+ 156:                     (canonical_ad_id, encode_fingerprint_vector(vector), duration),
+ 157:                 )
+ 158:                 return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+ 159:         finally:
+ 160:             conn.close()
+ 161: 
+ 162:     def _load_candidates(self, conn: sqlite3.Connection) -> list[FingerprintMatch]:
+ 163:         rows = conn.execute(
+ 164:             "SELECT canonical_ad_id, chromaprint_vector, duration FROM fingerprints"
+ 165:         ).fetchall()
+ 166:         return [
+ 167:             FingerprintMatch(
+ 168:                 candidate_id=int(row["canonical_ad_id"]),
+ 169:                 vector=decode_fingerprint_vector(row["chromaprint_vector"]),
+ 170:                 duration=float(row["duration"]),
+ 171:             )
+ 172:             for row in rows
+ 173:         ]
+ 174: 
+ 175:     def _chunk_row(self, conn: sqlite3.Connection, chunk_id: int) -> sqlite3.Row:
+ 176:         row = conn.execute(
+ 177:             "SELECT id, station_id, start_ts FROM chunks WHERE id = ?",
+ 178:             (chunk_id,),
+ 179:         ).fetchone()
+ 180:         if row is None:
+ 181:             raise ValueError(f"chunk not found: {chunk_id}")
+ 182:         return row
+ 183: 
+ 184:     def _record_known_ad(self, conn: sqlite3.Connection, chunk: sqlite3.Row, canonical_ad_id: int) -> None:
+ 185:         duplicate_airing = self._has_recent_same_station_airing(conn, canonical_ad_id, chunk)
+ 186:         canonical = conn.execute(
+ 187:             "SELECT company_name, phone_norm, category FROM canonical_ads WHERE id = ?",
+ 188:             (canonical_ad_id,),
+ 189:         ).fetchone()
+ 190:         if canonical is None:
+ 191:             raise ValueError(f"canonical ad not found: {canonical_ad_id}")
+ 192: 
+ 193:         conn.execute(
+ 194:             "UPDATE chunks SET known_ad_id = ? WHERE id = ?",
+ 195:             (canonical_ad_id, chunk["id"]),
+ 196:         )
+ 197:         conn.execute(
+ 198:             """
+ 199:             INSERT INTO detections (
+ 200:                 chunk_id, canonical_ad_id, is_ad, ad_category, company_name, phone_number,
+ 201:                 offer_summary, key_claims, confidence, alerted
+ 202:             )
+ 203:             VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?, 0)
+ 204:             """,
+ 205:             (
+ 206:                 chunk["id"],
+ 207:                 canonical_ad_id,
+ 208:                 canonical["category"],
+ 209:                 canonical["company_name"],
+ 210:                 canonical["phone_norm"],
+ 211:                 "known ad matched by chromaprint",
+ 212:                 json.dumps([]),
+ 213:                 1.0,
+ 214:             ),
+ 215:         )
+ 216:         increment = 0 if duplicate_airing else 1
+ 217:         conn.execute(
+ 218:             """
+ 219:             UPDATE canonical_ads
+ 220:             SET last_seen = MAX(last_seen, ?), airing_count = airing_count + ?
+ 221:             WHERE id = ?
+ 222:             """,
+ 223:             (chunk["start_ts"], increment, canonical_ad_id),
+ 224:         )
+ 225: 
+ 226:     def _has_recent_same_station_airing(
+ 227:         self,
+ 228:         conn: sqlite3.Connection,
+ 229:         canonical_ad_id: int,
+ 230:         chunk: sqlite3.Row,
+ 231:     ) -> bool:
+ 232:         row = conn.execute(
+ 233:             """
+ 234:             SELECT 1
+ 235:             FROM detections d
+ 236:             JOIN chunks c ON c.id = d.chunk_id
+ 237:             WHERE d.canonical_ad_id = ?
+ 238:               AND c.station_id = ?
+ 239:               AND ABS(c.start_ts - ?) <= ?
+ 240:             LIMIT 1
+ 241:             """,
+ 242:             (
+ 243:                 canonical_ad_id,
+ 244:                 chunk["station_id"],
+ 245:                 chunk["start_ts"],
+ 246:                 self.settings.same_station_airing_window_seconds,
+ 247:             ),
+ 248:         ).fetchone()
+ 249:         return row is not None
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1573ms:
+   1: # Opus Review Plan — ตรวจงานทุก WP แบบลดหลั่นตามความเสี่ยง
+   2: 
+   3: Opus เป็น review gate ของทุก work package โดยใช้ความลึก 3 ระดับ (Deep / Standard / Spot-check) ตามความเสี่ยงของงาน เพื่อคุมคุณภาพครบทุกชิ้นโดยไม่เปลือง token
+   4: 
+   5: ## หลักการ
+   6: 
+   7: - **ตรวจหลังผู้ทำส่ง report** (`plan/wpN-report.md`) — ไม่เชื่อรายงาน ต้อง trace โค้ดจริง + รัน verify commands เอง (แบบเดียวกับที่ตรวจ Phase 1)
+   8: - **สองแกนเสมอ**: (1) Spec — ตรงกับ handoff + `PLAN.md` ไหม (2) Standards — โค้ดสะอาด, ใช้ `shared/` ไม่ reimplement, `shared/` ยัง import-light
+   9: - **ผล review**: ship / fix-then-ship (รายการแก้ส่งกลับผู้ทำเดิม) / rework (ส่ง tier สูงขึ้นทำใหม่)
+  10: - ทุก review จบด้วยอัปเดต checklist ในไฟล์นี้
+  11: 
+  12: ## ระดับความลึก
+  13: 
+  14: | ระดับ | ทำอะไร | ใช้กับ |
+  15: |---|---|---|
+  16: | **Deep** | trace ทุก code path end-to-end, ไล่ edge cases, ตรวจ concurrency/failure paths, ตรวจว่า tests exercise path จริง (ไม่ mock จนไร้ความหมาย), รัน pytest + adversarial input | งานที่ผิดแล้วลามทั้งระบบ |
+  17: | **Standard** | อ่าน diff ทั้งหมด + trace เฉพาะ critical path, รัน pytest + manual smoke 1 รอบ, ตรวจ acceptance criteria ทีละข้อ | งาน implement ตาม spec |
+  18: | **Spot-check** | รัน verify commands + สุ่มอ่าน 2–3 จุดที่ผิดบ่อย (path, env var, port, ชื่อ metric) | งาน declarative/config |
+  19: 
+  20: ## ตาราง review ราย WP
+  21: 
+  22: | WP | ผู้ทำ | ระดับ | จุดที่ Opus ต้องเพ่งเป็นพิเศษ | Verify commands |
+  23: |---|---|---|---|---|
+  24: | **WP-1** Scaffold+DB | Cursor | ~~Deep~~ **ตรวจแล้ว** ✅ | ค้างแก้: concurrent test ไม่ exercise retry path, `import json` กลางไฟล์ — มอบ GPT mini ใน WP-11 | `pytest` |
+  25: | **WP-2** Ingestor | GPT mini | **Deep** | reconnect/backoff ไม่ spin-loop, partial chunk ตอน stream ตาย, gap log ครบช่วง, ffmpeg zombie process, chunk timestamp ไม่ drift | `pytest`; รัน ingestor กับ stream จริง 5 นาที แล้วดู `chunks`/`gaps` |
+  26: | **WP-3** ASR worker | Composer 2.5 | **Deep** | atomic claim (สอง consumer ห้ามชน), drop-oldest นับ backlog ถูก, segments_json เก็บ timestamps ครบ (WP-5 ต้องใช้), RTF logging, model mock ใน test ไม่กลบ logic จริง | `pytest`; ตรวจ migration 002 |
+  27: | **WP-4** LLM extraction | GPT high | **Deep** | prompt กัน false positive (รายการคุยเรื่องเงินกู้ ≠ โฆษณา), JSON schema ตรง `AdExtraction`, retry-on-invalid-JSON, phone normalization edge cases ("eight hundred" → 800), ห้ามมี station/timestamp ใน prompt schema | `pytest`; รัน eval set ถ้ามีแล้ว |
+  28: | **WP-5** Dedup | GPT high | **Deep** | fuzzy threshold ไม่ over/under-merge, 3-min airing window ทำงานข้าม chunk overlap, ตัด clip จาก segment timestamps ±2s ถูกต้อง, `airing_count` ไม่เฟ้อ | `pytest` + fixture transcripts ซ้ำ ๆ |
+  29: | **WP-6** Alerter | GPT mini | **Standard** | alert เฉพาะ first-seen, `alerted` flag กันส่งซ้ำหลัง restart, ops alert >15min ไม่ spam ทุก loop, token ไม่หลุดใน log | `pytest`; dry-run กับ mock Telegram API |
+  30: | **WP-7a** Docker skeleton | MiniMax M3 | **Spot-check** | volume paths ตรง `data/`, service names ตรงแผน 7 ตัว, healthcheck ไม่ fail ตอน boot ช้า | `docker compose config` |
+  31: | **WP-7b** Docker finalize | GPT mini | **Standard** | NVIDIA runtime เฉพาะ worker, Ollama pull model ตอน start, restart policy, `.env` ไม่ bake ลง image | `docker compose up` + `docker compose ps` ทุกตัว healthy |
+  32: | **WP-8** Fingerprint | GPT high | **Deep (เข้มสุด)** | sliding-window matching ถูกหลัก (chunk 90s vs clip 30s ที่ offset ใด ๆ), threshold มี test ทั้ง true-match และ near-miss, false `known_ad` ไม่ทำข้อมูลหาย (transcription ยังรัน), CPU time ต่อ chunk ไม่กิน budget | `pytest` + fixture เสียงจริง: คลิปเดียวกันฝังที่ offset ต่างกัน |
+  33: | **WP-9** Dashboard | Composer 2.5 | **Standard** | read-only จริงทุก connection, `/audio` กัน path traversal, ทุกหน้า render ได้บน DB ว่าง, ไม่มี write path | `pytest`; เปิดทุก route บน empty DB |
+  34: | **WP-10a** Monitoring config | MiniMax M3 | **Spot-check** | scrape targets ตรงชื่อ service ใน compose, datasource UID ตรง dashboard JSON | `promtool check config`; Grafana ขึ้น dashboard ไม่ error |
+  35: | **WP-10b** Instrument metrics | MiniMax M3 | **Spot-check** | ชื่อ metric ตรง convention (`pipeline_*`), ไม่ instrument ใน hot loop จน latency เพิ่ม | `curl /metrics` ทุก service เทียบรายการชื่อ |
+  36: | **WP-11** Tests+hardening | GPT mini + high | **Standard** | e2e smoke ครอบ ingest→transcribe→extract→alert จริง, แก้ 2 จุดค้างจาก WP-1 review แล้ว, eval set มีเกณฑ์ให้คะแนนชัด | `pytest` ทั้ง suite + e2e |
+  37: 
+  38: ## จังหวะ review (อัปเดต 2026-06-10 — ดู `plan/work-dispatch-6165b3.md`)
+  39: 
+  40: ```
+  41: Batch 1 (fix-then-ship, ขนาน 4 สาย):
+  42:   GPT mini      → WP-2 F1–F7 (ffmpeg timeout, zombie, partial chunk, wp2-report)
+  43:   Composer 2.5  → WP-3 G1–G4 (report stale) + WP-9 F8 (read-only test)
+  44:   MiniMax M3    → WP-7a F5–F6 (dashboard bind env, alerter Dockerfile/healthcheck)
+  45:   Opus (ขนาน)   → WP-4 Deep review (โค้ดมีแล้ว ไม่มี report)
+  46: 
+  47: Batch 2 (re-review หลัง Batch 1):
+  48:   WP-2 Deep → WP-4 (ถ้ายังไม่เสร็จ) → WP-5 Deep → WP-8 Deep → WP-3/9/7a/10a
+  49: 
+  50: Batch 3 (implement ใหม่):
+  51:   GPT mini  → WP-6, WP-7b, WP-11a smoke
+  52:   GPT high  → WP-11b eval set
+  53:   MiniMax M3 → WP-10b metrics
+  54: ```
+  55: 
+  56: ## Prompt template สำหรับ Opus
+  57: 
+  58: ```
+  59: Act as the review gate. Read these in order:
+  60: 1. PLAN.md (architecture + decisions — do not re-litigate)
+  61: 2. .windsurf/plans/handoff-wpN-...-6165b3.md (spec for this WP)
+  62: 3. plan/wpN-report.md (implementer's claims)
+  63: Then review at [Deep/Standard/Spot-check] level per
+  64: C:\Users\Barbara\.windsurf\plans\opus-review-plan-6165b3.md:
+  65: - Verify every acceptance criterion yourself (run commands, don't trust the report)
+  66: - Trace the focus areas listed for this WP
+  67: - Output: findings ordered by severity, each with file:line evidence,
+  68:   then verdict: ship / fix-then-ship (with fix list) / rework
+  69: ```
+  70: 
+  71: ## Review checklist (อัปเดตหลังตรวจแต่ละงาน)
+  72: 
+  73: - [x] WP-1 — ✅ ship (2 จุดค้างโอนเข้า WP-11)
+  74: - [x] WP-2 — ✅ **ship** (Batch 2 Opus Deep re-review): F1–F5/F7 verified, 8/8 ingestor pytest; F6 smoke skipped
+  75: - [x] WP-3 — ✅ **ship** (Batch 2 Opus Deep re-review): G1–G4 verified, 9/9 worker pytest; create_consumer wired
+  76: - [x] WP-4 — ✅ **ship** (Batch 2 fix-then-ship): N1 vanity fallback, N2 toll-free prefix relax, N3 regression tests, N4 few-shot ex.3 phone; `plan/wp4-report.md`; 67/67 pytest pass
+  77: - [x] WP-5 — ✅ **ship** (Batch 3 fix-then-ship): H1 omit mismatched phone weight, M2 category mismatch = 0, regression tests for mangled phone, distinct ads, same-station >180s, cross-station within 3min; `plan/wp5-report.md`; 69/69 pytest pass
+  78: - [ ] WP-6 — Standard ⏳ GPT mini หลัง WP-5 ship (alerter ยัง stub)
+  79: - [x] WP-7a — ✅ **ship** (Batch 2 Spot-check): F5/F6 verified, compose config OK
+  80: - [ ] WP-7b — Standard ⏳ GPT mini หลัง WP-6 entrypoint
+  81: - [ ] WP-8 — Deep (เข้มสุด) ⏳ หลัง WP-5 (fingerprint.py; ไม่มี wp8-report)
+  82: - [x] WP-9 — ✅ **ship** (Batch 2 Standard re-review): F8 + 13/13 dashboard pytest
+  83: - [x] WP-10a — ✅ **ship** (Batch 2 Spot-check + F1 uid:prometheus, F2 VRAMNearFull parens)
+  84: - [ ] WP-10b — Spot-check
+  85: - [ ] WP-11 — Standard + ปิด checklist
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1743ms:
+   1: # Autonomous Radio Ad-Sensing Pipeline
+   2: 
+   3: A fully local Docker Compose pipeline on Ubuntu (12GB NVIDIA GPU) that ingests 4–10 U.S. News/Talk radio streams 24/7, chunks and transcribes them with faster-whisper, extracts loan/funding ad details with a local Qwen2.5-7B via Ollama, dedups fuzzily (boosted by chromaprint audio fingerprinting), stores everything in SQLite, sends first-seen alerts via the Telegram Bot API, and exposes a read-only FastAPI dashboard plus Prometheus/Grafana monitoring.
+   4: 
+   5: ## Agreed Decisions (from grilling session)
+   6: 
+   7: | Branch | Decision |
+   8: |---|---|
+   9: | Scale | 4–10 concurrent stations, single GPU box |
+  10: | Segmentation | Fixed 60–120s chunks with 5–10s overlap; transcribe everything |
+  11: | ASR | faster-whisper `medium.en`, int8_float16 (~1.5GB VRAM, ~10x RT) |
+  12: | LLM | Ollama + Qwen2.5-7B-Instruct Q4_K_M (~5GB VRAM), JSON-schema structured output |
+  13: | Schema | LLM extracts: is_ad, ad_category, company_name, phone_number, website, offer_summary, key_claims, confidence — `station`/`timestamp` are injected from chunk metadata, never asked of the LLM |
+  14: | Dedup | Fuzzy (rapidfuzz >85% on transcript + normalized company/phone/category); alert first sighting per ad per N days; store every airing linked to canonical ad; same ad + same station within 3min counts as **one** airing (overlap de-double-count) |
+  15: | Storage | SQLite (WAL); raw chunks kept 24–48h; detected-ad audio archived permanently; transcripts forever |
+  16: | Deployment | Docker Compose: ingestor, worker (GPU), alerter, ollama; NVIDIA container toolkit; restart:always + healthchecks |
+  17: | Ingestion resilience | `stations.yaml` config; ffmpeg reconnect + supervisor loop w/ backoff; gap logging; ops alert if station down >15min |
+  18: | Telegram | Outbound-only Bot API (sendMessage + audio clip); no inbound webhook |
+  19: | Backlog | Bounded queue (~2h); drop-oldest with gap log + ops alert |
+  20: | Observability | Structured JSON logs, status table in SQLite, daily Telegram digest + Prometheus metrics & Grafana dashboards |
+  21: | Audio pre-filter | Chromaprint fingerprinting as **annotation only** — tags repeats of known produced spots to skip redundant LLM calls and strengthen dedup; everything still transcribed (zero recall loss) |
+  22: | Web dashboard | FastAPI + Jinja2/HTMX, read-only, LAN-only: detections feed w/ audio playback, canonical ads w/ airing frequency, station health, gap timeline |
+  23: 
+  24: ## Architecture
+  25: 
+  26: ```
+  27: stations.yaml ──> [ingestor]  ffmpeg per station ──> chunks/ (WAV/Opus on disk)
+  28:                                                         │ (SQLite-backed work queue)
+  29:                   [worker]    fingerprint ─> faster-whisper ─> Ollama extract ─> fuzzy dedup ─> detections
+  30:                                                         │
+  31:                   [alerter]   reads unalerted detections ──> Telegram Bot API (first-seen + ops + daily digest)
+  32:                   [janitor]   (in worker) retention cleanup, gap detection, status rollup
+  33:                   [dashboard] FastAPI + HTMX (read-only, SQLite) ──> LAN browser
+  34:                   [prometheus]<── /metrics from ingestor, worker, alerter, dashboard
+  35:                   [grafana]   dashboards: queue depth, GPU util (dcgm/nvidia-smi exporter),
+  36:                               detections/hr, station uptime, ASR/LLM latency
+  37: ```
+  38: 
+  39: - **Queue**: a `chunks` table in SQLite (status: pending/processing/done/dropped). File-system chunks referenced by path. No Redis/Celery.
+  40: - **SQLite concurrency**: 3 writer processes (ingestor, worker, alerter) on one DB — WAL mode + `busy_timeout=5000` + retry-on-`SQLITE_BUSY` wrapper in `shared/db.py`; keep transactions short; dashboard opens read-only connections.
+  41: - **VRAM budget**: ~1.5GB Whisper + ~5GB LLM + overhead ≈ 8GB, safe on 12GB. Fingerprinting (chromaprint) is CPU-only.
+  42: - **Fingerprint flow** (in worker, before ASR): compute chromaprint feature vector of chunk → **offset-tolerant match** against stored fingerprints of archived ad clips (sliding-window correlation over chromaprint vectors — a whole-chunk hash will never match a 30s ad at a random offset inside a 90s chunk) → on hit, record airing immediately and mark chunk `known_ad`; transcription still runs, but the LLM extraction step is skipped for `known_ad` chunks. If sliding-window chromaprint proves too weak, fall back to landmark hashing (audfprint-style) in a later iteration.
+  43: - **Ad clip boundaries**: when a new ad is detected, map the LLM-flagged ad text back to Whisper **segment timestamps** to cut the ad clip from the chunk for archiving/fingerprinting (±2s padding).
+  44: - **Metrics**: each Python service exposes `/metrics` via `prometheus-client`; GPU metrics via `nvidia-dcgm-exporter` (or `nvidia-smi`-based exporter); Grafana provisioned with datasource + dashboards as code.
+  45: 
+  46: ## Repository Layout
+  47: 
+  48: ```
+  49: radio-ad-sensing-pipeline/
+  50: ├── docker-compose.yml
+  51: ├── .env.example              # TELEGRAM_BOT_TOKEN, CHAT_ID, etc.
+  52: ├── config/
+  53: │   ├── stations.yaml         # name, url, format, enabled
+  54: │   └── settings.yaml         # chunk_len, overlap, retention, dedup window, thresholds
+  55: ├── ingestor/                 # ffmpeg supervisor per station, chunk writer, gap logger
+  56: ├── worker/                   # queue consumer: fingerprint -> transcribe -> extract -> persist
+  57: │   ├── fingerprint.py        # chromaprint (pyacoustid/fpcalc) compute + match vs known ads
+  58: │   ├── transcribe.py         # faster-whisper wrapper
+  59: │   ├── extract.py            # Ollama client, JSON-schema prompt, validation (pydantic)
+  60: │   └── dedup.py              # rapidfuzz matching against canonical ads
+  61: ├── alerter/                  # Telegram sender: ad alerts, ops alerts, daily digest
+  62: ├── dashboard/                # FastAPI + Jinja2/HTMX read-only UI
+  63: │   ├── main.py               # routes: /, /ads, /ads/{id}, /stations, /gaps, /audio/{id}
+  64: │   └── templates/
+  65: ├── monitoring/
+  66: │   ├── prometheus.yml        # scrape configs
+  67: │   └── grafana/              # provisioned datasource + dashboard JSON
+  68: ├── shared/                   # db.py (schema + migrations), models.py, queue.py, logging, metrics.py
+  69: ├── data/                     # SQLite db, chunks/, ad_archive/   (volume)
+  70: └── tests/
+  71: ```
+  72: 
+  73: ## Database Schema (core tables)
+  74: 
+  75: - `stations` — id, name, url, enabled
+  76: - `chunks` — id, station_id, path, start_ts, end_ts, status, error
+  77: - `transcripts` — chunk_id, text, asr_duration_ms
+  78: - `canonical_ads` — id, company_name, phone_norm, category, first_seen, last_seen, airing_count, archived_audio_path
+  79: - `detections` — id, chunk_id, canonical_ad_id (nullable until matched), full JSON fields, confidence, alerted(bool)
+  80: - `gaps` — station_id, start_ts, end_ts, reason (stream down / dropped backlog)
+  81: - `fingerprints` — canonical_ad_id, chromaprint_vector (blob), duration; `chunks` gains `known_ad_id` (nullable)
+  82: - `status` — rolling counters for digest/health
+  83: 
+  84: ## Implementation Phases
+  85: 
+  86: 1. **Scaffold + DB** — repo layout, SQLite schema/migrations, settings/stations config loading, structured logging.
+  87: 2. **Ingestor** — ffmpeg subprocess per station (reconnect flags), 90s chunks w/ 7s overlap, enqueue rows, gap logging, supervisor backoff.
+  88: 3. **Worker: ASR** — faster-whisper medium.en int8; bounded-queue consumer; drop-oldest policy.
+  89: 4. **Worker: extraction** — Ollama structured-output call with core-field schema; pydantic validation; retry-once on invalid JSON; phone-number normalization (spelled-out → digits).
+  90: 5. **Dedup + persistence** — rapidfuzz match vs canonical_ads within N-day window; create/attach detections; 3-min same-station airing window to avoid overlap double-count; cut ad clip via Whisper segment timestamps and archive it.
+  91: 6. **Alerter** — first-seen Telegram alert (formatted message + audio file), ops alerts (station down >15min, queue drops), daily digest.
+  92: 7. **Dockerization** — Compose with NVIDIA runtime for worker, official Ollama image w/ model pull, healthchecks, restart policies, volumes.
+  93: 8. **Fingerprint annotation** — chromaprint vector per chunk; offset-tolerant sliding-window match vs `fingerprints` of canonical ad clips; auto-fingerprint newly archived ad audio; skip LLM on `known_ad` chunks; airing counter fast-path.
+  94: 9. **Web dashboard** — FastAPI + Jinja2/HTMX service: detections feed with audio playback (serves from `ad_archive/`), canonical-ad table with airing frequency, station health page, gap timeline. Read-only, bound to LAN interface.
+  95: 10. **Prometheus + Grafana** — `prometheus-client` metrics in all services (queue depth, chunks processed, ASR/LLM latency histograms, detections, station uptime, drops); dcgm-exporter for GPU; Prometheus + Grafana containers with provisioned dashboards and basic alert rules (queue saturation, station down).
+  96: 11. **Tests + hardening** — unit tests for dedup/normalization/schema validation/fingerprint matching; fixture transcripts (real loan-ad copy) as an extraction eval set; end-to-end smoke test with a recorded stream sample.
+  97: 
+  98: ## Key Risks / Mitigations
+  99: 
+ 100: - **Whisper mangles phone numbers** — normalize spelled-out numbers; dedup doesn't rely on exact phone match.
+ 101: - **LLM false positives** (show segments about loans vs actual ads) — prompt includes ad-signal cues (call to action, phone/URL, "sponsored"); confidence field; threshold before alerting.
+ 102: - **Ads split across chunk boundaries** — 5–10s overlap + dedup absorbs duplicates from overlap.
+ 103: - **Stream URL rot** — gap logging + >15min down ops alert surfaces it fast; URLs are operator-maintained in `stations.yaml`.
+ 104: - **GPU contention** — single worker process serializes Whisper batches; Ollama keep_alive pins the LLM; both fit in 12GB.
+ 105: - **ASR throughput has zero headroom at 10 stations** — 10 stations × real-time + ~8% overlap exceeds the ~10x RT budget of medium.en. Mitigations, in order: batched inference (BatchedInferencePipeline), drop overlap to 5s, fall back to `small.en` above 8 stations. Validate measured RTF in Phase 3 before committing to station count.
+ 106: - **SQLite write contention** — WAL + busy_timeout + retry wrapper (see Architecture); if contention still bites, funnel all writes through the worker process.
+ 107: - **Fingerprint false matches** (similar jingles/spot variants) — conservative match threshold; transcription always runs, so a false `known_ad` tag only skips extraction for that airing, never loses audio/transcript.
+ 108: - **Dashboard exposure** — read-only, no auth, so bind to LAN/localhost only; Grafana gets its own login.
+ 109: 
+ 110: ## Dev Tooling Setup (from `final-install-list.md`)
+ 111: 
+ 112: Agent/dev tooling that accompanies this project — 14 skills kept + 2 repos installed now, 4 deferred.
+ 113: 
+ 114: ### Installed now
+ 115: 
+ 116: | Repo | Type | Install |
+ 117: |---|---|---|
+ 118: | `JuliusBrussee/caveman` | Skill pack (output token saver; replaces old caveman; adds `/caveman`, `/caveman-commit`, `/caveman-review`, `/caveman-stats`, `/caveman-compress`) | `irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 \| iex` |
+ 119: | `chopratejas/headroom` | MCP server (input token compressor) | `pip install "headroom-ai[mcp]"` + `headroom mcp install` |
+ 120: 
+ 121: ### Deferred installs
+ 122: 
+ 123: | Repo | When |
+ 124: |---|---|
+ 125: | `Egonex-AI/Understand-Anything` | After Phase 1 scaffold exists (needs code to graph) |
+ 126: | `oraios/serena` | When codebase grows (semantic code retrieval) |
+ 127: | `upstash/context7` | Anytime, for latest library docs |
+ 128: | `doobidoo/mcp-memory-service` | Maybe unnecessary if headroom's cross-agent memory suffices |
+ 129: 
+ 130: ### Skills kept (14, from `mattpocock/skills`)
+ 131: 
+ 132: - **engineering**: `diagnose`, `grill-with-docs`, `improve-codebase-architecture`, `prototype`, `review`, `setup-matt-pocock-skills`, `tdd`, `to-issues`, `to-prd`, `triage`, `zoom-out`
+ 133: - **productivity**: `grill-me`, `handoff`, `write-a-skill`
+ 134: - **misc**: `setup-pre-commit`
+ 135: 
+ 136: 14 skills removed (writing/personal/deprecated ones) from `.agents/skills/`, `.qoder/skills/`, and `skills-lock.json` — full list in `final-install-list.md`.
+ 137: 
+ 138: ## Out of Scope (deferred)
+ 139: 
+ 140: - PostgreSQL, multi-box scaling
+ 141: - Inbound Telegram bot commands
+ 142: - Dashboard write/ops controls (enable/disable stations, mute ads) — possible phase 2
+ 143: - Hard audio pre-filtering (skipping transcription) — fingerprinting is annotation-only by design
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+The worker trace matters here because WP-8’s safety claim is cross-file: the match code can look fine in isolation while the pipeline still drops transcripts. I’m reading the consumer path and its tests now to verify that behavior directly.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content worker'"\\consumer.py | ForEach-Object { '{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command '$i=1; Get-Content tests'"\\test_worker_consumer.py | ForEach-Object { '{0,4}: {1}' -f "'$i, $_; $i++ }' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1187ms:
+   1: """SQLite-backed chunk queue consumer with drop-oldest policy."""
+   2: 
+   3: from __future__ import annotations
+   4: 
+   5: import json
+   6: import logging
+   7: import sqlite3
+   8: import time
+   9: from dataclasses import dataclass
+  10: from pathlib import Path
+  11: from typing import Any, Protocol
+  12: 
+  13: from shared.db import get_connection, retry_on_busy, transaction
+  14: from shared.models import AdExtraction, ChunkStatus, PipelineSettings
+  15: from worker.dedup import DetectionPersister
+  16: from worker.extract import OllamaExtractor
+  17: from worker.fingerprint import FingerprintAnnotator, FingerprintMatch
+  18: from worker.transcribe import Transcriber, TranscriptionResult, WhisperBackend
+  19: 
+  20: logger = logging.getLogger("worker")
+  21: 
+  22: CLAIM_SQL = """
+  23: UPDATE chunks
+  24: SET status = 'processing'
+  25: WHERE id = (
+  26:     SELECT id FROM chunks
+  27:     WHERE status = 'pending'
+  28:     ORDER BY start_ts
+  29:     LIMIT 1
+  30: )
+  31: RETURNING id, station_id, path, start_ts, end_ts
+  32: """
+  33: 
+  34: 
+  35: @dataclass(frozen=True)
+  36: class ClaimedChunk:
+  37:     id: int
+  38:     station_id: int
+  39:     path: str
+  40:     start_ts: float
+  41:     end_ts: float
+  42: 
+  43:     @property
+  44:     def audio_duration_sec(self) -> float:
+  45:         return self.end_ts - self.start_ts
+  46: 
+  47: 
+  48: class ExtractionBackend(Protocol):
+  49:     def extract(self, transcript_text: str) -> AdExtraction: ...
+  50: 
+  51: 
+  52: class DetectionPersistenceBackend(Protocol):
+  53:     def record_extraction(
+  54:         self,
+  55:         chunk_id: int,
+  56:         extraction: AdExtraction,
+  57:         *,
+  58:         transcript_text: str,
+  59:         segments: list[Any],
+  60:     ) -> int | None: ...
+  61: 
+  62: 
+  63: class FingerprintAnnotationBackend(Protocol):
+  64:     def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None: ...
+  65: 
+  66: 
+  67: class ChunkConsumer:
+  68:     """Poll pending chunks, transcribe, persist transcripts, enforce backlog cap."""
+  69: 
+  70:     def __init__(
+  71:         self,
+  72:         db_path: str | Path,
+  73:         settings: PipelineSettings,
+  74:         transcriber: WhisperBackend,
+  75:         *,
+  76:         extractor: ExtractionBackend | None = None,
+  77:         detection_persister: DetectionPersistenceBackend | None = None,
+  78:         fingerprint_annotator: FingerprintAnnotationBackend | None = None,
+  79:         poll_interval_sec: float = 1.0,
+  80:     ) -> None:
+  81:         self.db_path = Path(db_path)
+  82:         self.settings = settings
+  83:         self.transcriber = transcriber
+  84:         self.extractor = extractor
+  85:         self.detection_persister = detection_persister
+  86:         self.fingerprint_annotator = fingerprint_annotator
+  87:         self.poll_interval_sec = poll_interval_sec
+  88: 
+  89:     def run(self, stop_event: Any | None = None) -> None:
+  90:         """Poll until stop_event is set."""
+  91:         while stop_event is None or not stop_event.is_set():
+  92:             processed = self.run_once()
+  93:             if not processed:
+  94:                 if stop_event is not None and stop_event.wait(self.poll_interval_sec):
+  95:                     break
+  96:                 elif stop_event is None:
+  97:                     time.sleep(self.poll_interval_sec)
+  98:             elif stop_event is not None and stop_event.is_set():
+  99:                 break
+ 100: 
+ 101:     @retry_on_busy()
+ 102:     def run_once(self) -> bool:
+ 103:         """Process one chunk if available. Returns True when work was done."""
+ 104:         conn = get_connection(self.db_path)
+ 105:         try:
+ 106:             with transaction(conn):
+ 107:                 self._enforce_drop_oldest(conn)
+ 108:                 chunk = self._claim_chunk(conn)
+ 109:                 if chunk is None:
+ 110:                     return False
+ 111: 
+ 112:             return self._process_claimed(chunk)
+ 113:         finally:
+ 114:             conn.close()
+ 115: 
+ 116:     def _enforce_drop_oldest(self, conn: sqlite3.Connection) -> None:
+ 117:         max_seconds = self.settings.queue_max_hours * 3600
+ 118:         rows = conn.execute(
+ 119:             """
+ 120:             SELECT id, station_id, start_ts, end_ts
+ 121:             FROM chunks
+ 122:             WHERE status = 'pending'
+ 123:             ORDER BY start_ts ASC
+ 124:             """
+ 125:         ).fetchall()
+ 126:         if not rows:
+ 127:             return
+ 128: 
+ 129:         total_duration = sum(row["end_ts"] - row["start_ts"] for row in rows)
+ 130:         if total_duration <= max_seconds:
+ 131:             return
+ 132: 
+ 133:         need_to_drop = total_duration - max_seconds
+ 134:         drop_rows: list[sqlite3.Row] = []
+ 135:         accumulated = 0.0
+ 136:         for row in rows:
+ 137:             drop_rows.append(row)
+ 138:             accumulated += row["end_ts"] - row["start_ts"]
+ 139:             if accumulated >= need_to_drop:
+ 140:                 break
+ 141: 
+ 142:         drop_ids = [row["id"] for row in drop_rows]
+ 143:         placeholders = ",".join("?" * len(drop_ids))
+ 144:         conn.execute(
+ 145:             f"""
+ 146:             UPDATE chunks
+ 147:             SET status = 'dropped', error = 'dropped_backlog'
+ 148:             WHERE id IN ({placeholders})
+ 149:             """,
+ 150:             drop_ids,
+ 151:         )
+ 152:         self._insert_backlog_gaps(conn, drop_rows)
+ 153:         logger.warning(
+ 154:             "dropped backlog overflow",
+ 155:             extra={
+ 156:                 "dropped_count": len(drop_ids),
+ 157:                 "overflow_seconds": need_to_drop,
+ 158:             },
+ 159:         )
+ 160: 
+ 161:     def _insert_backlog_gaps(
+ 162:         self,
+ 163:         conn: sqlite3.Connection,
+ 164:         dropped_rows: list[sqlite3.Row],
+ 165:     ) -> None:
+ 166:         by_station: dict[int, list[sqlite3.Row]] = {}
+ 167:         for row in dropped_rows:
+ 168:             by_station.setdefault(row["station_id"], []).append(row)
+ 169: 
+ 170:         now = time.time()
+ 171:         for station_id, station_rows in by_station.items():
+ 172:             station_rows.sort(key=lambda r: r["start_ts"])
+ 173:             for start_ts, end_ts in _merge_contiguous_ranges(station_rows):
+ 174:                 conn.execute(
+ 175:                     """
+ 176:                     INSERT INTO gaps (station_id, start_ts, end_ts, reason)
+ 177:                     VALUES (?, ?, ?, 'dropped_backlog')
+ 178:                     """,
+ 179:                     (station_id, start_ts, end_ts),
+ 180:                 )
+ 181: 
+ 182:     def _claim_chunk(self, conn: sqlite3.Connection) -> ClaimedChunk | None:
+ 183:         row = conn.execute(CLAIM_SQL).fetchone()
+ 184:         if row is None:
+ 185:             return None
+ 186:         return ClaimedChunk(
+ 187:             id=row["id"],
+ 188:             station_id=row["station_id"],
+ 189:             path=row["path"],
+ 190:             start_ts=row["start_ts"],
+ 191:             end_ts=row["end_ts"],
+ 192:         )
+ 193: 
+ 194:     def _process_claimed(self, chunk: ClaimedChunk) -> bool:
+ 195:         audio_path = Path(chunk.path)
+ 196:         if not audio_path.is_file():
+ 197:             self._mark_dropped(chunk.id, f"missing audio file: {chunk.path}")
+ 198:             return True
+ 199: 
+ 200:         known_ad_match: FingerprintMatch | None = None
+ 201:         if self.fingerprint_annotator is not None:
+ 202:             try:
+ 203:                 known_ad_match = self.fingerprint_annotator.annotate_chunk(chunk.id, audio_path)
+ 204:             except Exception:
+ 205:                 logger.exception(
+ 206:                     "fingerprint annotation failed; continuing with ASR/LLM path",
+ 207:                     extra={"chunk_id": chunk.id, "path": chunk.path},
+ 208:                 )
+ 209: 
+ 210:         try:
+ 211:             result = self.transcriber.transcribe(
+ 212:                 audio_path,
+ 213:                 audio_duration_sec=chunk.audio_duration_sec,
+ 214:             )
+ 215:         except Exception as exc:
+ 216:             logger.exception(
+ 217:                 "transcription failed",
+ 218:                 extra={"chunk_id": chunk.id, "path": chunk.path},
+ 219:             )
+ 220:             self._mark_dropped(chunk.id, str(exc))
+ 221:             return True
+ 222: 
+ 223:         self._persist_success(chunk, result)
+ 224:         if (
+ 225:             known_ad_match is None
+ 226:             and self.extractor is not None
+ 227:             and self.detection_persister is not None
+ 228:         ):
+ 229:             try:
+ 230:                 extraction = self.extractor.extract(result.text)
+ 231:                 self.detection_persister.record_extraction(
+ 232:                     chunk.id,
+ 233:                     extraction,
+ 234:                     transcript_text=result.text,
+ 235:                     segments=result.segments,
+ 236:                 )
+ 237:             except Exception as exc:
+ 238:                 logger.exception(
+ 239:                     "extraction/dedup failed",
+ 240:                     extra={"chunk_id": chunk.id, "path": chunk.path},
+ 241:                 )
+ 242:                 self._mark_dropped(chunk.id, f"extraction/dedup failed: {exc}")
+ 243:         return True
+ 244: 
+ 245:     @retry_on_busy()
+ 246:     def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> None:
+ 247:         conn = get_connection(self.db_path)
+ 248:         try:
+ 249:             with transaction(conn):
+ 250:                 segments_json = json.dumps(
+ 251:                     [
+ 252:                         {"start": s.start, "end": s.end, "text": s.text}
+ 253:                         for s in result.segments
+ 254:                     ]
+ 255:                 )
+ 256:                 conn.execute(
+ 257:                     """
+ 258:                     INSERT INTO transcripts (chunk_id, text, asr_duration_ms, segments_json)
+ 259:                     VALUES (?, ?, ?, ?)
+ 260:                     """,
+ 261:                     (
+ 262:                         chunk.id,
+ 263:                         result.text,
+ 264:                         int(result.wall_time_sec * 1000),
+ 265:                         segments_json,
+ 266:                     ),
+ 267:                 )
+ 268:                 conn.execute(
+ 269:                     "UPDATE chunks SET status = 'done', error = NULL WHERE id = ?",
+ 270:                     (chunk.id,),
+ 271:                 )
+ 272:                 self._update_rtf_avg(conn, result.rtf)
+ 273:         finally:
+ 274:             conn.close()
+ 275: 
+ 276:         logger.info(
+ 277:             "chunk transcribed",
+ 278:             extra={
+ 279:                 "chunk_id": chunk.id,
+ 280:                 "rtf": result.rtf,
+ 281:                 "asr_wall_time_sec": result.wall_time_sec,
+ 282:                 "chunk_audio_duration_sec": result.audio_duration_sec,
+ 283:             },
+ 284:         )
+ 285: 
+ 286:     @retry_on_busy()
+ 287:     def _mark_dropped(self, chunk_id: int, error: str) -> None:
+ 288:         conn = get_connection(self.db_path)
+ 289:         try:
+ 290:             with transaction(conn):
+ 291:                 conn.execute(
+ 292:                     """
+ 293:                     UPDATE chunks
+ 294:                     SET status = 'dropped', error = ?
+ 295:                     WHERE id = ?
+ 296:                     """,
+ 297:                     (error, chunk_id),
+ 298:                 )
+ 299:         finally:
+ 300:             conn.close()
+ 301:         logger.warning(
+ 302:             "chunk dropped",
+ 303:             extra={"chunk_id": chunk_id, "error": error},
+ 304:         )
+ 305: 
+ 306:     def _update_rtf_avg(self, conn: sqlite3.Connection, rtf: float) -> None:
+ 307:         now = time.time()
+ 308:         count_row = conn.execute(
+ 309:             "SELECT value FROM status WHERE key = 'asr_rtf_count'"
+ 310:         ).fetchone()
+ 311:         avg_row = conn.execute(
+ 312:             "SELECT value FROM status WHERE key = 'asr_rtf_avg'"
+ 313:         ).fetchone()
+ 314: 
+ 315:         count = int(count_row["value"]) if count_row else 0
+ 316:         if avg_row:
+ 317:             old_avg = float(avg_row["value"])
+ 318:             new_avg = (old_avg * count + rtf) / (count + 1)
+ 319:         else:
+ 320:             new_avg = rtf
+ 321:         new_count = count + 1
+ 322: 
+ 323:         conn.execute(
+ 324:             """
+ 325:             INSERT INTO status (key, value, updated_at) VALUES ('asr_rtf_avg', ?, ?)
+ 326:             ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+ 327:             """,
+ 328:             (str(new_avg), now),
+ 329:         )
+ 330:         conn.execute(
+ 331:             """
+ 332:             INSERT INTO status (key, value, updated_at) VALUES ('asr_rtf_count', ?, ?)
+ 333:             ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at
+ 334:             """,
+ 335:             (str(new_count), now),
+ 336:         )
+ 337: 
+ 338: 
+ 339: def _merge_contiguous_ranges(
+ 340:     rows: list[sqlite3.Row],
+ 341: ) -> list[tuple[float, float]]:
+ 342:     """Merge dropped chunks into station-local contiguous time ranges."""
+ 343:     ranges: list[tuple[float, float]] = []
+ 344:     current_start: float | None = None
+ 345:     current_end: float | None = None
+ 346: 
+ 347:     for row in rows:
+ 348:         start_ts = row["start_ts"]
+ 349:         end_ts = row["end_ts"]
+ 350:         if current_start is None:
+ 351:             current_start = start_ts
+ 352:             current_end = end_ts
+ 353:         elif start_ts <= current_end + 1.0:
+ 354:             current_end = max(current_end, end_ts)
+ 355:         else:
+ 356:             ranges.append((current_start, current_end))
+ 357:             current_start = start_ts
+ 358:             current_end = end_ts
+ 359: 
+ 360:     if current_start is not None and current_end is not None:
+ 361:         ranges.append((current_start, current_end))
+ 362:     return ranges
+ 363: 
+ 364: 
+ 365: def create_consumer(
+ 366:     db_path: str | Path,
+ 367:     settings: PipelineSettings,
+ 368:     *,
+ 369:     transcriber: WhisperBackend | None = None,
+ 370:     extractor: ExtractionBackend | None = None,
+ 371:     detection_persister: DetectionPersistenceBackend | None = None,
+ 372:     fingerprint_annotator: FingerprintAnnotationBackend | None = None,
+ 373:     poll_interval_sec: float = 1.0,
+ 374: ) -> ChunkConsumer:
+ 375:     """Factory for production consumer with default ASR, extraction, dedup, and fingerprint backends."""
+ 376:     backend = transcriber or Transcriber(settings)
+ 377:     extraction_backend = extractor or OllamaExtractor()
+ 378:     persister = detection_persister or DetectionPersister(db_path, settings)
+ 379:     annotator = fingerprint_annotator or FingerprintAnnotator(db_path, settings)
+ 380:     return ChunkConsumer(
+ 381:         db_path,
+ 382:         settings,
+ 383:         backend,
+ 384:         extractor=extraction_backend,
+ 385:         detection_persister=persister,
+ 386:         fingerprint_annotator=annotator,
+ 387:         poll_interval_sec=poll_interval_sec,
+ 388:     )
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1272ms:
+   1: """Tests for ASR worker consumer — no GPU; WhisperModel mocked."""
+   2: 
+   3: from __future__ import annotations
+   4: 
+   5: import json
+   6: import sqlite3
+   7: import threading
+   8: from pathlib import Path
+   9: 
+  10: import pytest
+  11: 
+  12: from shared.db import get_connection, migrate, transaction
+  13: from shared.models import AdExtraction, ChunkStatus, PipelineSettings
+  14: from worker.consumer import ChunkConsumer
+  15: from worker.fingerprint import FingerprintMatch
+  16: from worker.transcribe import TranscriptSegment, TranscriptionResult
+  17: 
+  18: 
+  19: class FakeTranscriber:
+  20:     """Injected backend for tests."""
+  21: 
+  22:     def __init__(
+  23:         self,
+  24:         *,
+  25:         text: str = "hello world",
+  26:         wall_time_sec: float = 9.0,
+  27:         fail_on: set[Path] | None = None,
+  28:         fail_with: Exception | None = None,
+  29:     ) -> None:
+  30:         self.text = text
+  31:         self.wall_time_sec = wall_time_sec
+  32:         self.fail_on = fail_on or set()
+  33:         self.fail_with = fail_with or RuntimeError("transcription failed")
+  34:         self.calls: list[Path] = []
+  35: 
+  36:     def transcribe(
+  37:         self,
+  38:         audio_path: Path,
+  39:         *,
+  40:         audio_duration_sec: float | None = None,
+  41:     ) -> TranscriptionResult:
+  42:         self.calls.append(audio_path)
+  43:         if audio_path in self.fail_on:
+  44:             raise self.fail_with
+  45:         duration = audio_duration_sec or 90.0
+  46:         return TranscriptionResult(
+  47:             text=self.text,
+  48:             segments=[
+  49:                 TranscriptSegment(0.0, 1.0, "hello"),
+  50:                 TranscriptSegment(1.0, 2.0, "world"),
+  51:             ],
+  52:             audio_duration_sec=duration,
+  53:             wall_time_sec=self.wall_time_sec,
+  54:         )
+  55: 
+  56: 
+  57: class FakeExtractor:
+  58:     def __init__(
+  59:         self,
+  60:         extraction: AdExtraction | None = None,
+  61:         *,
+  62:         fail_with: Exception | None = None,
+  63:     ) -> None:
+  64:         self.extraction = extraction
+  65:         self.fail_with = fail_with
+  66:         self.calls: list[str] = []
+  67: 
+  68:     def extract(self, transcript_text: str) -> AdExtraction:
+  69:         self.calls.append(transcript_text)
+  70:         if self.fail_with is not None:
+  71:             raise self.fail_with
+  72:         assert self.extraction is not None
+  73:         return self.extraction
+  74: 
+  75: 
+  76: class FakeDetectionPersister:
+  77:     def __init__(self) -> None:
+  78:         self.calls: list[dict[str, object]] = []
+  79: 
+  80:     def record_extraction(
+  81:         self,
+  82:         chunk_id: int,
+  83:         extraction: AdExtraction,
+  84:         *,
+  85:         transcript_text: str,
+  86:         segments: list[TranscriptSegment],
+  87:     ) -> int | None:
+  88:         self.calls.append(
+  89:             {
+  90:                 "chunk_id": chunk_id,
+  91:                 "extraction": extraction,
+  92:                 "transcript_text": transcript_text,
+  93:                 "segments": segments,
+  94:             }
+  95:         )
+  96:         return 123
+  97: 
+  98: 
+  99: class FakeFingerprintAnnotator:
+ 100:     def __init__(self, match: FingerprintMatch | None) -> None:
+ 101:         self.match = match
+ 102:         self.calls: list[tuple[int, Path]] = []
+ 103: 
+ 104:     def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
+ 105:         self.calls.append((chunk_id, audio_path))
+ 106:         return self.match
+ 107: 
+ 108: 
+ 109: def _seed_station(conn: sqlite3.Connection, name: str = "test-fm") -> int:
+ 110:     conn.execute(
+ 111:         "INSERT INTO stations (name, url, enabled) VALUES (?, ?, 1)",
+ 112:         (name, "https://example.com/stream"),
+ 113:     )
+ 114:     return conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+ 115: 
+ 116: 
+ 117: def _insert_chunk(
+ 118:     conn: sqlite3.Connection,
+ 119:     *,
+ 120:     station_id: int,
+ 121:     path: str,
+ 122:     start_ts: float,
+ 123:     end_ts: float,
+ 124:     status: str = "pending",
+ 125: ) -> int:
+ 126:     conn.execute(
+ 127:         """
+ 128:         INSERT INTO chunks (station_id, path, start_ts, end_ts, status)
+ 129:         VALUES (?, ?, ?, ?, ?)
+ 130:         """,
+ 131:         (station_id, path, start_ts, end_ts, status),
+ 132:     )
+ 133:     return conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+ 134: 
+ 135: 
+ 136: @pytest.fixture
+ 137: def worker_db(tmp_path: Path) -> Path:
+ 138:     db_path = tmp_path / "worker.db"
+ 139:     migrate(db_path)
+ 140:     return db_path
+ 141: 
+ 142: 
+ 143: @pytest.fixture
+ 144: def settings() -> PipelineSettings:
+ 145:     return PipelineSettings(queue_max_hours=2, chunk_len=90)
+ 146: 
+ 147: 
+ 148: def test_consumer_claim_transcript_and_done(
+ 149:     worker_db: Path,
+ 150:     settings: PipelineSettings,
+ 151:     tmp_path: Path,
+ 152: ) -> None:
+ 153:     audio = tmp_path / "chunk.wav"
+ 154:     audio.write_bytes(b"fake wav")
+ 155: 
+ 156:     conn = get_connection(worker_db)
+ 157:     try:
+ 158:         with transaction(conn):
+ 159:             station_id = _seed_station(conn)
+ 160:             _insert_chunk(
+ 161:                 conn,
+ 162:                 station_id=station_id,
+ 163:                 path=str(audio),
+ 164:                 start_ts=1000.0,
+ 165:                 end_ts=1090.0,
+ 166:             )
+ 167:     finally:
+ 168:         conn.close()
+ 169: 
+ 170:     transcriber = FakeTranscriber(wall_time_sec=9.0)
+ 171:     consumer = ChunkConsumer(worker_db, settings, transcriber)
+ 172: 
+ 173:     assert consumer.run_once() is True
+ 174: 
+ 175:     conn = get_connection(worker_db)
+ 176:     try:
+ 177:         chunk = conn.execute("SELECT status, error FROM chunks").fetchone()
+ 178:         assert chunk["status"] == ChunkStatus.DONE.value
+ 179:         assert chunk["error"] is None
+ 180: 
+ 181:         transcript = conn.execute(
+ 182:             "SELECT text, asr_duration_ms, segments_json FROM transcripts"
+ 183:         ).fetchone()
+ 184:         assert transcript["text"] == "hello world"
+ 185:         assert transcript["asr_duration_ms"] == 9000
+ 186:         segments = json.loads(transcript["segments_json"])
+ 187:         assert len(segments) == 2
+ 188:         assert segments[0]["start"] == 0.0
+ 189: 
+ 190:         rtf_avg = conn.execute(
+ 191:             "SELECT value FROM status WHERE key = 'asr_rtf_avg'"
+ 192:         ).fetchone()
+ 193:         assert rtf_avg is not None
+ 194:         assert abs(float(rtf_avg["value"]) - 0.1) < 0.001
+ 195:     finally:
+ 196:         conn.close()
+ 197: 
+ 198: 
+ 199: def test_consumer_runs_extraction_and_dedup_after_transcription(
+ 200:     worker_db: Path,
+ 201:     settings: PipelineSettings,
+ 202:     tmp_path: Path,
+ 203: ) -> None:
+ 204:     audio = tmp_path / "chunk.wav"
+ 205:     audio.write_bytes(b"fake wav")
+ 206: 
+ 207:     conn = get_connection(worker_db)
+ 208:     try:
+ 209:         with transaction(conn):
+ 210:             station_id = _seed_station(conn)
+ 211:             chunk_id = _insert_chunk(
+ 212:                 conn,
+ 213:                 station_id=station_id,
+ 214:                 path=str(audio),
+ 215:                 start_ts=1000.0,
+ 216:                 end_ts=1090.0,
+ 217:             )
+ 218:     finally:
+ 219:         conn.close()
+ 220: 
+ 221:     extraction = AdExtraction(is_ad=True, company_name="Rapid Capital", confidence=0.9)
+ 222:     extractor = FakeExtractor(extraction)
+ 223:     persister = FakeDetectionPersister()
+ 224:     transcriber = FakeTranscriber(text="Rapid Capital funding ad", wall_time_sec=3.0)
+ 225:     consumer = ChunkConsumer(
+ 226:         worker_db,
+ 227:         settings,
+ 228:         transcriber,
+ 229:         extractor=extractor,
+ 230:         detection_persister=persister,
+ 231:     )
+ 232: 
+ 233:     assert consumer.run_once() is True
+ 234: 
+ 235:     assert extractor.calls == ["Rapid Capital funding ad"]
+ 236:     assert len(persister.calls) == 1
+ 237:     assert persister.calls[0]["chunk_id"] == chunk_id
+ 238:     assert persister.calls[0]["extraction"] == extraction
+ 239:     assert persister.calls[0]["transcript_text"] == "Rapid Capital funding ad"
+ 240:     assert len(persister.calls[0]["segments"]) == 2
+ 241: 
+ 242: 
+ 243: def test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad(
+ 244:     worker_db: Path,
+ 245:     settings: PipelineSettings,
+ 246:     tmp_path: Path,
+ 247: ) -> None:
+ 248:     audio = tmp_path / "known.wav"
+ 249:     audio.write_bytes(b"fake wav")
+ 250: 
+ 251:     conn = get_connection(worker_db)
+ 252:     try:
+ 253:         with transaction(conn):
+ 254:             station_id = _seed_station(conn)
+ 255:             chunk_id = _insert_chunk(
+ 256:                 conn,
+ 257:                 station_id=station_id,
+ 258:                 path=str(audio),
+ 259:                 start_ts=1000.0,
+ 260:                 end_ts=1090.0,
+ 261:             )
+ 262:     finally:
+ 263:         conn.close()
+ 264: 
+ 265:     extractor = FakeExtractor(AdExtraction(is_ad=True, company_name="Should Not Run", confidence=0.9))
+ 266:     persister = FakeDetectionPersister()
+ 267:     fingerprint = FakeFingerprintAnnotator(FingerprintMatch(candidate_id=7, vector=[1, 2, 3], duration=30.0, score=1.0))
+ 268:     transcriber = FakeTranscriber(text="known produced spot", wall_time_sec=3.0)
+ 269:     consumer = ChunkConsumer(
+ 270:         worker_db,
+ 271:         settings,
+ 272:         transcriber,
+ 273:         extractor=extractor,
+ 274:         detection_persister=persister,
+ 275:         fingerprint_annotator=fingerprint,
+ 276:     )
+ 277: 
+ 278:     assert consumer.run_once() is True
+ 279: 
+ 280:     assert fingerprint.calls == [(chunk_id, audio)]
+ 281:     assert len(transcriber.calls) == 1
+ 282:     assert extractor.calls == []
+ 283:     assert persister.calls == []
+ 284:     conn = get_connection(worker_db)
+ 285:     try:
+ 286:         chunk = conn.execute(
+ 287:             "SELECT status, error FROM chunks WHERE id = ?", (chunk_id,)
+ 288:         ).fetchone()
+ 289:         assert chunk["status"] == ChunkStatus.DONE.value
+ 290:         assert chunk["error"] is None
+ 291:         transcript = conn.execute(
+ 292:             "SELECT text FROM transcripts WHERE chunk_id = ?", (chunk_id,)
+ 293:         ).fetchone()
+ 294:         assert transcript["text"] == "known produced spot"
+ 295:     finally:
+ 296:         conn.close()
+ 297: 
+ 298: 
+ 299: def test_drop_oldest_overflow_writes_gaps(
+ 300:     worker_db: Path,
+ 301:     settings: PipelineSettings,
+ 302:     tmp_path: Path,
+ 303: ) -> None:
+ 304:     conn = get_connection(worker_db)
+ 305:     try:
+ 306:         with transaction(conn):
+ 307:             station_id = _seed_station(conn)
+ 308:             # 3 hours of pending at 90s each = 120 chunks; keep newest 2h (80 chunks)
+ 309:             for i in range(120):
+ 310:                 audio = tmp_path / f"chunk_{i}.wav"
+ 311:                 audio.write_bytes(b"x")
+ 312:                 _insert_chunk(
+ 313:                     conn,
+ 314:                     station_id=station_id,
+ 315:                     path=str(audio),
+ 316:                     start_ts=float(i * 90),
+ 317:                     end_ts=float(i * 90 + 90),
+ 318:                 )
+ 319:     finally:
+ 320:         conn.close()
+ 321: 
+ 322:     transcriber = FakeTranscriber()
+ 323:     consumer = ChunkConsumer(worker_db, settings, transcriber, poll_interval_sec=0.01)
+ 324: 
+ 325:     # run_once triggers drop-oldest then claims newest survivor
+ 326:     assert consumer.run_once() is True
+ 327: 
+ 328:     conn = get_connection(worker_db)
+ 329:     try:
+ 330:         dropped = conn.execute(
+ 331:             "SELECT COUNT(*) AS n FROM chunks WHERE status = 'dropped'"
+ 332:         ).fetchone()["n"]
+ 333:         pending = conn.execute(
+ 334:             "SELECT COUNT(*) AS n FROM chunks WHERE status = 'pending'"
+ 335:         ).fetchone()["n"]
+ 336:         done_or_processing = conn.execute(
+ 337:             """
+ 338:             SELECT COUNT(*) AS n FROM chunks
+ 339:             WHERE status IN ('done', 'processing')
+ 340:             """
+ 341:         ).fetchone()["n"]
+ 342: 
+ 343:         assert dropped == 40
+ 344:         assert pending == 79
+ 345:         assert done_or_processing == 1
+ 346: 
+ 347:         gaps = conn.execute(
+ 348:             "SELECT reason, start_ts, end_ts FROM gaps WHERE reason = 'dropped_backlog'"
+ 349:         ).fetchall()
+ 350:         assert len(gaps) == 1
+ 351:         assert gaps[0]["start_ts"] == 0.0
+ 352:         assert gaps[0]["end_ts"] == 3600.0
+ 353:     finally:
+ 354:         conn.close()
+ 355: 
+ 356: 
+ 357: def test_atomic_claim_two_threads_never_duplicate(
+ 358:     worker_db: Path,
+ 359:     settings: PipelineSettings,
+ 360:     tmp_path: Path,
+ 361: ) -> None:
+ 362:     conn = get_connection(worker_db)
+ 363:     try:
+ 364:         with transaction(conn):
+ 365:             station_id = _seed_station(conn)
+ 366:             for i in range(4):
+ 367:                 audio = tmp_path / f"chunk_{i}.wav"
+ 368:                 audio.write_bytes(b"x")
+ 369:                 _insert_chunk(
+ 370:                     conn,
+ 371:                     station_id=station_id,
+ 372:                     path=str(audio),
+ 373:                     start_ts=float(i * 100),
+ 374:                     end_ts=float(i * 100 + 90),
+ 375:                 )
+ 376:     finally:
+ 377:         conn.close()
+ 378: 
+ 379:     transcriber = FakeTranscriber(wall_time_sec=1.0)
+ 380:     consumer = ChunkConsumer(worker_db, settings, transcriber)
+ 381: 
+ 382:     errors: list[Exception] = []
+ 383: 
+ 384:     def worker() -> None:
+ 385:         try:
+ 386:             for _ in range(4):
+ 387:                 consumer.run_once()
+ 388:         except Exception as exc:
+ 389:             errors.append(exc)
+ 390: 
+ 391:     threads = [threading.Thread(target=worker) for _ in range(2)]
+ 392:     for t in threads:
+ 393:         t.start()
+ 394:     for t in threads:
+ 395:         t.join(timeout=30)
+ 396: 
+ 397:     assert not errors
+ 398: 
+ 399:     conn = get_connection(worker_db)
+ 400:     try:
+ 401:         done_count = conn.execute(
+ 402:             "SELECT COUNT(*) AS n FROM chunks WHERE status = 'done'"
+ 403:         ).fetchone()["n"]
+ 404:         transcript_count = conn.execute(
+ 405:             "SELECT COUNT(*) AS n FROM transcripts"
+ 406:         ).fetchone()["n"]
+ 407:         assert done_count == 4
+ 408:         assert transcript_count == 4
+ 409:     finally:
+ 410:         conn.close()
+ 411: 
+ 412: 
+ 413: def test_missing_audio_file_dropped_loop_continues(
+ 414:     worker_db: Path,
+ 415:     settings: PipelineSettings,
+ 416:     tmp_path: Path,
+ 417: ) -> None:
+ 418:     missing = tmp_path / "gone.wav"
+ 419:     present = tmp_path / "here.wav"
+ 420:     present.write_bytes(b"x")
+ 421: 
+ 422:     conn = get_connection(worker_db)
+ 423:     try:
+ 424:         with transaction(conn):
+ 425:             station_id = _seed_station(conn)
+ 426:             _insert_chunk(
+ 427:                 conn,
+ 428:                 station_id=station_id,
+ 429:                 path=str(missing),
+ 430:                 start_ts=0.0,
+ 431:                 end_ts=90.0,
+ 432:             )
+ 433:             _insert_chunk(
+ 434:                 conn,
+ 435:                 station_id=station_id,
+ 436:                 path=str(present),
+ 437:                 start_ts=100.0,
+ 438:                 end_ts=190.0,
+ 439:             )
+ 440:     finally:
+ 441:         conn.close()
+ 442: 
+ 443:     transcriber = FakeTranscriber()
+ 444:     consumer = ChunkConsumer(worker_db, settings, transcriber)
+ 445: 
+ 446:     assert consumer.run_once() is True
+ 447:     assert consumer.run_once() is True
+ 448: 
+ 449:     conn = get_connection(worker_db)
+ 450:     try:
+ 451:         rows = conn.execute(
+ 452:             "SELECT path, status, error FROM chunks ORDER BY start_ts"
+ 453:         ).fetchall()
+ 454:         assert rows[0]["status"] == "dropped"
+ 455:         assert "missing audio file" in rows[0]["error"]
+ 456:         assert rows[1]["status"] == "done"
+ 457:         assert len(transcriber.calls) == 1
+ 458:     finally:
+ 459:         conn.close()
+ 460: 
+ 461: 
+ 462: def test_transcription_failure_dropped_loop_continues(
+ 463:     worker_db: Path,
+ 464:     settings: PipelineSettings,
+ 465:     tmp_path: Path,
+ 466: ) -> None:
+ 467:     bad = tmp_path / "bad.wav"
+ 468:     good = tmp_path / "good.wav"
+ 469:     bad.write_bytes(b"x")
+ 470:     good.write_bytes(b"y")
+ 471: 
+ 472:     conn = get_connection(worker_db)
+ 473:     try:
+ 474:         with transaction(conn):
+ 475:             station_id = _seed_station(conn)
+ 476:             _insert_chunk(
+ 477:                 conn,
+ 478:                 station_id=station_id,
+ 479:                 path=str(bad),
+ 480:                 start_ts=0.0,
+ 481:                 end_ts=90.0,
+ 482:             )
+ 483:             _insert_chunk(
+ 484:                 conn,
+ 485:                 station_id=station_id,
+ 486:                 path=str(good),
+ 487:                 start_ts=100.0,
+ 488:                 end_ts=190.0,
+ 489:             )
+ 490:     finally:
+ 491:         conn.close()
+ 492: 
+ 493:     transcriber = FakeTranscriber(fail_on={bad})
+ 494:     consumer = ChunkConsumer(worker_db, settings, transcriber)
+ 495: 
+ 496:     assert consumer.run_once() is True
+ 497:     assert consumer.run_once() is True
+ 498: 
+ 499:     conn = get_connection(worker_db)
+ 500:     try:
+ 501:         bad_row = conn.execute(
+ 502:             "SELECT status, error FROM chunks WHERE path = ?", (str(bad),)
+ 503:         ).fetchone()
+ 504:         good_row = conn.execute(
+ 505:             "SELECT status FROM chunks WHERE path = ?", (str(good),)
+ 506:         ).fetchone()
+ 507:         assert bad_row["status"] == "dropped"
+ 508:         assert bad_row["error"] == "transcription failed"
+ 509:         assert good_row["status"] == "done"
+ 510:     finally:
+ 511:         conn.close()
+ 512: 
+ 513: 
+ 514: def test_run_once_returns_false_when_queue_empty(
+ 515:     worker_db: Path,
+ 516:     settings: PipelineSettings,
+ 517: ) -> None:
+ 518:     transcriber = FakeTranscriber()
+ 519:     consumer = ChunkConsumer(worker_db, settings, transcriber)
+ 520:     assert consumer.run_once() is False
+ 521: 
+ 522: 
+ 523: def test_extraction_failure_marks_chunk_dropped_but_keeps_transcript(
+ 524:     worker_db: Path,
+ 525:     settings: PipelineSettings,
+ 526:     tmp_path: Path,
+ 527: ) -> None:
+ 528:     """ASR succeeds; extraction/dedup failure → dropped + error; transcript retained."""
+ 529:     audio = tmp_path / "chunk.wav"
+ 530:     audio.write_bytes(b"fake wav")
+ 531: 
+ 532:     conn = get_connection(worker_db)
+ 533:     try:
+ 534:         with transaction(conn):
+ 535:             station_id = _seed_station(conn)
+ 536:             chunk_id = _insert_chunk(
+ 537:                 conn,
+ 538:                 station_id=station_id,
+ 539:                 path=str(audio),
+ 540:                 start_ts=1000.0,
+ 541:                 end_ts=1090.0,
+ 542:             )
+ 543:     finally:
+ 544:         conn.close()
+ 545: 
+ 546:     extractor = FakeExtractor(fail_with=RuntimeError("ollama unavailable"))
+ 547:     persister = FakeDetectionPersister()
+ 548:     transcriber = FakeTranscriber(text="some transcript", wall_time_sec=3.0)
+ 549:     consumer = ChunkConsumer(
+ 550:         worker_db,
+ 551:         settings,
+ 552:         transcriber,
+ 553:         extractor=extractor,
+ 554:         detection_persister=persister,
+ 555:     )
+ 556: 
+ 557:     assert consumer.run_once() is True
+ 558: 
+ 559:     assert extractor.calls == ["some transcript"]
+ 560:     assert persister.calls == []
+ 561:     conn = get_connection(worker_db)
+ 562:     try:
+ 563:         chunk = conn.execute(
+ 564:             "SELECT status, error FROM chunks WHERE id = ?", (chunk_id,)
+ 565:         ).fetchone()
+ 566:         assert chunk["status"] == ChunkStatus.DROPPED.value
+ 567:         assert "extraction/dedup failed" in chunk["error"]
+ 568:         assert "ollama unavailable" in chunk["error"]
+ 569:         transcript = conn.execute(
+ 570:             "SELECT text FROM transcripts WHERE chunk_id = ?", (chunk_id,)
+ 571:         ).fetchone()
+ 572:         assert transcript["text"] == "some transcript"
+ 573:     finally:
+ 574:         conn.close()
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+I’ve confirmed the safety path in `worker/consumer.py`; now I’m running the requested verifications exactly as asked so the review can cite real outcomes, not just static inspection.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command ".\\.venv\\Scripts\\pytest tests\\test_fingerprint.py -v" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'pytest -q' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1626ms:
+============================= test session starts =============================
+platform win32 -- Python 3.11.15, pytest-9.0.3, pluggy-1.6.0 -- H:\DEV\projects\radio-ad-sensing-pipeline\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: H:\DEV\projects\radio-ad-sensing-pipeline
+configfile: pyproject.toml
+plugins: anyio-4.13.0
+collecting ... collected 5 items
+
+tests/test_fingerprint.py::test_encode_decode_fingerprint_vector_roundtrip_signed_ints PASSED [ 20%]
+tests/test_fingerprint.py::test_best_sliding_match_finds_known_ad_at_offset PASSED [ 40%]
+tests/test_fingerprint.py::test_best_sliding_match_rejects_low_similarity PASSED [ 60%]
+tests/test_fingerprint.py::test_annotator_marks_known_ad_and_records_fast_path_detection PASSED [ 80%]
+tests/test_fingerprint.py::test_known_ad_inside_same_station_window_does_not_increment_airing_count PASSED [100%]
+
+============================== 5 passed in 0.17s ==============================
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+ succeeded in 4538ms:
+.....................................................................    [100%]
+69 passed in 2.67s
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+codex
+The core tests are green, but WP-8 also carries a runtime-risk requirement, so I’m doing one more read-only probe: a synthetic benchmark of `best_sliding_match` at realistic 90s-vs-30s vector sizes to see whether the current Python loop is comfortably within budget or only looks fine in unit tests.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "@'
+import random, time
+from worker.fingerprint import best_sliding_match, FingerprintMatch
+
+random.seed(0)
+chunk_len = 360
+clip_len = 120
+chunk = [random.getrandbits(32) for _ in range(chunk_len)]
+base = [random.getrandbits(32) for _ in range(clip_len)]
+for n in [1, 10, 100]:
+    candidates = [FingerprintMatch(candidate_id=i, vector=base if i == n - 1 else [random.getrandbits(32) for _ in range(clip_len)], duration=30.0) for i in range(n)]
+    start = time.perf_counter()
+    for _ in range(20):
+        best_sliding_match(chunk, candidates, threshold=0.0)
+    elapsed = time.perf_counter() - start
+    print(f'candidates={n} total={elapsed:.4f}s per_call={elapsed/20:.6f}s')
+'@ | .\\.venv\\Scripts\\python -" in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command "@'
+from worker.fingerprint import _window_similarity
+known = [0xAAAAAAAA] * 120
+near = known.copy()
+for i in range(10):
+    near[i] "'^= 0x00000001
+print('"'one_bit_errors_10_frames', _window_similarity(known, near))
+far = [0x55555555] * 120
+print('inverted', _window_similarity(known, far))
+'@ | .\\.venv\\Scripts\\python -" in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1575ms:
+one_bit_errors_10_frames 0.9973958333333334
+inverted 0.0
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+ succeeded in 8042ms:
+candidates=1 total=0.0618s per_call=0.003089s
+candidates=10 total=0.5611s per_call=0.028054s
+candidates=100 total=6.0003s per_call=0.300016s
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+codex
+I’ve reached a stable verdict: the core path works, but WP-8 misses a couple of acceptance-grade proofs around threshold behavior and realistic offset fixtures. I’m updating only the allowed WP-8 checklist line in the review plan, then I’ll give you the full findings.
+hook: PreToolUse
+hook: PreToolUse Completed
+apply patch
+patch: completed
+h:\DEV\projects\radio-ad-sensing-pipeline\plan\opus-review-plan-6165b3.md
+diff --git a/plan/opus-review-plan-6165b3.md b/plan/opus-review-plan-6165b3.md
+index 174876f049f5f57213f79d9241f3e506e8823eec..521b9e2f9a65ad19fa7b9c1ea3520caf0dcfcfe8
+--- a/plan/opus-review-plan-6165b3.md
++++ b/plan/opus-review-plan-6165b3.md
+@@ -78,7 +78,7 @@
+ - [ ] WP-6 — Standard ⏳ GPT mini หลัง WP-5 ship (alerter ยัง stub)
+ - [x] WP-7a — ✅ **ship** (Batch 2 Spot-check): F5/F6 verified, compose config OK
+ - [ ] WP-7b — Standard ⏳ GPT mini หลัง WP-6 entrypoint
+-- [ ] WP-8 — Deep (เข้มสุด) ⏳ หลัง WP-5 (fingerprint.py; ไม่มี wp8-report)
++- [x] WP-8 — ❌ **fix-then-ship** (Batch 3 Opus Deep review): offset/transcript path verified, but near-miss threshold coverage, real multi-offset fixture, and CPU-budget guard are still missing; 69/69 pytest pass
+ - [x] WP-9 — ✅ **ship** (Batch 2 Standard re-review): F8 + 13/13 dashboard pytest
+ - [x] WP-10a — ✅ **ship** (Batch 2 Spot-check + F1 uid:prometheus, F2 VRAMNearFull parens)
+ - [ ] WP-10b — Spot-check
+
+hook: PostToolUse
+hook: PostToolUse Completed
+diff --git a/plan/opus-review-plan-6165b3.md b/plan/opus-review-plan-6165b3.md
+index 174876f049f5f57213f79d9241f3e506e8823eec..521b9e2f9a65ad19fa7b9c1ea3520caf0dcfcfe8
+--- a/plan/opus-review-plan-6165b3.md
++++ b/plan/opus-review-plan-6165b3.md
+@@ -78,7 +78,7 @@
+ - [ ] WP-6 — Standard ⏳ GPT mini หลัง WP-5 ship (alerter ยัง stub)
+ - [x] WP-7a — ✅ **ship** (Batch 2 Spot-check): F5/F6 verified, compose config OK
+ - [ ] WP-7b — Standard ⏳ GPT mini หลัง WP-6 entrypoint
+-- [ ] WP-8 — Deep (เข้มสุด) ⏳ หลัง WP-5 (fingerprint.py; ไม่มี wp8-report)
++- [x] WP-8 — ❌ **fix-then-ship** (Batch 3 Opus Deep review): offset/transcript path verified, but near-miss threshold coverage, real multi-offset fixture, and CPU-budget guard are still missing; 69/69 pytest pass
+ - [x] WP-9 — ✅ **ship** (Batch 2 Standard re-review): F8 + 13/13 dashboard pytest
+ - [x] WP-10a — ✅ **ship** (Batch 2 Spot-check + F1 uid:prometheus, F2 VRAMNearFull parens)
+ - [ ] WP-10b — Spot-check
+
+codex
+**Findings**
+
+1. Medium: near-miss threshold behavior is not acceptance-tested, so the conservative-match claim is still unproven. The only rejection test uses a maximally dissimilar vector, not a realistic near-threshold false positive case, even though WP-8 explicitly calls for “true-match and near-miss” coverage. Evidence: [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:113), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32), [PLAN.md](h:/DEV/projects/radio-ad-sensing-pipeline/PLAN.md:107).
+
+2. Medium: offset-tolerant matching is only proven with a toy 4-frame synthetic vector, not with a realistic 90s-chunk vs 30s-clip fixture at multiple offsets as required by the WP-8 review plan. The implementation does slide correctly, but the acceptance proof is thinner than the spec asks for. Evidence: [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:66), [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:95), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32), [PLAN.md](h:/DEV/projects/radio-ad-sensing-pipeline/PLAN.md:42).
+
+3. Low: CPU budget is not guarded by tests or instrumentation. The matcher is a pure Python brute-force sliding window over every candidate and offset, so cost grows linearly with catalog size. On this host, a synthetic 360-frame chunk vs 120-frame clip benchmark measured about `0.003s` per call for 1 candidate, `0.028s` for 10, and `0.300s` for 100, which is probably acceptable now but is not enforced anywhere. Evidence: [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:75), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32).
+
+**Spec Checklist**
+
+- Pass: sliding-window offset logic exists and returns the best offset/score, matching the Phase 8 design. See [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:66).
+- Pass: false `known_ad` does not lose transcript in the worker path; ASR still runs and transcript persistence is tested. See [worker/consumer.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/consumer.py:200), [tests/test_worker_consumer.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_worker_consumer.py:243).
+- Pass: same-station 3-minute overlap de-double-counting is covered for the fingerprint fast path. See [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:184), [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:160).
+- Fail: no near-miss threshold regression test.
+- Fail: no realistic multi-offset fixture test.
+- Partial: CPU budget looks plausible in a synthetic probe, but there is no repo-level guardrail.
+
+**Test Gaps**
+
+- Add a borderline near-miss case around the chosen `0.88` threshold.
+- Add a realistic long-vector or fixture-audio test with the same ad embedded at several offsets.
+- Add either a perf test budget or lightweight timing instrumentation so runtime drift is visible as the fingerprint catalog grows.
+
+**Verdict**
+
+`fix-then-ship`
+
+1. Add near-miss threshold tests that would catch false positives from similar jingles/spot variants.
+2. Add a realistic offset fixture test for 90s chunk vs 30s clip at multiple offsets.
+3. Add a CPU-budget guard: perf assertion, benchmark fixture, or runtime metric/log for matcher latency.
+
+Verification ran as requested: `.venv\Scripts\pytest tests\test_fingerprint.py -v` passed `5/5`, and `pytest -q` passed `69/69`. I also updated the WP-8 checklist line in [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:81).
+diff --git a/plan/opus-review-plan-6165b3.md b/plan/opus-review-plan-6165b3.md
+index 174876f049f5f57213f79d9241f3e506e8823eec..521b9e2f9a65ad19fa7b9c1ea3520caf0dcfcfe8
+--- a/plan/opus-review-plan-6165b3.md
++++ b/plan/opus-review-plan-6165b3.md
+@@ -78,7 +78,7 @@
+ - [ ] WP-6 — Standard ⏳ GPT mini หลัง WP-5 ship (alerter ยัง stub)
+ - [x] WP-7a — ✅ **ship** (Batch 2 Spot-check): F5/F6 verified, compose config OK
+ - [ ] WP-7b — Standard ⏳ GPT mini หลัง WP-6 entrypoint
+-- [ ] WP-8 — Deep (เข้มสุด) ⏳ หลัง WP-5 (fingerprint.py; ไม่มี wp8-report)
++- [x] WP-8 — ❌ **fix-then-ship** (Batch 3 Opus Deep review): offset/transcript path verified, but near-miss threshold coverage, real multi-offset fixture, and CPU-budget guard are still missing; 69/69 pytest pass
+ - [x] WP-9 — ✅ **ship** (Batch 2 Standard re-review): F8 + 13/13 dashboard pytest
+ - [x] WP-10a — ✅ **ship** (Batch 2 Spot-check + F1 uid:prometheus, F2 VRAMNearFull parens)
+ - [ ] WP-10b — Spot-check
+
+hook: Stop
+hook: Stop Completed
+**Findings**
+tokens used
+
+63,017
+1. Medium: near-miss threshold behavior is not acceptance-tested, so the conservative-match claim is still unproven. The only rejection test uses a maximally dissimilar vector, not a realistic near-threshold false positive case, even though WP-8 explicitly calls for “true-match and near-miss” coverage. Evidence: [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:113), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32), [PLAN.md](h:/DEV/projects/radio-ad-sensing-pipeline/PLAN.md:107).
+
+2. Medium: offset-tolerant matching is only proven with a toy 4-frame synthetic vector, not with a realistic 90s-chunk vs 30s-clip fixture at multiple offsets as required by the WP-8 review plan. The implementation does slide correctly, but the acceptance proof is thinner than the spec asks for. Evidence: [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:66), [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:95), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32), [PLAN.md](h:/DEV/projects/radio-ad-sensing-pipeline/PLAN.md:42).
+
+3. Low: CPU budget is not guarded by tests or instrumentation. The matcher is a pure Python brute-force sliding window over every candidate and offset, so cost grows linearly with catalog size. On this host, a synthetic 360-frame chunk vs 120-frame clip benchmark measured about `0.003s` per call for 1 candidate, `0.028s` for 10, and `0.300s` for 100, which is probably acceptable now but is not enforced anywhere. Evidence: [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:75), [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:32).
+
+**Spec Checklist**
+
+- Pass: sliding-window offset logic exists and returns the best offset/score, matching the Phase 8 design. See [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:66).
+- Pass: false `known_ad` does not lose transcript in the worker path; ASR still runs and transcript persistence is tested. See [worker/consumer.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/consumer.py:200), [tests/test_worker_consumer.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_worker_consumer.py:243).
+- Pass: same-station 3-minute overlap de-double-counting is covered for the fingerprint fast path. See [worker/fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/worker/fingerprint.py:184), [tests/test_fingerprint.py](h:/DEV/projects/radio-ad-sensing-pipeline/tests/test_fingerprint.py:160).
+- Fail: no near-miss threshold regression test.
+- Fail: no realistic multi-offset fixture test.
+- Partial: CPU budget looks plausible in a synthetic probe, but there is no repo-level guardrail.
+
+**Test Gaps**
+
+- Add a borderline near-miss case around the chosen `0.88` threshold.
+- Add a realistic long-vector or fixture-audio test with the same ad embedded at several offsets.
+- Add either a perf test budget or lightweight timing instrumentation so runtime drift is visible as the fingerprint catalog grows.
+
+**Verdict**
+
+`fix-then-ship`
+
+1. Add near-miss threshold tests that would catch false positives from similar jingles/spot variants.
+2. Add a realistic offset fixture test for 90s chunk vs 30s clip at multiple offsets.
+3. Add a CPU-budget guard: perf assertion, benchmark fixture, or runtime metric/log for matcher latency.
+
+Verification ran as requested: `.venv\Scripts\pytest tests\test_fingerprint.py -v` passed `5/5`, and `pytest -q` passed `69/69`. I also updated the WP-8 checklist line in [plan/opus-review-plan-6165b3.md](h:/DEV/projects/radio-ad-sensing-pipeline/plan/opus-review-plan-6165b3.md:81).

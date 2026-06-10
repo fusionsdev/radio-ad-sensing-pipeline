@@ -1,0 +1,2422 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 8,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "ingestor/ffmpeg.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 189,
+      "nonEmptyLines": 164,
+      "functions": [
+        {
+          "name": "build_ffmpeg_command",
+          "startLine": 31,
+          "endLine": 69,
+          "params": [
+            "station",
+            "output_path",
+            "settings"
+          ]
+        },
+        {
+          "name": "get_wav_duration_seconds",
+          "startLine": 72,
+          "endLine": 81,
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "is_valid_chunk_duration",
+          "startLine": 84,
+          "endLine": 94,
+          "params": [
+            "path",
+            "expected_sec",
+            "tolerance_sec"
+          ]
+        },
+        {
+          "name": "_popen_with_process_group",
+          "startLine": 97,
+          "endLine": 106,
+          "params": [
+            "command"
+          ]
+        },
+        {
+          "name": "_kill_process_group",
+          "startLine": 109,
+          "endLine": 131,
+          "params": [
+            "proc"
+          ]
+        },
+        {
+          "name": "_reap_process",
+          "startLine": 134,
+          "endLine": 142,
+          "params": [
+            "proc"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkRunner",
+          "startLine": 19,
+          "endLine": 28,
+          "methods": [
+            "record_chunk"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FfmpegChunkRunner",
+          "startLine": 145,
+          "endLine": 189,
+          "methods": [
+            "__init__",
+            "terminate_active",
+            "record_chunk"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChunkRunner",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "build_ffmpeg_command",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "get_wav_duration_seconds",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "is_valid_chunk_duration",
+          "line": 84,
+          "isDefault": false
+        },
+        {
+          "name": "_popen_with_process_group",
+          "line": 97,
+          "isDefault": false
+        },
+        {
+          "name": "_kill_process_group",
+          "line": 109,
+          "isDefault": false
+        },
+        {
+          "name": "_reap_process",
+          "line": 134,
+          "isDefault": false
+        },
+        {
+          "name": "FfmpegChunkRunner",
+          "line": 145,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "build_ffmpeg_command",
+          "callee": "str",
+          "lineNumber": 57
+        },
+        {
+          "caller": "build_ffmpeg_command",
+          "callee": "str",
+          "lineNumber": 68
+        },
+        {
+          "caller": "get_wav_duration_seconds",
+          "callee": "wave.open",
+          "lineNumber": 75
+        },
+        {
+          "caller": "get_wav_duration_seconds",
+          "callee": "str",
+          "lineNumber": 75
+        },
+        {
+          "caller": "get_wav_duration_seconds",
+          "callee": "handle.getframerate",
+          "lineNumber": 76
+        },
+        {
+          "caller": "get_wav_duration_seconds",
+          "callee": "handle.getnframes",
+          "lineNumber": 79
+        },
+        {
+          "caller": "get_wav_duration_seconds",
+          "callee": "float",
+          "lineNumber": 79
+        },
+        {
+          "caller": "is_valid_chunk_duration",
+          "callee": "get_wav_duration_seconds",
+          "lineNumber": 91
+        },
+        {
+          "caller": "is_valid_chunk_duration",
+          "callee": "abs",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_popen_with_process_group",
+          "callee": "subprocess.Popen",
+          "lineNumber": 106
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.poll",
+          "lineNumber": 110
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.terminate",
+          "lineNumber": 113
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.wait",
+          "lineNumber": 115
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.kill",
+          "lineNumber": 117
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.wait",
+          "lineNumber": 118
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "os.killpg",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "os.getpgid",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.wait",
+          "lineNumber": 125
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "os.killpg",
+          "lineNumber": 128
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "os.getpgid",
+          "lineNumber": 128
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.kill",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_kill_process_group",
+          "callee": "proc.wait",
+          "lineNumber": 131
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "proc.poll",
+          "lineNumber": 135
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "_kill_process_group",
+          "lineNumber": 136
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "proc.communicate",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "proc.poll",
+          "lineNumber": 140
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "proc.kill",
+          "lineNumber": 141
+        },
+        {
+          "caller": "_reap_process",
+          "callee": "proc.wait",
+          "lineNumber": 142
+        },
+        {
+          "caller": "__init__",
+          "callee": "PipelineSettings",
+          "lineNumber": 149
+        },
+        {
+          "caller": "__init__",
+          "callee": "threading.Lock",
+          "lineNumber": 151
+        },
+        {
+          "caller": "terminate_active",
+          "callee": "_kill_process_group",
+          "lineNumber": 158
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "output_path.parent.mkdir",
+          "lineNumber": 167
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "build_ffmpeg_command",
+          "lineNumber": 168
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "float",
+          "lineNumber": 169
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "_popen_with_process_group",
+          "lineNumber": 173
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "proc.wait",
+          "lineNumber": 177
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "_kill_process_group",
+          "lineNumber": 179
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "_reap_process",
+          "lineNumber": 188
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 8,
+        "functionCount": 6,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "ingestor/repository.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 97,
+      "nonEmptyLines": 86,
+      "functions": [
+        {
+          "name": "upsert_station",
+          "startLine": 13,
+          "endLine": 42,
+          "params": [
+            "db_path",
+            "station"
+          ]
+        },
+        {
+          "name": "enqueue_chunk",
+          "startLine": 46,
+          "endLine": 67,
+          "params": [
+            "db_path",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ]
+        },
+        {
+          "name": "log_gap",
+          "startLine": 71,
+          "endLine": 92,
+          "params": [
+            "db_path",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "reason"
+          ]
+        },
+        {
+          "name": "fetch_station",
+          "startLine": 95,
+          "endLine": 97,
+          "params": [
+            "conn",
+            "name"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "upsert_station",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "enqueue_chunk",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "log_gap",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "fetch_station",
+          "line": 95,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "upsert_station",
+          "callee": "get_connection",
+          "lineNumber": 15
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "transaction",
+          "lineNumber": 17
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "conn.execute",
+          "lineNumber": 18
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "conn.execute(\n                \"SELECT id FROM stations WHERE name = ?\",\n                (station.name,),\n            ).fetchone",
+          "lineNumber": 34
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "conn.execute",
+          "lineNumber": 34
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "RuntimeError",
+          "lineNumber": 39
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "int",
+          "lineNumber": 40
+        },
+        {
+          "caller": "upsert_station",
+          "callee": "conn.close",
+          "lineNumber": 42
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "get_connection",
+          "lineNumber": 55
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "transaction",
+          "lineNumber": 57
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 58
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "int",
+          "lineNumber": 65
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 65
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 65
+        },
+        {
+          "caller": "enqueue_chunk",
+          "callee": "conn.close",
+          "lineNumber": 67
+        },
+        {
+          "caller": "log_gap",
+          "callee": "get_connection",
+          "lineNumber": 80
+        },
+        {
+          "caller": "log_gap",
+          "callee": "transaction",
+          "lineNumber": 82
+        },
+        {
+          "caller": "log_gap",
+          "callee": "conn.execute",
+          "lineNumber": 83
+        },
+        {
+          "caller": "log_gap",
+          "callee": "int",
+          "lineNumber": 90
+        },
+        {
+          "caller": "log_gap",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 90
+        },
+        {
+          "caller": "log_gap",
+          "callee": "conn.execute",
+          "lineNumber": 90
+        },
+        {
+          "caller": "log_gap",
+          "callee": "conn.close",
+          "lineNumber": 92
+        },
+        {
+          "caller": "fetch_station",
+          "callee": "conn.execute(\"SELECT * FROM stations WHERE name = ?\", (name,)).fetchone",
+          "lineNumber": 97
+        },
+        {
+          "caller": "fetch_station",
+          "callee": "conn.execute",
+          "lineNumber": 97
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "ingestor/supervisor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 205,
+      "nonEmptyLines": 174,
+      "functions": [
+        {
+          "name": "slugify_station_name",
+          "startLine": 177,
+          "endLine": 180,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "create_station_ingestors",
+          "startLine": 183,
+          "endLine": 205,
+          "params": [
+            "db_path",
+            "stations",
+            "settings",
+            "chunks_dir",
+            "runner_factory"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "Clock",
+          "startLine": 24,
+          "endLine": 26,
+          "methods": [
+            "time",
+            "sleep"
+          ],
+          "properties": []
+        },
+        {
+          "name": "SystemClock",
+          "startLine": 29,
+          "endLine": 34,
+          "methods": [
+            "time",
+            "sleep"
+          ],
+          "properties": []
+        },
+        {
+          "name": "BackoffPolicy",
+          "startLine": 38,
+          "endLine": 53,
+          "methods": [
+            "next_delay",
+            "reset"
+          ],
+          "properties": [
+            "initial_seconds",
+            "max_seconds",
+            "current_seconds"
+          ]
+        },
+        {
+          "name": "StationIngestor",
+          "startLine": 56,
+          "endLine": 174,
+          "methods": [
+            "__init__",
+            "stride_seconds",
+            "run",
+            "run_once",
+            "_sleep_until_next_stride",
+            "_output_path"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Clock",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "SystemClock",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "BackoffPolicy",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "StationIngestor",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "slugify_station_name",
+          "line": 177,
+          "isDefault": false
+        },
+        {
+          "name": "create_station_ingestors",
+          "line": 183,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "time",
+          "callee": "time.time",
+          "lineNumber": 31
+        },
+        {
+          "caller": "sleep",
+          "callee": "time.sleep",
+          "lineNumber": 34
+        },
+        {
+          "caller": "next_delay",
+          "callee": "min",
+          "lineNumber": 49
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 65
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 70
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 73
+        },
+        {
+          "caller": "__init__",
+          "callee": "FfmpegChunkRunner",
+          "lineNumber": 74
+        },
+        {
+          "caller": "__init__",
+          "callee": "SystemClock",
+          "lineNumber": 75
+        },
+        {
+          "caller": "__init__",
+          "callee": "BackoffPolicy",
+          "lineNumber": 76
+        },
+        {
+          "caller": "stride_seconds",
+          "callee": "max",
+          "lineNumber": 80
+        },
+        {
+          "caller": "stride_seconds",
+          "callee": "float",
+          "lineNumber": 80
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.is_set",
+          "lineNumber": 84
+        },
+        {
+          "caller": "run",
+          "callee": "self.run_once",
+          "lineNumber": 85
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.is_set",
+          "lineNumber": 86
+        },
+        {
+          "caller": "run_once",
+          "callee": "self.clock.time",
+          "lineNumber": 95
+        },
+        {
+          "caller": "run_once",
+          "callee": "float",
+          "lineNumber": 96
+        },
+        {
+          "caller": "run_once",
+          "callee": "self._output_path",
+          "lineNumber": 97
+        },
+        {
+          "caller": "run_once",
+          "callee": "output_path.parent.mkdir",
+          "lineNumber": 98
+        },
+        {
+          "caller": "run_once",
+          "callee": "logger.info",
+          "lineNumber": 100
+        },
+        {
+          "caller": "run_once",
+          "callee": "str",
+          "lineNumber": 102
+        },
+        {
+          "caller": "run_once",
+          "callee": "self.runner.record_chunk",
+          "lineNumber": 104
+        },
+        {
+          "caller": "run_once",
+          "callee": "float",
+          "lineNumber": 107
+        },
+        {
+          "caller": "run_once",
+          "callee": "float",
+          "lineNumber": 110
+        },
+        {
+          "caller": "run_once",
+          "callee": "output_path.is_file",
+          "lineNumber": 111
+        },
+        {
+          "caller": "run_once",
+          "callee": "output_path.stat",
+          "lineNumber": 111
+        },
+        {
+          "caller": "run_once",
+          "callee": "is_valid_chunk_duration",
+          "lineNumber": 112
+        },
+        {
+          "caller": "run_once",
+          "callee": "upsert_station",
+          "lineNumber": 118
+        },
+        {
+          "caller": "run_once",
+          "callee": "enqueue_chunk",
+          "lineNumber": 119
+        },
+        {
+          "caller": "run_once",
+          "callee": "str",
+          "lineNumber": 122
+        },
+        {
+          "caller": "run_once",
+          "callee": "self.backoff.reset",
+          "lineNumber": 126
+        },
+        {
+          "caller": "run_once",
+          "callee": "set_station_last_chunk_timestamp",
+          "lineNumber": 127
+        },
+        {
+          "caller": "run_once",
+          "callee": "increment_chunks_processed",
+          "lineNumber": 128
+        },
+        {
+          "caller": "run_once",
+          "callee": "self._sleep_until_next_stride",
+          "lineNumber": 129
+        },
+        {
+          "caller": "run_once",
+          "callee": "logger.info",
+          "lineNumber": 130
+        },
+        {
+          "caller": "run_once",
+          "callee": "str",
+          "lineNumber": 134
+        },
+        {
+          "caller": "run_once",
+          "callee": "upsert_station",
+          "lineNumber": 142
+        },
+        {
+          "caller": "run_once",
+          "callee": "log_gap",
+          "lineNumber": 143
+        },
+        {
+          "caller": "run_once",
+          "callee": "output_path.exists",
+          "lineNumber": 150
+        },
+        {
+          "caller": "run_once",
+          "callee": "output_path.unlink",
+          "lineNumber": 151
+        },
+        {
+          "caller": "run_once",
+          "callee": "self.backoff.next_delay",
+          "lineNumber": 152
+        },
+        {
+          "caller": "run_once",
+          "callee": "logger.warning",
+          "lineNumber": 153
+        },
+        {
+          "caller": "run_once",
+          "callee": "self.clock.sleep",
+          "lineNumber": 162
+        },
+        {
+          "caller": "_sleep_until_next_stride",
+          "callee": "max",
+          "lineNumber": 166
+        },
+        {
+          "caller": "_sleep_until_next_stride",
+          "callee": "self.clock.time",
+          "lineNumber": 166
+        },
+        {
+          "caller": "_sleep_until_next_stride",
+          "callee": "max",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_sleep_until_next_stride",
+          "callee": "self.clock.sleep",
+          "lineNumber": 169
+        },
+        {
+          "caller": "_output_path",
+          "callee": "slugify_station_name",
+          "lineNumber": 172
+        },
+        {
+          "caller": "_output_path",
+          "callee": "int",
+          "lineNumber": 173
+        },
+        {
+          "caller": "slugify_station_name",
+          "callee": "re.sub(r\"[^a-z0-9]+\", \"-\", name.lower()).strip",
+          "lineNumber": 179
+        },
+        {
+          "caller": "slugify_station_name",
+          "callee": "re.sub",
+          "lineNumber": 179
+        },
+        {
+          "caller": "slugify_station_name",
+          "callee": "name.lower",
+          "lineNumber": 179
+        },
+        {
+          "caller": "create_station_ingestors",
+          "callee": "Path",
+          "lineNumber": 188
+        },
+        {
+          "caller": "create_station_ingestors",
+          "callee": "runner_factory",
+          "lineNumber": 195
+        },
+        {
+          "caller": "create_station_ingestors",
+          "callee": "FfmpegChunkRunner",
+          "lineNumber": 195
+        },
+        {
+          "caller": "create_station_ingestors",
+          "callee": "ingestors.append",
+          "lineNumber": 196
+        },
+        {
+          "caller": "create_station_ingestors",
+          "callee": "StationIngestor",
+          "lineNumber": 197
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 6,
+        "functionCount": 2,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "shared/models.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 170,
+      "nonEmptyLines": 133,
+      "functions": [
+        {
+          "name": "detection_from_extraction",
+          "startLine": 142,
+          "endLine": 160,
+          "params": [
+            "chunk_id",
+            "extraction",
+            "canonical_ad_id"
+          ]
+        },
+        {
+          "name": "parse_key_claims_json",
+          "startLine": 163,
+          "endLine": 170,
+          "params": [
+            "raw"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChunkStatus",
+          "startLine": 12,
+          "endLine": 16,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "Station",
+          "startLine": 19,
+          "endLine": 24,
+          "methods": [],
+          "properties": [
+            "id",
+            "name",
+            "url",
+            "format",
+            "enabled"
+          ]
+        },
+        {
+          "name": "CanonicalAd",
+          "startLine": 27,
+          "endLine": 35,
+          "methods": [],
+          "properties": [
+            "id",
+            "company_name",
+            "phone_norm",
+            "category",
+            "first_seen",
+            "last_seen",
+            "airing_count",
+            "archived_audio_path"
+          ]
+        },
+        {
+          "name": "Chunk",
+          "startLine": 38,
+          "endLine": 46,
+          "methods": [],
+          "properties": [
+            "id",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status",
+            "error",
+            "known_ad_id"
+          ]
+        },
+        {
+          "name": "Transcript",
+          "startLine": 49,
+          "endLine": 54,
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "text",
+            "asr_duration_ms",
+            "segments_json"
+          ]
+        },
+        {
+          "name": "Detection",
+          "startLine": 57,
+          "endLine": 69,
+          "methods": [],
+          "properties": [
+            "id",
+            "chunk_id",
+            "canonical_ad_id",
+            "is_ad",
+            "ad_category",
+            "company_name",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "key_claims",
+            "confidence",
+            "alerted"
+          ]
+        },
+        {
+          "name": "Gap",
+          "startLine": 72,
+          "endLine": 77,
+          "methods": [],
+          "properties": [
+            "id",
+            "station_id",
+            "start_ts",
+            "end_ts",
+            "reason"
+          ]
+        },
+        {
+          "name": "Fingerprint",
+          "startLine": 80,
+          "endLine": 84,
+          "methods": [],
+          "properties": [
+            "id",
+            "canonical_ad_id",
+            "chromaprint_vector",
+            "duration"
+          ]
+        },
+        {
+          "name": "StatusEntry",
+          "startLine": 87,
+          "endLine": 90,
+          "methods": [],
+          "properties": [
+            "key",
+            "value",
+            "updated_at"
+          ]
+        },
+        {
+          "name": "AdExtraction",
+          "startLine": 93,
+          "endLine": 103,
+          "methods": [],
+          "properties": [
+            "is_ad",
+            "ad_category",
+            "company_name",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "key_claims",
+            "confidence"
+          ]
+        },
+        {
+          "name": "AdExtractionWithMetadata",
+          "startLine": 106,
+          "endLine": 110,
+          "methods": [],
+          "properties": [
+            "station",
+            "timestamp"
+          ]
+        },
+        {
+          "name": "StationConfig",
+          "startLine": 113,
+          "endLine": 117,
+          "methods": [],
+          "properties": [
+            "name",
+            "url",
+            "format",
+            "enabled"
+          ]
+        },
+        {
+          "name": "StationsFile",
+          "startLine": 120,
+          "endLine": 121,
+          "methods": [],
+          "properties": [
+            "stations"
+          ]
+        },
+        {
+          "name": "PipelineSettings",
+          "startLine": 124,
+          "endLine": 139,
+          "methods": [],
+          "properties": [
+            "chunk_len",
+            "overlap",
+            "retention_hours",
+            "dedup_window_days",
+            "confidence_threshold",
+            "fuzzy_match_threshold",
+            "queue_max_hours",
+            "station_down_alert_minutes",
+            "same_station_airing_window_seconds",
+            "asr_model",
+            "asr_compute_type",
+            "dashboard_host",
+            "dashboard_port",
+            "db_path",
+            "chunks_dir"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChunkStatus",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "Station",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "CanonicalAd",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "Chunk",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "Transcript",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "Detection",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "Gap",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "Fingerprint",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "StatusEntry",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "AdExtraction",
+          "line": 93,
+          "isDefault": false
+        },
+        {
+          "name": "AdExtractionWithMetadata",
+          "line": 106,
+          "isDefault": false
+        },
+        {
+          "name": "StationConfig",
+          "line": 113,
+          "isDefault": false
+        },
+        {
+          "name": "StationsFile",
+          "line": 120,
+          "isDefault": false
+        },
+        {
+          "name": "PipelineSettings",
+          "line": 124,
+          "isDefault": false
+        },
+        {
+          "name": "detection_from_extraction",
+          "line": 142,
+          "isDefault": false
+        },
+        {
+          "name": "parse_key_claims_json",
+          "line": 163,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "detection_from_extraction",
+          "callee": "Detection",
+          "lineNumber": 149
+        },
+        {
+          "caller": "parse_key_claims_json",
+          "callee": "json.loads",
+          "lineNumber": 167
+        },
+        {
+          "caller": "parse_key_claims_json",
+          "callee": "isinstance",
+          "lineNumber": 168
+        },
+        {
+          "caller": "parse_key_claims_json",
+          "callee": "str",
+          "lineNumber": 169
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 16,
+        "functionCount": 2,
+        "classCount": 14
+      }
+    },
+    {
+      "path": "tests/test_asr_benchmark.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 87,
+      "nonEmptyLines": 65,
+      "functions": [
+        {
+          "name": "_fake_factory",
+          "startLine": 31,
+          "endLine": 32,
+          "params": [
+            "model_name",
+            "compute_type"
+          ]
+        },
+        {
+          "name": "test_run_benchmark_returns_rtf_rows",
+          "startLine": 35,
+          "endLine": 53,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_main_json_output",
+          "startLine": 56,
+          "endLine": 87,
+          "params": [
+            "tmp_path",
+            "capsys"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "_FakeWhisperModel",
+          "startLine": 14,
+          "endLine": 28,
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_FakeWhisperModel",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "_fake_factory",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_benchmark_returns_rtf_rows",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "test_main_json_output",
+          "line": 56,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "transcribe",
+          "callee": "Path",
+          "lineNumber": 26
+        },
+        {
+          "caller": "transcribe",
+          "callee": "iter",
+          "lineNumber": 28
+        },
+        {
+          "caller": "transcribe",
+          "callee": "_Segment",
+          "lineNumber": 28
+        },
+        {
+          "caller": "transcribe",
+          "callee": "_Info",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_fake_factory",
+          "callee": "_FakeWhisperModel",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_run_benchmark_returns_rtf_rows",
+          "callee": "wav.write_bytes",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_run_benchmark_returns_rtf_rows",
+          "callee": "PipelineSettings",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_run_benchmark_returns_rtf_rows",
+          "callee": "run_benchmark",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_run_benchmark_returns_rtf_rows",
+          "callee": "len",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_run_benchmark_returns_rtf_rows",
+          "callee": "pytest.approx",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_main_json_output",
+          "callee": "wav.write_bytes",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_main_json_output",
+          "callee": "main",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_main_json_output",
+          "callee": "str",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_main_json_output",
+          "callee": "capsys.readouterr",
+          "lineNumber": 85
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_ingestor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 334,
+      "nonEmptyLines": 276,
+      "functions": [
+        {
+          "name": "_write_silent_wav",
+          "startLine": 26,
+          "endLine": 38,
+          "params": [
+            "path",
+            "duration_sec",
+            "sample_rate"
+          ]
+        },
+        {
+          "name": "_conn",
+          "startLine": 91,
+          "endLine": 92,
+          "params": [
+            "db_path"
+          ]
+        },
+        {
+          "name": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "startLine": 95,
+          "endLine": 112,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "startLine": 115,
+          "endLine": 120,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "startLine": 123,
+          "endLine": 170,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "startLine": 173,
+          "endLine": 201,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "startLine": 204,
+          "endLine": 236,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "startLine": 239,
+          "endLine": 272,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "startLine": 275,
+          "endLine": 314,
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_create_station_ingestors_skips_disabled_stations",
+          "startLine": 317,
+          "endLine": 334,
+          "params": [
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeClock",
+          "startLine": 41,
+          "endLine": 51,
+          "methods": [
+            "__init__",
+            "time",
+            "sleep"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FakeRunner",
+          "startLine": 54,
+          "endLine": 88,
+          "methods": [
+            "__init__",
+            "record_chunk"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_write_silent_wav",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "FakeClock",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "FakeRunner",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "_conn",
+          "line": 91,
+          "isDefault": false
+        },
+        {
+          "name": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "line": 115,
+          "isDefault": false
+        },
+        {
+          "name": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "line": 123,
+          "isDefault": false
+        },
+        {
+          "name": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "line": 173,
+          "isDefault": false
+        },
+        {
+          "name": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "line": 204,
+          "isDefault": false
+        },
+        {
+          "name": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "line": 239,
+          "isDefault": false
+        },
+        {
+          "name": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "line": 275,
+          "isDefault": false
+        },
+        {
+          "name": "test_create_station_ingestors_skips_disabled_stations",
+          "line": 317,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_write_silent_wav",
+          "callee": "path.parent.mkdir",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "int",
+          "lineNumber": 33
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "wave.open",
+          "lineNumber": 34
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "str",
+          "lineNumber": 34
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setnchannels",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setsampwidth",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.setframerate",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_write_silent_wav",
+          "callee": "handle.writeframes",
+          "lineNumber": 38
+        },
+        {
+          "caller": "sleep",
+          "callee": "self.sleeps.append",
+          "lineNumber": 50
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "self.calls.append",
+          "lineNumber": 78
+        },
+        {
+          "caller": "record_chunk",
+          "callee": "_write_silent_wav",
+          "lineNumber": 87
+        },
+        {
+          "caller": "_conn",
+          "callee": "get_connection",
+          "lineNumber": 92
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "StationConfig",
+          "lineNumber": 96
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "PipelineSettings",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "build_ffmpeg_command",
+          "lineNumber": 104
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "command.index",
+          "lineNumber": 110
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "command.index",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+          "callee": "str",
+          "lineNumber": 112
+        },
+        {
+          "caller": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "callee": "_write_silent_wav",
+          "lineNumber": 117
+        },
+        {
+          "caller": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "callee": "is_valid_chunk_duration",
+          "lineNumber": 118
+        },
+        {
+          "caller": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "callee": "_write_silent_wav",
+          "lineNumber": 119
+        },
+        {
+          "caller": "test_is_valid_chunk_duration_uses_two_second_tolerance",
+          "callee": "is_valid_chunk_duration",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "migrate",
+          "lineNumber": 125
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "StationConfig",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "PipelineSettings",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "FakeRunner",
+          "lineNumber": 128
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "FakeClock",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "StationIngestor",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "BackoffPolicy",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "ingestor.run_once",
+          "lineNumber": 141
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "Path",
+          "lineNumber": 143
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "get_wav_duration_seconds",
+          "lineNumber": 144
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "abs",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "_conn",
+          "lineNumber": 148
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute(\n            \"SELECT id, name, url, enabled FROM stations WHERE name = ?\",\n            (\"Test FM\",),\n        ).fetchone",
+          "lineNumber": 150
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute",
+          "lineNumber": 150
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute(\"SELECT * FROM chunks\").fetchone",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "Path(chunk[\"path\"]).is_file",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "Path",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "Path",
+          "lineNumber": 164
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM gaps\").fetchone",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.execute",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
+          "callee": "conn.close",
+          "lineNumber": 167
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "migrate",
+          "lineNumber": 175
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "StationConfig",
+          "lineNumber": 176
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "PipelineSettings",
+          "lineNumber": 177
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "FakeClock",
+          "lineNumber": 178
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "FakeRunner",
+          "lineNumber": 179
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "StationIngestor",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "ingestor.run_once",
+          "lineNumber": 195
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "Path",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "wave.open",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "str",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "handle.getnframes",
+          "lineNumber": 199
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "handle.getframerate",
+          "lineNumber": 199
+        },
+        {
+          "caller": "test_stride_accounts_for_recording_elapsed_with_valid_wav",
+          "callee": "abs",
+          "lineNumber": 200
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "migrate",
+          "lineNumber": 206
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "StationConfig",
+          "lineNumber": 207
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "PipelineSettings",
+          "lineNumber": 208
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "FakeRunner",
+          "lineNumber": 209
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "FakeClock",
+          "lineNumber": 210
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "StationIngestor",
+          "lineNumber": 212
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "BackoffPolicy",
+          "lineNumber": 219
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "ingestor.run_once",
+          "lineNumber": 222
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "_conn",
+          "lineNumber": 224
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM chunks\").fetchone",
+          "lineNumber": 226
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "conn.execute",
+          "lineNumber": 226
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "conn.execute(\"SELECT reason, start_ts, end_ts FROM gaps\").fetchone",
+          "lineNumber": 227
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "conn.execute",
+          "lineNumber": 227
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "conn.close",
+          "lineNumber": 232
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "Path",
+          "lineNumber": 234
+        },
+        {
+          "caller": "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
+          "callee": "output_path.exists",
+          "lineNumber": 235
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "migrate",
+          "lineNumber": 241
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "StationConfig",
+          "lineNumber": 242
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "PipelineSettings",
+          "lineNumber": 243
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "FakeRunner",
+          "lineNumber": 244
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "FakeClock",
+          "lineNumber": 245
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "StationIngestor",
+          "lineNumber": 247
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "BackoffPolicy",
+          "lineNumber": 254
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "ingestor.run_once",
+          "lineNumber": 257
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "ingestor.run_once",
+          "lineNumber": 258
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "_conn",
+          "lineNumber": 260
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM chunks\").fetchone",
+          "lineNumber": 262
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "conn.execute",
+          "lineNumber": 262
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "conn.execute(\n            \"SELECT reason, start_ts, end_ts FROM gaps ORDER BY id\"\n        ).fetchall",
+          "lineNumber": 263
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "conn.execute",
+          "lineNumber": 263
+        },
+        {
+          "caller": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
+          "callee": "conn.close",
+          "lineNumber": 270
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "StationConfig",
+          "lineNumber": 279
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "FfmpegChunkRunner",
+          "lineNumber": 280
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "PipelineSettings",
+          "lineNumber": 280
+        },
+        {
+          "caller": "fake_popen_with_process_group",
+          "callee": "subprocess.Popen",
+          "lineNumber": 295
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "monkeypatch.setattr",
+          "lineNumber": 297
+        },
+        {
+          "caller": "record",
+          "callee": "result.append",
+          "lineNumber": 305
+        },
+        {
+          "caller": "record",
+          "callee": "runner.record_chunk",
+          "lineNumber": 305
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "threading.Thread",
+          "lineNumber": 307
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "thread.start",
+          "lineNumber": 308
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "time.sleep",
+          "lineNumber": 309
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "runner.terminate_active",
+          "lineNumber": 310
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "thread.join",
+          "lineNumber": 311
+        },
+        {
+          "caller": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
+          "callee": "thread.is_alive",
+          "lineNumber": 312
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "migrate",
+          "lineNumber": 319
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "PipelineSettings",
+          "lineNumber": 320
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "StationConfig",
+          "lineNumber": 322
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "StationConfig",
+          "lineNumber": 323
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "create_station_ingestors",
+          "lineNumber": 326
+        },
+        {
+          "caller": "test_create_station_ingestors_skips_disabled_stations",
+          "callee": "FfmpegChunkRunner",
+          "lineNumber": 331
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 12,
+        "functionCount": 10,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "tests/test_models.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 71,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "test_ad_extraction_validates_core_fields",
+          "startLine": 17,
+          "endLine": 29,
+          "params": []
+        },
+        {
+          "name": "test_ad_extraction_rejects_invalid_confidence",
+          "startLine": 32,
+          "endLine": 34,
+          "params": []
+        },
+        {
+          "name": "test_metadata_not_in_llm_schema",
+          "startLine": 37,
+          "endLine": 40,
+          "params": []
+        },
+        {
+          "name": "test_metadata_model_extends_extraction",
+          "startLine": 43,
+          "endLine": 51,
+          "params": []
+        },
+        {
+          "name": "test_detection_from_extraction",
+          "startLine": 54,
+          "endLine": 66,
+          "params": []
+        },
+        {
+          "name": "test_chunk_status_enum",
+          "startLine": 69,
+          "endLine": 71,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_ad_extraction_validates_core_fields",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_ad_extraction_rejects_invalid_confidence",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "test_metadata_not_in_llm_schema",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "test_metadata_model_extends_extraction",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "test_detection_from_extraction",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "test_chunk_status_enum",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_ad_extraction_validates_core_fields",
+          "callee": "AdExtraction",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_ad_extraction_rejects_invalid_confidence",
+          "callee": "pytest.raises",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_ad_extraction_rejects_invalid_confidence",
+          "callee": "AdExtraction",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_metadata_not_in_llm_schema",
+          "callee": "set",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_metadata_model_extends_extraction",
+          "callee": "AdExtractionWithMetadata",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_detection_from_extraction",
+          "callee": "AdExtraction",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_detection_from_extraction",
+          "callee": "detection_from_extraction",
+          "lineNumber": 61
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "worker/asr_benchmark.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 96,
+      "nonEmptyLines": 83,
+      "functions": [
+        {
+          "name": "run_benchmark",
+          "startLine": 16,
+          "endLine": 46,
+          "params": [
+            "audio_path",
+            "models",
+            "compute_type",
+            "settings",
+            "model_factory"
+          ]
+        },
+        {
+          "name": "build_parser",
+          "startLine": 49,
+          "endLine": 68,
+          "params": []
+        },
+        {
+          "name": "main",
+          "startLine": 71,
+          "endLine": 92,
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "run_benchmark",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "build_parser",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 71,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "run_benchmark",
+          "callee": "audio_path.is_file",
+          "lineNumber": 25
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "FileNotFoundError",
+          "lineNumber": 26
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "load_settings",
+          "lineNumber": 28
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "base_settings.model_copy",
+          "lineNumber": 31
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "Transcriber",
+          "lineNumber": 34
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "transcriber.transcribe",
+          "lineNumber": 35
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "rows.append",
+          "lineNumber": 36
+        },
+        {
+          "caller": "run_benchmark",
+          "callee": "len",
+          "lineNumber": 43
+        },
+        {
+          "caller": "build_parser",
+          "callee": "argparse.ArgumentParser",
+          "lineNumber": 50
+        },
+        {
+          "caller": "build_parser",
+          "callee": "parser.add_argument",
+          "lineNumber": 51
+        },
+        {
+          "caller": "build_parser",
+          "callee": "parser.add_argument",
+          "lineNumber": 52
+        },
+        {
+          "caller": "build_parser",
+          "callee": "parser.add_argument",
+          "lineNumber": 57
+        },
+        {
+          "caller": "build_parser",
+          "callee": "parser.add_argument",
+          "lineNumber": 62
+        },
+        {
+          "caller": "main",
+          "callee": "build_parser().parse_args",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "build_parser",
+          "lineNumber": 72
+        },
+        {
+          "caller": "main",
+          "callee": "part.strip",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "args.models.split",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "part.strip",
+          "lineNumber": 73
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 75
+        },
+        {
+          "caller": "main",
+          "callee": "run_benchmark",
+          "lineNumber": 78
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 84
+        },
+        {
+          "caller": "main",
+          "callee": "json.dumps",
+          "lineNumber": 84
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 87
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    }
+  ]
+}

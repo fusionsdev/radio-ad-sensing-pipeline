@@ -1,0 +1,258 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 20,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "plan/_hermes-prompt-wp13.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 12,
+      "nonEmptyLines": 9,
+      "metrics": {}
+    },
+    {
+      "path": "plan/ca-tx-ingestor-smoke-20260610.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 114,
+      "nonEmptyLines": 81,
+      "sections": [
+        {
+          "heading": "CA+TX Pipeline Smoke — Ingestor + Worker + Alerter",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Phase 1 — Ingestor (WP-2 F6)",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Phase 2 — Worker (ASR → LLM extraction)",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "Setup (Windows native)",
+          "level": 3,
+          "line": 32
+        },
+        {
+          "heading": "Results",
+          "level": 3,
+          "line": 46
+        },
+        {
+          "heading": "Code fixes applied for local smoke",
+          "level": 3,
+          "line": 63
+        },
+        {
+          "heading": "Production note",
+          "level": 3,
+          "line": 68
+        },
+        {
+          "heading": "Phase 3 — Alerter (dry-run)",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "Dashboard",
+          "level": 2,
+          "line": 91
+        },
+        {
+          "heading": "Overall",
+          "level": 2,
+          "line": 105
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "plan/codex-batch3-dispatch.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 43,
+      "nonEmptyLines": 31,
+      "sections": [
+        {
+          "heading": "Codex CLI Batch 3 — Parallel Dispatch",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Commands pattern",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Jobs — ✅ ทั้งหมดเสร็จ (stdin pipe pattern)",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "คำสั่งที่ใช้ (copy ได้)",
+          "level": 3,
+          "line": 25
+        },
+        {
+          "heading": "After completion",
+          "level": 2,
+          "line": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "plan/codex-batch3-wp10b-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 12,
+      "nonEmptyLines": 8,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch3-wp5-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch3-wp6-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 17,
+      "nonEmptyLines": 13,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch3-wp8-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 10,
+      "nonEmptyLines": 6,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch4-wp11a-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 13,
+      "nonEmptyLines": 9,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch4-wp11b-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 15,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch4-wp7b-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 16,
+      "nonEmptyLines": 12,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-batch4-wp8-prompt.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 13,
+      "nonEmptyLines": 9,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp10b-r2.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 15733,
+      "nonEmptyLines": 14438,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp10b.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 431,
+      "nonEmptyLines": 333,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp11a.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 12349,
+      "nonEmptyLines": 11396,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp11b.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 4948,
+      "nonEmptyLines": 4581,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp5.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 4117,
+      "nonEmptyLines": 3635,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp6-r2.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 24714,
+      "nonEmptyLines": 23640,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp6.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 136,
+      "nonEmptyLines": 114,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp7b.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 2473,
+      "nonEmptyLines": 2162,
+      "metrics": {}
+    },
+    {
+      "path": "plan/codex-log-wp8-fix.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 5266,
+      "nonEmptyLines": 4781,
+      "metrics": {}
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/grill-with-docs/ADR-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 47,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/grill-with-docs/CONTEXT-FORMAT.md",
+      "language": "markdown",
+      "sizeLines": 60,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/grill-with-docs/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 88,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/grill-with-docs/ADR-FORMAT.md": [],
+    ".agents/skills/grill-with-docs/CONTEXT-FORMAT.md": [],
+    ".agents/skills/grill-with-docs/SKILL.md": []
+  }
+}

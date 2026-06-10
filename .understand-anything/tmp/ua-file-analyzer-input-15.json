@@ -1,0 +1,49 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/tdd/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 109,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/tdd/deep-modules.md",
+      "language": "markdown",
+      "sizeLines": 33,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/tdd/interface-design.md",
+      "language": "markdown",
+      "sizeLines": 31,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/tdd/mocking.md",
+      "language": "markdown",
+      "sizeLines": 59,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/tdd/refactoring.md",
+      "language": "markdown",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/tdd/tests.md",
+      "language": "markdown",
+      "sizeLines": 61,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/tdd/SKILL.md": [],
+    ".agents/skills/tdd/deep-modules.md": [],
+    ".agents/skills/tdd/interface-design.md": [],
+    ".agents/skills/tdd/mocking.md": [],
+    ".agents/skills/tdd/refactoring.md": [],
+    ".agents/skills/tdd/tests.md": []
+  }
+}

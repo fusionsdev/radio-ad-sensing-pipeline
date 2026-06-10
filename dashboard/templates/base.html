@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Radio Ad Dashboard{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <style>
+    :root { --bg: #0f1419; --card: #1a2332; --text: #e7ecf3; --muted: #8b9cb3; --accent: #3d8bfd; --border: #2a3548; }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.5; }
+    header { background: var(--card); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; }
+    header h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    nav { margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    nav a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    nav a:hover { text-decoration: underline; }
+    main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+    .card h2 { margin: 0 0 0.25rem; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+    .card .value { font-size: 1.75rem; font-weight: 700; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+    tr:hover td { background: rgba(61, 139, 253, 0.06); }
+    a.row-link { color: inherit; text-decoration: none; }
+    .empty { color: var(--muted); padding: 2rem; text-align: center; }
+    .pager { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
+    .pager button { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; }
+    .pager button:disabled { opacity: 0.4; cursor: default; }
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; background: var(--border); }
+    .badge.ok { background: #1a3d2e; color: #6ee7a0; }
+    .badge.warn { background: #3d2e1a; color: #f0c674; }
+    .badge.err { background: #3d1a1a; color: #f08a8a; }
+    .badge.muted { background: var(--border); color: var(--muted); }
+    audio { width: 100%; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Radio Ad-Sensing Dashboard</h1>
+    <nav>
+      <a href="/">Overview</a>
+      <a href="/ads">Ads</a>
+      <a href="/stations">Stations</a>
+      <a href="/gaps">Gaps</a>
+      <a href="/health">Health (JSON)</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,20 @@
+chunk_len: 90
+overlap: 7
+retention_hours: 48
+dedup_window_days: 7
+confidence_threshold: 0.7
+fuzzy_match_threshold: 85
+queue_max_hours: 2
+station_down_alert_minutes: 15
+same_station_airing_window_seconds: 180
+asr_model: medium.en
+asr_compute_type: int8_float16
+dashboard_host: 127.0.0.1
+dashboard_port: 8080
+db_path: data/pipeline.db
+chunks_dir: data/chunks
+# Ingestor resilience — fast retry before exponential backoff
+ingest_immediate_retries: 3
+ingest_immediate_retry_delay_sec: 0.5
+ingest_backoff_initial_sec: 1
+ingest_backoff_max_sec: 30

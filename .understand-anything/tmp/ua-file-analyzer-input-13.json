@@ -1,0 +1,28 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/prototype/LOGIC.md",
+      "language": "markdown",
+      "sizeLines": 79,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/prototype/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 30,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/prototype/UI.md",
+      "language": "markdown",
+      "sizeLines": 112,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/prototype/LOGIC.md": [],
+    ".agents/skills/prototype/SKILL.md": [],
+    ".agents/skills/prototype/UI.md": []
+  }
+}

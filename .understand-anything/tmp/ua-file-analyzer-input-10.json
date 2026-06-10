@@ -1,0 +1,21 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "shared/migrations/001_initial.sql",
+      "language": "sql",
+      "sizeLines": 82,
+      "fileCategory": "data"
+    },
+    {
+      "path": "shared/migrations/002_transcript_segments.sql",
+      "language": "sql",
+      "sizeLines": 1,
+      "fileCategory": "data"
+    }
+  ],
+  "batchImportData": {
+    "shared/migrations/001_initial.sql": [],
+    "shared/migrations/002_transcript_segments.sql": []
+  }
+}

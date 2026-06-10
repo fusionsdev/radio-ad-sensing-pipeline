@@ -1,0 +1,63 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/credit_union_interview_negative.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/homefront_mortgage_positive.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/liberty_funding_group_positive.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/manifest.json",
+      "language": "json",
+      "sizeLines": 152,
+      "fileCategory": "config"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/news_interest_rates_negative.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/rapid_relief_capital_positive.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/fixtures/extraction_eval/talkshow_sba_loans_negative.txt",
+      "language": "txt",
+      "sizeLines": 1,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt": [],
+    "tests/fixtures/extraction_eval/credit_union_interview_negative.txt": [],
+    "tests/fixtures/extraction_eval/homefront_mortgage_positive.txt": [],
+    "tests/fixtures/extraction_eval/liberty_funding_group_positive.txt": [],
+    "tests/fixtures/extraction_eval/manifest.json": [],
+    "tests/fixtures/extraction_eval/news_interest_rates_negative.txt": [],
+    "tests/fixtures/extraction_eval/rapid_relief_capital_positive.txt": [],
+    "tests/fixtures/extraction_eval/talkshow_sba_loans_negative.txt": []
+  }
+}

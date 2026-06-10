@@ -1,0 +1,147 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "plan/_hermes-prompt-wp13.txt",
+      "language": "txt",
+      "sizeLines": 12,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/ca-tx-ingestor-smoke-20260610.md",
+      "language": "markdown",
+      "sizeLines": 114,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch3-dispatch.md",
+      "language": "markdown",
+      "sizeLines": 43,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch3-wp10b-prompt.txt",
+      "language": "txt",
+      "sizeLines": 12,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch3-wp5-prompt.txt",
+      "language": "txt",
+      "sizeLines": 13,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch3-wp6-prompt.txt",
+      "language": "txt",
+      "sizeLines": 17,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch3-wp8-prompt.txt",
+      "language": "txt",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch4-wp11a-prompt.txt",
+      "language": "txt",
+      "sizeLines": 13,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch4-wp11b-prompt.txt",
+      "language": "txt",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch4-wp7b-prompt.txt",
+      "language": "txt",
+      "sizeLines": 16,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-batch4-wp8-prompt.txt",
+      "language": "txt",
+      "sizeLines": 13,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp10b-r2.txt",
+      "language": "txt",
+      "sizeLines": 15733,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp10b.txt",
+      "language": "txt",
+      "sizeLines": 431,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp11a.txt",
+      "language": "txt",
+      "sizeLines": 12349,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp11b.txt",
+      "language": "txt",
+      "sizeLines": 4948,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp5.txt",
+      "language": "txt",
+      "sizeLines": 4117,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp6-r2.txt",
+      "language": "txt",
+      "sizeLines": 24714,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp6.txt",
+      "language": "txt",
+      "sizeLines": 136,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp7b.txt",
+      "language": "txt",
+      "sizeLines": 2473,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plan/codex-log-wp8-fix.txt",
+      "language": "txt",
+      "sizeLines": 5266,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    "plan/_hermes-prompt-wp13.txt": [],
+    "plan/ca-tx-ingestor-smoke-20260610.md": [],
+    "plan/codex-batch3-dispatch.md": [],
+    "plan/codex-batch3-wp10b-prompt.txt": [],
+    "plan/codex-batch3-wp5-prompt.txt": [],
+    "plan/codex-batch3-wp6-prompt.txt": [],
+    "plan/codex-batch3-wp8-prompt.txt": [],
+    "plan/codex-batch4-wp11a-prompt.txt": [],
+    "plan/codex-batch4-wp11b-prompt.txt": [],
+    "plan/codex-batch4-wp7b-prompt.txt": [],
+    "plan/codex-batch4-wp8-prompt.txt": [],
+    "plan/codex-log-wp10b-r2.txt": [],
+    "plan/codex-log-wp10b.txt": [],
+    "plan/codex-log-wp11a.txt": [],
+    "plan/codex-log-wp11b.txt": [],
+    "plan/codex-log-wp5.txt": [],
+    "plan/codex-log-wp6-r2.txt": [],
+    "plan/codex-log-wp6.txt": [],
+    "plan/codex-log-wp7b.txt": [],
+    "plan/codex-log-wp8-fix.txt": []
+  }
+}

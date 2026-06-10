@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "node .cursor/hooks/understand-auto.mjs sessionStart"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "node .cursor/hooks/understand-auto.mjs postToolUse",
+        "matcher": "Shell"
+      }
+    ]
+  }
+}

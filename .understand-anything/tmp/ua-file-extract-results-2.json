@@ -1,0 +1,4845 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "tests/test_dedup.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 314,
+      "nonEmptyLines": 267,
+      "functions": [
+        {
+          "name": "db_path",
+          "startLine": 29,
+          "endLine": 32,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "settings",
+          "startLine": 36,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "_seed_station",
+          "startLine": 45,
+          "endLine": 53,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_seed_chunk",
+          "startLine": 56,
+          "endLine": 80,
+          "params": [
+            "db_path",
+            "tmp_path",
+            "station_name",
+            "start_ts",
+            "end_ts"
+          ]
+        },
+        {
+          "name": "_loan_extraction",
+          "startLine": 83,
+          "endLine": 95,
+          "params": []
+        },
+        {
+          "name": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "startLine": 98,
+          "endLine": 114,
+          "params": []
+        },
+        {
+          "name": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "startLine": 117,
+          "endLine": 156,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "startLine": 159,
+          "endLine": 203,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_same_ad_after_window_counts_new_airing",
+          "startLine": 206,
+          "endLine": 223,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_cross_station_airings_within_window_count_separately",
+          "startLine": 226,
+          "endLine": 243,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_distinct_ads_do_not_merge_when_category_differs",
+          "startLine": 246,
+          "endLine": 285,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "startLine": 288,
+          "endLine": 314,
+          "params": [
+            "db_path",
+            "settings",
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeClipper",
+          "startLine": 17,
+          "endLine": 25,
+          "methods": [
+            "__init__",
+            "__call__"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FakeClipper",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "db_path",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "settings",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_station",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_chunk",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "_loan_extraction",
+          "line": 83,
+          "isDefault": false
+        },
+        {
+          "name": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "line": 98,
+          "isDefault": false
+        },
+        {
+          "name": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "line": 159,
+          "isDefault": false
+        },
+        {
+          "name": "test_same_ad_after_window_counts_new_airing",
+          "line": 206,
+          "isDefault": false
+        },
+        {
+          "name": "test_cross_station_airings_within_window_count_separately",
+          "line": 226,
+          "isDefault": false
+        },
+        {
+          "name": "test_distinct_ads_do_not_merge_when_category_differs",
+          "line": 246,
+          "isDefault": false
+        },
+        {
+          "name": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "line": 288,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__call__",
+          "callee": "self.calls.append",
+          "lineNumber": 22
+        },
+        {
+          "caller": "__call__",
+          "callee": "dest.parent.mkdir",
+          "lineNumber": 23
+        },
+        {
+          "caller": "__call__",
+          "callee": "dest.write_bytes",
+          "lineNumber": 24
+        },
+        {
+          "caller": "db_path",
+          "callee": "migrate",
+          "lineNumber": 31
+        },
+        {
+          "caller": "settings",
+          "callee": "PipelineSettings",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT id FROM stations WHERE name = ?\", (name,)).fetchone",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "int",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 64
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "audio.write_bytes",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "get_connection",
+          "lineNumber": 66
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "transaction",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "_seed_station",
+          "lineNumber": 69
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 70
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "str",
+          "lineNumber": 75
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 77
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 77
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.close",
+          "lineNumber": 79
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 80
+        },
+        {
+          "caller": "_loan_extraction",
+          "callee": "data.update",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_loan_extraction",
+          "callee": "AdExtraction.model_validate",
+          "lineNumber": 95
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "TranscriptSegment",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "TranscriptSegment",
+          "lineNumber": 101
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "TranscriptSegment",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "TranscriptSegment",
+          "lineNumber": 103
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "estimate_ad_bounds",
+          "lineNumber": 106
+        },
+        {
+          "caller": "test_estimate_ad_bounds_uses_matching_segments_with_padding",
+          "callee": "_loan_extraction",
+          "lineNumber": 108
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "_seed_chunk",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "FakeClipper",
+          "lineNumber": 123
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "DetectionPersister",
+          "lineNumber": 124
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "persister.record_extraction",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "_loan_extraction",
+          "lineNumber": 128
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "TranscriptSegment",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "TranscriptSegment",
+          "lineNumber": 132
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "TranscriptSegment",
+          "lineNumber": 133
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "get_connection",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "conn.execute(\"SELECT * FROM canonical_ads\").fetchone",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "conn.execute",
+          "lineNumber": 140
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "canonical[\"archived_audio_path\"].endswith",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "conn.execute(\"SELECT * FROM detections\").fetchone",
+          "lineNumber": 147
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "conn.execute",
+          "lineNumber": 147
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "json.loads",
+          "lineNumber": 149
+        },
+        {
+          "caller": "test_record_new_ad_creates_canonical_detection_and_archived_clip",
+          "callee": "conn.close",
+          "lineNumber": 151
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "FakeClipper",
+          "lineNumber": 164
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "DetectionPersister",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "_seed_chunk",
+          "lineNumber": 166
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "_seed_chunk",
+          "lineNumber": 167
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "persister.record_extraction",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "_loan_extraction",
+          "lineNumber": 171
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "TranscriptSegment",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "persister.record_extraction",
+          "lineNumber": 175
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "_loan_extraction",
+          "lineNumber": 177
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "TranscriptSegment",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "get_connection",
+          "lineNumber": 195
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "conn.execute(\"SELECT * FROM canonical_ads\").fetchall",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "conn.execute",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "len",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "conn.execute(\"SELECT canonical_ad_id FROM detections ORDER BY id\").fetchall",
+          "lineNumber": 200
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "conn.execute",
+          "lineNumber": 200
+        },
+        {
+          "caller": "test_fuzzy_match_reuses_canonical_and_same_station_window_does_not_increment_airings",
+          "callee": "conn.close",
+          "lineNumber": 203
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "DetectionPersister",
+          "lineNumber": 211
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "FakeClipper",
+          "lineNumber": 211
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "_seed_chunk",
+          "lineNumber": 212
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "_seed_chunk",
+          "lineNumber": 213
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "persister.record_extraction",
+          "lineNumber": 215
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "_loan_extraction",
+          "lineNumber": 215
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "persister.record_extraction",
+          "lineNumber": 216
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "_loan_extraction",
+          "lineNumber": 216
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "get_connection",
+          "lineNumber": 218
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "conn.execute(\"SELECT airing_count FROM canonical_ads\").fetchone",
+          "lineNumber": 220
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "conn.execute",
+          "lineNumber": 220
+        },
+        {
+          "caller": "test_same_ad_after_window_counts_new_airing",
+          "callee": "conn.close",
+          "lineNumber": 223
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "DetectionPersister",
+          "lineNumber": 231
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "FakeClipper",
+          "lineNumber": 231
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "_seed_chunk",
+          "lineNumber": 232
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "_seed_chunk",
+          "lineNumber": 233
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "persister.record_extraction",
+          "lineNumber": 235
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "_loan_extraction",
+          "lineNumber": 235
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "persister.record_extraction",
+          "lineNumber": 236
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "_loan_extraction",
+          "lineNumber": 236
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "get_connection",
+          "lineNumber": 238
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "conn.execute(\"SELECT airing_count FROM canonical_ads\").fetchone",
+          "lineNumber": 240
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "conn.execute",
+          "lineNumber": 240
+        },
+        {
+          "caller": "test_cross_station_airings_within_window_count_separately",
+          "callee": "conn.close",
+          "lineNumber": 243
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "DetectionPersister",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "FakeClipper",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "_seed_chunk",
+          "lineNumber": 252
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "_seed_chunk",
+          "lineNumber": 253
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "persister.record_extraction",
+          "lineNumber": 255
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "_loan_extraction",
+          "lineNumber": 257
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "persister.record_extraction",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "_loan_extraction",
+          "lineNumber": 263
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "get_connection",
+          "lineNumber": 275
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "conn.execute(\"SELECT id, category FROM canonical_ads ORDER BY id\").fetchall",
+          "lineNumber": 277
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "conn.execute",
+          "lineNumber": 277
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "conn.execute(\"SELECT canonical_ad_id FROM detections ORDER BY id\").fetchall",
+          "lineNumber": 282
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "conn.execute",
+          "lineNumber": 282
+        },
+        {
+          "caller": "test_distinct_ads_do_not_merge_when_category_differs",
+          "callee": "conn.close",
+          "lineNumber": 285
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "_seed_chunk",
+          "lineNumber": 293
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "DetectionPersister",
+          "lineNumber": 294
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "FakeClipper",
+          "lineNumber": 294
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "persister.record_extraction",
+          "lineNumber": 296
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "_loan_extraction",
+          "lineNumber": 298
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "persister.record_extraction",
+          "lineNumber": 302
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "_loan_extraction",
+          "lineNumber": 304
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "get_connection",
+          "lineNumber": 309
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM detections\").fetchone",
+          "lineNumber": 311
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "conn.execute",
+          "lineNumber": 311
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "conn.execute(\"SELECT COUNT(*) FROM canonical_ads\").fetchone",
+          "lineNumber": 312
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "conn.execute",
+          "lineNumber": 312
+        },
+        {
+          "caller": "test_non_ads_and_low_confidence_ads_are_not_persisted",
+          "callee": "conn.close",
+          "lineNumber": 314
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 13,
+        "functionCount": 12,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_e2e_smoke.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 201,
+      "nonEmptyLines": 168,
+      "functions": [
+        {
+          "name": "_seed_station",
+          "startLine": 52,
+          "endLine": 57,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_seed_chunk",
+          "startLine": 60,
+          "endLine": 75,
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ]
+        },
+        {
+          "name": "_set_status",
+          "startLine": 78,
+          "endLine": 88,
+          "params": [
+            "conn",
+            "key",
+            "value",
+            "updated_at"
+          ]
+        },
+        {
+          "name": "_today_date",
+          "startLine": 91,
+          "endLine": 92,
+          "params": [
+            "ts"
+          ]
+        },
+        {
+          "name": "_copy_clipper",
+          "startLine": 95,
+          "endLine": 98,
+          "params": [
+            "source",
+            "dest",
+            "start_sec",
+            "end_sec"
+          ]
+        },
+        {
+          "name": "test_smoke_worker_then_alerter_dry_run",
+          "startLine": 101,
+          "endLine": 201,
+          "params": [
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeTranscriber",
+          "startLine": 17,
+          "endLine": 39,
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FakeExtractor",
+          "startLine": 42,
+          "endLine": 49,
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FakeTranscriber",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "FakeExtractor",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_station",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_chunk",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "_set_status",
+          "line": 78,
+          "isDefault": false
+        },
+        {
+          "name": "_today_date",
+          "line": 91,
+          "isDefault": false
+        },
+        {
+          "name": "_copy_clipper",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "test_smoke_worker_then_alerter_dry_run",
+          "line": 101,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "transcribe",
+          "callee": "self.calls.append",
+          "lineNumber": 29
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptionResult",
+          "lineNumber": 31
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptSegment",
+          "lineNumber": 34
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptSegment",
+          "lineNumber": 35
+        },
+        {
+          "caller": "extract",
+          "callee": "self.calls.append",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "int",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "int",
+          "lineNumber": 75
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 75
+        },
+        {
+          "caller": "_seed_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 75
+        },
+        {
+          "caller": "_set_status",
+          "callee": "conn.execute",
+          "lineNumber": 79
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp(ts, tz=UTC).date().isoformat",
+          "lineNumber": 92
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp(ts, tz=UTC).date",
+          "lineNumber": 92
+        },
+        {
+          "caller": "_today_date",
+          "callee": "datetime.fromtimestamp",
+          "lineNumber": 92
+        },
+        {
+          "caller": "_copy_clipper",
+          "callee": "dest.parent.mkdir",
+          "lineNumber": 96
+        },
+        {
+          "caller": "_copy_clipper",
+          "callee": "dest.write_bytes",
+          "lineNumber": 97
+        },
+        {
+          "caller": "_copy_clipper",
+          "callee": "source.read_bytes",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "migrate",
+          "lineNumber": 103
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "audio_path.write_bytes",
+          "lineNumber": 107
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "get_connection",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "transaction",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "_seed_station",
+          "lineNumber": 112
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "_seed_chunk",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "str",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "_set_status",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "_today_date",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.close",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "PipelineSettings",
+          "lineNumber": 124
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "FakeTranscriber",
+          "lineNumber": 125
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "FakeExtractor",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "AdExtraction",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "DetectionPersister",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "ChunkConsumer",
+          "lineNumber": 144
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "consumer.run_once",
+          "lineNumber": 152
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "get_connection",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute(\"SELECT status, error FROM chunks\").fetchone",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute(\n            \"SELECT text, segments_json FROM transcripts\"\n        ).fetchone",
+          "lineNumber": 162
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute",
+          "lineNumber": 162
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute(\n            \"SELECT alerted, company_name FROM detections\"\n        ).fetchone",
+          "lineNumber": 168
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute",
+          "lineNumber": 168
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute(\n            \"SELECT company_name, archived_audio_path FROM canonical_ads\"\n        ).fetchone",
+          "lineNumber": 174
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute",
+          "lineNumber": 174
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "Path(canonical[\"archived_audio_path\"]).is_file",
+          "lineNumber": 178
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "Path",
+          "lineNumber": 178
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.close",
+          "lineNumber": 180
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "AlerterService",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "TelegramSettings",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "alerter.poll_once",
+          "lineNumber": 192
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "get_connection",
+          "lineNumber": 196
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute(\"SELECT alerted FROM detections\").fetchone",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.execute",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_smoke_worker_then_alerter_dry_run",
+          "callee": "conn.close",
+          "lineNumber": 201
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 8,
+        "functionCount": 6,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "tests/test_extract.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 145,
+      "nonEmptyLines": 115,
+      "functions": [
+        {
+          "name": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "startLine": 19,
+          "endLine": 22,
+          "params": []
+        },
+        {
+          "name": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "startLine": 25,
+          "endLine": 30,
+          "params": []
+        },
+        {
+          "name": "test_prompt_few_shot_example_three_uses_normalized_phone",
+          "startLine": 33,
+          "endLine": 36,
+          "params": []
+        },
+        {
+          "name": "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+          "startLine": 39,
+          "endLine": 50,
+          "params": []
+        },
+        {
+          "name": "test_schema_is_strict_and_only_contains_llm_fields",
+          "startLine": 53,
+          "endLine": 61,
+          "params": []
+        },
+        {
+          "name": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "startLine": 74,
+          "endLine": 105,
+          "params": []
+        },
+        {
+          "name": "test_ollama_extractor_raises_after_retry_exhausted",
+          "startLine": 108,
+          "endLine": 113,
+          "params": []
+        },
+        {
+          "name": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "startLine": 116,
+          "endLine": 145,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeOllamaHTTP",
+          "startLine": 64,
+          "endLine": 71,
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "test_prompt_few_shot_example_three_uses_normalized_phone",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "test_schema_is_strict_and_only_contains_llm_fields",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "FakeOllamaHTTP",
+          "line": 64,
+          "isDefault": false
+        },
+        {
+          "name": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "test_ollama_extractor_raises_after_retry_exhausted",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "line": 116,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "callee": "normalize_phone_number",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "callee": "normalize_phone_number",
+          "lineNumber": 21
+        },
+        {
+          "caller": "test_normalize_phone_number_handles_spelled_and_vanity_numbers",
+          "callee": "normalize_phone_number",
+          "lineNumber": 22
+        },
+        {
+          "caller": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "callee": "normalize_phone_number",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "callee": "normalize_phone_number",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "callee": "normalize_phone_number",
+          "lineNumber": 29
+        },
+        {
+          "caller": "test_normalize_phone_number_rejects_word_only_vanity_garbage",
+          "callee": "normalize_phone_number",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_prompt_few_shot_example_three_uses_normalized_phone",
+          "callee": "build_extraction_prompt",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+          "callee": "build_extraction_prompt",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_prompt_contains_ad_signal_cues_and_excludes_metadata_fields",
+          "callee": "prompt.lower",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_schema_is_strict_and_only_contains_llm_fields",
+          "callee": "extraction_json_schema",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_schema_is_strict_and_only_contains_llm_fields",
+          "callee": "set",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_schema_is_strict_and_only_contains_llm_fields",
+          "callee": "{\"is_ad\", \"ad_category\", \"confidence\"}.issubset",
+          "lineNumber": 61
+        },
+        {
+          "caller": "generate",
+          "callee": "self.calls.append",
+          "lineNumber": 70
+        },
+        {
+          "caller": "generate",
+          "callee": "self.responses.pop",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "callee": "FakeOllamaHTTP",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "callee": "json.dumps",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "callee": "OllamaExtractor",
+          "lineNumber": 94
+        },
+        {
+          "caller": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "callee": "extractor.extract",
+          "lineNumber": 96
+        },
+        {
+          "caller": "test_ollama_extractor_retries_invalid_json_and_normalizes_phone",
+          "callee": "len",
+          "lineNumber": 101
+        },
+        {
+          "caller": "test_ollama_extractor_raises_after_retry_exhausted",
+          "callee": "FakeOllamaHTTP",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_ollama_extractor_raises_after_retry_exhausted",
+          "callee": "OllamaExtractor",
+          "lineNumber": 110
+        },
+        {
+          "caller": "test_ollama_extractor_raises_after_retry_exhausted",
+          "callee": "pytest.raises",
+          "lineNumber": 112
+        },
+        {
+          "caller": "test_ollama_extractor_raises_after_retry_exhausted",
+          "callee": "extractor.extract",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "callee": "FakeOllamaHTTP",
+          "lineNumber": 121
+        },
+        {
+          "caller": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "callee": "json.dumps",
+          "lineNumber": 124
+        },
+        {
+          "caller": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "callee": "OllamaExtractor",
+          "lineNumber": 139
+        },
+        {
+          "caller": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "callee": "extractor.extract",
+          "lineNumber": 141
+        },
+        {
+          "caller": "test_ollama_extractor_classifies_senator_loan_talk_as_non_ad",
+          "callee": "len",
+          "lineNumber": 145
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 9,
+        "functionCount": 8,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "tests/test_extraction_eval.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 110,
+      "nonEmptyLines": 81,
+      "functions": [
+        {
+          "name": "_load_eval_fixtures",
+          "startLine": 27,
+          "endLine": 42,
+          "params": []
+        },
+        {
+          "name": "_company_tokens",
+          "startLine": 45,
+          "endLine": 49,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "_company_match",
+          "startLine": 52,
+          "endLine": 57,
+          "params": [
+            "actual",
+            "expected"
+          ]
+        },
+        {
+          "name": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "startLine": 73,
+          "endLine": 79,
+          "params": []
+        },
+        {
+          "name": "test_extraction_eval_phone_normalization_matches_ground_truth",
+          "startLine": 82,
+          "endLine": 88,
+          "params": []
+        },
+        {
+          "name": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "startLine": 91,
+          "endLine": 110,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "EvalFixture",
+          "startLine": 18,
+          "endLine": 24,
+          "methods": [],
+          "properties": [
+            "fixture_id",
+            "transcript",
+            "expected_is_ad",
+            "expected_company_name",
+            "expected_phone",
+            "mock_response"
+          ]
+        },
+        {
+          "name": "_MockOllamaHTTP",
+          "startLine": 60,
+          "endLine": 67,
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EvalFixture",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "_load_eval_fixtures",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "_company_tokens",
+          "line": 45,
+          "isDefault": false
+        },
+        {
+          "name": "_company_match",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "_MockOllamaHTTP",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "test_extraction_eval_phone_normalization_matches_ground_truth",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "line": 91,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "json.loads",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "MANIFEST_PATH.read_text",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "fixtures.append",
+          "lineNumber": 32
+        },
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "EvalFixture",
+          "lineNumber": 33
+        },
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "transcript_path.read_text(encoding=\"utf-8\").strip",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_load_eval_fixtures",
+          "callee": "transcript_path.read_text",
+          "lineNumber": 35
+        },
+        {
+          "caller": "_company_tokens",
+          "callee": "set",
+          "lineNumber": 47
+        },
+        {
+          "caller": "_company_tokens",
+          "callee": "\"\".join",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_company_tokens",
+          "callee": "char.lower",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_company_tokens",
+          "callee": "char.isalnum",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_company_tokens",
+          "callee": "cleaned.split",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_company_match",
+          "callee": "_company_tokens",
+          "lineNumber": 55
+        },
+        {
+          "caller": "_company_match",
+          "callee": "_company_tokens",
+          "lineNumber": 56
+        },
+        {
+          "caller": "_company_match",
+          "callee": "bool",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_company_match",
+          "callee": "expected_tokens.issubset",
+          "lineNumber": 57
+        },
+        {
+          "caller": "__init__",
+          "callee": "list",
+          "lineNumber": 62
+        },
+        {
+          "caller": "generate",
+          "callee": "self.calls.append",
+          "lineNumber": 66
+        },
+        {
+          "caller": "generate",
+          "callee": "json.dumps",
+          "lineNumber": 67
+        },
+        {
+          "caller": "generate",
+          "callee": "self._responses.pop",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "callee": "len",
+          "lineNumber": 77
+        },
+        {
+          "caller": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "callee": "len",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_extraction_eval_manifest_has_phase_11b_coverage",
+          "callee": "all",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_extraction_eval_phone_normalization_matches_ground_truth",
+          "callee": "normalize_phone_number",
+          "lineNumber": 87
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "_MockOllamaHTTP",
+          "lineNumber": 92
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "OllamaExtractor",
+          "lineNumber": 93
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "extractor.extract",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "_company_match",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "normalize_phone_number",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "scorecards.append",
+          "lineNumber": 101
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "len",
+          "lineNumber": 110
+        },
+        {
+          "caller": "test_extraction_eval_mock_extractor_meets_scoring_rubric",
+          "callee": "len",
+          "lineNumber": 110
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 8,
+        "functionCount": 6,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "tests/test_worker_consumer.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 574,
+      "nonEmptyLines": 494,
+      "functions": [
+        {
+          "name": "_seed_station",
+          "startLine": 109,
+          "endLine": 114,
+          "params": [
+            "conn",
+            "name"
+          ]
+        },
+        {
+          "name": "_insert_chunk",
+          "startLine": 117,
+          "endLine": 133,
+          "params": [
+            "conn",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts",
+            "status"
+          ]
+        },
+        {
+          "name": "worker_db",
+          "startLine": 137,
+          "endLine": 140,
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "settings",
+          "startLine": 144,
+          "endLine": 145,
+          "params": []
+        },
+        {
+          "name": "test_consumer_claim_transcript_and_done",
+          "startLine": 148,
+          "endLine": 196,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "startLine": 199,
+          "endLine": 240,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "startLine": 243,
+          "endLine": 296,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_drop_oldest_overflow_writes_gaps",
+          "startLine": 299,
+          "endLine": 354,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_atomic_claim_two_threads_never_duplicate",
+          "startLine": 357,
+          "endLine": 410,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_missing_audio_file_dropped_loop_continues",
+          "startLine": 413,
+          "endLine": 459,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_transcription_failure_dropped_loop_continues",
+          "startLine": 462,
+          "endLine": 511,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_run_once_returns_false_when_queue_empty",
+          "startLine": 514,
+          "endLine": 520,
+          "params": [
+            "worker_db",
+            "settings"
+          ]
+        },
+        {
+          "name": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "startLine": 523,
+          "endLine": 574,
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "FakeTranscriber",
+          "startLine": 19,
+          "endLine": 54,
+          "methods": [
+            "__init__",
+            "transcribe"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FakeExtractor",
+          "startLine": 57,
+          "endLine": 73,
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FakeDetectionPersister",
+          "startLine": 76,
+          "endLine": 96,
+          "methods": [
+            "__init__",
+            "record_extraction"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FakeFingerprintAnnotator",
+          "startLine": 99,
+          "endLine": 106,
+          "methods": [
+            "__init__",
+            "annotate_chunk"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "FakeTranscriber",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "FakeExtractor",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "FakeDetectionPersister",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "FakeFingerprintAnnotator",
+          "line": 99,
+          "isDefault": false
+        },
+        {
+          "name": "_seed_station",
+          "line": 109,
+          "isDefault": false
+        },
+        {
+          "name": "_insert_chunk",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "worker_db",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "settings",
+          "line": 143,
+          "isDefault": false
+        },
+        {
+          "name": "test_consumer_claim_transcript_and_done",
+          "line": 148,
+          "isDefault": false
+        },
+        {
+          "name": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "line": 199,
+          "isDefault": false
+        },
+        {
+          "name": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "line": 243,
+          "isDefault": false
+        },
+        {
+          "name": "test_drop_oldest_overflow_writes_gaps",
+          "line": 299,
+          "isDefault": false
+        },
+        {
+          "name": "test_atomic_claim_two_threads_never_duplicate",
+          "line": 357,
+          "isDefault": false
+        },
+        {
+          "name": "test_missing_audio_file_dropped_loop_continues",
+          "line": 413,
+          "isDefault": false
+        },
+        {
+          "name": "test_transcription_failure_dropped_loop_continues",
+          "line": 462,
+          "isDefault": false
+        },
+        {
+          "name": "test_run_once_returns_false_when_queue_empty",
+          "line": 514,
+          "isDefault": false
+        },
+        {
+          "name": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "line": 523,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "set",
+          "lineNumber": 32
+        },
+        {
+          "caller": "__init__",
+          "callee": "RuntimeError",
+          "lineNumber": 33
+        },
+        {
+          "caller": "transcribe",
+          "callee": "self.calls.append",
+          "lineNumber": 42
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptionResult",
+          "lineNumber": 46
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptSegment",
+          "lineNumber": 49
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptSegment",
+          "lineNumber": 50
+        },
+        {
+          "caller": "extract",
+          "callee": "self.calls.append",
+          "lineNumber": 69
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self.calls.append",
+          "lineNumber": 88
+        },
+        {
+          "caller": "annotate_chunk",
+          "callee": "self.calls.append",
+          "lineNumber": 105
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 110
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 114
+        },
+        {
+          "caller": "_seed_station",
+          "callee": "conn.execute",
+          "lineNumber": 114
+        },
+        {
+          "caller": "_insert_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 126
+        },
+        {
+          "caller": "_insert_chunk",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_insert_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 133
+        },
+        {
+          "caller": "worker_db",
+          "callee": "migrate",
+          "lineNumber": 139
+        },
+        {
+          "caller": "settings",
+          "callee": "PipelineSettings",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "audio.write_bytes",
+          "lineNumber": 154
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "get_connection",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "transaction",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "_seed_station",
+          "lineNumber": 159
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "_insert_chunk",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "str",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.close",
+          "lineNumber": 168
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "FakeTranscriber",
+          "lineNumber": 170
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "ChunkConsumer",
+          "lineNumber": 171
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "consumer.run_once",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "get_connection",
+          "lineNumber": 175
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute(\"SELECT status, error FROM chunks\").fetchone",
+          "lineNumber": 177
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute",
+          "lineNumber": 177
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute(\n            \"SELECT text, asr_duration_ms, segments_json FROM transcripts\"\n        ).fetchone",
+          "lineNumber": 181
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute",
+          "lineNumber": 181
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "json.loads",
+          "lineNumber": 186
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "len",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute(\n            \"SELECT value FROM status WHERE key = 'asr_rtf_avg'\"\n        ).fetchone",
+          "lineNumber": 190
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.execute",
+          "lineNumber": 190
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "abs",
+          "lineNumber": 194
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "float",
+          "lineNumber": 194
+        },
+        {
+          "caller": "test_consumer_claim_transcript_and_done",
+          "callee": "conn.close",
+          "lineNumber": 196
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "audio.write_bytes",
+          "lineNumber": 205
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "get_connection",
+          "lineNumber": 207
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "transaction",
+          "lineNumber": 209
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "_seed_station",
+          "lineNumber": 210
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "_insert_chunk",
+          "lineNumber": 211
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "str",
+          "lineNumber": 214
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "conn.close",
+          "lineNumber": 219
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "AdExtraction",
+          "lineNumber": 221
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "FakeExtractor",
+          "lineNumber": 222
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "FakeDetectionPersister",
+          "lineNumber": 223
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "FakeTranscriber",
+          "lineNumber": 224
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "ChunkConsumer",
+          "lineNumber": 225
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "consumer.run_once",
+          "lineNumber": 233
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "len",
+          "lineNumber": 236
+        },
+        {
+          "caller": "test_consumer_runs_extraction_and_dedup_after_transcription",
+          "callee": "len",
+          "lineNumber": 240
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "audio.write_bytes",
+          "lineNumber": 249
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "get_connection",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "transaction",
+          "lineNumber": 253
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "_seed_station",
+          "lineNumber": 254
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "_insert_chunk",
+          "lineNumber": 255
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "str",
+          "lineNumber": 258
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.close",
+          "lineNumber": 263
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "FakeExtractor",
+          "lineNumber": 265
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "AdExtraction",
+          "lineNumber": 265
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "FakeDetectionPersister",
+          "lineNumber": 266
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "FakeFingerprintAnnotator",
+          "lineNumber": 267
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "FingerprintMatch",
+          "lineNumber": 267
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "FakeTranscriber",
+          "lineNumber": 268
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "ChunkConsumer",
+          "lineNumber": 269
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "consumer.run_once",
+          "lineNumber": 278
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "len",
+          "lineNumber": 281
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "get_connection",
+          "lineNumber": 284
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.execute(\n            \"SELECT status, error FROM chunks WHERE id = ?\", (chunk_id,)\n        ).fetchone",
+          "lineNumber": 286
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 286
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.execute(\n            \"SELECT text FROM transcripts WHERE chunk_id = ?\", (chunk_id,)\n        ).fetchone",
+          "lineNumber": 291
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.execute",
+          "lineNumber": 291
+        },
+        {
+          "caller": "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
+          "callee": "conn.close",
+          "lineNumber": 296
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "get_connection",
+          "lineNumber": 304
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "transaction",
+          "lineNumber": 306
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "_seed_station",
+          "lineNumber": 307
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "range",
+          "lineNumber": 309
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "audio.write_bytes",
+          "lineNumber": 311
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "_insert_chunk",
+          "lineNumber": 312
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "str",
+          "lineNumber": 315
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "float",
+          "lineNumber": 316
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "float",
+          "lineNumber": 317
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.close",
+          "lineNumber": 320
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "FakeTranscriber",
+          "lineNumber": 322
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "ChunkConsumer",
+          "lineNumber": 323
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "consumer.run_once",
+          "lineNumber": 326
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "get_connection",
+          "lineNumber": 328
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) AS n FROM chunks WHERE status = 'dropped'\"\n        ).fetchone",
+          "lineNumber": 330
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 330
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) AS n FROM chunks WHERE status = 'pending'\"\n        ).fetchone",
+          "lineNumber": 333
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 333
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT COUNT(*) AS n FROM chunks\n            WHERE status IN ('done', 'processing')\n            \"\"\"\n        ).fetchone",
+          "lineNumber": 336
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 336
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute(\n            \"SELECT reason, start_ts, end_ts FROM gaps WHERE reason = 'dropped_backlog'\"\n        ).fetchall",
+          "lineNumber": 347
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 347
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "len",
+          "lineNumber": 350
+        },
+        {
+          "caller": "test_drop_oldest_overflow_writes_gaps",
+          "callee": "conn.close",
+          "lineNumber": 354
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "get_connection",
+          "lineNumber": 362
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "transaction",
+          "lineNumber": 364
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "_seed_station",
+          "lineNumber": 365
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "range",
+          "lineNumber": 366
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "audio.write_bytes",
+          "lineNumber": 368
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "_insert_chunk",
+          "lineNumber": 369
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "str",
+          "lineNumber": 372
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "float",
+          "lineNumber": 373
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "float",
+          "lineNumber": 374
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.close",
+          "lineNumber": 377
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "FakeTranscriber",
+          "lineNumber": 379
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "ChunkConsumer",
+          "lineNumber": 380
+        },
+        {
+          "caller": "worker",
+          "callee": "range",
+          "lineNumber": 386
+        },
+        {
+          "caller": "worker",
+          "callee": "consumer.run_once",
+          "lineNumber": 387
+        },
+        {
+          "caller": "worker",
+          "callee": "errors.append",
+          "lineNumber": 389
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "threading.Thread",
+          "lineNumber": 391
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "range",
+          "lineNumber": 391
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "t.start",
+          "lineNumber": 393
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "t.join",
+          "lineNumber": 395
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "get_connection",
+          "lineNumber": 399
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) AS n FROM chunks WHERE status = 'done'\"\n        ).fetchone",
+          "lineNumber": 401
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.execute",
+          "lineNumber": 401
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.execute(\n            \"SELECT COUNT(*) AS n FROM transcripts\"\n        ).fetchone",
+          "lineNumber": 404
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.execute",
+          "lineNumber": 404
+        },
+        {
+          "caller": "test_atomic_claim_two_threads_never_duplicate",
+          "callee": "conn.close",
+          "lineNumber": 410
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "present.write_bytes",
+          "lineNumber": 420
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "get_connection",
+          "lineNumber": 422
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "transaction",
+          "lineNumber": 424
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "_seed_station",
+          "lineNumber": 425
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "_insert_chunk",
+          "lineNumber": 426
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 429
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "_insert_chunk",
+          "lineNumber": 433
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 436
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "conn.close",
+          "lineNumber": 441
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "FakeTranscriber",
+          "lineNumber": 443
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "ChunkConsumer",
+          "lineNumber": 444
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "consumer.run_once",
+          "lineNumber": 446
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "consumer.run_once",
+          "lineNumber": 447
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "get_connection",
+          "lineNumber": 449
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "conn.execute(\n            \"SELECT path, status, error FROM chunks ORDER BY start_ts\"\n        ).fetchall",
+          "lineNumber": 451
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "conn.execute",
+          "lineNumber": 451
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "len",
+          "lineNumber": 457
+        },
+        {
+          "caller": "test_missing_audio_file_dropped_loop_continues",
+          "callee": "conn.close",
+          "lineNumber": 459
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "bad.write_bytes",
+          "lineNumber": 469
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "good.write_bytes",
+          "lineNumber": 470
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "get_connection",
+          "lineNumber": 472
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "transaction",
+          "lineNumber": 474
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "_seed_station",
+          "lineNumber": 475
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "_insert_chunk",
+          "lineNumber": 476
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 479
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "_insert_chunk",
+          "lineNumber": 483
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 486
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.close",
+          "lineNumber": 491
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "FakeTranscriber",
+          "lineNumber": 493
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "ChunkConsumer",
+          "lineNumber": 494
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "consumer.run_once",
+          "lineNumber": 496
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "consumer.run_once",
+          "lineNumber": 497
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "get_connection",
+          "lineNumber": 499
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.execute(\n            \"SELECT status, error FROM chunks WHERE path = ?\", (str(bad),)\n        ).fetchone",
+          "lineNumber": 501
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.execute",
+          "lineNumber": 501
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 502
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.execute(\n            \"SELECT status FROM chunks WHERE path = ?\", (str(good),)\n        ).fetchone",
+          "lineNumber": 504
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.execute",
+          "lineNumber": 504
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "str",
+          "lineNumber": 505
+        },
+        {
+          "caller": "test_transcription_failure_dropped_loop_continues",
+          "callee": "conn.close",
+          "lineNumber": 511
+        },
+        {
+          "caller": "test_run_once_returns_false_when_queue_empty",
+          "callee": "FakeTranscriber",
+          "lineNumber": 518
+        },
+        {
+          "caller": "test_run_once_returns_false_when_queue_empty",
+          "callee": "ChunkConsumer",
+          "lineNumber": 519
+        },
+        {
+          "caller": "test_run_once_returns_false_when_queue_empty",
+          "callee": "consumer.run_once",
+          "lineNumber": 520
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "audio.write_bytes",
+          "lineNumber": 530
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "get_connection",
+          "lineNumber": 532
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "transaction",
+          "lineNumber": 534
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "_seed_station",
+          "lineNumber": 535
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "_insert_chunk",
+          "lineNumber": 536
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "str",
+          "lineNumber": 539
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.close",
+          "lineNumber": 544
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "FakeExtractor",
+          "lineNumber": 546
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "RuntimeError",
+          "lineNumber": 546
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "FakeDetectionPersister",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "FakeTranscriber",
+          "lineNumber": 548
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "ChunkConsumer",
+          "lineNumber": 549
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "consumer.run_once",
+          "lineNumber": 557
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "get_connection",
+          "lineNumber": 561
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.execute(\n            \"SELECT status, error FROM chunks WHERE id = ?\", (chunk_id,)\n        ).fetchone",
+          "lineNumber": 563
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.execute",
+          "lineNumber": 563
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.execute(\n            \"SELECT text FROM transcripts WHERE chunk_id = ?\", (chunk_id,)\n        ).fetchone",
+          "lineNumber": 569
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.execute",
+          "lineNumber": 569
+        },
+        {
+          "caller": "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript",
+          "callee": "conn.close",
+          "lineNumber": 574
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 17,
+        "functionCount": 13,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "worker/consumer.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 414,
+      "nonEmptyLines": 370,
+      "functions": [
+        {
+          "name": "_merge_contiguous_ranges",
+          "startLine": 365,
+          "endLine": 388,
+          "params": [
+            "rows"
+          ]
+        },
+        {
+          "name": "create_consumer",
+          "startLine": 391,
+          "endLine": 414,
+          "params": [
+            "db_path",
+            "settings",
+            "transcriber",
+            "extractor",
+            "detection_persister",
+            "fingerprint_annotator",
+            "poll_interval_sec"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ClaimedChunk",
+          "startLine": 45,
+          "endLine": 54,
+          "methods": [
+            "audio_duration_sec"
+          ],
+          "properties": [
+            "id",
+            "station_id",
+            "path",
+            "start_ts",
+            "end_ts"
+          ]
+        },
+        {
+          "name": "ExtractionBackend",
+          "startLine": 57,
+          "endLine": 58,
+          "methods": [
+            "extract"
+          ],
+          "properties": []
+        },
+        {
+          "name": "DetectionPersistenceBackend",
+          "startLine": 61,
+          "endLine": 69,
+          "methods": [
+            "record_extraction"
+          ],
+          "properties": []
+        },
+        {
+          "name": "FingerprintAnnotationBackend",
+          "startLine": 72,
+          "endLine": 73,
+          "methods": [
+            "annotate_chunk"
+          ],
+          "properties": []
+        },
+        {
+          "name": "ChunkConsumer",
+          "startLine": 76,
+          "endLine": 362,
+          "methods": [
+            "__init__",
+            "run",
+            "run_once",
+            "_enforce_drop_oldest",
+            "_insert_backlog_gaps",
+            "_claim_chunk",
+            "_process_claimed",
+            "_persist_success",
+            "_mark_dropped",
+            "_update_rtf_avg"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ClaimedChunk",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "ExtractionBackend",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "DetectionPersistenceBackend",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "FingerprintAnnotationBackend",
+          "line": 72,
+          "isDefault": false
+        },
+        {
+          "name": "ChunkConsumer",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "_merge_contiguous_ranges",
+          "line": 365,
+          "isDefault": false
+        },
+        {
+          "name": "create_consumer",
+          "line": 391,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 91
+        },
+        {
+          "caller": "__init__",
+          "callee": "ChunkJanitor",
+          "lineNumber": 97
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.is_set",
+          "lineNumber": 103
+        },
+        {
+          "caller": "run",
+          "callee": "self.run_once",
+          "lineNumber": 104
+        },
+        {
+          "caller": "run",
+          "callee": "self.janitor.run_sweep",
+          "lineNumber": 107
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.wait",
+          "lineNumber": 109
+        },
+        {
+          "caller": "run",
+          "callee": "time.sleep",
+          "lineNumber": 112
+        },
+        {
+          "caller": "run",
+          "callee": "stop_event.is_set",
+          "lineNumber": 113
+        },
+        {
+          "caller": "run_once",
+          "callee": "get_connection",
+          "lineNumber": 119
+        },
+        {
+          "caller": "run_once",
+          "callee": "transaction",
+          "lineNumber": 121
+        },
+        {
+          "caller": "run_once",
+          "callee": "self._enforce_drop_oldest",
+          "lineNumber": 122
+        },
+        {
+          "caller": "run_once",
+          "callee": "self._claim_chunk",
+          "lineNumber": 123
+        },
+        {
+          "caller": "run_once",
+          "callee": "self._process_claimed",
+          "lineNumber": 127
+        },
+        {
+          "caller": "run_once",
+          "callee": "increment_chunks_processed",
+          "lineNumber": 129
+        },
+        {
+          "caller": "run_once",
+          "callee": "conn.close",
+          "lineNumber": 132
+        },
+        {
+          "caller": "run_once",
+          "callee": "set_queue_pending_hours",
+          "lineNumber": 133
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT id, station_id, start_ts, end_ts\n            FROM chunks\n            WHERE status = 'pending'\n            ORDER BY start_ts ASC\n            \"\"\"\n        ).fetchall",
+          "lineNumber": 137
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "conn.execute",
+          "lineNumber": 137
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "sum",
+          "lineNumber": 148
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "drop_rows.append",
+          "lineNumber": 156
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "\",\".join",
+          "lineNumber": 162
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "len",
+          "lineNumber": 162
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "conn.execute",
+          "lineNumber": 163
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "increment_chunks_dropped",
+          "lineNumber": 171
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "len",
+          "lineNumber": 171
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "self._insert_backlog_gaps",
+          "lineNumber": 172
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "logger.warning",
+          "lineNumber": 173
+        },
+        {
+          "caller": "_enforce_drop_oldest",
+          "callee": "len",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "by_station.setdefault(row[\"station_id\"], []).append",
+          "lineNumber": 188
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "by_station.setdefault",
+          "lineNumber": 188
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "time.time",
+          "lineNumber": 190
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "by_station.items",
+          "lineNumber": 191
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "station_rows.sort",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "_merge_contiguous_ranges",
+          "lineNumber": 193
+        },
+        {
+          "caller": "_insert_backlog_gaps",
+          "callee": "conn.execute",
+          "lineNumber": 194
+        },
+        {
+          "caller": "_claim_chunk",
+          "callee": "conn.execute(CLAIM_SQL).fetchone",
+          "lineNumber": 203
+        },
+        {
+          "caller": "_claim_chunk",
+          "callee": "conn.execute",
+          "lineNumber": 203
+        },
+        {
+          "caller": "_claim_chunk",
+          "callee": "ClaimedChunk",
+          "lineNumber": 206
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "Path",
+          "lineNumber": 216
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "audio_path.is_file",
+          "lineNumber": 217
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self._mark_dropped",
+          "lineNumber": 218
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self.fingerprint_annotator.annotate_chunk",
+          "lineNumber": 224
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "logger.exception",
+          "lineNumber": 226
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self.transcriber.transcribe",
+          "lineNumber": 232
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "logger.exception",
+          "lineNumber": 237
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self._mark_dropped",
+          "lineNumber": 241
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "str",
+          "lineNumber": 241
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self._persist_success",
+          "lineNumber": 244
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self.extractor.extract",
+          "lineNumber": 251
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self.detection_persister.record_extraction",
+          "lineNumber": 252
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "logger.exception",
+          "lineNumber": 259
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self._mark_dropped",
+          "lineNumber": 263
+        },
+        {
+          "caller": "_process_claimed",
+          "callee": "self.janitor.delete_after_processing",
+          "lineNumber": 267
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "get_connection",
+          "lineNumber": 271
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "transaction",
+          "lineNumber": 273
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "json.dumps",
+          "lineNumber": 274
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "conn.execute",
+          "lineNumber": 280
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "int",
+          "lineNumber": 288
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "conn.execute",
+          "lineNumber": 292
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "self._update_rtf_avg",
+          "lineNumber": 296
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "set_asr_rtf_avg",
+          "lineNumber": 297
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "conn.close",
+          "lineNumber": 299
+        },
+        {
+          "caller": "_persist_success",
+          "callee": "logger.info",
+          "lineNumber": 301
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "get_connection",
+          "lineNumber": 313
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "transaction",
+          "lineNumber": 315
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "conn.execute",
+          "lineNumber": 316
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "conn.close",
+          "lineNumber": 325
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "increment_chunks_dropped",
+          "lineNumber": 326
+        },
+        {
+          "caller": "_mark_dropped",
+          "callee": "logger.warning",
+          "lineNumber": 327
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "time.time",
+          "lineNumber": 333
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute(\n            \"SELECT value FROM status WHERE key = 'asr_rtf_count'\"\n        ).fetchone",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute(\n            \"SELECT value FROM status WHERE key = 'asr_rtf_avg'\"\n        ).fetchone",
+          "lineNumber": 337
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute",
+          "lineNumber": 337
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "int",
+          "lineNumber": 341
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "float",
+          "lineNumber": 343
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute",
+          "lineNumber": 349
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "str",
+          "lineNumber": 354
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "conn.execute",
+          "lineNumber": 356
+        },
+        {
+          "caller": "_update_rtf_avg",
+          "callee": "str",
+          "lineNumber": 361
+        },
+        {
+          "caller": "_merge_contiguous_ranges",
+          "callee": "max",
+          "lineNumber": 380
+        },
+        {
+          "caller": "_merge_contiguous_ranges",
+          "callee": "ranges.append",
+          "lineNumber": 382
+        },
+        {
+          "caller": "_merge_contiguous_ranges",
+          "callee": "ranges.append",
+          "lineNumber": 387
+        },
+        {
+          "caller": "create_consumer",
+          "callee": "Transcriber",
+          "lineNumber": 402
+        },
+        {
+          "caller": "create_consumer",
+          "callee": "OllamaExtractor",
+          "lineNumber": 403
+        },
+        {
+          "caller": "create_consumer",
+          "callee": "DetectionPersister",
+          "lineNumber": 404
+        },
+        {
+          "caller": "create_consumer",
+          "callee": "FingerprintAnnotator",
+          "lineNumber": 405
+        },
+        {
+          "caller": "create_consumer",
+          "callee": "ChunkConsumer",
+          "lineNumber": 406
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 7,
+        "functionCount": 2,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "worker/dedup.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 328,
+      "nonEmptyLines": 291,
+      "functions": [
+        {
+          "name": "_norm_text",
+          "startLine": 35,
+          "endLine": 36,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "_token_overlap_score",
+          "startLine": 39,
+          "endLine": 56,
+          "params": [
+            "segment_text",
+            "needles"
+          ]
+        },
+        {
+          "name": "estimate_ad_bounds",
+          "startLine": 59,
+          "endLine": 84,
+          "params": [
+            "segments",
+            "extraction",
+            "chunk_duration_sec",
+            "padding_sec"
+          ]
+        },
+        {
+          "name": "ffmpeg_clip",
+          "startLine": 87,
+          "endLine": 115,
+          "params": [
+            "source",
+            "dest",
+            "start_sec",
+            "end_sec"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "DetectionPersister",
+          "startLine": 118,
+          "endLine": 328,
+          "methods": [
+            "__init__",
+            "record_extraction",
+            "_chunk_row",
+            "_find_matching_canonical",
+            "_canonical_score",
+            "_create_canonical",
+            "_has_recent_same_station_airing",
+            "_insert_detection"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_norm_text",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "_token_overlap_score",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "estimate_ad_bounds",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "ffmpeg_clip",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "DetectionPersister",
+          "line": 118,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "token_set_ratio",
+          "callee": "\" \".join",
+          "lineNumber": 26
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "sorted",
+          "lineNumber": 26
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "set",
+          "lineNumber": 26
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "left.lower().split",
+          "lineNumber": 26
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "left.lower",
+          "lineNumber": 26
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "\" \".join",
+          "lineNumber": 27
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "sorted",
+          "lineNumber": 27
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "set",
+          "lineNumber": 27
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "right.lower().split",
+          "lineNumber": 27
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "right.lower",
+          "lineNumber": 27
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "int",
+          "lineNumber": 28
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "SequenceMatcher(None, left_tokens, right_tokens).ratio",
+          "lineNumber": 28
+        },
+        {
+          "caller": "token_set_ratio",
+          "callee": "SequenceMatcher",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_norm_text",
+          "callee": "\" \".join",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_norm_text",
+          "callee": "(value or \"\").lower().split",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_norm_text",
+          "callee": "(value or \"\").lower",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_token_overlap_score",
+          "callee": "_norm_text",
+          "lineNumber": 40
+        },
+        {
+          "caller": "_token_overlap_score",
+          "callee": "_norm_text",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_token_overlap_score",
+          "callee": "fuzz.token_set_ratio",
+          "lineNumber": 51
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 68
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "needles.append",
+          "lineNumber": 73
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "needles.extend",
+          "lineNumber": 74
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "_token_overlap_score",
+          "lineNumber": 76
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 78
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 80
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "min",
+          "lineNumber": 80
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "min",
+          "lineNumber": 81
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 81
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 81
+        },
+        {
+          "caller": "estimate_ad_bounds",
+          "callee": "max",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "dest.parent.mkdir",
+          "lineNumber": 89
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "max",
+          "lineNumber": 90
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "shutil.which",
+          "lineNumber": 91
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "str",
+          "lineNumber": 103
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "str",
+          "lineNumber": 104
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "subprocess.run",
+          "lineNumber": 107
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "source.is_file",
+          "lineNumber": 111
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "shutil.copyfile",
+          "lineNumber": 112
+        },
+        {
+          "caller": "ffmpeg_clip",
+          "callee": "dest.write_bytes",
+          "lineNumber": 114
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 129
+        },
+        {
+          "caller": "__init__",
+          "callee": "Path",
+          "lineNumber": 131
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "normalize_phone_number",
+          "lineNumber": 148
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "extraction.model_copy",
+          "lineNumber": 150
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "get_connection",
+          "lineNumber": 152
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "transaction",
+          "lineNumber": 154
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self._chunk_row",
+          "lineNumber": 155
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self._find_matching_canonical",
+          "lineNumber": 156
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self._create_canonical",
+          "lineNumber": 158
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self._has_recent_same_station_airing",
+          "lineNumber": 160
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "self._insert_detection",
+          "lineNumber": 161
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "conn.execute",
+          "lineNumber": 163
+        },
+        {
+          "caller": "record_extraction",
+          "callee": "conn.close",
+          "lineNumber": 173
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "conn.execute(\n            \"SELECT id, station_id, path, start_ts, end_ts FROM chunks WHERE id = ?\",\n            (chunk_id,),\n        ).fetchone",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "conn.execute",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_chunk_row",
+          "callee": "ValueError",
+          "lineNumber": 181
+        },
+        {
+          "caller": "_find_matching_canonical",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT c.*, d.offer_summary, d.key_claims\n            FROM canonical_ads c\n            LEFT JOIN detections d ON d.id = (\n                SELECT id FROM detections\n                WHERE canonical_ad_id = c.id\n                ORDER BY id DESC\n                LIMIT 1\n            )\n            WHERE c.last_seen >= ?\n            \"\"\",\n            (cutoff,),\n        ).fetchall",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_find_matching_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_find_matching_canonical",
+          "callee": "self._canonical_score",
+          "lineNumber": 210
+        },
+        {
+          "caller": "_find_matching_canonical",
+          "callee": "int",
+          "lineNumber": 213
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "normalize_phone_number",
+          "lineNumber": 223
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "scores.append",
+          "lineNumber": 226
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "weights.append",
+          "lineNumber": 227
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "scores.append",
+          "lineNumber": 230
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "float",
+          "lineNumber": 230
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "fuzz.token_set_ratio",
+          "lineNumber": 230
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "weights.append",
+          "lineNumber": 231
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "scores.append",
+          "lineNumber": 234
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "_norm_text",
+          "lineNumber": 234
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "_norm_text",
+          "lineNumber": 234
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "weights.append",
+          "lineNumber": 235
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "\" \".join",
+          "lineNumber": 239
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "scores.append",
+          "lineNumber": 240
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "float",
+          "lineNumber": 240
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "fuzz.token_set_ratio",
+          "lineNumber": 240
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "weights.append",
+          "lineNumber": 241
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "sum",
+          "lineNumber": 245
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "zip",
+          "lineNumber": 245
+        },
+        {
+          "caller": "_canonical_score",
+          "callee": "sum",
+          "lineNumber": 245
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 254
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "normalize_phone_number",
+          "lineNumber": 261
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "int",
+          "lineNumber": 267
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 267
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 267
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "Path",
+          "lineNumber": 268
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "max",
+          "lineNumber": 269
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "float",
+          "lineNumber": 269
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "estimate_ad_bounds",
+          "lineNumber": 270
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "self.clipper",
+          "lineNumber": 272
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "conn.execute",
+          "lineNumber": 273
+        },
+        {
+          "caller": "_create_canonical",
+          "callee": "str",
+          "lineNumber": 275
+        },
+        {
+          "caller": "_has_recent_same_station_airing",
+          "callee": "conn.execute(\n            \"\"\"\n            SELECT 1\n            FROM detections d\n            JOIN chunks c ON c.id = d.chunk_id\n            WHERE d.canonical_ad_id = ?\n              AND c.station_id = ?\n              AND ABS(c.start_ts - ?) <= ?\n            LIMIT 1\n            \"\"\",\n            (canonical_id, chunk[\"station_id\"], chunk[\"start_ts\"], window),\n        ).fetchone",
+          "lineNumber": 286
+        },
+        {
+          "caller": "_has_recent_same_station_airing",
+          "callee": "conn.execute",
+          "lineNumber": 286
+        },
+        {
+          "caller": "_insert_detection",
+          "callee": "conn.execute",
+          "lineNumber": 307
+        },
+        {
+          "caller": "_insert_detection",
+          "callee": "json.dumps",
+          "lineNumber": 324
+        },
+        {
+          "caller": "_insert_detection",
+          "callee": "int",
+          "lineNumber": 328
+        },
+        {
+          "caller": "_insert_detection",
+          "callee": "conn.execute(\"SELECT last_insert_rowid()\").fetchone",
+          "lineNumber": 328
+        },
+        {
+          "caller": "_insert_detection",
+          "callee": "conn.execute",
+          "lineNumber": 328
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "worker/extract.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 249,
+      "nonEmptyLines": 210,
+      "functions": [
+        {
+          "name": "extraction_json_schema",
+          "startLine": 48,
+          "endLine": 57,
+          "params": []
+        },
+        {
+          "name": "build_extraction_prompt",
+          "startLine": 60,
+          "endLine": 89,
+          "params": [
+            "transcript_text"
+          ]
+        },
+        {
+          "name": "_toll_free_prefix",
+          "startLine": 119,
+          "endLine": 127,
+          "params": [
+            "digits"
+          ]
+        },
+        {
+          "name": "_accept_spelled_digits",
+          "startLine": 130,
+          "endLine": 131,
+          "params": [
+            "digits"
+          ]
+        },
+        {
+          "name": "_has_explicit_digits_or_vanity",
+          "startLine": 134,
+          "endLine": 139,
+          "params": [
+            "raw"
+          ]
+        },
+        {
+          "name": "_parse_spelled_phone",
+          "startLine": 142,
+          "endLine": 166,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "_parse_digits_and_vanity",
+          "startLine": 169,
+          "endLine": 178,
+          "params": [
+            "raw"
+          ]
+        },
+        {
+          "name": "normalize_phone_number",
+          "startLine": 181,
+          "endLine": 190,
+          "params": [
+            "raw"
+          ]
+        },
+        {
+          "name": "_load_response_json",
+          "startLine": 193,
+          "endLine": 208,
+          "params": [
+            "raw_response"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "OllamaHTTPClient",
+          "startLine": 20,
+          "endLine": 23,
+          "methods": [
+            "generate"
+          ],
+          "properties": []
+        },
+        {
+          "name": "UrllibOllamaHTTPClient",
+          "startLine": 26,
+          "endLine": 45,
+          "methods": [
+            "__init__",
+            "generate"
+          ],
+          "properties": []
+        },
+        {
+          "name": "OllamaExtractor",
+          "startLine": 211,
+          "endLine": 249,
+          "methods": [
+            "__init__",
+            "extract"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "OllamaHTTPClient",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "UrllibOllamaHTTPClient",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "extraction_json_schema",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "build_extraction_prompt",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "_toll_free_prefix",
+          "line": 119,
+          "isDefault": false
+        },
+        {
+          "name": "_accept_spelled_digits",
+          "line": 130,
+          "isDefault": false
+        },
+        {
+          "name": "_has_explicit_digits_or_vanity",
+          "line": 134,
+          "isDefault": false
+        },
+        {
+          "name": "_parse_spelled_phone",
+          "line": 142,
+          "isDefault": false
+        },
+        {
+          "name": "_parse_digits_and_vanity",
+          "line": 169,
+          "isDefault": false
+        },
+        {
+          "name": "normalize_phone_number",
+          "line": 181,
+          "isDefault": false
+        },
+        {
+          "name": "_load_response_json",
+          "line": 193,
+          "isDefault": false
+        },
+        {
+          "name": "OllamaExtractor",
+          "line": 211,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "base_url.rstrip",
+          "lineNumber": 30
+        },
+        {
+          "caller": "generate",
+          "callee": "urllib.request.Request",
+          "lineNumber": 34
+        },
+        {
+          "caller": "generate",
+          "callee": "json.dumps(payload).encode",
+          "lineNumber": 36
+        },
+        {
+          "caller": "generate",
+          "callee": "json.dumps",
+          "lineNumber": 36
+        },
+        {
+          "caller": "generate",
+          "callee": "urllib.request.urlopen",
+          "lineNumber": 41
+        },
+        {
+          "caller": "generate",
+          "callee": "response.read().decode",
+          "lineNumber": 42
+        },
+        {
+          "caller": "generate",
+          "callee": "response.read",
+          "lineNumber": 42
+        },
+        {
+          "caller": "generate",
+          "callee": "RuntimeError",
+          "lineNumber": 44
+        },
+        {
+          "caller": "generate",
+          "callee": "json.loads",
+          "lineNumber": 45
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "AdExtraction.model_json_schema",
+          "lineNumber": 50
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "schema.pop",
+          "lineNumber": 53
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "schema.get(\"properties\", {}).values",
+          "lineNumber": 54
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "schema.get",
+          "lineNumber": 54
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "isinstance",
+          "lineNumber": 55
+        },
+        {
+          "caller": "extraction_json_schema",
+          "callee": "prop.pop",
+          "lineNumber": 56
+        },
+        {
+          "caller": "build_extraction_prompt",
+          "callee": "f\"\"\"\nYou are extracting paid advertisement signals from ASR text for U.S. news/talk radio.\nReturn ONLY JSON that conforms to the provided schema. Do not include markdown.\n\nDecision rules:\n- is_ad=true only for a paid spot, sponsorship read, or direct response advertisement.\n- Strong ad-signal cues: call to action, phone number, URL, \"sponsored\", \"paid for\", limited-time offer,\n  financing/funding promises, free quote/consultation, repeated brand + contact instructions.\n- is_ad=false for news interviews, host discussion, market commentary, public affairs, or generic talk about loans\n  without a direct commercial offer.\n- ad_category should be concise, e.g. business_funding, debt_relief, mortgage_refinance, tax_relief, insurance.\n- company_name, phone_number, website, offer_summary, and key_claims must be null/empty when unknown.\n- confidence is 0.0-1.0. Use lower confidence for ambiguous host reads or incomplete chunk-boundary text.\n- Normalize claims into short factual phrases. Do not invent missing details.\n\nFew-shot examples:\n1) Transcript: \"This hour is sponsored by Rapid Capital. Need cash for payroll? Call 800-555-1212 now for same-day funding.\"\n   JSON: {{\"is_ad\": true, \"ad_category\": \"business_funding\", \"company_name\": \"Rapid Capital\", \"phone_number\": \"800-555-1212\", \"website\": null, \"offer_summary\": \"same-day business funding\", \"key_claims\": [\"cash for payroll\", \"same-day funding\"], \"confidence\": 0.94}}\n2) Transcript: \"The senator discussed small-business lending standards and today's interest-rate outlook.\"\n   JSON: {{\"is_ad\": false, \"ad_category\": null, \"company_name\": null, \"phone_number\": null, \"website\": null, \"offer_summary\": null, \"key_claims\": [], \"confidence\": 0.86}}\n3) Transcript: \"Tax debt? The Tax Relief Center can stop wage garnishments. Visit taxhelp.example or call one eight hundred tax help.\"\n   JSON: {{\"is_ad\": true, \"ad_category\": \"tax_relief\", \"company_name\": \"The Tax Relief Center\", \"phone_number\": \"8008294357\", \"website\": \"taxhelp.example\", \"offer_summary\": \"tax debt relief\", \"key_claims\": [\"stop wage garnishments\"], \"confidence\": 0.91}}\n\nTranscript to classify:\n<<<TRANSCRIPT\n{transcript_text.strip()}\nTRANSCRIPT\n>>>\"\"\".strip",
+          "lineNumber": 62
+        },
+        {
+          "caller": "build_extraction_prompt",
+          "callee": "transcript_text.strip",
+          "lineNumber": 87
+        },
+        {
+          "caller": "_toll_free_prefix",
+          "callee": "len",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_toll_free_prefix",
+          "callee": "digits.startswith",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_toll_free_prefix",
+          "callee": "len",
+          "lineNumber": 123
+        },
+        {
+          "caller": "_accept_spelled_digits",
+          "callee": "len",
+          "lineNumber": 131
+        },
+        {
+          "caller": "_accept_spelled_digits",
+          "callee": "_toll_free_prefix",
+          "lineNumber": 131
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "re.search",
+          "lineNumber": 136
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "re.sub",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "raw.upper",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "bool",
+          "lineNumber": 139
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "re.search",
+          "lineNumber": 139
+        },
+        {
+          "caller": "_has_explicit_digits_or_vanity",
+          "callee": "re.search",
+          "lineNumber": 139
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "re.findall",
+          "lineNumber": 143
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "text.lower",
+          "lineNumber": 143
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 147
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 151
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "current.extend",
+          "lineNumber": 152
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "current.append",
+          "lineNumber": 155
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 160
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 160
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "\"\".join",
+          "lineNumber": 161
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 164
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "len",
+          "lineNumber": 164
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "\"\".join",
+          "lineNumber": 165
+        },
+        {
+          "caller": "_parse_spelled_phone",
+          "callee": "_accept_spelled_digits",
+          "lineNumber": 166
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "raw.upper",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "char.isdigit",
+          "lineNumber": 173
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "chars.append",
+          "lineNumber": 174
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "chars.append",
+          "lineNumber": 176
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "\"\".join",
+          "lineNumber": 177
+        },
+        {
+          "caller": "_parse_digits_and_vanity",
+          "callee": "len",
+          "lineNumber": 178
+        },
+        {
+          "caller": "normalize_phone_number",
+          "callee": "_parse_spelled_phone",
+          "lineNumber": 185
+        },
+        {
+          "caller": "normalize_phone_number",
+          "callee": "_has_explicit_digits_or_vanity",
+          "lineNumber": 188
+        },
+        {
+          "caller": "normalize_phone_number",
+          "callee": "_parse_digits_and_vanity",
+          "lineNumber": 190
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "isinstance",
+          "lineNumber": 194
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "isinstance",
+          "lineNumber": 196
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "ValueError",
+          "lineNumber": 197
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "raw_response.strip",
+          "lineNumber": 198
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "json.loads",
+          "lineNumber": 200
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "re.search",
+          "lineNumber": 202
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "json.loads",
+          "lineNumber": 205
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "match.group",
+          "lineNumber": 205
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "isinstance",
+          "lineNumber": 206
+        },
+        {
+          "caller": "_load_response_json",
+          "callee": "ValueError",
+          "lineNumber": 207
+        },
+        {
+          "caller": "__init__",
+          "callee": "UrllibOllamaHTTPClient",
+          "lineNumber": 222
+        },
+        {
+          "caller": "extract",
+          "callee": "range",
+          "lineNumber": 227
+        },
+        {
+          "caller": "extract",
+          "callee": "build_extraction_prompt",
+          "lineNumber": 228
+        },
+        {
+          "caller": "extract",
+          "callee": "extraction_json_schema",
+          "lineNumber": 234
+        },
+        {
+          "caller": "extract",
+          "callee": "self.http_client.generate",
+          "lineNumber": 239
+        },
+        {
+          "caller": "extract",
+          "callee": "_load_response_json",
+          "lineNumber": 240
+        },
+        {
+          "caller": "extract",
+          "callee": "response.get",
+          "lineNumber": 240
+        },
+        {
+          "caller": "extract",
+          "callee": "AdExtraction.model_validate",
+          "lineNumber": 241
+        },
+        {
+          "caller": "extract",
+          "callee": "normalize_phone_number",
+          "lineNumber": 242
+        },
+        {
+          "caller": "extract",
+          "callee": "extraction.model_copy",
+          "lineNumber": 244
+        },
+        {
+          "caller": "extract",
+          "callee": "ValueError",
+          "lineNumber": 249
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 12,
+        "functionCount": 9,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "worker/transcribe.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 94,
+      "nonEmptyLines": 76,
+      "functions": [
+        {
+          "name": "_default_model_factory",
+          "startLine": 38,
+          "endLine": 41,
+          "params": [
+            "model_name",
+            "compute_type"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "TranscriptSegment",
+          "startLine": 14,
+          "endLine": 17,
+          "methods": [],
+          "properties": [
+            "start",
+            "end",
+            "text"
+          ]
+        },
+        {
+          "name": "TranscriptionResult",
+          "startLine": 21,
+          "endLine": 31,
+          "methods": [
+            "rtf"
+          ],
+          "properties": [
+            "text",
+            "segments",
+            "audio_duration_sec",
+            "wall_time_sec"
+          ]
+        },
+        {
+          "name": "WhisperBackend",
+          "startLine": 34,
+          "endLine": 35,
+          "methods": [
+            "transcribe"
+          ],
+          "properties": []
+        },
+        {
+          "name": "Transcriber",
+          "startLine": 44,
+          "endLine": 94,
+          "methods": [
+            "__init__",
+            "_get_model",
+            "transcribe"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TranscriptSegment",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "TranscriptionResult",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "WhisperBackend",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "_default_model_factory",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "Transcriber",
+          "line": 44,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_default_model_factory",
+          "callee": "WhisperModel",
+          "lineNumber": 41
+        },
+        {
+          "caller": "_get_model",
+          "callee": "self._model_factory",
+          "lineNumber": 60
+        },
+        {
+          "caller": "transcribe",
+          "callee": "self._get_model",
+          "lineNumber": 69
+        },
+        {
+          "caller": "transcribe",
+          "callee": "time.perf_counter",
+          "lineNumber": 70
+        },
+        {
+          "caller": "transcribe",
+          "callee": "model.transcribe",
+          "lineNumber": 71
+        },
+        {
+          "caller": "transcribe",
+          "callee": "str",
+          "lineNumber": 71
+        },
+        {
+          "caller": "transcribe",
+          "callee": "segment.text.strip",
+          "lineNumber": 75
+        },
+        {
+          "caller": "transcribe",
+          "callee": "parts.append",
+          "lineNumber": 77
+        },
+        {
+          "caller": "transcribe",
+          "callee": "segments.append",
+          "lineNumber": 78
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptSegment",
+          "lineNumber": 79
+        },
+        {
+          "caller": "transcribe",
+          "callee": "float",
+          "lineNumber": 80
+        },
+        {
+          "caller": "transcribe",
+          "callee": "float",
+          "lineNumber": 81
+        },
+        {
+          "caller": "transcribe",
+          "callee": "time.perf_counter",
+          "lineNumber": 85
+        },
+        {
+          "caller": "transcribe",
+          "callee": "float",
+          "lineNumber": 88
+        },
+        {
+          "caller": "transcribe",
+          "callee": "getattr",
+          "lineNumber": 88
+        },
+        {
+          "caller": "transcribe",
+          "callee": "TranscriptionResult",
+          "lineNumber": 89
+        },
+        {
+          "caller": "transcribe",
+          "callee": "\" \".join(parts).strip",
+          "lineNumber": 90
+        },
+        {
+          "caller": "transcribe",
+          "callee": "\" \".join",
+          "lineNumber": 90
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 5,
+        "functionCount": 1,
+        "classCount": 4
+      }
+    }
+  ]
+}

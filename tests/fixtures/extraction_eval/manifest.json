@@ -1,0 +1,152 @@
+{
+  "fixtures": [
+    {
+      "id": "rapid_relief_capital_positive",
+      "transcript_file": "rapid_relief_capital_positive.txt",
+      "expected": {
+        "is_ad": true,
+        "company_name": "Rapid Relief Capital",
+        "phone": "8005550199"
+      },
+      "mock_response": {
+        "is_ad": true,
+        "ad_category": "business_funding",
+        "company_name": "Rapid Relief Capital LLC",
+        "phone_number": "eight hundred five five five oh one nine nine",
+        "website": "rapidreliefcapital.com",
+        "offer_summary": "same-day working capital",
+        "key_claims": [
+          "approve up to five hundred thousand dollars",
+          "free funding review",
+          "bad credit is okay"
+        ],
+        "confidence": 0.96
+      }
+    },
+    {
+      "id": "liberty_funding_group_positive",
+      "transcript_file": "liberty_funding_group_positive.txt",
+      "expected": {
+        "is_ad": true,
+        "company_name": "Liberty Funding Group",
+        "phone": "18882274669"
+      },
+      "mock_response": {
+        "is_ad": true,
+        "ad_category": "business_funding",
+        "company_name": "Liberty Funding Group",
+        "phone_number": "1-888-CASH-NOW",
+        "website": null,
+        "offer_summary": "fast small-business funding",
+        "key_claims": [
+          "up to two hundred fifty thousand dollars",
+          "no collateral",
+          "same-day decisions"
+        ],
+        "confidence": 0.94
+      }
+    },
+    {
+      "id": "homefront_mortgage_positive",
+      "transcript_file": "homefront_mortgage_positive.txt",
+      "expected": {
+        "is_ad": true,
+        "company_name": "HomeFront Mortgage",
+        "phone": "8774102200"
+      },
+      "mock_response": {
+        "is_ad": true,
+        "ad_category": "mortgage_refinance",
+        "company_name": "HomeFront Mortgage",
+        "phone_number": "877 410 2200",
+        "website": "homefrontmortgage.com",
+        "offer_summary": "mortgage refinance review",
+        "key_claims": [
+          "cut your monthly payment",
+          "skip two payments",
+          "free refinance analysis"
+        ],
+        "confidence": 0.92
+      }
+    },
+    {
+      "id": "cashbridge_lending_positive",
+      "transcript_file": "cashbridge_lending_positive.txt",
+      "expected": {
+        "is_ad": true,
+        "company_name": "CashBridge Lending",
+        "phone": "18664007246"
+      },
+      "mock_response": {
+        "is_ad": true,
+        "ad_category": "debt_relief",
+        "company_name": "CashBridge Lending Co.",
+        "phone_number": "one eight six six four zero zero seven two four six",
+        "website": null,
+        "offer_summary": "small-business debt reset consultation",
+        "key_claims": [
+          "consolidate merchant cash advances",
+          "free consultation"
+        ],
+        "confidence": 0.89
+      }
+    },
+    {
+      "id": "talkshow_sba_loans_negative",
+      "transcript_file": "talkshow_sba_loans_negative.txt",
+      "expected": {
+        "is_ad": false,
+        "company_name": null,
+        "phone": null
+      },
+      "mock_response": {
+        "is_ad": false,
+        "ad_category": null,
+        "company_name": null,
+        "phone_number": null,
+        "website": null,
+        "offer_summary": null,
+        "key_claims": [],
+        "confidence": 0.9
+      }
+    },
+    {
+      "id": "news_interest_rates_negative",
+      "transcript_file": "news_interest_rates_negative.txt",
+      "expected": {
+        "is_ad": false,
+        "company_name": null,
+        "phone": null
+      },
+      "mock_response": {
+        "is_ad": false,
+        "ad_category": null,
+        "company_name": null,
+        "phone_number": null,
+        "website": null,
+        "offer_summary": null,
+        "key_claims": [],
+        "confidence": 0.87
+      }
+    },
+    {
+      "id": "credit_union_interview_negative",
+      "transcript_file": "credit_union_interview_negative.txt",
+      "expected": {
+        "is_ad": false,
+        "company_name": null,
+        "phone": null
+      },
+      "mock_response": {
+        "is_ad": false,
+        "ad_category": null,
+        "company_name": null,
+        "phone_number": null,
+        "website": null,
+        "offer_summary": null,
+        "key_claims": [],
+        "confidence": 0.84
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "dashboard/templates/ad_detail.html",
+      "language": "html",
+      "sizeLines": 37,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/ads.html",
+      "language": "html",
+      "sizeLines": 24,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/base.html",
+      "language": "html",
+      "sizeLines": 52,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/gaps.html",
+      "language": "html",
+      "sizeLines": 22,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/index.html",
+      "language": "html",
+      "sizeLines": 29,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/no_database.html",
+      "language": "html",
+      "sizeLines": 10,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "dashboard/templates/stations.html",
+      "language": "html",
+      "sizeLines": 23,
+      "fileCategory": "markup"
+    }
+  ],
+  "batchImportData": {
+    "dashboard/templates/ad_detail.html": [],
+    "dashboard/templates/ads.html": [],
+    "dashboard/templates/base.html": [],
+    "dashboard/templates/gaps.html": [],
+    "dashboard/templates/index.html": [],
+    "dashboard/templates/no_database.html": [],
+    "dashboard/templates/stations.html": []
+  }
+}

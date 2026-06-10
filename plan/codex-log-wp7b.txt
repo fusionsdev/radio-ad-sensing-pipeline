@@ -1,0 +1,2473 @@
+OpenAI Codex v0.139.0
+--------
+workdir: h:\DEV\projects\radio-ad-sensing-pipeline
+model: gpt-5.4-mini
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: medium
+reasoning summaries: none
+session id: 019eaf06-d732-7fb3-ac94-3f318f774d06
+--------
+user
+Batch 4 Session B — WP-7b Docker finalize (Standard).
+
+Read: PLAN.md Phase 7, plan/wp7a-report.md, plan/wp10a-report.md, docker-compose.yml, worker/Dockerfile, .env.example.
+
+Scope:
+- Verify NVIDIA runtime only on worker + ollama + dcgm-exporter (not ingestor/alerter/dashboard)
+- Ensure ollama-pull one-shot still pulls Qwen model
+- Expose metrics ports 9101-9104 in compose for ingestor/worker/alerter/dashboard (from wp10b)
+- Restart policy, volumes, healthchecks coherent
+- .env not baked into images; secrets from env at runtime
+- Fix any compose/service wiring gaps found
+
+Run: docker compose config --quiet (must pass)
+If docker not available for full up, document manual verify steps in plan/wp7b-report.md.
+
+Do NOT reimplement business logic. Write plan/wp7b-report.md.
+
+
+hook: SessionStart
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+codex
+I’m going to inspect the Phase 7 docs and the Docker wiring first, then I’ll tighten the compose file if needed, run the requested `docker compose config --quiet` check, and finish by writing `plan/wp7b-report.md` with the verification notes.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content PLAN.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content .env.example' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/wp7a-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content docker-compose.yml' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/wp10a-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content worker/Dockerfile' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 2133ms:
+# Autonomous Radio Ad-Sensing Pipeline
+
+A fully local Docker Compose pipeline on Ubuntu (12GB NVIDIA GPU) that ingests 4–10 U.S. News/Talk radio streams 24/7, chunks and transcribes them with faster-whisper, extracts loan/funding ad details with a local Qwen2.5-7B via Ollama, dedups fuzzily (boosted by chromaprint audio fingerprinting), stores everything in SQLite, sends first-seen alerts via the Telegram Bot API, and exposes a read-only FastAPI dashboard plus Prometheus/Grafana monitoring.
+
+## Agreed Decisions (from grilling session)
+
+| Branch | Decision |
+|---|---|
+| Scale | 4–10 concurrent stations, single GPU box |
+| Segmentation | Fixed 60–120s chunks with 5–10s overlap; transcribe everything |
+| ASR | faster-whisper `medium.en`, int8_float16 (~1.5GB VRAM, ~10x RT) |
+| LLM | Ollama + Qwen2.5-7B-Instruct Q4_K_M (~5GB VRAM), JSON-schema structured output |
+| Schema | LLM extracts: is_ad, ad_category, company_name, phone_number, website, offer_summary, key_claims, confidence — `station`/`timestamp` are injected from chunk metadata, never asked of the LLM |
+| Dedup | Fuzzy (rapidfuzz >85% on transcript + normalized company/phone/category); alert first sighting per ad per N days; store every airing linked to canonical ad; same ad + same station within 3min counts as **one** airing (overlap de-double-count) |
+| Storage | SQLite (WAL); raw chunks kept 24–48h; detected-ad audio archived permanently; transcripts forever |
+| Deployment | Docker Compose: ingestor, worker (GPU), alerter, ollama; NVIDIA container toolkit; restart:always + healthchecks |
+| Ingestion resilience | `stations.yaml` config; ffmpeg reconnect + supervisor loop w/ backoff; gap logging; ops alert if station down >15min |
+| Telegram | Outbound-only Bot API (sendMessage + audio clip); no inbound webhook |
+| Backlog | Bounded queue (~2h); drop-oldest with gap log + ops alert |
+| Observability | Structured JSON logs, status table in SQLite, daily Telegram digest + Prometheus metrics & Grafana dashboards |
+| Audio pre-filter | Chromaprint fingerprinting as **annotation only** — tags repeats of known produced spots to skip redundant LLM calls and strengthen dedup; everything still transcribed (zero recall loss) |
+| Web dashboard | FastAPI + Jinja2/HTMX, read-only, LAN-only: detections feed w/ audio playback, canonical ads w/ airing frequency, station health, gap timeline |
+
+## Architecture
+
+```
+stations.yaml ──> [ingestor]  ffmpeg per station ──> chunks/ (WAV/Opus on disk)
+                                                        │ (SQLite-backed work queue)
+                  [worker]    fingerprint ─> faster-whisper ─> Ollama extract ─> fuzzy dedup ─> detections
+                                                        │
+                  [alerter]   reads unalerted detections ──> Telegram Bot API (first-seen + ops + daily digest)
+                  [janitor]   (in worker) retention cleanup, gap detection, status rollup
+                  [dashboard] FastAPI + HTMX (read-only, SQLite) ──> LAN browser
+                  [prometheus]<── /metrics from ingestor, worker, alerter, dashboard
+                  [grafana]   dashboards: queue depth, GPU util (dcgm/nvidia-smi exporter),
+                              detections/hr, station uptime, ASR/LLM latency
+```
+
+- **Queue**: a `chunks` table in SQLite (status: pending/processing/done/dropped). File-system chunks referenced by path. No Redis/Celery.
+- **SQLite concurrency**: 3 writer processes (ingestor, worker, alerter) on one DB — WAL mode + `busy_timeout=5000` + retry-on-`SQLITE_BUSY` wrapper in `shared/db.py`; keep transactions short; dashboard opens read-only connections.
+- **VRAM budget**: ~1.5GB Whisper + ~5GB LLM + overhead ≈ 8GB, safe on 12GB. Fingerprinting (chromaprint) is CPU-only.
+- **Fingerprint flow** (in worker, before ASR): compute chromaprint feature vector of chunk → **offset-tolerant match** against stored fingerprints of archived ad clips (sliding-window correlation over chromaprint vectors — a whole-chunk hash will never match a 30s ad at a random offset inside a 90s chunk) → on hit, record airing immediately and mark chunk `known_ad`; transcription still runs, but the LLM extraction step is skipped for `known_ad` chunks. If sliding-window chromaprint proves too weak, fall back to landmark hashing (audfprint-style) in a later iteration.
+- **Ad clip boundaries**: when a new ad is detected, map the LLM-flagged ad text back to Whisper **segment timestamps** to cut the ad clip from the chunk for archiving/fingerprinting (±2s padding).
+- **Metrics**: each Python service exposes `/metrics` via `prometheus-client`; GPU metrics via `nvidia-dcgm-exporter` (or `nvidia-smi`-based exporter); Grafana provisioned with datasource + dashboards as code.
+
+## Repository Layout
+
+```
+radio-ad-sensing-pipeline/
+├── docker-compose.yml
+├── .env.example              # TELEGRAM_BOT_TOKEN, CHAT_ID, etc.
+├── config/
+│   ├── stations.yaml         # name, url, format, enabled
+│   └── settings.yaml         # chunk_len, overlap, retention, dedup window, thresholds
+├── ingestor/                 # ffmpeg supervisor per station, chunk writer, gap logger
+├── worker/                   # queue consumer: fingerprint -> transcribe -> extract -> persist
+│   ├── fingerprint.py        # chromaprint (pyacoustid/fpcalc) compute + match vs known ads
+│   ├── transcribe.py         # faster-whisper wrapper
+│   ├── extract.py            # Ollama client, JSON-schema prompt, validation (pydantic)
+│   └── dedup.py              # rapidfuzz matching against canonical ads
+├── alerter/                  # Telegram sender: ad alerts, ops alerts, daily digest
+├── dashboard/                # FastAPI + Jinja2/HTMX read-only UI
+│   ├── main.py               # routes: /, /ads, /ads/{id}, /stations, /gaps, /audio/{id}
+│   └── templates/
+├── monitoring/
+│   ├── prometheus.yml        # scrape configs
+│   └── grafana/              # provisioned datasource + dashboard JSON
+├── shared/                   # db.py (schema + migrations), models.py, queue.py, logging, metrics.py
+├── data/                     # SQLite db, chunks/, ad_archive/   (volume)
+└── tests/
+```
+
+## Database Schema (core tables)
+
+- `stations` — id, name, url, enabled
+- `chunks` — id, station_id, path, start_ts, end_ts, status, error
+- `transcripts` — chunk_id, text, asr_duration_ms
+- `canonical_ads` — id, company_name, phone_norm, category, first_seen, last_seen, airing_count, archived_audio_path
+- `detections` — id, chunk_id, canonical_ad_id (nullable until matched), full JSON fields, confidence, alerted(bool)
+- `gaps` — station_id, start_ts, end_ts, reason (stream down / dropped backlog)
+- `fingerprints` — canonical_ad_id, chromaprint_vector (blob), duration; `chunks` gains `known_ad_id` (nullable)
+- `status` — rolling counters for digest/health
+
+## Implementation Phases
+
+1. **Scaffold + DB** — repo layout, SQLite schema/migrations, settings/stations config loading, structured logging.
+2. **Ingestor** — ffmpeg subprocess per station (reconnect flags), 90s chunks w/ 7s overlap, enqueue rows, gap logging, supervisor backoff.
+3. **Worker: ASR** — faster-whisper medium.en int8; bounded-queue consumer; drop-oldest policy.
+4. **Worker: extraction** — Ollama structured-output call with core-field schema; pydantic validation; retry-once on invalid JSON; phone-number normalization (spelled-out → digits).
+5. **Dedup + persistence** — rapidfuzz match vs canonical_ads within N-day window; create/attach detections; 3-min same-station airing window to avoid overlap double-count; cut ad clip via Whisper segment timestamps and archive it.
+6. **Alerter** — first-seen Telegram alert (formatted message + audio file), ops alerts (station down >15min, queue drops), daily digest.
+7. **Dockerization** — Compose with NVIDIA runtime for worker, official Ollama image w/ model pull, healthchecks, restart policies, volumes.
+8. **Fingerprint annotation** — chromaprint vector per chunk; offset-tolerant sliding-window match vs `fingerprints` of canonical ad clips; auto-fingerprint newly archived ad audio; skip LLM on `known_ad` chunks; airing counter fast-path.
+9. **Web dashboard** — FastAPI + Jinja2/HTMX service: detections feed with audio playback (serves from `ad_archive/`), canonical-ad table with airing frequency, station health page, gap timeline. Read-only, bound to LAN interface.
+10. **Prometheus + Grafana** — `prometheus-client` metrics in all services (queue depth, chunks processed, ASR/LLM latency histograms, detections, station uptime, drops); dcgm-exporter for GPU; Prometheus + Grafana containers with provisioned dashboards and basic alert rules (queue saturation, station down).
+11. **Tests + hardening** — unit tests for dedup/normalization/schema validation/fingerprint matching; fixture transcripts (real loan-ad copy) as an extraction eval set; end-to-end smoke test with a recorded stream sample.
+
+## Key Risks / Mitigations
+
+- **Whisper mangles phone numbers** — normalize spelled-out numbers; dedup doesn't rely on exact phone match.
+- **LLM false positives** (show segments about loans vs actual ads) — prompt includes ad-signal cues (call to action, phone/URL, "sponsored"); confidence field; threshold before alerting.
+- **Ads split across chunk boundaries** — 5–10s overlap + dedup absorbs duplicates from overlap.
+- **Stream URL rot** — gap logging + >15min down ops alert surfaces it fast; URLs are operator-maintained in `stations.yaml`.
+- **GPU contention** — single worker process serializes Whisper batches; Ollama keep_alive pins the LLM; both fit in 12GB.
+- **ASR throughput has zero headroom at 10 stations** — 10 stations × real-time + ~8% overlap exceeds the ~10x RT budget of medium.en. Mitigations, in order: batched inference (BatchedInferencePipeline), drop overlap to 5s, fall back to `small.en` above 8 stations. Validate measured RTF in Phase 3 before committing to station count.
+- **SQLite write contention** — WAL + busy_timeout + retry wrapper (see Architecture); if contention still bites, funnel all writes through the worker process.
+- **Fingerprint false matches** (similar jingles/spot variants) — conservative match threshold; transcription always runs, so a false `known_ad` tag only skips extraction for that airing, never loses audio/transcript.
+- **Dashboard exposure** — read-only, no auth, so bind to LAN/localhost only; Grafana gets its own login.
+
+## Dev Tooling Setup (from `final-install-list.md`)
+
+Agent/dev tooling that accompanies this project — 14 skills kept + 2 repos installed now, 4 deferred.
+
+### Installed now
+
+| Repo | Type | Install |
+|---|---|---|
+| `JuliusBrussee/caveman` | Skill pack (output token saver; replaces old caveman; adds `/caveman`, `/caveman-commit`, `/caveman-review`, `/caveman-stats`, `/caveman-compress`) | `irm https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.ps1 \| iex` |
+| `chopratejas/headroom` | MCP server (input token compressor) | `pip install "headroom-ai[mcp]"` + `headroom mcp install` |
+
+### Deferred installs
+
+| Repo | When |
+|---|---|
+| `Egonex-AI/Understand-Anything` | After Phase 1 scaffold exists (needs code to graph) |
+| `oraios/serena` | When codebase grows (semantic code retrieval) |
+| `upstash/context7` | Anytime, for latest library docs |
+| `doobidoo/mcp-memory-service` | Maybe unnecessary if headroom's cross-agent memory suffices |
+
+### Skills kept (14, from `mattpocock/skills`)
+
+- **engineering**: `diagnose`, `grill-with-docs`, `improve-codebase-architecture`, `prototype`, `review`, `setup-matt-pocock-skills`, `tdd`, `to-issues`, `to-prd`, `triage`, `zoom-out`
+- **productivity**: `grill-me`, `handoff`, `write-a-skill`
+- **misc**: `setup-pre-commit`
+
+14 skills removed (writing/personal/deprecated ones) from `.agents/skills/`, `.qoder/skills/`, and `skills-lock.json` — full list in `final-install-list.md`.
+
+## Out of Scope (deferred)
+
+- PostgreSQL, multi-box scaling
+- Inbound Telegram bot commands
+- Dashboard write/ops controls (enable/disable stations, mute ads) — possible phase 2
+- Hard audio pre-filtering (skipping transcription) — fingerprinting is annotation-only by design
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2322ms:
+# Telegram Bot API (outbound alerts only)
+TELEGRAM_BOT_TOKEN=your_bot_token_here
+TELEGRAM_CHAT_ID=your_chat_id_here
+
+# Grafana admin (set non-default before exposing beyond localhost)
+GRAFANA_ADMIN_USER=admin
+GRAFANA_ADMIN_PASSWORD=admin
+
+# Dashboard binding (LAN-only by default; change DASHBOARD_HOST to expose on
+# the LAN. DASHBOARD_PORT is the container-internal port published to 127.0.0.1)
+DASHBOARD_HOST=127.0.0.1
+DASHBOARD_PORT=8080
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2589ms:
+# Radio Ad-Sensing Pipeline — local Docker Compose stack
+# All services run on a single Ubuntu host with one 12GB NVIDIA GPU.
+#
+# Bring up:    docker compose up -d
+# Tear down:   docker compose down
+# Tail logs:   docker compose logs -f worker
+# Verify:      docker compose config   (this is the M3 verify command)
+
+name: radio-ad-pipeline
+
+services:
+  # ---------------------------------------------------------------------------
+  # Ingestor — ffmpeg supervisor per station, chunk writer, gap logger
+  # ---------------------------------------------------------------------------
+  ingestor:
+    build:
+      context: .
+      dockerfile: ingestor/Dockerfile
+    image: radio-ad-pipeline/ingestor:dev
+    container_name: radio-ingestor
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from shared.config import load_stations; load_stations()"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Worker — faster-whisper ASR + (later) Ollama extraction + dedup
+  # GPU-bound. Needs NVIDIA container runtime on the host.
+  # ---------------------------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    image: radio-ad-pipeline/worker:dev
+    container_name: radio-worker
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+      ollama:
+        condition: service_started
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+      # Ollama client URL inside the compose network
+      - OLLAMA_HOST=http://ollama:11434
+    # NVIDIA GPU passthrough — requires nvidia-container-toolkit on the host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # faster-whisper is lazy-imported, so just check the import path works
+      test: ["CMD", "python", "-c", "import faster_whisper"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Alerter — Telegram outbound-only (sendMessage + sendAudio + ops + digest)
+  # ---------------------------------------------------------------------------
+  alerter:
+    build:
+      context: .
+      dockerfile: alerter/Dockerfile
+    image: radio-ad-pipeline/alerter:dev
+    container_name: radio-alerter
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+      # Telegram creds come from .env (see .env.example). If unset, alerter logs
+      # a warning and runs in dry-run mode (per WP-6 spec).
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import alerter; from shared.config import load_telegram_settings; load_telegram_settings()"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Dashboard — FastAPI + Jinja2/HTMX, read-only, LAN-only
+  # Bound to 127.0.0.1 by default (settings.yaml). For LAN access, override
+  # DASHBOARD_HOST in .env.
+  # ---------------------------------------------------------------------------
+  dashboard:
+    build:
+      context: .
+      dockerfile: dashboard/Dockerfile
+    image: radio-ad-pipeline/dashboard:dev
+    container_name: radio-dashboard
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+      - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+      - DASHBOARD_PORT=${DASHBOARD_PORT:-8080}
+    ports:
+      # LAN-only by default — change the host port mapping (or DASHBOARD_HOST)
+      # to expose on a routable interface. The container itself binds to 8080.
+      - "127.0.0.1:8080:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Ollama — local LLM server (Qwen2.5-7B-Instruct Q4_K_M)
+  # Uses the official image; we pull the model in the `ollama-pull` init
+  # service below so the worker can rely on it being present.
+  # ---------------------------------------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    container_name: radio-ollama
+    restart: unless-stopped
+    # Persist model weights between container restarts
+    volumes:
+      - ollama_data:/root/.ollama
+    # NVIDIA GPU passthrough — same single GPU as the worker
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      # Ollama's /api/tags returns 200 once the server is up
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:11434/api/tags"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    networks:
+      - pipeline-internal
+
+  # Init container: pull the configured LLM model once. Exits 0 after success
+  # so the stack can come up; the worker depends on `ollama` (not on this),
+  # so a slow first pull does not block other services.
+  ollama-pull:
+    image: curlimages/curl:latest
+    container_name: radio-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    # Pull Qwen2.5-7B-Instruct Q4_K_M (PLAN §"LLM"). The endpoint is idempotent
+    # — re-pulling a model that is already cached is a no-op.
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        set -eu
+        echo "Pulling qwen2.5:7b-instruct-q4_K_M ..."
+        curl -fsS -X POST http://ollama:11434/api/pull \
+          -d '{"name": "qwen2.5:7b-instruct-q4_K_M", "stream": false}' \
+          >/dev/null
+        echo "Model pull complete."
+    restart: "no"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Migrate — one-shot init container. Runs the SQLite schema migrations so
+  # every other service can assume the tables exist. Exits 0 on success.
+  # Uses the ingestor image (which already has the shared/ package installed
+  # in editable mode) so we don't need a separate Python image with sources.
+  # ---------------------------------------------------------------------------
+  pipeline-migrate:
+    image: radio-ad-pipeline/ingestor:dev
+    container_name: radio-migrate
+    depends_on: []
+    build:
+      context: .
+      dockerfile: ingestor/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    working_dir: /app
+    command:
+      - python
+      - -c
+      - "from shared.db import migrate; migrate('data/pipeline.db')"
+    restart: "no"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Prometheus — scrapes /metrics from every service + DCGM GPU exporter.
+  # ---------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: radio-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      # Bound to localhost only; Grafana is the public-facing surface for users.
+      - "127.0.0.1:9090:9090"
+    depends_on:
+      - ingestor
+      - worker
+      - alerter
+      - dashboard
+      - dcgm-exporter
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # Grafana — provisioning-driven, no UI clicks required to bring up the
+  # dashboard. Default admin password is configurable via .env (GRAFANA_ADMIN_PASSWORD).
+  # ---------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: radio-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      # LAN-only by default (PLAN §"Dashboard exposure"). Operator maps to LAN
+      # interface in their own override if needed.
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - prometheus
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
+  # dcgm-exporter — NVIDIA GPU metrics. Shares the GPU with worker + ollama.
+  # ---------------------------------------------------------------------------
+  dcgm-exporter:
+    image: nvcr.io/nvidia/k8s/dcgm-exporter:latest
+    container_name: radio-dcgm-exporter
+    restart: unless-stopped
+    # CAP_SYS_ADMIN is required for dcgm-exporter; some hosts also need the
+    # nvidia-container-toolkit to be present on the host (verified by `nvidia-smi`).
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - DCGM_EXPORTER_LISTEN=:9400
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pipeline-internal
+
+networks:
+  pipeline-internal:
+    driver: bridge
+
+volumes:
+  ollama_data:
+    # Named volume for model weights (persistent across `docker compose down`)
+  prometheus_data:
+    # TSDB time-series storage; 15d retention per prometheus args above.
+  grafana_data:
+    # Grafana state (users, dashboards edited via UI, etc.)
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2682ms:
+# WP-7a Report — Docker Skeleton
+
+**Date:** 2026-06-10
+**Status:** Complete
+**Routing:** MiniMax M3 (Light — declarative config, pattern follows compose v2 spec)
+
+## Scope
+
+Compose stack skeleton for all 5 application services + Ollama + one-shot model-pull +
+one-shot DB-migrate init container. Each Python service has its own Dockerfile
+(declares only the system + Python deps it actually needs).
+
+## Deliverables
+
+| Item | Path |
+|---|---|
+| Compose stack (7 services) | `docker-compose.yml` |
+| Ingestor image | `ingestor/Dockerfile` |
+| Worker image (GPU) | `worker/Dockerfile` |
+| Alerter image | `alerter/Dockerfile` |
+| Dashboard image | `dashboard/Dockerfile` |
+| Build context hygiene | `.dockerignore` |
+
+## Services
+
+| Service | Image | GPU | Purpose |
+|---|---|---|---|
+| `ingestor` | built from `ingestor/Dockerfile` | — | ffmpeg supervisor, chunk writer, gap logger |
+| `worker` | built from `worker/Dockerfile` | NVIDIA | faster-whisper + (later) Ollama extraction + dedup |
+| `alerter` | built from `alerter/Dockerfile` | — | Telegram outbound alerts + daily digest |
+| `dashboard` | built from `dashboard/Dockerfile` | — | FastAPI + HTMX read-only (LAN-only by default) |
+| `ollama` | `ollama/ollama:latest` | NVIDIA | LLM server (Qwen2.5-7B Q4_K_M) |
+| `ollama-pull` | `curlimages/curl:latest` | — | one-shot: pull Qwen2.5-7B on first boot |
+| `pipeline-migrate` | reuses ingestor image | — | one-shot: run `shared.db.migrate()` before services start |
+
+## Networking
+
+- Single internal bridge `pipeline-internal` — services reach each other by name
+  (`http://ollama:11434`, `http://dashboard:8080` for service-to-service probes).
+- Dashboard port `8080` is **bind-published to 127.0.0.1 only** on the host
+  (LAN-only by design; PLAN §"Dashboard exposure").
+
+## Volumes
+
+- `./data:/app/data` (bind) — SQLite db, `chunks/`, `ad_archive/`. Survives
+  `docker compose down` (host directory persists) and image rebuilds.
+- `./config:/app/config:ro` (bind, read-only) — stations.yaml + settings.yaml
+  can be tweaked on the host without rebuilding the image.
+- `ollama_data:/root/.ollama` (named) — model weights persist across restarts
+  but live in Docker's volume store (large, separate from source code).
+
+## Healthchecks (each runs every 30s, 3 retries, 10s start grace)
+
+- `ingestor`: `python -c "from shared.config import load_stations; load_stations()"`
+- `worker`: `python -c "import faster_whisper"` (lighter than transcribing audio)
+- `alerter`: `python -c "import alerter; from shared.config import load_telegram_settings; load_telegram_settings()"` (import-only; token optional for WP-6 dry-run)
+- `dashboard`: `curl -fsS http://127.0.0.1:8080/health`
+- `ollama`: `curl -fsS http://127.0.0.1:11434/api/tags`
+
+## Restart policy
+
+All long-running services use `restart: unless-stopped`. The two init containers
+(`pipeline-migrate`, `ollama-pull`) use `restart: "no"` — they run once and exit.
+
+## Build verification (M3 verify command)
+
+```bash
+$ docker compose config --quiet
+exit=0
+
+$ docker compose config --services
+pipeline-migrate
+ingestor
+ollama
+ollama-pull
+worker
+alerter
+dashboard
+```
+
+## Out of scope (deferred)
+
+- **Compose push to registry** — local images tagged `radio-ad-pipeline/<svc>:dev`.
+- **`docker compose up` smoke test** — not run in this session; the host has no
+  NVIDIA container toolkit installed, and the worker + ollama services need it.
+  WP-7b (operator) will run the live `docker compose up` + GPU sanity check.
+- **Per-service healthcheck tuning** — current checks prove the process is alive,
+  not that it's doing real work. Will be revisited in WP-10b once metrics are
+  instrumented (e.g., replace worker's import check with `promtool`-like probe
+  of `/metrics`).
+- **Production hardening** — no read-only root FS, no non-root user, no secrets
+  beyond .env. Compose is dev-first per PLAN's "single Ubuntu host" scope.
+- **GPU reservation in CI** — `deploy.resources.reservations.devices` is only
+  honoured by Docker Swarm / Compose v2 with the NVIDIA runtime plugin.
+
+## Deviations from handoff intent
+
+- Worker pulls faster-whisper at build time (`pip install -e ".[worker]"`).
+  Image will be ~1.5GB+. Not optimal, but matches Phase 1's "import-light
+  shared/" rule: the dep lives in the worker image, not in shared/.
+- `ollama-pull` uses a generic `curlimages/curl` image rather than the official
+  Ollama one — saves ~3GB on the init container, and `ollama pull` is just
+  an HTTP call to the running ollama service.
+- **F6 fix-then-ship (2026-06-10):** Alerter healthcheck no longer asserts
+  `telegram_bot_token` present. Import-only check allows container healthy in
+  dry-run mode before WP-6. Added `alerter/__main__.py` stub (logs + poll loop).
+- **F5 fix-then-ship (2026-06-10):** `load_settings()` overlays
+  `DASHBOARD_HOST` / `DASHBOARD_PORT` from environment so compose env vars
+  actually affect dashboard bind address.
+
+## Next
+
+- WP-7b (operator, GPT mini) — `docker compose up` smoke test on the GPU host,
+  NVIDIA runtime sanity, model-pull observation.
+- WP-10a (this agent, M3) — Prometheus + Grafana compose services and provisioning.
+Import-Clixml: There is an unclosed literal string. Line 896, position 30.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 2881ms:
+# WP-10a Report — Monitoring Config (Prometheus + Grafana + DCGM)
+
+**Date:** 2026-06-10
+**Status:** Complete
+**Routing:** MiniMax M3 (Light — declarative config, standard compose+prometheus+grafana patterns)
+
+## Scope
+
+Prometheus + Grafana + dcgm-exporter wired into the existing compose stack from
+WP-7a. Alert rules + Grafana dashboard provisioned as code (no UI clicks
+required on first boot).
+
+## Deliverables
+
+| Item | Path |
+|---|---|
+| Prometheus scrape config | `monitoring/prometheus.yml` |
+| Alert rules (4 groups, 7 rules) | `monitoring/alerts.yml` |
+| Grafana datasource provisioning | `monitoring/grafana/provisioning/datasources/prometheus.yml` |
+| Grafana dashboard provider | `monitoring/grafana/provisioning/dashboards/default.yml` |
+| Grafana dashboard (10 panels) | `monitoring/grafana/dashboards/pipeline.json` |
+| Compose services (prometheus, grafana, dcgm-exporter) | appended to `docker-compose.yml` |
+| Grafana admin password env | appended to `.env.example` |
+
+## Metric naming convention (followed by WP-10b)
+
+The dashboard and alert rules pin a fixed metric namespace. WP-10b **must** emit
+these exact metric names in each service:
+
+| Metric | Type | Emitted by | Labels |
+|---|---|---|---|
+| `pipeline_queue_pending_hours` | gauge | worker (or ingestor) | — |
+| `pipeline_chunks_processed_total` | counter | worker | `service` |
+| `pipeline_chunks_dropped_total` | counter | worker | — |
+| `pipeline_asr_rtf_avg` | gauge | worker | — |
+| `pipeline_llm_extraction_duration_seconds` | histogram | worker (later WP) | — |
+| `pipeline_detections_total` | counter | worker (later WP) | — |
+| `pipeline_station_last_chunk_timestamp_seconds` | gauge | ingestor | `station` |
+| `DCGM_FI_DEV_GPU_UTIL` | gauge | dcgm-exporter | `gpu` |
+| `DCGM_FI_DEV_FB_USED` / `DCGM_FI_DEV_FB_FREE` | gauge | dcgm-exporter | `gpu` |
+| `DCGM_FI_DEV_GPU_TEMP` | gauge | dcgm-exporter | `gpu` |
+
+The `service` label on `pipeline_chunks_processed_total` is what feeds the
+"Chunks processed / hour (by service)" panel — WP-10b must label the worker
+counter with `service="worker"` and the alerter's analogous counter with
+`service="alerter"`.
+
+## Service ports (/metrics endpoints)
+
+These must be exposed by WP-10b in each service via `prometheus_client.start_http_server`:
+
+| Service | Port | Rationale |
+|---|---|---|
+| ingestor | 9101 | Convention: node_exporter-style |
+| worker | 9102 | One above ingestor |
+| alerter | 9103 | One above worker |
+| dashboard | 9104 | One above alerter |
+
+## Compose additions
+
+| Service | Image | GPU | Port (host) |
+|---|---|---|---|
+| `prometheus` | `prom/prometheus:latest` | — | `127.0.0.1:9090` |
+| `grafana` | `grafana/grafana:latest` | — | `127.0.0.1:3000` |
+| `dcgm-exporter` | `nvcr.io/nvidia/k8s/dcgm-exporter:latest` | NVIDIA | — (scraped internally on `:9400`) |
+
+Both `prometheus` and `grafana` bind to `127.0.0.1` on the host (LAN-only,
+matching the dashboard's exposure model — see PLAN §"Dashboard exposure").
+
+## Verification (M3 verify commands)
+
+```bash
+$ docker compose config --quiet
+(exit 0, no output)
+
+$ docker compose config --services
+pipeline-migrate
+dashboard
+dcgm-exporter
+ingestor
+ollama
+worker
+alerter
+prometheus
+grafana
+ollama-pull
+```
+
+Static structural checks (Python + pyyaml, since promtool is not in the
+operator's local PATH on Windows):
+
+```text
+jobs:    ['ingestor', 'worker', 'alerter', 'dashboard', 'dcgm', 'prometheus']
+alerts:  7
+panels:  10
+```
+
+`promtool check config` and `promtool check rules` were not run in this
+session because the host does not have the prometheus binary available; the
+WP-7b operator will re-run them inside the running prometheus container once
+the stack is up:
+
+```bash
+docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
+docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
+```
+
+## Alert rules (overview)
+
+| Group | Rules | What it catches |
+|---|---|---|
+| `pipeline-saturation` | 2 | Queue backing up past 2h, or chunks being dropped |
+| `stations` | 1 | Any station silent for >15min |
+| `worker-health` | 2 | Worker process up but stalled, or ASR RTF >1.0 |
+| `gpu` | 2 | GPU temp >85°C sustained, or VRAM >92% |
+
+Total: **7 firing-condition rules**. Alertmanager is intentionally absent
+(WP-10a scope). The alerter service handles operational notifications via
+Telegram directly (per PLAN §"Observability" — daily digest + ops alerts).
+
+## Dashboard panels (overview)
+
+| # | Type | Title |
+|---|---|---|
+| 1 | stat | Queue depth (pending hours) |
+| 2 | timeseries | Chunks processed / hour (by service) |
+| 3 | timeseries | Chunks dropped / 10m |
+| 4 | timeseries | ASR real-time factor |
+| 5 | timeseries | LLM extraction latency (p50 / p95) |
+| 6 | timeseries | Detections / hour |
+| 7 | timeseries | Station uptime (last chunk ago) |
+| 8 | timeseries | GPU utilization (DCGM) |
+| 9 | timeseries | GPU memory used (DCGM) |
+| 10 | stat | Active alerts (firing count) |
+
+Time range defaults to last 6h, refresh 30s.
+
+## Out of scope (deferred)
+
+- **Alertmanager** — the pipeline's "ops" alerts (station down, queue drop)
+  go through the alerter service, not Alertmanager. If/when we add email
+  or PagerDuty routing, this is where Alertmanager plugs in.
+- **Ollama `/metrics`** — Ollama's metrics endpoint is uncommented in
+  `prometheus.yml` but not enabled by default; will be turned on after
+  WP-4 is shipping.
+- **Recording rules** — long-term, complex aggregations will be precomputed
+  for faster dashboard loads. Not needed at 4-10 stations.
+- **TLS / auth on Prometheus** — bound to 127.0.0.1 only, like Grafana.
+
+## Deviations
+
+- `GRAFANA_ADMIN_PASSWORD` defaults to `admin` for dev. WP-7b (operator) must
+  override this in `.env` before any non-localhost exposure.
+- dcgm-exporter is given `cap_add: SYS_ADMIN` per its docs. Some hardened
+  hosts may not allow this; if so, switch to a privileged mode override.
+
+## Next
+
+- WP-10b (this agent, M3, **deferred until ingestor + alerter exist**) —
+  instrument every service with `prometheus_client.start_http_server` using
+  the metric names + port numbers pinned in this report.
+- WP-7b (operator, GPT mini) — live `docker compose up` + verify that
+  prometheus, grafana, and dcgm-exporter come up healthy.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 3046ms:
+# Worker service — faster-whisper ASR + (later) Ollama extraction + dedup
+# Requires NVIDIA GPU access at runtime (configured in docker-compose).
+FROM python:3.11-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# System deps: ffmpeg for audio probing, libsndfile for some audio paths, build tools
+# for faster-whisper's ctranslate2 dependency (kept minimal)
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg \
+        ca-certificates \
+        curl \
+        libsndfile1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python deps first for layer caching
+COPY pyproject.toml ./
+COPY shared/ ./shared/
+COPY worker/ ./worker/
+COPY config/ ./config/
+
+# faster-whisper pulls ctranslate2 + tokenizers; both need wheel builds
+# Use --extra-index-url is unnecessary on PyPI; pin nothing extra
+RUN pip install --upgrade pip \
+    && pip install -e ".[worker]"
+
+# GPU sanity check: nvidia-smi must be present in the container
+# (provided by the NVIDIA container runtime at /usr/local/nvidia/bin)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import faster_whisper; print('ok')" || exit 1
+
+# Entrypoint: worker package
+CMD ["python", "-m", "worker", "data/pipeline.db"]
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+I’ve got the main stack shape now. Next I’m checking the scrape config and the service Dockerfiles so I can wire the metrics ports in the least invasive way and make sure I’m not baking in anything that should stay runtime-only.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content dashboard/Dockerfile' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content monitoring/prometheus.yml' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-ChildItem -Force plan | Select-Object Name,Length' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content ingestor/Dockerfile' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content alerter/Dockerfile' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1195ms:
+# Dashboard service — FastAPI + Jinja2/HTMX, read-only over SQLite
+# No GPU, no ffmpeg. LAN-only by default (binds to 127.0.0.1 in compose).
+FROM python:3.11-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# curl for HEALTHCHECK
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python deps first for layer caching
+COPY pyproject.toml ./
+COPY shared/ ./shared/
+COPY dashboard/ ./dashboard/
+COPY config/ ./config/
+
+# FastAPI + uvicorn + jinja2 from the dashboard extras
+RUN pip install --upgrade pip \
+    && pip install -e ".[dashboard]"
+
+# Default port from settings.yaml (8080); overridden in compose if needed
+EXPOSE 8080
+
+# Healthcheck hits the /health endpoint after uvicorn is up
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -fsS http://127.0.0.1:8080/health || exit 1
+
+# Entrypoint: dashboard package
+CMD ["python", "-m", "dashboard"]
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1349ms:
+# Prometheus scrape config for the radio-ad-sensing pipeline.
+#
+# This file is mounted into the prometheus container at /etc/prometheus/.
+# We use a static_configs list because all services run on a single host —
+# no service discovery is needed at this scale (4-10 stations).
+#
+# Verify locally with:  promtool check config monitoring/prometheus.yml
+# (run inside the prom/prometheus image: docker run --rm -v $PWD/monitoring:/etc/prometheus prom/prometheus:latest promtool check config /etc/prometheus/prometheus.yml)
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    pipeline: radio-ad-sensing
+    env: dev
+
+# Alertmanager is not deployed in this iteration; the alerter service handles
+# operational alerts via Telegram directly. The rules in alerts.yml still get
+# evaluated and become visible in Grafana.
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
+
+rule_files:
+  - alerts.yml
+
+scrape_configs:
+  # ---------------------------------------------------------------------------
+  # Pipeline services — each exposes /metrics on the port listed below.
+  # Static IPs on the pipeline-internal bridge are not stable across
+  # docker compose runs, so we use the compose service name as the hostname.
+  # ---------------------------------------------------------------------------
+
+  - job_name: ingestor
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['ingestor:9101']
+        labels:
+          service: ingestor
+          tier: ingestion
+
+  - job_name: worker
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['worker:9102']
+        labels:
+          service: worker
+          tier: processing
+
+  - job_name: alerter
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['alerter:9103']
+        labels:
+          service: alerter
+          tier: output
+
+  - job_name: dashboard
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['dashboard:9104']
+        labels:
+          service: dashboard
+          tier: ui
+
+  # ---------------------------------------------------------------------------
+  # Ollama — official image exposes /metrics on 11434 since v0.1.32.
+  # We do not include it here by default; uncomment once the local Ollama
+  # version is confirmed. Worker-side metrics cover LLM latency already.
+  # ---------------------------------------------------------------------------
+  # - job_name: ollama
+  #   metrics_path: /metrics
+  #   static_configs:
+  #     - targets: ['ollama:11434']
+  #       labels:
+  #         service: ollama
+  #         tier: llm
+
+  # ---------------------------------------------------------------------------
+  # GPU metrics via NVIDIA dcgm-exporter (DCGM >= 3.x).
+  # Runs as a sidecar on the GPU host; uses the container toolkit.
+  # ---------------------------------------------------------------------------
+  - job_name: dcgm
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['dcgm-exporter:9400']
+        labels:
+          service: gpu
+          tier: hardware
+
+  # ---------------------------------------------------------------------------
+  # Prometheus self-scrape (health check + storage visibility)
+  # ---------------------------------------------------------------------------
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: prometheus
+          tier: monitoring
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1475ms:
+
+Name                                 Length
+----                                 ------
+codex-batch3-dispatch.md               1476
+codex-batch3-wp10b-prompt.txt           724
+codex-batch3-wp5-prompt.txt             843
+codex-batch3-wp6-prompt.txt             812
+codex-batch3-wp8-prompt.txt             651
+codex-batch4-wp11a-prompt.txt           783
+codex-batch4-wp11b-prompt.txt           861
+codex-batch4-wp7b-prompt.txt            781
+codex-batch4-wp8-prompt.txt             801
+codex-log-wp10b-r2.txt               559691
+codex-log-wp10b.txt                   20344
+codex-log-wp11a.txt                    1089
+codex-log-wp11b.txt                    1164
+codex-log-wp5.txt                    202539
+codex-log-wp6-r2.txt                 936416
+codex-log-wp6.txt                      8759
+codex-log-wp7b.txt                     1090
+codex-log-wp8-fix.txt                  1102
+codex-log-wp8-r2.txt                 159214
+codex-log-wp8.txt                      1459
+codex-out-wp10b.md                     1361
+codex-out-wp5.md                       1079
+codex-out-wp6.md                       1221
+codex-out-wp8.md                       3893
+gpt-minimax-routing-6165b3.md         10417
+handoff-batch1-sessions-6165b3.md      7833
+handoff-phase1-scaffold-db-6165b3.md   4070
+opus-review-plan-6165b3.md             9450
+phase1-report.md                       7342
+radio-ad-sensing-pipeline-6165b3.md   12360
+work-dispatch-6165b3.md                9584
+wp10a-report.md                        6284
+wp10b-report.md                         940
+wp2-report.md                          3556
+wp3-report.md                          4449
+wp4-report.md                          2442
+wp5-report.md                          2504
+wp6-report.md                          1982
+wp7a-report.md                         5166
+wp9-report.md                          3269
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1583ms:
+# Ingestor service — ffmpeg supervisor, chunk writer, gap logger
+# No GPU required; just needs ffmpeg + Python deps.
+FROM python:3.11-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# System deps: ffmpeg for stream capture, ca-certificates for HTTPS streams
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg \
+        ca-certificates \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python deps first for layer caching
+COPY pyproject.toml ./
+COPY shared/ ./shared/
+COPY ingestor/ ./ingestor/
+COPY config/ ./config/
+
+# Install the package in editable mode with the base + ingestor deps
+# (ingestor has no extra deps beyond the base pydantic+pyyaml, so just install base)
+RUN pip install --upgrade pip \
+    && pip install -e .
+
+# Healthcheck: verify the Python entrypoint is importable and DB path is reachable
+# In docker-compose this is overridden to use the real DB path
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "from shared.config import load_stations; load_stations()" || exit 1
+
+# Entrypoint: ingestor package will provide its own __main__ in a later WP
+CMD ["python", "-m", "ingestor"]
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1769ms:
+# Alerter service — Telegram outbound-only (sendMessage + sendAudio)
+# No GPU, no ffmpeg. Just Python + httpx.
+FROM python:3.11-slim AS base
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# ca-certificates for HTTPS calls to api.telegram.org
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Install Python deps first for layer caching
+COPY pyproject.toml ./
+COPY shared/ ./shared/
+COPY alerter/ ./alerter/
+COPY config/ ./config/
+
+# httpx is in pyproject extras; alerter is light, no extras required
+RUN pip install --upgrade pip \
+    && pip install -e ".[dev]"
+
+# Healthcheck: import-only — token optional until WP-6 (dry-run mode)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import alerter; from shared.config import load_telegram_settings; load_telegram_settings()" || exit 1
+
+# Entrypoint: alerter package
+CMD ["python", "-m", "alerter"]
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+I found one likely wiring gap: the model-pull job is independent, so the worker can come up before the Qwen pull finishes. I’m checking the existing batch report format now, then I’ll patch the compose file to make the metrics and startup dependencies coherent without changing any application logic.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/wp9-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/wp10b-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/phase1-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1337ms:
+# WP-9 Completion Report — Read-only Web Dashboard
+
+**Handoff reference:** `.windsurf/plans/handoff-wp9-dashboard-6165b3.md`  
+**Completed:** 2026-06-10  
+**Status:** Complete — all mandatory scope and acceptance criteria met
+
+---
+
+## Summary
+
+FastAPI + Jinja2/HTMX read-only dashboard over SQLite. All DB access uses `get_connection(read_only=True)`. Missing database shows a friendly page instead of crashing. Empty and seeded databases both render correctly.
+
+---
+
+## Deliverables
+
+| Item | Path |
+|---|---|
+| FastAPI app | `dashboard/main.py` |
+| Read-only queries | `dashboard/queries.py` |
+| CLI entry | `dashboard/__main__.py` (`python -m dashboard`) |
+| Templates | `dashboard/templates/` (base, index, ads, ad_detail, stations, gaps, no_database, HTMX partial) |
+| Seed fixture | `tests/fixtures/seed_dashboard.py` |
+| Dashboard tests | `tests/test_dashboard.py` (13 tests) |
+| Settings | `dashboard_host`, `dashboard_port`, `db_path` in `config/settings.yaml` |
+| Optional deps | `pyproject.toml` → `[project.optional-dependencies.dashboard]` |
+
+### Routes
+
+| Route | Description |
+|---|---|
+| `GET /` | Overview: today's chunks/detections, ads total, queue depth, station health |
+| `GET /ads` | Canonical ads table, sort by `last_seen`, HTMX pagination |
+| `GET /ads/{id}` | Ad detail, detections, transcript excerpts, audio player |
+| `GET /stations` | Per-station health: enabled, last chunk, chunks/gaps 24h |
+| `GET /gaps` | Gap timeline, last 48h |
+| `GET /audio/{id}` | Serve archived audio; path locked to `data/ad_archive/` |
+| `GET /health` | JSON: `db_reachable`, `pending_count` |
+
+---
+
+## Test results
+
+```
+37 passed in 1.21s
+```
+
+| Suite | Count |
+|---|---|
+| Original Phase 1 tests | 18 |
+| WP-9 dashboard tests | 13 |
+| Worker tests (pre-existing) | 6 |
+
+### Acceptance criteria
+
+| Criterion | Result |
+|---|---|
+| `pytest` green (old + new) | ✅ 37/37 |
+| `python -m dashboard` serves pages | ✅ uvicorn on `127.0.0.1:8080` |
+| Zero writable DB connections from dashboard | ✅ `test_dashboard_never_opens_writable_connection` |
+| Every route 200 on empty + seeded DB | ✅ |
+| `/audio` traversal rejected | ✅ 404 |
+| Missing DB → friendly page | ✅ |
+
+---
+
+## Run
+
+```bash
+pip install -e ".[dashboard]"
+python -c "from shared.db import migrate; migrate('data/pipeline.db')"
+python -m tests.fixtures.seed_dashboard  # optional: use seed_dashboard_db() in Python
+python -m dashboard
+# → http://127.0.0.1:8080
+```
+
+Seed for dev:
+
+```python
+from pathlib import Path
+from tests.fixtures.seed_dashboard import seed_dashboard_db
+seed_dashboard_db(Path("data/pipeline.db"))
+```
+
+---
+
+## Deviations from handoff / PLAN.md
+
+| Item | Notes |
+|---|---|
+| Audio path in seed | Stores absolute path under `data/ad_archive/`; tests monkeypatch `AD_ARCHIVE_DIR` for isolation |
+| `GET /audio/{id}` | Accepts canonical ad id or detection id (detection resolved via join) |
+| Auth / metrics / Docker | Out of scope per handoff — not implemented |
+
+---
+
+## Out of scope (unchanged)
+
+- Auth, write/ops controls
+- Prometheus `/metrics` (WP-10b)
+- Docker (WP-7)
+- Websockets / live updates
+
+---
+
+## Next
+
+Per original roadmap: pipeline phases 2–6 populate live data. Dashboard is ready to display ingestor/worker/alerter output as it arrives.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1428ms:
+# WP-10b Report — Instrument Metrics
+
+**Date:** 2026-06-10  
+**Status:** Complete
+
+## Scope
+
+Added Prometheus `/metrics` exporters for all four Python services on the
+ports pinned by WP-10a:
+
+- `ingestor` on `9101`
+- `worker` on `9102`
+- `alerter` on `9103`
+- `dashboard` on `9104`
+
+## Delivered
+
+- Added `shared/metrics.py` as a lightweight Prometheus helper module.
+- Wired exporter startup into each service entrypoint.
+- Emitted the agreed pipeline metrics without adding heavy work to hot loops.
+- Added the `prometheus-client` dependency to `pyproject.toml`.
+
+## Metrics wired
+
+- `pipeline_queue_pending_hours`
+- `pipeline_chunks_processed_total{service}`
+- `pipeline_chunks_dropped_total`
+- `pipeline_asr_rtf_avg`
+- `pipeline_station_last_chunk_timestamp_seconds{station}`
+
+## Verification
+
+- `pytest -q` → `74 passed`
+- Smoke scrape against a temporary exporter confirmed the expected metric names
+  are exposed on `/metrics`.
+
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1615ms:
+# Phase 1 Completion Report — Scaffold + DB
+
+**Project:** Autonomous Radio Ad-Sensing Pipeline  
+**Phase:** 1 — Scaffold + DB  
+**Handoff reference:** `plan/handoff-phase1-scaffold-db-6165b3.md`  
+**Completed:** 2026-06-10  
+**Status:** Complete — all mandatory scope and acceptance criteria met
+
+---
+
+## Summary
+
+Phase 1 delivers the repository scaffold, SQLite schema with migrations, Pydantic models, YAML/environment config loading, and structured JSON logging. The `shared/` package is import-light (no GPU/ML dependencies) and ready for ingestor, worker, and alerter services in later phases.
+
+---
+
+## Deliverables
+
+### 1. Repository scaffold
+
+Per the "Repository Layout" section of `PLAN.md`:
+
+| Path | Contents |
+|---|---|
+| `ingestor/` | Stub `__init__.py` only |
+| `worker/` | Stub `__init__.py` only |
+| `alerter/` | Stub `__init__.py` only |
+| `dashboard/` | Stub `__init__.py` only |
+| `monitoring/` | Stub `__init__.py` only |
+| `shared/` | Core Phase 1 modules (see below) |
+| `tests/` | Pytest suite (18 tests) |
+| `config/` | `stations.yaml`, `settings.yaml` |
+| `data/` | Gitignored runtime directory (SQLite DB, future chunks) |
+
+No business logic in service packages. No Phase 2+ code. No Docker files.
+
+### 2. `shared/db.py`
+
+- Connection factory with **WAL mode** and **`busy_timeout=5000`**
+- **`retry_on_busy`** decorator for `SQLITE_BUSY` / locked errors (exponential backoff)
+- **Read-only** connection variant (`?mode=ro`) for future dashboard use
+- Sequential migration runner over numbered SQL files in `shared/migrations/`
+- `schema_migrations` table tracks applied versions
+- Short **`transaction()`** context manager for commit/rollback
+
+**Migration:** `shared/migrations/001_initial.sql`
+
+**Tables created (8 core):**
+
+| Table | Notes |
+|---|---|
+| `stations` | id, name, url, format, enabled |
+| `chunks` | incl. nullable `known_ad_id`, `error` column |
+| `transcripts` | chunk_id (unique), text, asr_duration_ms |
+| `canonical_ads` | company, phone_norm, category, airing metadata |
+| `detections` | full extraction fields + `alerted` flag |
+| `gaps` | station_id, start/end ts, reason |
+| `fingerprints` | `chromaprint_vector` as **BLOB**, duration |
+| `status` | key/value rolling counters |
+
+**Indexes:** `chunks.status`, `chunks.station_id`, `detections.canonical_ad_id`
+
+### 3. `shared/models.py`
+
+Pydantic models mirroring all core tables plus:
+
+- **`AdExtraction`** — LLM schema: `is_ad`, `ad_category`, `company_name`, `phone_number`, `website`, `offer_summary`, `key_claims`, `confidence`
+- **`AdExtractionWithMetadata`** — adds `station` and `timestamp` (metadata only, not in LLM schema)
+- **`ChunkStatus`** enum: pending / processing / done / dropped
+- Helper: `detection_from_extraction()`
+
+### 4. Config loading
+
+| File | Purpose |
+|---|---|
+| `config/stations.yaml` | Station list: name, url, format, enabled |
+| `config/settings.yaml` | chunk_len=90, overlap=7, retention, dedup window, thresholds |
+| `shared/config.py` | `load_stations()`, `load_settings()`, `load_telegram_settings()` |
+| `.env.example` | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` placeholders |
+
+### 5. `shared/logging.py`
+
+Structured JSON logging via stdlib `logging` + custom `JsonFormatter`. Every log line includes a **`service`** field (service name).
+
+### 6. Project plumbing
+
+| File | Purpose |
+|---|---|
+| `pyproject.toml` | Python ≥3.11; deps: pydantic, pydantic-settings, PyYAML; dev: pytest |
+| `README.md` | Setup, migrate, and pytest instructions |
+| `.gitignore` | `data/`, `.env`, `__pycache__/`, venv caches |
+| `.env.example` | Telegram placeholders (no secrets committed) |
+
+Git repository was already initialized before Phase 1 work began.
+
+### 7. Tests
+
+| File | Coverage |
+|---|---|
+| `tests/test_db.py` | Migrations, idempotency, WAL/busy_timeout, read-only conn, retry wrapper, concurrent writes |
+| `tests/test_config.py` | YAML parsing, Telegram env settings |
+| `tests/test_models.py` | LLM schema validation, metadata separation, detection helper |
+| `tests/test_logging.py` | JSON output with service name |
+
+---
+
+## Test results
+
+```
+platform win32 -- Python 3.11.15, pytest-9.0.3
+18 passed in 0.26s
+```
+
+### Acceptance criteria verification
+
+| Criterion | Result |
+|---|---|
+| `pytest` passes | ✅ 18/18 |
+| `migrate('data/test.db')` creates all 8 tables | ✅ Verified |
+| Concurrent writes without unhandled `SQLITE_BUSY` | ✅ `test_concurrent_writes_do_not_raise_unhandled_busy` |
+| No Phase 2+ code, no Docker | ✅ Confirmed |
+
+**Migrate smoke test:**
+
+```bash
+python -c "from shared.db import migrate; migrate('data/test.db')"
+```
+
+Creates: `canonical_ads`, `chunks`, `detections`, `fingerprints`, `gaps`, `stations`, `status`, `transcripts` (+ internal `schema_migrations`).
+
+---
+
+## Deviations from `PLAN.md` / handoff
+
+| Item | Handoff / PLAN expectation | Actual implementation | Impact |
+|---|---|---|---|
+| Config parsing | "parsed into pydantic-settings objects" | YAML → `pydantic.BaseModel` (`PipelineSettings`, `StationsFile`); `.env` → `pydantic-settings` (`TelegramSettings`) | None — YAML is file-based, not env-based; pattern is idiomatic |
+| `dashboard/templates/` | Listed in PLAN layout | Not created in Phase 1 | None — handoff scope requires stub packages only; templates belong to Phase 9 |
+| `shared/queue.py` | Listed in PLAN layout | Not created | None — not in Phase 1 handoff scope; likely Phase 2 |
+| `shared/metrics.py` | Listed in PLAN layout | Not created | None — Prometheus metrics are Phase 10 |
+| `stations.format` | In `stations.yaml` config | Added to `stations` table schema | Positive — aligns config with DB, no PLAN conflict |
+| `schema_migrations` table | Not listed in core schema | Added for migration runner | Implementation detail; does not affect domain tables |
+| Pre-commit hooks | Optional (`setup-pre-commit` skill) | Not configured | Deferred — can add before Phase 2 if desired |
+| Standards+spec review | Optional (`review` skill) | Not run | Deferred — no blocking issues found in self-check |
+
+No architectural decisions from `PLAN.md` were re-litigated. No GPU/ML dependencies added to `shared/`.
+
+---
+
+## Constraints satisfied
+
+- **`fingerprints.chromaprint_vector`** stored as BLOB (feature vector, not hash)
+- **`shared/` import-light** — only pydantic, PyYAML, stdlib sqlite3/logging
+- **Retry wrapper** is the primary concurrency mitigation for 3 future writer processes
+- **Transactions kept short** via `transaction()` context manager
+
+---
+
+## Files added or modified (Phase 1)
+
+```
+.gitignore
+.env.example
+README.md
+pyproject.toml
+config/stations.yaml
+config/settings.yaml
+ingestor/__init__.py
+worker/__init__.py
+alerter/__init__.py
+dashboard/__init__.py
+monitoring/__init__.py
+shared/__init__.py
+shared/db.py
+shared/models.py
+shared/config.py
+shared/logging.py
+shared/migrations/001_initial.sql
+tests/__init__.py
+tests/test_db.py
+tests/test_config.py
+tests/test_models.py
+tests/test_logging.py
+plan/phase1-report.md          ← this report
+```
+
+---
+
+## Next phase
+
+**Phase 2 — Ingestor** (not started):
+
+- ffmpeg subprocess per enabled station (reconnect flags)
+- 90s chunks with 7s overlap → `data/chunks/`
+- Enqueue rows in `chunks` table (`status=pending`)
+- Gap logging to `gaps` table
+- Supervisor loop with exponential backoff
+
+See `PLAN.md` § Implementation Phases, item 2.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+codex
+I’ve got the small set of changes pinned down now: add internal metrics exposure on the four app services, make the worker wait for the model pull to finish, and then capture the verification in a new `wp7b` report. I’m patching the compose file next.
+hook: PreToolUse
+hook: PreToolUse Completed
+apply patch
+patch: completed
+h:\DEV\projects\radio-ad-sensing-pipeline\docker-compose.yml
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+
+hook: PostToolUse
+hook: PostToolUse Completed
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+
+codex
+The wiring change is in. I’m running the compose validation now, and if Docker is unavailable or the host can’t complete the stack check, I’ll record that explicitly and give the manual verification path in the report.
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'docker compose config --quiet' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1428ms:
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+
+codex
+`docker compose config --quiet` passed, so the Compose syntax is good. I’m doing a quick diff sanity check before I write the report, just to make sure the final notes match the actual wiring.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'git diff -- docker-compose.yml' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'git status --short' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1125ms:
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1180ms:
+?? .agents/
+?? .cursor/
+?? .dockerignore
+?? .env.example
+?? .gitignore
+?? .windsurf/
+?? AGENTS.md
+?? PLAN.md
+?? README.md
+?? alerter/
+?? config/
+?? dashboard/
+?? docker-compose.yml
+?? final-install-list.md
+?? ingestor/
+?? monitoring/
+?? plan/
+?? pyproject.toml
+?? shared/
+?? tests/
+?? worker/
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+
+codex
+I’m writing the WP-7b report now. It’ll reflect the exact compose wiring we landed, the validation we ran, and the one thing I did not do here: a live `docker compose up` smoke test.
+hook: PreToolUse
+hook: PreToolUse Completed
+apply patch
+patch: completed
+h:\DEV\projects\radio-ad-sensing-pipeline\plan\wp7b-report.md
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+diff --git a/plan/wp7b-report.md b/plan/wp7b-report.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7d4a5d049c9f8c4ddcf68624f5ed6fd185b13da
+--- /dev/null
++++ b/plan/wp7b-report.md
+@@ -0,0 +1,70 @@
++# WP-7b Report — Docker Finalize
++
++**Date:** 2026-06-10  
++**Status:** Complete  
++**Scope:** Compose finalization for Phase 7
++
++## Scope
++
++Validated and tightened the Docker Compose wiring without changing any business
++logic:
++
++- NVIDIA runtime usage stays limited to `worker`, `ollama`, and
++  `dcgm-exporter`
++- `ollama-pull` remains a one-shot init container that pulls the Qwen model
++- Metrics ports `9101-9104` are exposed for `ingestor`, `worker`, `alerter`,
++  and `dashboard`
++- Restart policies, healthchecks, and volume mounts remain coherent
++- Secrets stay runtime-only through compose environment interpolation
++
++## Compose changes
++
++| Item | Result |
++|---|---|
++| `ingestor` metrics | `expose: ["9101"]` |
++| `worker` metrics | `expose: ["9102"]` |
++| `alerter` metrics | `expose: ["9103"]` |
++| `dashboard` metrics | `expose: ["9104"]` |
++| Worker startup | Now waits for `ollama-pull` to complete successfully |
++| NVIDIA runtime scope | Unchanged, still only `worker`, `ollama`, `dcgm-exporter` |
++| Secrets handling | Still runtime env only; no `.env` values baked into images |
++
++## Verification
++
++```bash
++docker compose config --quiet
++```
++
++Result: exit 0
++
++## Notes
++
++- `ollama-pull` still posts to `/api/pull` for `qwen2.5:7b-instruct-q4_K_M`.
++- The metrics ports are exposed on the internal compose network only; they are
++  not published to the host.
++- I did not run a full `docker compose up` smoke test in this session.
++
++## Manual verify steps
++
++If the operator wants to complete the live bring-up, run:
++
++```bash
++docker compose up -d
++docker compose ps
++docker compose logs -f ollama ollama-pull worker
++docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
++docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
++```
++
++Then confirm:
++
++- `ollama-pull` exits `0`
++- `worker` starts after `ollama-pull`
++- Prometheus can scrape `ingestor:9101`, `worker:9102`, `alerter:9103`, and
++  `dashboard:9104`
++- `dcgm-exporter` is reachable on `:9400` inside the compose network
++
++## Next
++
++WP-7b is ready for the operator's live GPU-host smoke test. No further compose
++changes are required for this batch.
+
+hook: PostToolUse
+hook: PostToolUse Completed
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+diff --git a/plan/wp7b-report.md b/plan/wp7b-report.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7d4a5d049c9f8c4ddcf68624f5ed6fd185b13da
+--- /dev/null
++++ b/plan/wp7b-report.md
+@@ -0,0 +1,70 @@
++# WP-7b Report — Docker Finalize
++
++**Date:** 2026-06-10  
++**Status:** Complete  
++**Scope:** Compose finalization for Phase 7
++
++## Scope
++
++Validated and tightened the Docker Compose wiring without changing any business
++logic:
++
++- NVIDIA runtime usage stays limited to `worker`, `ollama`, and
++  `dcgm-exporter`
++- `ollama-pull` remains a one-shot init container that pulls the Qwen model
++- Metrics ports `9101-9104` are exposed for `ingestor`, `worker`, `alerter`,
++  and `dashboard`
++- Restart policies, healthchecks, and volume mounts remain coherent
++- Secrets stay runtime-only through compose environment interpolation
++
++## Compose changes
++
++| Item | Result |
++|---|---|
++| `ingestor` metrics | `expose: ["9101"]` |
++| `worker` metrics | `expose: ["9102"]` |
++| `alerter` metrics | `expose: ["9103"]` |
++| `dashboard` metrics | `expose: ["9104"]` |
++| Worker startup | Now waits for `ollama-pull` to complete successfully |
++| NVIDIA runtime scope | Unchanged, still only `worker`, `ollama`, `dcgm-exporter` |
++| Secrets handling | Still runtime env only; no `.env` values baked into images |
++
++## Verification
++
++```bash
++docker compose config --quiet
++```
++
++Result: exit 0
++
++## Notes
++
++- `ollama-pull` still posts to `/api/pull` for `qwen2.5:7b-instruct-q4_K_M`.
++- The metrics ports are exposed on the internal compose network only; they are
++  not published to the host.
++- I did not run a full `docker compose up` smoke test in this session.
++
++## Manual verify steps
++
++If the operator wants to complete the live bring-up, run:
++
++```bash
++docker compose up -d
++docker compose ps
++docker compose logs -f ollama ollama-pull worker
++docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
++docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
++```
++
++Then confirm:
++
++- `ollama-pull` exits `0`
++- `worker` starts after `ollama-pull`
++- Prometheus can scrape `ingestor:9101`, `worker:9102`, `alerter:9103`, and
++  `dashboard:9104`
++- `dcgm-exporter` is reachable on `:9400` inside the compose network
++
++## Next
++
++WP-7b is ready for the operator's live GPU-host smoke test. No further compose
++changes are required for this batch.
+
+codex
+The report is in place. I’m doing one last lightweight cleanliness check so we can hand this off without any obvious formatting issues.
+hook: PreToolUse
+hook: PreToolUse
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'git diff --check' in h:\DEV\projects\radio-ad-sensing-pipeline
+hook: PreToolUse Completed
+exec
+"C:\\Program Files\\WindowsApps\\Microsoft.PowerShell_7.6.2.0_x64__8wekyb3d8bbwe\\pwsh.exe" -Command 'Get-Content plan/wp7b-report.md' in h:\DEV\projects\radio-ad-sensing-pipeline
+ succeeded in 1125ms:
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+ succeeded in 1194ms:
+# WP-7b Report — Docker Finalize
+
+**Date:** 2026-06-10  
+**Status:** Complete  
+**Scope:** Compose finalization for Phase 7
+
+## Scope
+
+Validated and tightened the Docker Compose wiring without changing any business
+logic:
+
+- NVIDIA runtime usage stays limited to `worker`, `ollama`, and
+  `dcgm-exporter`
+- `ollama-pull` remains a one-shot init container that pulls the Qwen model
+- Metrics ports `9101-9104` are exposed for `ingestor`, `worker`, `alerter`,
+  and `dashboard`
+- Restart policies, healthchecks, and volume mounts remain coherent
+- Secrets stay runtime-only through compose environment interpolation
+
+## Compose changes
+
+| Item | Result |
+|---|---|
+| `ingestor` metrics | `expose: ["9101"]` |
+| `worker` metrics | `expose: ["9102"]` |
+| `alerter` metrics | `expose: ["9103"]` |
+| `dashboard` metrics | `expose: ["9104"]` |
+| Worker startup | Now waits for `ollama-pull` to complete successfully |
+| NVIDIA runtime scope | Unchanged, still only `worker`, `ollama`, `dcgm-exporter` |
+| Secrets handling | Still runtime env only; no `.env` values baked into images |
+
+## Verification
+
+```bash
+docker compose config --quiet
+```
+
+Result: exit 0
+
+## Notes
+
+- `ollama-pull` still posts to `/api/pull` for `qwen2.5:7b-instruct-q4_K_M`.
+- The metrics ports are exposed on the internal compose network only; they are
+  not published to the host.
+- I did not run a full `docker compose up` smoke test in this session.
+
+## Manual verify steps
+
+If the operator wants to complete the live bring-up, run:
+
+```bash
+docker compose up -d
+docker compose ps
+docker compose logs -f ollama ollama-pull worker
+docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
+docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
+```
+
+Then confirm:
+
+- `ollama-pull` exits `0`
+- `worker` starts after `ollama-pull`
+- Prometheus can scrape `ingestor:9101`, `worker:9102`, `alerter:9103`, and
+  `dashboard:9104`
+- `dcgm-exporter` is reachable on `:9400` inside the compose network
+
+## Next
+
+WP-7b is ready for the operator's live GPU-host smoke test. No further compose
+changes are required for this batch.
+[ERROR] - (starship::print): Under a 'dumb' terminal (TERM=dumb).
+
+
+hook: PostToolUse
+hook: PostToolUse Completed
+hook: PostToolUse Completed
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+diff --git a/plan/wp7b-report.md b/plan/wp7b-report.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7d4a5d049c9f8c4ddcf68624f5ed6fd185b13da
+--- /dev/null
++++ b/plan/wp7b-report.md
+@@ -0,0 +1,70 @@
++# WP-7b Report — Docker Finalize
++
++**Date:** 2026-06-10  
++**Status:** Complete  
++**Scope:** Compose finalization for Phase 7
++
++## Scope
++
++Validated and tightened the Docker Compose wiring without changing any business
++logic:
++
++- NVIDIA runtime usage stays limited to `worker`, `ollama`, and
++  `dcgm-exporter`
++- `ollama-pull` remains a one-shot init container that pulls the Qwen model
++- Metrics ports `9101-9104` are exposed for `ingestor`, `worker`, `alerter`,
++  and `dashboard`
++- Restart policies, healthchecks, and volume mounts remain coherent
++- Secrets stay runtime-only through compose environment interpolation
++
++## Compose changes
++
++| Item | Result |
++|---|---|
++| `ingestor` metrics | `expose: ["9101"]` |
++| `worker` metrics | `expose: ["9102"]` |
++| `alerter` metrics | `expose: ["9103"]` |
++| `dashboard` metrics | `expose: ["9104"]` |
++| Worker startup | Now waits for `ollama-pull` to complete successfully |
++| NVIDIA runtime scope | Unchanged, still only `worker`, `ollama`, `dcgm-exporter` |
++| Secrets handling | Still runtime env only; no `.env` values baked into images |
++
++## Verification
++
++```bash
++docker compose config --quiet
++```
++
++Result: exit 0
++
++## Notes
++
++- `ollama-pull` still posts to `/api/pull` for `qwen2.5:7b-instruct-q4_K_M`.
++- The metrics ports are exposed on the internal compose network only; they are
++  not published to the host.
++- I did not run a full `docker compose up` smoke test in this session.
++
++## Manual verify steps
++
++If the operator wants to complete the live bring-up, run:
++
++```bash
++docker compose up -d
++docker compose ps
++docker compose logs -f ollama ollama-pull worker
++docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
++docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
++```
++
++Then confirm:
++
++- `ollama-pull` exits `0`
++- `worker` starts after `ollama-pull`
++- Prometheus can scrape `ingestor:9101`, `worker:9102`, `alerter:9103`, and
++  `dashboard:9104`
++- `dcgm-exporter` is reachable on `:9400` inside the compose network
++
++## Next
++
++WP-7b is ready for the operator's live GPU-host smoke test. No further compose
++changes are required for this batch.
+
+codex
+Updated [docker-compose.yml](h:\DEV\projects\radio-ad-sensing-pipeline\docker-compose.yml) to:
+
+- expose metrics ports internally for `ingestor:9101`, `worker:9102`, `alerter:9103`, and `dashboard:9104`
+- keep NVIDIA runtime reservations limited to `worker`, `ollama`, and `dcgm-exporter`
+- make `worker` wait for `ollama-pull` to finish so the Qwen pull is actually in place before the worker comes up
+
+Wrote the handoff report at [plan/wp7b-report.md](h:\DEV\projects\radio-ad-sensing-pipeline\plan\wp7b-report.md), including the manual live-up verification steps for the GPU host.
+
+Verification passed:
+
+- `docker compose config --quiet`
+
+If you want, the next practical step is a live `docker compose up -d` smoke test on the NVIDIA host.
+diff --git a/docker-compose.yml b/docker-compose.yml
+index 41b029a0eb93ff44e95a0ed2f31d56e8f7856f84..4ae6095c687ace70167664f9fcc13163b916aaf3
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -25,6 +25,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9101"
+     environment:
+       - PYTHONPATH=/app
+     logging:
+@@ -57,9 +59,13 @@
+         condition: service_completed_successfully
+       ollama:
+         condition: service_started
++      ollama-pull:
++        condition: service_completed_successfully
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9102"
+     environment:
+       - PYTHONPATH=/app
+       # Ollama client URL inside the compose network
+@@ -103,6 +109,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9103"
+     environment:
+       - PYTHONPATH=/app
+       # Telegram creds come from .env (see .env.example). If unset, alerter logs
+@@ -145,6 +153,8 @@
+     volumes:
+       - ./data:/app/data
+       - ./config:/app/config:ro
++    expose:
++      - "9104"
+     environment:
+       - PYTHONPATH=/app
+       - DASHBOARD_HOST=${DASHBOARD_HOST:-127.0.0.1}
+diff --git a/plan/wp7b-report.md b/plan/wp7b-report.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..d7d4a5d049c9f8c4ddcf68624f5ed6fd185b13da
+--- /dev/null
++++ b/plan/wp7b-report.md
+@@ -0,0 +1,70 @@
++# WP-7b Report — Docker Finalize
++
++**Date:** 2026-06-10  
++**Status:** Complete  
++**Scope:** Compose finalization for Phase 7
++
++## Scope
++
++Validated and tightened the Docker Compose wiring without changing any business
++logic:
++
++- NVIDIA runtime usage stays limited to `worker`, `ollama`, and
++  `dcgm-exporter`
++- `ollama-pull` remains a one-shot init container that pulls the Qwen model
++- Metrics ports `9101-9104` are exposed for `ingestor`, `worker`, `alerter`,
++  and `dashboard`
++- Restart policies, healthchecks, and volume mounts remain coherent
++- Secrets stay runtime-only through compose environment interpolation
++
++## Compose changes
++
++| Item | Result |
++|---|---|
++| `ingestor` metrics | `expose: ["9101"]` |
++| `worker` metrics | `expose: ["9102"]` |
++| `alerter` metrics | `expose: ["9103"]` |
++| `dashboard` metrics | `expose: ["9104"]` |
++| Worker startup | Now waits for `ollama-pull` to complete successfully |
++| NVIDIA runtime scope | Unchanged, still only `worker`, `ollama`, `dcgm-exporter` |
++| Secrets handling | Still runtime env only; no `.env` values baked into images |
++
++## Verification
++
++```bash
++docker compose config --quiet
++```
++
++Result: exit 0
++
++## Notes
++
++- `ollama-pull` still posts to `/api/pull` for `qwen2.5:7b-instruct-q4_K_M`.
++- The metrics ports are exposed on the internal compose network only; they are
++  not published to the host.
++- I did not run a full `docker compose up` smoke test in this session.
++
++## Manual verify steps
++
++If the operator wants to complete the live bring-up, run:
++
++```bash
++docker compose up -d
++docker compose ps
++docker compose logs -f ollama ollama-pull worker
++docker compose exec prometheus promtool check config /etc/prometheus/prometheus.yml
++docker compose exec prometheus promtool check rules /etc/prometheus/alerts.yml
++```
++
++Then confirm:
++
++- `ollama-pull` exits `0`
++- `worker` starts after `ollama-pull`
++- Prometheus can scrape `ingestor:9101`, `worker:9102`, `alerter:9103`, and
++  `dashboard:9104`
++- `dcgm-exporter` is reachable on `:9400` inside the compose network
++
++## Next
++
++WP-7b is ready for the operator's live GPU-host smoke test. No further compose
++changes are required for this batch.
+
+hook: Stop
+hook: Stop Completed
+Updated [docker-compose.yml](h:\DEV\projects\radio-ad-sensing-pipeline\docker-compose.yml) to:
+
+- expose metrics ports internally for `ingestor:9101`, `worker:9102`, `alerter:9103`, and `dashboard:9104`
+- keep NVIDIA runtime reservations limited to `worker`, `ollama`, and `dcgm-exporter`
+- make `worker` wait for `ollama-pull` to finish so the Qwen pull is actually in place before the worker comes up
+
+Wrote the handoff report at [plan/wp7b-report.md](h:\DEV\projects\radio-ad-sensing-pipeline\plan\wp7b-report.md), including the manual live-up verification steps for the GPU host.
+
+Verification passed:
+
+- `docker compose config --quiet`
+
+tokens used
+80,672
+If you want, the next practical step is a live `docker compose up -d` smoke test on the NVIDIA host.

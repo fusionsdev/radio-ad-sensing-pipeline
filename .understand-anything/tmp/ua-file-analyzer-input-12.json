@@ -1,0 +1,42 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": ".agents/skills/improve-codebase-architecture/DEEPENING.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/improve-codebase-architecture/HTML-REPORT.md",
+      "language": "markdown",
+      "sizeLines": 123,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/improve-codebase-architecture/INTERFACE-DESIGN.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/improve-codebase-architecture/LANGUAGE.md",
+      "language": "markdown",
+      "sizeLines": 53,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".agents/skills/improve-codebase-architecture/SKILL.md",
+      "language": "markdown",
+      "sizeLines": 81,
+      "fileCategory": "docs"
+    }
+  ],
+  "batchImportData": {
+    ".agents/skills/improve-codebase-architecture/DEEPENING.md": [],
+    ".agents/skills/improve-codebase-architecture/HTML-REPORT.md": [],
+    ".agents/skills/improve-codebase-architecture/INTERFACE-DESIGN.md": [],
+    ".agents/skills/improve-codebase-architecture/LANGUAGE.md": [],
+    ".agents/skills/improve-codebase-architecture/SKILL.md": []
+  }
+}

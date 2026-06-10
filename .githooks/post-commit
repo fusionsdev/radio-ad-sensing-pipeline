@@ -1,0 +1,11 @@
+﻿#!/bin/sh
+# Understand-Anything: mark graph stale after commit (Cursor sessionStart picks this up)
+CFG=".understand-anything/config.json"
+GRAPH=".understand-anything/knowledge-graph.json"
+[ -f "$CFG" ] && grep -q '"autoUpdate".*true' "$CFG" 2>/dev/null || exit 0
+[ -f "$GRAPH" ] || exit 0
+META=".understand-anything/meta.json"
+HEAD=$(git rev-parse HEAD 2>/dev/null) || exit 0
+STORED=$(node -e "try{const m=require('./'+process.argv[1]);process.stdout.write(m.gitCommitHash||'')}catch(e){}" "$META" 2>/dev/null)
+[ "$HEAD" = "$STORED" ] && exit 0
+echo "$HEAD" > .understand-anything/.graph-stale 2>/dev/null || true

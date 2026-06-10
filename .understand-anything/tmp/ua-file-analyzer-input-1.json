@@ -1,0 +1,145 @@
+{
+  "projectRoot": "h:\\DEV\\projects\\radio-ad-sensing-pipeline",
+  "batchFiles": [
+    {
+      "path": "alerter/__main__.py",
+      "language": "python",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "alerter/service.py",
+      "language": "python",
+      "sizeLines": 513,
+      "fileCategory": "code"
+    },
+    {
+      "path": "dashboard/__main__.py",
+      "language": "python",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "ingestor/__main__.py",
+      "language": "python",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "scripts/run_worker_until_empty.py",
+      "language": "python",
+      "sizeLines": 98,
+      "fileCategory": "code"
+    },
+    {
+      "path": "shared/config.py",
+      "language": "python",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "shared/logging.py",
+      "language": "python",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "shared/metrics.py",
+      "language": "python",
+      "sizeLines": 175,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_alerter.py",
+      "language": "python",
+      "sizeLines": 382,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_config.py",
+      "language": "python",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_logging.py",
+      "language": "python",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_metrics.py",
+      "language": "python",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "worker/__main__.py",
+      "language": "python",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "alerter/__main__.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/logging.py",
+      "shared/metrics.py"
+    ],
+    "alerter/service.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py",
+      "shared/models.py"
+    ],
+    "dashboard/__main__.py": [
+      "shared/config.py"
+    ],
+    "ingestor/__main__.py": [
+      "ingestor/supervisor.py",
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py"
+    ],
+    "scripts/run_worker_until_empty.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "worker/consumer.py"
+    ],
+    "shared/config.py": [
+      "shared/models.py"
+    ],
+    "shared/logging.py": [
+      "shared/logging.py"
+    ],
+    "shared/metrics.py": [
+      "shared/db.py"
+    ],
+    "tests/test_alerter.py": [
+      "alerter/service.py",
+      "shared/config.py",
+      "shared/db.py"
+    ],
+    "tests/test_config.py": [
+      "shared/config.py"
+    ],
+    "tests/test_logging.py": [
+      "shared/logging.py"
+    ],
+    "tests/test_metrics.py": [
+      "shared/db.py",
+      "shared/metrics.py"
+    ],
+    "worker/__main__.py": [
+      "shared/config.py",
+      "shared/db.py",
+      "shared/logging.py",
+      "shared/metrics.py",
+      "worker/consumer.py"
+    ]
+  }
+}

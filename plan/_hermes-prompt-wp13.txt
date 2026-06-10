@@ -1,0 +1,12 @@
+Review WP-13 Production Hardening per plan/codexplan.md and plan/wp13-hardening-report.md.
+
+Focus:
+- WAL: checkpoint_wal(PASSIVE) in janitor; read-only connections skip journal_mode write
+- Metrics: pipeline_sqlite_wal_* gauges update correctly
+- docker-compose.prod.yml: pipeline_data named volume; chunk-tmpfs unchanged
+- ASR: medium.en default unchanged; ASR_MODEL env override; asr_benchmark uses fake factory in CI
+
+Do not ask to change fingerprint 0.88, Ollama temperature 0, or default ASR model.
+
+Output findings by severity (critical / major / minor) with file:line where possible.
+End with exactly one line: VERDICT: ship | fix-then-ship | rework
