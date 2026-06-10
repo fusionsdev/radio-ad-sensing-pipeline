@@ -2,20 +2,19 @@
 
 **Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
 
-## Current state (2026-06-10)
+## Current state (2026-06-11)
 
 | Item | Status |
 |---|---|
 | **Opus review gate** | ✅ **CLOSED** — ทุก WP ship (`plan/opus-review-plan-6165b3.md`) |
-| **Tests** | **112/112** passing (`pytest`) |
-| **Grafana metrics** | ✅ WP-10c — `plan/wp10c-grafana-metrics-report.md` (stage/ASR/LLM/dedup/ingest/alerter + Ollama scrape) |
-| **Ingest resilience** | ✅ WP ship — `plan/wp-ingest-resilience-report.md` (Hermes Sonnet + Opus gate) |
-| **DB migrate** | `python -c "from shared.db import migrate; migrate('data/pipeline.db')"` |
-| **Docker** | ✅ full stack up on Win GPU host — `plan/wp7b-docker-smoke-20260610.md` |
-| **Operator smoke** | ✅ CA+TX ingestor+worker+alerter — `plan/ca-tx-ingestor-smoke-20260610.md` |
-| **Handoff** | `plan/handoff-ca-tx-smoke-20260610.md` |
+| **Tests** | **171/171** passing (`pytest`) |
+| **CFPB collector** | ✅ CODE COMPLETE — `plan/wp-cfpb-collector-report.md`; handoff `plan/handoff-cfpb-20260611.md` |
+| **Grafana metrics** | ✅ WP-10c — `plan/wp10c-grafana-metrics-report.md` |
+| **Ingest resilience** | ✅ — `plan/wp-ingest-resilience-report.md` |
+| **DB migrate** | `python -c "from shared.db import migrate; migrate('data/pipeline.db')"` (migrations **001–007**) |
+| **Docker** | ✅ full stack on Win GPU host — `plan/wp7b-docker-smoke-20260610.md` |
+| **Operator smoke** | ✅ CA+TX — `plan/ca-tx-ingestor-smoke-20260610.md` |
 | **Stations enabled** | `kfi-am-640`, `wbap-am-820` in `config/stations.yaml` |
-| **Git** | initial commit + ingest-resilience on `main` |
 
 ## Work packages (all shipped)
 
@@ -39,6 +38,7 @@
 | WP-12 RAM disk + janitor | `plan/wp12-report.md` |
 | WP-13 Production hardening | `plan/wp13-hardening-report.md` |
 | WP-ingest-resilience | `plan/wp-ingest-resilience-report.md` |
+| WP-CFPB collector | `plan/wp-cfpb-collector-report.md` |
 
 ## Canonical docs (read before coding)
 
@@ -58,6 +58,8 @@
 - **LLM schema** excludes `station`/`timestamp` — metadata injected separately
 - **Queue:** `chunks` table (pending/processing/done/dropped), no Redis
 - **Chunk storage:** transient WAVs via `chunks_dir` / `CHUNKS_DIR`; Docker uses tmpfs `/app/chunks` (ingestor+worker); janitor deletes after processing + periodic sweep
+- **CFPB collector:** batch `collectors/`; config `config/cfpb_collector.yaml`; dashboard `/cfpb`; auto-approve score≥85 (company-field only); `ad_copy_allowed` always false
+- **Trademark layer:** `trademark_entities`, `trademark_aliases`, `trademark_keyword_candidates` (migration 006); fed optionally from CFPB bridge (score ≥ 70)
 
 ## Optional operator smoke (not CI)
 
@@ -84,13 +86,26 @@ Full command list: `README.md` § Codebase map. Plugin paths: `final-install-lis
 
 ## Hermes Telegram (remote ops)
 
+- **Session rule:** `.cursor/rules/project-session-quality.mdc` — startup reads + skill routing every chat
 - Context: `.hermes.md` (auto-loaded by Hermes gateway when cwd is this repo)
+- Cheatsheet: `plan/telegram-ops-cheatsheet.md` — copy-paste prompts + PowerShell one-liners
 - Skill: `/pipeline-ops` → `.agents/skills/pipeline-ops/SKILL.md`
-- Live status: `.\scripts\pipeline-status.ps1` (query DB via `docker exec radio-worker`)
+- Live status: `.\scripts\pipeline-status.ps1` (queue + CFPB summary via `docker exec radio-worker`)
+- CFPB collect: `.\scripts\run-cfpb-collector.ps1` or `.\scripts\run-cfpb-collector.ps1 -Docker`
 - **Do not** read `data/pipeline.db` from Windows host during Docker ingest (stale bind-mount)
 
 ## Session checklist for agent
 
-- [ ] Read this file + relevant `plan/handoff-*.md` if starting new work
+- [ ] Read `AGENTS.md` + `plan/handoff-cfpb-20260611.md` (not long chat history)
 - [ ] Run `pytest` before claiming done
 - [ ] Update `plan/` report or handoff when closing a phase
+
+## Operator UX (human)
+
+**ไม่ต้องพิมพ์ `/pipeline-ops`** — พูดภาษาคนได้เลย (agent โหลด skill ให้เอง)
+
+| วิธี | ตัวอย่าง |
+|---|---|
+| พูดตรงๆ | `วันนี้ pipeline ok ไหม` |
+| กด `/` เลือก | `/status`, `/cfpb`, `/help`, `/handoff` → `.cursor/commands/` |
+| ก๊อปวาง | `plan/cursor-copy-paste.md` |

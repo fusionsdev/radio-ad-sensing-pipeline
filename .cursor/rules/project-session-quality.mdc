@@ -1,0 +1,53 @@
+---
+description: Session startup, mandatory skill routing, and quality gates — read every chat
+alwaysApply: true
+---
+
+# Session Quality — Startup + Skills Every Time
+
+**Do not rely on long chat history.** Repo docs + skills are source of truth.
+
+## 1. Every new session (before any action)
+
+Read in order (use Read tool — do not skip):
+
+1. `AGENTS.md` — current phase, tests, checklist
+2. Latest `plan/handoff-*.md` (now: `plan/handoff-cfpb-20260611.md`)
+3. If task touches a shipped WP: its `plan/wp*-report.md` or `docs/*.md`
+
+If handoff conflicts with chat, **handoff + AGENTS.md win**.
+
+## 2. Before acting — invoke the matching skill
+
+Read `.agents/skills/<name>/SKILL.md` **first** when trigger matches. **Never improvise** when a skill applies.
+
+**User may speak in plain Thai/English** — do NOT require `/pipeline-ops` or other slash prefixes. Infer intent and load the skill (e.g. "เช็คสถานะ", "pipeline ok ไหม", "queue ค้างไหม" → `pipeline-ops`).
+
+Optional shortcuts for humans: `.cursor/commands/` → user types `/` and picks `/status`, `/cfpb`, `/help`. See `plan/cursor-copy-paste.md`.
+
+| Situation | Skill |
+|---|---|
+| Pipeline / stations / queue / CFPB / Telegram ops | `pipeline-ops` |
+| New feature or bugfix in code | `tdd` |
+| Bug, failure, regression | `diagnose` |
+| End of phase or session handoff | `handoff` |
+| Review before merge/commit | `review` |
+| Plan before big build | read `PLAN.md`; user `/octo-plan` → follow octo workflow |
+| Hermes review gate | `hermes-dispatch` |
+| User wants terse replies | `caveman` |
+
+Full skill table: `.cursor/rules/project-skills.mdc`.
+
+## 3. Quality gates (before claiming "done")
+
+- Run `.venv\Scripts\pytest` for code changes
+- Run migrate smoke if schema changed: `python -c "from shared.db import migrate; migrate('data/test.db')"`
+- CFPB/ops: query live DB via `docker exec radio-worker` or `.\scripts\pipeline-status.ps1` — **not** host `data/pipeline.db` during Docker ingest
+- Update `plan/` report or handoff when closing a work package
+- Do not commit unless user asks
+
+## 4. Context discipline
+
+- Prefer **short answers** + pointers to `plan/` and `docs/`
+- Summarize session end → `plan/handoff-*.md` (use `handoff` skill)
+- Library how-to → Context7 MCP; live facts → Exa MCP (see `project-plugins-mcp.mdc`)

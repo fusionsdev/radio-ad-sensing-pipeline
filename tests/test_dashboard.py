@@ -13,6 +13,7 @@ from shared.db import get_connection, migrate
 from tests.fixtures.seed_dashboard import seed_dashboard_db
 
 HTML_ROUTES = ["/", "/ads", "/stations", "/scorecard", "/keywords", "/review", "/gaps"]
+CFPB_ROUTES = ["/cfpb", "/cfpb/runs", "/cfpb/entities", "/cfpb/candidates"]
 
 
 @pytest.fixture
@@ -38,7 +39,7 @@ def missing_db(tmp_path: Path) -> Path:
 
 def test_all_html_routes_200_on_empty_db(empty_db: Path) -> None:
     client = TestClient(create_app(db_path=empty_db))
-    for route in HTML_ROUTES:
+    for route in HTML_ROUTES + CFPB_ROUTES:
         response = client.get(route)
         assert response.status_code == 200, route
 
@@ -46,7 +47,7 @@ def test_all_html_routes_200_on_empty_db(empty_db: Path) -> None:
 def test_all_html_routes_200_on_seeded_db(seeded: tuple[Path, dict[str, int]]) -> None:
     db_path, _ = seeded
     client = TestClient(create_app(db_path=db_path))
-    for route in HTML_ROUTES:
+    for route in HTML_ROUTES + CFPB_ROUTES:
         response = client.get(route)
         assert response.status_code == 200, route
 
@@ -246,3 +247,39 @@ def test_review_page_renders_tiers(seeded: tuple[Path, dict[str, int]]) -> None:
     assert "hard money" in response.text
     assert client.get("/review?tier=C").status_code == 200
     assert "no LLM ad" in client.get("/review?tier=C").text
+
+
+def test_cfpb_candidate_detail_and_status_update(empty_db: Path) -> None:
+    from shared.db import get_connection
+
+    conn = get_connection(empty_db)
+    conn.execute(
+        """
+        INSERT INTO cfpb_company_entities (
+            company_raw, company_normalized, complaint_count, trademark_candidate_score
+        ) VALUES ('Test Co', 'test co', 5, 75)
+        """
+    )
+    cursor = conn.execute(
+        """
+        INSERT INTO cfpb_brand_candidates (
+            cfpb_company_entity_id, candidate_name, normalized_candidate,
+            candidate_type, score, confidence, verification_status
+        ) VALUES (1, 'Test Co', 'test co', 'company_name', 75, 0.75, 'needs_verification')
+        """
+    )
+    conn.commit()
+    candidate_id = int(cursor.lastrowid)
+    conn.close()
+
+    client = TestClient(create_app(db_path=empty_db))
+    detail = client.get(f"/cfpb/candidates/{candidate_id}")
+    assert detail.status_code == 200
+    assert "Test Co" in detail.text
+
+    response = client.post(
+        f"/cfpb/candidates/{candidate_id}/status",
+        data={"status": "approved_seed"},
+        follow_redirects=False,
+    )
+    assert response.status_code == 303

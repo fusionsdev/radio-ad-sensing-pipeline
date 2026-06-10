@@ -30,6 +30,13 @@ EXPECTED_TABLES = (
     "station_daily",
     "status",
     "schema_migrations",
+    "trademark_entities",
+    "trademark_aliases",
+    "trademark_keyword_candidates",
+    "cfpb_complaints_raw",
+    "cfpb_company_entities",
+    "cfpb_brand_candidates",
+    "cfpb_collection_runs",
 )
 
 

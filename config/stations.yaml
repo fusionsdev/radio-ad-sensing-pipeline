@@ -1,14 +1,15 @@
 # Operator-maintained station list. Set enabled: true per station for live ingest.
 # `name` = stable slug for metrics/logs; `display_name` = full label on dashboard.
-# Verified 2026-06-10 from this host (ffmpeg/ffprobe). Broken URLs kept disabled for URL rot tracking.
+# Verified 2026-06-11 from this host (ffmpeg/ffprobe). Broken URLs kept disabled for URL rot tracking.
+# iHeart HLS pattern: https://stream.revma.ihrhls.com/zc<id>/hls.m3u8
 
 stations:
   # --- California (Los Angeles) ---
   - name: kfi-am-640
     display_name: "KFI 640 AM — Los Angeles, CA"
-    url: http://stream.revma.ihrhls.com/zc177
+    url: https://stream.revma.ihrhls.com/zc177/hls.m3u8
     format: aac
-    enabled: false  # empty_chunk loop from Docker host (2026-06-10); re-enable after stream fix
+    enabled: true  # iHeart HLS PASS (2026-06-11)
 
   - name: knx-news-1070
     display_name: "KNX 1070 News Radio — Los Angeles, CA"
@@ -33,7 +34,7 @@ stations:
     display_name: "KLIF 570 AM — Dallas, TX"
     url: http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3
     format: mp3
-    enabled: true
+    enabled: false
 
   - name: klif-am-570-aac
     display_name: "KLIF 570 AM (AAC) — Dallas, TX"
@@ -43,9 +44,9 @@ stations:
 
   - name: wbap-am-820
     display_name: "WBAP 820 AM — Dallas–Fort Worth, TX"
-    url: http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3
+    url: https://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3
     format: mp3
-    enabled: true
+    enabled: true  # StreamTheWorld PASS (2026-06-11)
 
   - name: wbap-am-820-aac
     display_name: "WBAP 820 AM (AAC) — Dallas–Fort Worth, TX"
@@ -69,18 +70,36 @@ stations:
   # --- Texas (Houston) ---
   - name: ktrh-am-740
     display_name: "KTRH 740 AM — Houston, TX"
-    url: http://stream.revma.ihrhls.com/zc2285
+    url: https://stream.revma.ihrhls.com/zc2285/hls.m3u8
     format: aac
-    enabled: true
+    enabled: true  # iHeart HLS PASS (2026-06-11)
+
+  - name: kprc-am-950
+    display_name: "KPRC 950 AM — Houston, TX"
+    url: https://stream.revma.ihrhls.com/zc2277/hls.m3u8
+    format: aac
+    enabled: true  # iHeart HLS PASS (2026-06-11)
 
   # --- Texas (San Antonio) ---
   - name: woai-am-1200
     display_name: "WOAI 1200 AM — San Antonio, TX"
     url: http://stream.revma.ihrhls.com/zc2361
     format: aac
-    enabled: true
+    enabled: false
 
   # --- Florida (Tampa & Miami) ---
+  - name: wiod-am-610
+    display_name: "WIOD 610 AM — Miami, FL"
+    url: https://stream.revma.ihrhls.com/zc569/hls.m3u8
+    format: aac
+    enabled: true  # iHeart HLS PASS (2026-06-11)
+
+  - name: wfla-am-970
+    display_name: "WFLA 970 AM — Tampa, FL"
+    url: https://stream.revma.ihrhls.com/zc2823/hls.m3u8
+    format: aac
+    enabled: true  # iHeart HLS PASS (2026-06-11)
+
   - name: wlrn-913
     display_name: "WLRN 91.3 FM — Miami, FL"
     url: http://stream.wlrn.mobi/WLRNFMMP3
@@ -91,7 +110,7 @@ stations:
     display_name: "WHBO 1040 AM — Tampa, FL"
     url: https://ice41.securenetsystems.net/WHBO
     format: aac
-    enabled: true
+    enabled: false
 
   - name: whbo-1040-legacy
     display_name: "WHBO 1040 AM (legacy URL) — Tampa, FL"
@@ -114,16 +133,16 @@ stations:
 
   - name: wgn-am-720
     display_name: "WGN 720 AM — Chicago, IL"
-    url: http://provisioning.streamtheworld.com/pls/WGNPLUSAM.pls
+    url: https://live.amperwave.net/direct/wgnam-wgnammp3-imc2
     format: mp3
-    enabled: false  # PLS returns no audio stream (2026-06-10)
+    enabled: true  # AmperWave PASS (2026-06-11)
 
   # --- Georgia (Atlanta) ---
   - name: wsb-am-750
     display_name: "WSB 750 AM — Atlanta, GA"
     url: http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3
     format: mp3
-    enabled: true
+    enabled: false
 
   # --- Michigan (Detroit) ---
   - name: wjr-am-760
@@ -145,23 +164,35 @@ stations:
     format: mp3
     enabled: false  # 403 Forbidden (2026-06-10)
 
-  # --- Ohio (Cleveland) ---
+  # --- Ohio (Cleveland & Columbus) ---
   - name: wtam-am-1100
     display_name: "WTAM 1100 AM — Cleveland, OH"
-    url: http://stream.revma.ihrhls.com/zc1757
+    url: https://stream.revma.ihrhls.com/zc1749/hls.m3u8
     format: aac
-    enabled: true
+    enabled: true  # iHeart HLS PASS (2026-06-11); was zc1757 (wrong id)
+
+  - name: wtvn-am-610
+    display_name: "WTVN 610 AM — Columbus, OH"
+    url: https://stream.revma.ihrhls.com/zc1765/hls.m3u8
+    format: aac
+    enabled: true  # iHeart HLS PASS (2026-06-11)
 
   # --- Indiana (Indianapolis) ---
   - name: wibc-fm-931
     display_name: "WIBC 93.1 FM — Indianapolis, IN"
     url: http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3
     format: mp3
-    enabled: true
+    enabled: false
 
-  # --- Tennessee (Nashville) ---
+  # --- Tennessee (Nashville & Memphis) ---
+  - name: wrec-am-600
+    display_name: "WREC 600 AM — Memphis, TN"
+    url: https://stream.revma.ihrhls.com/zc2145/hls.m3u8
+    format: aac
+    enabled: true  # iHeart HLS PASS (2026-06-11)
+
   - name: wwtn-fm-997
     display_name: "WWTN 99.7 FM — Nashville, TN"
     url: http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3
     format: mp3
-    enabled: true
+    enabled: false

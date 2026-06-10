@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}CFPB Runs — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/cfpb">CFPB</a> / Collection runs</h2>
+{% if runs %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Started</th><th>Finished</th><th>Mode</th>
+      <th>Seen</th><th>Inserted</th><th>Entities</th><th>Candidates</th><th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in runs %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.started_at or "—" }}</td>
+      <td>{{ r.finished_at or "—" }}</td>
+      <td>{{ r.source_mode or "—" }}</td>
+      <td>{{ r.records_seen }}</td>
+      <td>{{ r.records_inserted }}</td>
+      <td>{{ r.entities_created }}</td>
+      <td>{{ r.candidates_created }}</td>
+      <td>
+        {% if r.status == 'completed' %}<span class="badge ok">{{ r.status }}</span>
+        {% elif r.status == 'failed' %}<span class="badge err">{{ r.status }}</span>
+        {% else %}<span class="badge warn">{{ r.status or "—" }}</span>{% endif %}
+      </td>
+    </tr>
+    {% if r.error_message %}
+    <tr><td colspan="9" style="color: var(--muted); font-size: 0.85rem;">{{ r.error_message }}</td></tr>
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No collection runs recorded.</p>
+{% endif %}
+{% endblock %}

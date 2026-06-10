@@ -1,86 +1,36 @@
-# Loan/funding keyword dictionary v2 — phrase + per-phrase confidence.
-# Calibrated against US news/talk radio corpus (WBAP, KLIF, WTAM, KTRH, WOAI, WSB, WIBC, WWTN, WHBO).
+# Loan/funding keyword dictionary v3 — phrase + per-phrase confidence.
+# Re-curated 2026-06-11 against live corpus (1,346 transcripts, 232 detections, 2 active stations: WBAP, KLIF).
+# Removed 26 dead phrases (0 hits) and 3 unverifiable categories (reverse_mortgage, timeshare_*, equity)
+# that never aired on these Texas talk stations. Added 3 corpus-validated phrases.
 # Worker records hits only when confidence >= keyword_min_record_confidence in settings.yaml.
 
 keywords:
-  # Tier 1: high-precision tax/debt-relief phrases
-  - phrase: tax relief
-    confidence: 0.85
-  - phrase: tax debt
-    confidence: 0.85
-  - phrase: tax debt relief
-    confidence: 0.90
-  - phrase: irs tax debt
-    confidence: 0.95
-  - phrase: irs debt
-    confidence: 0.90
-  - phrase: back taxes
-    confidence: 0.80
+  # Tier 1: high-precision tax-relief phrases (validated against 22 tax_relief detections)
   - phrase: unfiled tax returns
     confidence: 0.95
+  - phrase: back taxes
+    confidence: 0.80
   - phrase: stop collections
     confidence: 0.80
-  - phrase: stop wage garnishment
-    confidence: 0.90
-  - phrase: wage garnishment
-    confidence: 0.80
-  - phrase: garnish paycheck
-    confidence: 0.90
-  - phrase: seize bank accounts
+  - phrase: tax relief
     confidence: 0.85
-
-  # Tier 2: lender-adjacent insurance
-  - phrase: term life insurance
-    confidence: 0.70
-  - phrase: final expense
-    confidence: 0.80
-  - phrase: burial insurance
-    confidence: 0.80
-  - phrase: life insurance
-    confidence: 0.55
-  - phrase: homeowners insurance
-    confidence: 0.55
-
-  # Tier 3: timeshare cancellation
-  - phrase: cancel timeshare
-    confidence: 0.95
-  - phrase: timeshare exit
-    confidence: 0.90
-  - phrase: timeshare cancellation
-    confidence: 0.95
-  - phrase: exit your timeshare
-    confidence: 0.95
-  - phrase: maintenance fees
-    confidence: 0.60
-
-  # Tier 4: refi / equity — phrase form only
-  - phrase: refinance your mortgage
-    confidence: 0.80
-  - phrase: cash-out refinance
+  - phrase: owe $10,000
     confidence: 0.85
-  - phrase: home equity loan
-    confidence: 0.75
-  - phrase: home equity line
-    confidence: 0.75
-  - phrase: second mortgage
-    confidence: 0.80
-
-  # Tier 5: business funding
-  - phrase: business funding
-    confidence: 0.85
-  - phrase: business loan
+  - phrase: fresh start
     confidence: 0.70
-  - phrase: working capital
-    confidence: 0.65
-  - phrase: merchant cash advance
-    confidence: 0.80
 
-  # Tier 6: personal-loan / consolidation (broad — discovery)
-  - phrase: debt consolidation
-    confidence: 0.70
+  # Tier 2: debt-relief phrases (validated against 25 debt_relief detections)
   - phrase: debt relief
     confidence: 0.70
-  - phrase: reverse mortgage
-    confidence: 0.85
-  - phrase: personal loan
+  - phrase: tax attorneys
+    confidence: 0.80
+  - phrase: enrolled agents
+    confidence: 0.75
+
+  # Tier 3: insurance / life (validated against 27 insurance + 2 life_insurance detections)
+  - phrase: term life insurance
+    confidence: 0.70
+  - phrase: life insurance
     confidence: 0.55
+  - phrase: maintenance fees
+    confidence: 0.60

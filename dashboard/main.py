@@ -5,8 +5,8 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dashboard import queries
@@ -168,6 +168,79 @@ def create_app(db_path: Path | None = None) -> FastAPI:
                 "format_tier": _format_tier,
             },
         )
+
+    @app.get("/cfpb", response_class=HTMLResponse)
+    def cfpb_overview(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        overview = queries.fetch_cfpb_overview(resolved_db)
+        entities = queries.fetch_cfpb_entities(resolved_db, limit=10)
+        candidates = queries.fetch_cfpb_candidates(resolved_db, limit=10, min_score=50)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "cfpb/index.html",
+            {
+                "overview": overview,
+                "top_entities": entities,
+                "top_candidates": candidates,
+            },
+        )
+
+    @app.get("/cfpb/runs", response_class=HTMLResponse)
+    def cfpb_runs(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        runs = queries.fetch_cfpb_runs(resolved_db)
+        return TEMPLATES.TemplateResponse(request, "cfpb/runs.html", {"runs": runs})
+
+    @app.get("/cfpb/entities", response_class=HTMLResponse)
+    def cfpb_entities(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        entities = queries.fetch_cfpb_entities(resolved_db, limit=200)
+        return TEMPLATES.TemplateResponse(request, "cfpb/entities.html", {"entities": entities})
+
+    @app.get("/cfpb/candidates", response_class=HTMLResponse)
+    def cfpb_candidates(request: Request, min_score: float | None = None) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        candidates = queries.fetch_cfpb_candidates(resolved_db, limit=500, min_score=min_score)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "cfpb/candidates.html",
+            {"candidates": candidates, "min_score": min_score},
+        )
+
+    @app.get("/cfpb/candidates/{candidate_id}", response_class=HTMLResponse)
+    def cfpb_candidate_detail(request: Request, candidate_id: int) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        candidate = queries.fetch_cfpb_candidate_detail(resolved_db, candidate_id)
+        if candidate is None:
+            raise HTTPException(status_code=404, detail="Candidate not found")
+        return TEMPLATES.TemplateResponse(
+            request,
+            "cfpb/candidate_detail.html",
+            {"candidate": candidate},
+        )
+
+    @app.post("/cfpb/candidates/{candidate_id}/status")
+    def cfpb_candidate_status(
+        candidate_id: int,
+        status: str = Form(...),
+    ) -> RedirectResponse:
+        if not queries.update_cfpb_candidate_status(resolved_db, candidate_id, status):
+            raise HTTPException(status_code=400, detail="Invalid status update")
+        return RedirectResponse(url=f"/cfpb/candidates/{candidate_id}", status_code=303)
+
+    @app.post("/cfpb/entities/{entity_id}/status")
+    def cfpb_entity_status(
+        entity_id: int,
+        status: str = Form(...),
+    ) -> RedirectResponse:
+        if not queries.update_cfpb_entity_status(resolved_db, entity_id, status):
+            raise HTTPException(status_code=400, detail="Invalid status update")
+        return RedirectResponse(url="/cfpb/entities", status_code=303)
 
     app.state.db_path = resolved_db
     return app

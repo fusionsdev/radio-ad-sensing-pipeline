@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}CFPB Entities — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/cfpb">CFPB</a> / Company entities</h2>
+{% if entities %}
+<table>
+  <thead>
+    <tr>
+      <th>Company</th><th>Normalized</th><th>Complaints</th><th>Score</th>
+      <th>Status</th><th>Trademark</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in entities %}
+    <tr>
+      <td>{{ e.company_raw }}</td>
+      <td style="color: var(--muted);">{{ e.company_normalized }}</td>
+      <td>{{ e.complaint_count }}</td>
+      <td>{{ "%.0f"|format(e.trademark_candidate_score) }}</td>
+      <td><span class="badge muted">{{ e.review_status }}</span></td>
+      <td>{% if e.trademark_entity_id %}#{{ e.trademark_entity_id }}{% else %}—{% endif %}</td>
+      <td>
+        <form method="post" action="/cfpb/entities/{{ e.id }}/status" style="display:inline;">
+          <select name="status" onchange="this.form.submit()">
+            <option value="">Review…</option>
+            <option value="needs_verification">Needs verification</option>
+            <option value="approved_seed">Approve seed</option>
+            <option value="rejected_noise">Reject noise</option>
+          </select>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No company entities aggregated yet.</p>
+{% endif %}
+{% endblock %}

@@ -113,10 +113,27 @@ def test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration(tmp_path: 
     assert command[:2] == ["ffmpeg", "-hide_banner"]
     assert "-reconnect" in command
     assert "-reconnect_streamed" in command
+    assert "-reconnect_at_eof" in command
     assert "-reconnect_delay_max" in command
     assert command[command.index("-i") + 1] == station.url
     assert command[command.index("-t") + 1] == "90"
     assert command[-1] == str(output_path)
+
+
+def test_build_ffmpeg_command_omits_reconnect_at_eof_for_hls(tmp_path: Path) -> None:
+    station = StationConfig(
+        name="kprc-am-950",
+        url="https://stream.revma.ihrhls.com/zc2277/hls.m3u8",
+        format="aac",
+    )
+    command = build_ffmpeg_command(
+        station, tmp_path / "chunk.wav", PipelineSettings(chunk_len=90)
+    )
+
+    assert "-reconnect" in command
+    assert "-reconnect_streamed" in command
+    assert "-reconnect_at_eof" not in command
+    assert "-reconnect_delay_max" in command
 
 
 def test_is_valid_chunk_duration_uses_two_second_tolerance(tmp_path: Path) -> None:

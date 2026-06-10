@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}CFPB Candidate — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">
+  <a href="/cfpb">CFPB</a> / <a href="/cfpb/candidates">Candidates</a> / #{{ candidate.id }}
+</h2>
+<div class="card" style="margin-bottom: 1rem;">
+  <h2>Candidate</h2>
+  <p style="font-size: 1.25rem; font-weight: 600; margin: 0.5rem 0;">{{ candidate.candidate_name }}</p>
+  <p style="color: var(--muted); margin: 0;">Normalized: {{ candidate.normalized_candidate }}</p>
+</div>
+<table>
+  <tbody>
+    <tr><th>Type</th><td>{{ candidate.candidate_type }}</td></tr>
+    <tr><th>Score</th><td>{{ "%.1f"|format(candidate.score) }}</td></tr>
+    <tr><th>Confidence</th><td>{{ "%.0f"|format(candidate.confidence * 100) }}%</td></tr>
+    <tr><th>Status</th><td><span class="badge warn">{{ candidate.verification_status }}</span></td></tr>
+    <tr><th>Company entity</th><td>{{ candidate.company_raw or "—" }}</td></tr>
+    <tr><th>Product</th><td>{{ candidate.source_product or "—" }}</td></tr>
+    <tr><th>State</th><td>{{ candidate.source_state or "—" }}</td></tr>
+    <tr><th>Complaint ID</th><td>{{ candidate.source_complaint_id or "—" }}</td></tr>
+    <tr><th>Trademark entity</th><td>{% if candidate.trademark_entity_id %}#{{ candidate.trademark_entity_id }}{% else %}—{% endif %}</td></tr>
+    <tr><th>Evidence</th><td style="max-width: 40rem;">{{ candidate.evidence_text or "—" }}</td></tr>
+  </tbody>
+</table>
+<h3 style="font-size: 0.95rem; margin-top: 1.5rem;">Review actions</h3>
+<div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+  <form method="post" action="/cfpb/candidates/{{ candidate.id }}/status">
+    <input type="hidden" name="status" value="approved_seed">
+    <button type="submit" class="pager button" style="background: #1a3d2e;">Approve as seed</button>
+  </form>
+  <form method="post" action="/cfpb/candidates/{{ candidate.id }}/status">
+    <input type="hidden" name="status" value="needs_verification">
+    <button type="submit">Needs verification</button>
+  </form>
+  <form method="post" action="/cfpb/candidates/{{ candidate.id }}/status">
+    <input type="hidden" name="status" value="rejected_noise">
+    <button type="submit" style="background: #3d1a1a; border-color: #3d1a1a;">Reject as noise</button>
+  </form>
+</div>
+{% endblock %}

@@ -24,7 +24,7 @@ def test_migrate_creates_all_tables(tmp_path: Path) -> None:
     db_path = tmp_path / "test.db"
     applied = migrate(db_path)
 
-    assert applied == [1, 2, 3, 4, 5]
+    assert applied == [1, 2, 3, 4, 5, 6, 7]
     tables = list_tables(db_path)
     for table in EXPECTED_TABLES:
         assert table in tables
@@ -35,7 +35,7 @@ def test_migrate_is_idempotent(tmp_path: Path) -> None:
     first = migrate(db_path)
     second = migrate(db_path)
 
-    assert first == [1, 2, 3, 4, 5]
+    assert first == [1, 2, 3, 4, 5, 6, 7]
     assert second == []
 
 

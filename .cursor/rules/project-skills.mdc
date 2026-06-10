@@ -9,10 +9,11 @@ Read the matching `SKILL.md` under `.agents/skills/<name>/` **before** acting. D
 
 **Source of truth:** `final-install-list.md` and `PLAN.md` § Dev Tooling Setup.
 
-## Active skills (16 kept + caveman)
+## Active skills (17 kept + caveman)
 
 | Skill | Trigger | Action |
 |---|---|---|
+| `pipeline-ops` | Pipeline, stations, queue, keywords, CFPB, Docker health, Telegram/Hermes ops, `/pipeline-ops` | Read skill → live DB via container, short operator answer |
 | `hermes-dispatch` | After WP close, before merge, "hermes review", "ส่ง hermes" | Read skill → bundle + `hermes run` → parse VERDICT |
 | `tdd` | New feature, bugfix, "red-green-refactor", DB/worker logic | Read skill → vertical-slice RED→GREEN |
 | `diagnose` | Bug, failure, regression, "debug/diagnose" | Read skill → reproduce→minimise→fix loop |
@@ -46,4 +47,4 @@ Read the matching `SKILL.md` under `.agents/skills/<name>/` **before** acting. D
 | 7 Docker | `review` before merge |
 | 8+ Observability/UI | `prototype` (dashboard), `review` |
 
-Before any phase: read `PLAN.md` and latest `plan/handoff-*.md`. Do not re-litigate agreed decisions.
+Before any phase: read `PLAN.md` and latest `plan/handoff-*.md`. Session startup ritual: `.cursor/rules/project-session-quality.mdc`.

@@ -16,6 +16,30 @@ from shared.models import PipelineSettings, StationConfig
 TIMEOUT_MARGIN_SEC = 60
 
 
+def _is_hls_url(url: str) -> bool:
+    """True for HLS playlists where segment EOF must not trigger reconnect."""
+    lowered = url.lower()
+    return ".m3u8" in lowered or lowered.endswith("/hls")
+
+
+def _reconnect_input_flags(url: str) -> list[str]:
+    """Reconnect flags for live HTTP streams.
+
+    HLS segments end with EOF by design; ``-reconnect_at_eof`` traps ffmpeg in a
+    reconnect loop on iHeart/revma playlists instead of advancing segments.
+    """
+    flags = [
+        "-reconnect",
+        "1",
+        "-reconnect_streamed",
+        "1",
+    ]
+    if not _is_hls_url(url):
+        flags.extend(["-reconnect_at_eof", "1"])
+    flags.extend(["-reconnect_delay_max", "30"])
+    return flags
+
+
 class ChunkRunner(Protocol):
     """Backend that records one station chunk to a path."""
 
@@ -43,14 +67,7 @@ def build_ffmpeg_command(
         "-hide_banner",
         "-loglevel",
         "warning",
-        "-reconnect",
-        "1",
-        "-reconnect_streamed",
-        "1",
-        "-reconnect_at_eof",
-        "1",
-        "-reconnect_delay_max",
-        "30",
+        *_reconnect_input_flags(station.url),
         "-i",
         station.url,
         "-t",

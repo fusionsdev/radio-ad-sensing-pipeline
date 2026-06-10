@@ -132,6 +132,34 @@ class LoanKeywordsFile(BaseModel):
     keywords: list[LoanKeywordEntry]
 
 
+class CfpbCollectorSettings(BaseModel):
+    enabled: bool = True
+    source_mode: str = "api"
+    target_states: list[str] = Field(default_factory=list)
+    target_products: list[str] = Field(default_factory=list)
+    date_from: str | None = None
+    date_to: str | None = None
+    batch_size: int = Field(default=1000, ge=1, le=10000)
+    max_records_per_run: int = Field(default=50000, ge=1)
+    rate_limit_sleep_seconds: float = Field(default=0.5, ge=0.0)
+    include_narratives: bool = True
+    min_company_complaint_count: int = Field(default=3, ge=1)
+    output_to_trademark_layer: bool = True
+    bulk_csv_path: str | None = None
+    auto_approve_enabled: bool = False
+    auto_approve_min_score: float = Field(default=85.0, ge=0.0, le=100.0)
+
+
+class TrademarkLayerSettings(BaseModel):
+    enabled: bool = True
+    min_bridge_score: float = Field(default=70.0, ge=0.0, le=100.0)
+    auto_approve_enabled: bool = False
+    auto_approve_min_score: float = Field(default=85.0, ge=0.0, le=100.0)
+    conservative_variants: list[str] = Field(
+        default_factory=lambda: ["reviews", "complaints", "bbb", "phone number", "alternative"]
+    )
+
+
 class PipelineSettings(BaseModel):
     chunk_len: int = 90
     overlap: int = 7

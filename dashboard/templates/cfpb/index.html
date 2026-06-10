@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}CFPB Seeds — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">CFPB Trademark Seed Collector</h2>
+<p style="color: var(--muted); font-size: 0.9rem; max-width: 52rem;">
+  Supplemental brand/company seeds from the CFPB Consumer Complaint Database.
+  <strong>Not proof of advertising.</strong> All candidates require verification before operational use.
+</p>
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Raw complaints</h2><div class="value">{{ overview.total_complaints }}</div></div>
+  <div class="card"><h2>Company entities</h2><div class="value">{{ overview.total_entities }}</div></div>
+  <div class="card"><h2>Brand candidates</h2><div class="value">{{ overview.total_candidates }}</div></div>
+  <div class="card">
+    <h2>Last run</h2>
+    <div class="value" style="font-size: 1rem;">{{ overview.last_run_status or "—" }}</div>
+    {% if overview.last_run_finished %}<div style="color: var(--muted); font-size: 0.8rem;">{{ overview.last_run_finished }}</div>{% endif %}
+  </div>
+</div>
+<p style="font-size: 0.85rem;">
+  <a href="/cfpb/runs">Collection runs</a> ·
+  <a href="/cfpb/entities">All entities</a> ·
+  <a href="/cfpb/candidates">All candidates</a>
+</p>
+<h3 style="font-size: 0.95rem;">Top companies by complaint count</h3>
+{% if top_entities %}
+<table>
+  <thead><tr><th>Company</th><th>Complaints</th><th>Score</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for e in top_entities %}
+    <tr>
+      <td>{{ e.company_raw }}</td>
+      <td>{{ e.complaint_count }}</td>
+      <td>{{ "%.0f"|format(e.trademark_candidate_score) }}</td>
+      <td><span class="badge muted">{{ e.review_status }}</span></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No CFPB entities yet. Run the collector to ingest data.</p>
+{% endif %}
+<h3 style="font-size: 0.95rem; margin-top: 1.5rem;">Top candidates (score ≥ 50)</h3>
+{% if top_candidates %}
+<table>
+  <thead><tr><th>Candidate</th><th>Type</th><th>Score</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for c in top_candidates %}
+    <tr>
+      <td><a href="/cfpb/candidates/{{ c.id }}">{{ c.candidate_name }}</a></td>
+      <td>{{ c.candidate_type }}</td>
+      <td>{{ "%.0f"|format(c.score) }}</td>
+      <td><span class="badge warn">{{ c.verification_status }}</span></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No scored candidates yet.</p>
+{% endif %}
+{% endblock %}

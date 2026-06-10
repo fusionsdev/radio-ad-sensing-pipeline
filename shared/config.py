@@ -9,7 +9,15 @@ import yaml
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from shared.models import LoanKeywordEntry, LoanKeywordsFile, PipelineSettings, StationConfig, StationsFile
+from shared.models import (
+    CfpbCollectorSettings,
+    LoanKeywordEntry,
+    LoanKeywordsFile,
+    PipelineSettings,
+    StationConfig,
+    StationsFile,
+    TrademarkLayerSettings,
+)
 
 CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 
@@ -85,3 +93,21 @@ def load_settings(path: Path | None = None) -> PipelineSettings:
 
 def load_telegram_settings() -> TelegramSettings:
     return TelegramSettings()
+
+
+def load_cfpb_collector(path: Path | None = None) -> CfpbCollectorSettings:
+    config_path = path or CONFIG_DIR / "cfpb_collector.yaml"
+    if not config_path.is_file():
+        return CfpbCollectorSettings()
+    with config_path.open(encoding="utf-8") as handle:
+        data = yaml.safe_load(handle) or {}
+    return CfpbCollectorSettings.model_validate(data)
+
+
+def load_trademark_settings(path: Path | None = None) -> TrademarkLayerSettings:
+    config_path = path or CONFIG_DIR / "trademark.yaml"
+    if not config_path.is_file():
+        return TrademarkLayerSettings()
+    with config_path.open(encoding="utf-8") as handle:
+        data = yaml.safe_load(handle) or {}
+    return TrademarkLayerSettings.model_validate(data)

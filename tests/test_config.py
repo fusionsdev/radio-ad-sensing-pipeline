@@ -6,7 +6,14 @@ from pathlib import Path
 
 import pytest
 
-from shared.config import load_loan_keywords, load_settings, load_stations, load_telegram_settings
+from shared.config import (
+    load_cfpb_collector,
+    load_loan_keywords,
+    load_settings,
+    load_stations,
+    load_telegram_settings,
+    load_trademark_settings,
+)
 
 
 def test_load_stations_from_repo_config() -> None:
@@ -106,3 +113,19 @@ def test_telegram_settings_optional(monkeypatch: pytest.MonkeyPatch) -> None:
     settings = TelegramSettings(_env_file=None)
     assert settings.telegram_bot_token is None
     assert settings.telegram_chat_id is None
+
+
+def test_load_cfpb_collector_from_repo_config() -> None:
+    config = load_cfpb_collector()
+    assert config.enabled is True
+    assert "TX" in config.target_states
+    assert config.min_company_complaint_count == 3
+    assert config.output_to_trademark_layer is True
+    assert config.auto_approve_enabled is True
+    assert config.auto_approve_min_score == 85
+
+
+def test_load_trademark_settings_from_repo_config() -> None:
+    settings = load_trademark_settings()
+    assert settings.enabled is True
+    assert settings.min_bridge_score == 70

@@ -1,0 +1,34 @@
+enabled: true
+source_mode: api
+target_states:
+  - TX
+  - CA
+  - FL
+  - NC
+  - OH
+  - GA
+  - IL
+  - MI
+  - IN
+  - TN
+target_products:
+  - Payday loan, title loan, or personal loan
+  - Debt collection
+  - Credit reporting or other personal consumer reports
+  - Credit card
+  - Debt settlement
+  - Mortgage
+  - Vehicle loan or lease
+  - Money transfer, virtual currency, or money service
+  - Checking or savings account
+date_from: "2024-01-01"
+date_to: null
+batch_size: 1000
+max_records_per_run: 50000
+rate_limit_sleep_seconds: 0.5
+include_narratives: true
+min_company_complaint_count: 3
+output_to_trademark_layer: true
+bulk_csv_path: null
+auto_approve_enabled: true
+auto_approve_min_score: 85

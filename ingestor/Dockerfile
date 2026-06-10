@@ -20,6 +20,7 @@ WORKDIR /app
 # Install Python deps first for layer caching
 COPY pyproject.toml README.md ./
 COPY shared/ ./shared/
+COPY collectors/ ./collectors/
 COPY ingestor/ ./ingestor/
 COPY config/ ./config/
 

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}CFPB Candidates — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/cfpb">CFPB</a> / Brand candidates</h2>
+<p style="font-size: 0.85rem;">
+  Filter: <a href="/cfpb/candidates">All</a> ·
+  <a href="/cfpb/candidates?min_score=70">Score ≥ 70</a> ·
+  <a href="/cfpb/candidates?min_score=85">Score ≥ 85</a>
+</p>
+{% if candidates %}
+<table>
+  <thead>
+    <tr>
+      <th>Candidate</th><th>Type</th><th>Score</th><th>Conf</th>
+      <th>Status</th><th>Company</th><th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in candidates %}
+    <tr>
+      <td><a href="/cfpb/candidates/{{ c.id }}">{{ c.candidate_name }}</a></td>
+      <td>{{ c.candidate_type }}</td>
+      <td>{{ "%.0f"|format(c.score) }}</td>
+      <td>{{ "%.0f"|format(c.confidence * 100) }}%</td>
+      <td><span class="badge warn">{{ c.verification_status }}</span></td>
+      <td>{{ c.company_raw or "—" }}</td>
+      <td>{{ c.source_state or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No brand candidates found{% if min_score %} with score ≥ {{ min_score }}{% endif %}.</p>
+{% endif %}
+{% endblock %}

@@ -51,4 +51,32 @@ if top:
     for row in top:
         print(f"    {row['name']}: {row['pending']}")
 
+cfpb = conn.execute(
+    "SELECT 1 FROM sqlite_master WHERE type='table' AND name='cfpb_complaints_raw'"
+).fetchone()
+if cfpb:
+    print("--- CFPB trademark seeds ---")
+    print(f"  cfpb.complaints_raw: {one('SELECT COUNT(*) FROM cfpb_complaints_raw')}")
+    print(f"  cfpb.company_entities: {one('SELECT COUNT(*) FROM cfpb_company_entities')}")
+    print(f"  cfpb.brand_candidates: {one('SELECT COUNT(*) FROM cfpb_brand_candidates')}")
+    last = conn.execute(
+        "SELECT status, finished_at FROM cfpb_collection_runs ORDER BY id DESC LIMIT 1"
+    ).fetchone()
+    if last:
+        print(f"  cfpb.last_run: {last['status']} @ {last['finished_at'] or 'in progress'}")
+    top_co = conn.execute(
+        """
+        SELECT company_normalized, complaint_count, trademark_candidate_score
+        FROM cfpb_company_entities
+        ORDER BY complaint_count DESC LIMIT 5
+        """
+    ).fetchall()
+    if top_co:
+        print("  cfpb.top companies:")
+        for row in top_co:
+            print(
+                f"    {row['company_normalized']}: "
+                f"{row['complaint_count']} complaints, score {row['trademark_candidate_score']:.0f}"
+            )
+
 conn.close()

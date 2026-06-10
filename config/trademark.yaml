@@ -1,0 +1,11 @@
+# Trademark Keyword Research Layer — minimal defaults
+enabled: true
+min_bridge_score: 70
+auto_approve_enabled: true
+auto_approve_min_score: 85
+conservative_variants:
+  - reviews
+  - complaints
+  - bbb
+  - phone number
+  - alternative

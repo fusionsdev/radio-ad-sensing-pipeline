@@ -595,6 +595,280 @@ def fetch_health(db_path: Path) -> dict:
         return {"db_reachable": False, "pending_count": 0}
 
 
+@dataclass(frozen=True)
+class CfpbOverview:
+    total_complaints: int
+    total_entities: int
+    total_candidates: int
+    last_run_status: str | None
+    last_run_finished: str | None
+
+
+@dataclass(frozen=True)
+class CfpbRunRow:
+    id: int
+    started_at: str | None
+    finished_at: str | None
+    source_mode: str | None
+    records_seen: int
+    records_inserted: int
+    entities_created: int
+    candidates_created: int
+    status: str | None
+    error_message: str | None
+
+
+@dataclass(frozen=True)
+class CfpbEntityRow:
+    id: int
+    company_raw: str
+    company_normalized: str
+    complaint_count: int
+    narrative_count: int
+    trademark_candidate_score: float
+    review_status: str
+    states_json: str | None
+    product_mix_json: str | None
+    trademark_entity_id: int | None
+    first_seen_at: str | None
+    last_seen_at: str | None
+
+
+@dataclass(frozen=True)
+class CfpbCandidateRow:
+    id: int
+    candidate_name: str
+    normalized_candidate: str
+    candidate_type: str
+    score: float
+    confidence: float
+    verification_status: str
+    source_product: str | None
+    source_state: str | None
+    source_complaint_id: str | None
+    evidence_text: str | None
+    company_raw: str | None
+    entity_id: int | None
+    trademark_entity_id: int | None
+
+
+def _table_exists(conn, name: str) -> bool:
+    row = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+        (name,),
+    ).fetchone()
+    return row is not None
+
+
+def cfpb_tables_exist(db_path: Path) -> bool:
+    if not db_exists(db_path):
+        return False
+    with _readonly(db_path) as conn:
+        return _table_exists(conn, "cfpb_complaints_raw")
+
+
+def fetch_cfpb_overview(db_path: Path) -> CfpbOverview:
+    if not cfpb_tables_exist(db_path):
+        return CfpbOverview(0, 0, 0, None, None)
+    with _readonly(db_path) as conn:
+        complaints = conn.execute("SELECT COUNT(*) FROM cfpb_complaints_raw").fetchone()[0]
+        entities = conn.execute("SELECT COUNT(*) FROM cfpb_company_entities").fetchone()[0]
+        candidates = conn.execute("SELECT COUNT(*) FROM cfpb_brand_candidates").fetchone()[0]
+        last_run = conn.execute(
+            "SELECT status, finished_at FROM cfpb_collection_runs ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+    return CfpbOverview(
+        total_complaints=int(complaints),
+        total_entities=int(entities),
+        total_candidates=int(candidates),
+        last_run_status=str(last_run["status"]) if last_run else None,
+        last_run_finished=str(last_run["finished_at"]) if last_run and last_run["finished_at"] else None,
+    )
+
+
+def fetch_cfpb_runs(db_path: Path, *, limit: int = 50) -> list[CfpbRunRow]:
+    if not cfpb_tables_exist(db_path):
+        return []
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT id, started_at, finished_at, source_mode, records_seen,
+                   records_inserted, entities_created, candidates_created,
+                   status, error_message
+            FROM cfpb_collection_runs
+            ORDER BY id DESC LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [
+        CfpbRunRow(
+            id=int(r["id"]),
+            started_at=r["started_at"],
+            finished_at=r["finished_at"],
+            source_mode=r["source_mode"],
+            records_seen=int(r["records_seen"] or 0),
+            records_inserted=int(r["records_inserted"] or 0),
+            entities_created=int(r["entities_created"] or 0),
+            candidates_created=int(r["candidates_created"] or 0),
+            status=r["status"],
+            error_message=r["error_message"],
+        )
+        for r in rows
+    ]
+
+
+def fetch_cfpb_entities(db_path: Path, *, limit: int = 100) -> list[CfpbEntityRow]:
+    if not cfpb_tables_exist(db_path):
+        return []
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT id, company_raw, company_normalized, complaint_count,
+                   narrative_count, trademark_candidate_score, review_status,
+                   states_json, product_mix_json, trademark_entity_id,
+                   first_seen_at, last_seen_at
+            FROM cfpb_company_entities
+            ORDER BY complaint_count DESC, trademark_candidate_score DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [
+        CfpbEntityRow(
+            id=int(r["id"]),
+            company_raw=str(r["company_raw"]),
+            company_normalized=str(r["company_normalized"]),
+            complaint_count=int(r["complaint_count"] or 0),
+            narrative_count=int(r["narrative_count"] or 0),
+            trademark_candidate_score=float(r["trademark_candidate_score"] or 0),
+            review_status=str(r["review_status"] or "new"),
+            states_json=r["states_json"],
+            product_mix_json=r["product_mix_json"],
+            trademark_entity_id=int(r["trademark_entity_id"]) if r["trademark_entity_id"] else None,
+            first_seen_at=r["first_seen_at"],
+            last_seen_at=r["last_seen_at"],
+        )
+        for r in rows
+    ]
+
+
+def fetch_cfpb_candidates(
+    db_path: Path, *, limit: int = 200, min_score: float | None = None
+) -> list[CfpbCandidateRow]:
+    if not cfpb_tables_exist(db_path):
+        return []
+    clauses = ["1=1"]
+    params: list[object] = []
+    if min_score is not None:
+        clauses.append("c.score >= ?")
+        params.append(min_score)
+    params.append(limit)
+    sql = f"""
+        SELECT c.id, c.candidate_name, c.normalized_candidate, c.candidate_type,
+               c.score, c.confidence, c.verification_status, c.source_product,
+               c.source_state, c.source_complaint_id, c.evidence_text,
+               e.company_raw, e.id AS entity_id, e.trademark_entity_id
+        FROM cfpb_brand_candidates c
+        LEFT JOIN cfpb_company_entities e ON e.id = c.cfpb_company_entity_id
+        WHERE {" AND ".join(clauses)}
+        ORDER BY c.score DESC, c.id DESC
+        LIMIT ?
+    """
+    with _readonly(db_path) as conn:
+        rows = conn.execute(sql, params).fetchall()
+    return [
+        CfpbCandidateRow(
+            id=int(r["id"]),
+            candidate_name=str(r["candidate_name"]),
+            normalized_candidate=str(r["normalized_candidate"]),
+            candidate_type=str(r["candidate_type"]),
+            score=float(r["score"] or 0),
+            confidence=float(r["confidence"] or 0),
+            verification_status=str(r["verification_status"] or "needs_verification"),
+            source_product=r["source_product"],
+            source_state=r["source_state"],
+            source_complaint_id=r["source_complaint_id"],
+            evidence_text=r["evidence_text"],
+            company_raw=r["company_raw"],
+            entity_id=int(r["entity_id"]) if r["entity_id"] else None,
+            trademark_entity_id=int(r["trademark_entity_id"]) if r["trademark_entity_id"] else None,
+        )
+        for r in rows
+    ]
+
+
+def fetch_cfpb_candidate_detail(db_path: Path, candidate_id: int) -> CfpbCandidateRow | None:
+    if not cfpb_tables_exist(db_path):
+        return None
+    with _readonly(db_path) as conn:
+        row = conn.execute(
+            """
+            SELECT c.id, c.candidate_name, c.normalized_candidate, c.candidate_type,
+                   c.score, c.confidence, c.verification_status, c.source_product,
+                   c.source_state, c.source_complaint_id, c.evidence_text,
+                   e.company_raw, e.id AS entity_id, e.trademark_entity_id
+            FROM cfpb_brand_candidates c
+            LEFT JOIN cfpb_company_entities e ON e.id = c.cfpb_company_entity_id
+            WHERE c.id = ?
+            """,
+            (candidate_id,),
+        ).fetchone()
+    if row is None:
+        return None
+    return CfpbCandidateRow(
+        id=int(row["id"]),
+        candidate_name=str(row["candidate_name"]),
+        normalized_candidate=str(row["normalized_candidate"]),
+        candidate_type=str(row["candidate_type"]),
+        score=float(row["score"] or 0),
+        confidence=float(row["confidence"] or 0),
+        verification_status=str(row["verification_status"] or "needs_verification"),
+        source_product=row["source_product"],
+        source_state=row["source_state"],
+        source_complaint_id=row["source_complaint_id"],
+        evidence_text=row["evidence_text"],
+        company_raw=row["company_raw"],
+        entity_id=int(row["entity_id"]) if row["entity_id"] else None,
+        trademark_entity_id=int(row["trademark_entity_id"]) if row["trademark_entity_id"] else None,
+    )
+
+
+def update_cfpb_candidate_status(db_path: Path, candidate_id: int, status: str) -> bool:
+    allowed = {"needs_verification", "approved_seed", "rejected_noise"}
+    if status not in allowed:
+        return False
+    conn = get_connection(db_path)
+    try:
+        cursor = conn.execute(
+            "UPDATE cfpb_brand_candidates SET verification_status = ? WHERE id = ?",
+            (status, candidate_id),
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+    finally:
+        conn.close()
+
+
+def update_cfpb_entity_status(db_path: Path, entity_id: int, status: str) -> bool:
+    allowed = {"new", "needs_verification", "approved_seed", "rejected_noise"}
+    if status not in allowed:
+        return False
+    conn = get_connection(db_path)
+    try:
+        cursor = conn.execute(
+            """
+            UPDATE cfpb_company_entities
+            SET review_status = ?, updated_at = datetime('now')
+            WHERE id = ?
+            """,
+            (status, entity_id),
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+    finally:
+        conn.close()
+
+
 def resolve_audio_path(db_path: Path, resource_id: int) -> Path | None:
     """Resolve audio file strictly inside data/ad_archive/."""
     archive_root = AD_ARCHIVE_DIR.resolve()

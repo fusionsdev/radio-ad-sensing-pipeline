@@ -268,6 +268,31 @@ services:
       - pipeline-internal
 
   # ---------------------------------------------------------------------------
+  # CFPB collector — one-shot batch job (profile: cfpb)
+  # Run: docker compose --profile cfpb run --rm cfpb-collector
+  # ---------------------------------------------------------------------------
+  cfpb-collector:
+    profiles: ["cfpb"]
+    image: radio-ad-pipeline/ingestor:dev
+    container_name: radio-cfpb-collector
+    build:
+      context: .
+      dockerfile: ingestor/Dockerfile
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    environment:
+      - PYTHONPATH=/app
+    working_dir: /app
+    command: ["python", "-m", "collectors.cfpb_complaints_collector"]
+    restart: "no"
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
   # Prometheus — scrapes /metrics from every service + DCGM GPU exporter.
   # ---------------------------------------------------------------------------
   prometheus:
