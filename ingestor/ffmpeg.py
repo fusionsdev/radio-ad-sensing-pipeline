@@ -16,10 +16,22 @@ from shared.models import PipelineSettings, StationConfig
 TIMEOUT_MARGIN_SEC = 60
 
 
+# Hosts that serve HLS playlists even when the URL carries no .m3u8/.hls suffix.
+# iHeart/revma "zcNNNN" endpoints (e.g. http://stream.revma.ihrhls.com/zc2285)
+# are HLS-backed; -reconnect_at_eof traps ffmpeg in a reconnect loop on them.
+_HLS_HOST_MARKERS = ("ihrhls.com", "revma")
+
+
 def _is_hls_url(url: str) -> bool:
-    """True for HLS playlists where segment EOF must not trigger reconnect."""
+    """True for HLS playlists where segment EOF must not trigger reconnect.
+
+    Detects both explicit playlist suffixes (.m3u8, /hls) and known HLS hosts
+    whose URLs expose no suffix (iHeart/revma "zcNNNN" endpoints).
+    """
     lowered = url.lower()
-    return ".m3u8" in lowered or lowered.endswith("/hls")
+    if ".m3u8" in lowered or lowered.endswith("/hls"):
+        return True
+    return any(marker in lowered for marker in _HLS_HOST_MARKERS)
 
 
 def _reconnect_input_flags(url: str) -> list[str]:

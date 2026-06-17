@@ -136,6 +136,22 @@ def test_build_ffmpeg_command_omits_reconnect_at_eof_for_hls(tmp_path: Path) -> 
     assert "-reconnect_delay_max" in command
 
 
+def test_build_ffmpeg_command_detects_hls_by_host_without_suffix(tmp_path: Path) -> None:
+    # iHeart/revma "zcNNNN" endpoints are HLS-backed but expose no .m3u8/.hls
+    # suffix; -reconnect_at_eof must still be omitted or ffmpeg loops at segment EOF.
+    station = StationConfig(
+        name="ktrh-am-740",
+        url="http://stream.revma.ihrhls.com/zc2285",
+        format="aac",
+    )
+    command = build_ffmpeg_command(
+        station, tmp_path / "chunk.wav", PipelineSettings(chunk_len=90)
+    )
+
+    assert "-reconnect" in command
+    assert "-reconnect_at_eof" not in command
+
+
 def test_is_valid_chunk_duration_uses_two_second_tolerance(tmp_path: Path) -> None:
     path = tmp_path / "chunk.wav"
     _write_silent_wav(path, 88.0)
