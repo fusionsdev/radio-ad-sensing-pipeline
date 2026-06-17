@@ -143,3 +143,11 @@ def test_ollama_extractor_classifies_senator_loan_talk_as_non_ad() -> None:
     assert result.is_ad is False
     assert result.phone_number is None
     assert len(client.calls) == 1
+
+
+def test_normalize_phone_prefers_literal_digits_over_spelled_words() -> None:
+    # A real digit number must win even when surrounded by number-words/prose,
+    # so stray spelled digits cannot fabricate a phone and merge unrelated ads.
+    assert normalize_phone_number("800-555-1212") == "8005551212"
+    assert normalize_phone_number("(800) 555-1212") == "8005551212"
+    assert normalize_phone_number("1-800-829-4357") == "18008294357"

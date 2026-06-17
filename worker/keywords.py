@@ -6,12 +6,28 @@ import logging
 import re
 import sqlite3
 from dataclasses import dataclass
+from functools import lru_cache
 
 from shared.models import LoanKeywordEntry
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_MIN_RECORD_CONFIDENCE = 0.6
+
+
+@lru_cache(maxsize=1024)
+def _phrase_pattern(needle: str) -> re.Pattern[str]:
+    """Compile a word-boundary, whitespace-tolerant matcher for *needle*.
+
+    Uses lookarounds instead of ``\\b`` so phrases bounded by non-word characters
+    (e.g. ``cash-out refinance``) still anchor correctly, and collapses internal
+    whitespace so ASR spacing variance does not cause misses. Word boundaries stop
+    substring false positives such as ``loan`` matching inside ``balloon`` or
+    ``heloc`` inside a larger token.
+    """
+    tokens = [re.escape(token) for token in needle.split()]
+    body = r"\s+".join(tokens) if tokens else re.escape(needle)
+    return re.compile(rf"(?<!\w){body}(?!\w)", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -60,15 +76,14 @@ def find_keyword_matches(
         needle = phrase.lower()
         if needle in seen:
             continue
-        # Word-boundary match so "loan" hits "a loan" but not "Sloan" or "loaned".
-        pattern = rf"(?<!\w){re.escape(needle)}(?!\w)"
-        match = re.search(pattern, lowered)
-        if match is None:
+        found = _phrase_pattern(needle).search(lowered)
+        if found is None:
             continue
-        index = match.start()
         seen.add(needle)
+        index = found.start()
+        match_end = found.end()
         start = max(index - excerpt_radius, 0)
-        end = min(index + len(needle) + excerpt_radius, len(transcript))
+        end = min(match_end + excerpt_radius, len(transcript))
         excerpt_body = transcript[start:end].strip()
         if start > 0:
             excerpt_body = f"...{excerpt_body}"

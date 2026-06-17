@@ -164,3 +164,17 @@ def test_record_keyword_hits_is_idempotent_per_chunk_keyword(tmp_path: Path) -> 
         assert count == 1
     finally:
         conn.close()
+
+
+def test_find_keyword_matches_respects_word_boundaries() -> None:
+    # "loan" must not match inside "balloon"; "heloc" must not match a larger token.
+    assert find_keyword_matches("we sell a balloon today", ["loan"]) == []
+    assert find_keyword_matches("the helocopter landed", ["heloc"]) == []
+    assert {m.keyword for m in find_keyword_matches("get a personal loan now", ["loan"])} == {"loan"}
+    assert {m.keyword for m in find_keyword_matches("apply for a HELOC online", ["heloc"])} == {"heloc"}
+
+
+def test_find_keyword_matches_tolerates_internal_whitespace() -> None:
+    # ASR may emit extra spaces between phrase tokens.
+    matches = find_keyword_matches("a cash-out   refinance offer", ["cash-out refinance"])
+    assert {m.keyword for m in matches} == {"cash-out refinance"}
