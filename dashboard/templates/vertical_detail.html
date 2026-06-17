@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ summary.label }} — Vertical Detail{% endblock %}
+{% block content %}
+<p style="margin-top: 0;"><a href="/verticals">← All verticals</a></p>
+<h2 style="font-size: 1rem;">{{ summary.label }}</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Tier: {{ format_tier(summary.tier, hit_count=summary.vertical_hit_count, no_hit_ok=summary.no_hit_ok)|safe }}
+  · {{ summary.vertical_hit_count }} hits across {{ summary.station_count }} station(s)
+  · Report eligible: {% if summary.report_eligible %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}
+</p>
+
+{% if summary.source_keywords %}
+<p style="font-size: 0.9rem;"><strong>Hit keywords:</strong> {{ summary.source_keywords|join(", ") }}</p>
+{% elif summary.no_hit_ok %}
+<p style="font-size: 0.9rem; color: var(--muted);">No hits yet — this is expected for loan/funding discovery.</p>
+{% endif %}
+
+<h3 style="font-size: 0.95rem; margin-top: 2rem;">Advertiser opportunities</h3>
+<p style="color: var(--muted); font-size: 0.85rem;">Candidates require manual review — nothing is auto-approved.</p>
+{% if opportunities %}
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Station</th>
+      <th>Company</th>
+      <th>Phone</th>
+      <th>Domain</th>
+      <th>Offer</th>
+      <th>CTA</th>
+      <th>Conf.</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for opp in opportunities %}
+    <tr>
+      <td>{{ format_ts(opp.hit_ts) }}</td>
+      <td>{{ opp.station_label }}</td>
+      <td>{{ opp.company_name or "—" }}</td>
+      <td>{{ opp.vanity_phone or opp.phone_number or "—" }}</td>
+      <td>{{ opp.domain or "—" }}</td>
+      <td style="max-width: 200px; font-size: 0.85rem;">{{ opp.offer_summary or "—" }}</td>
+      <td style="max-width: 160px; font-size: 0.85rem;">{{ opp.cta or "—" }}</td>
+      <td>{% if opp.confidence %}{{ "%.0f"|format(opp.confidence * 100) }}%{% else %}—{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No advertiser opportunities extracted yet.</p>
+{% endif %}
+
+<h3 style="font-size: 0.95rem; margin-top: 2rem;">Keyword hits ({{ window_days }}d)</h3>
+{% if hits %}
+<table>
+  <thead>
+    <tr><th>Time</th><th>Station</th><th>Keyword</th><th>Excerpt</th></tr>
+  </thead>
+  <tbody>
+    {% for hit in hits %}
+    <tr>
+      <td>{{ format_ts(hit.hit_ts) }}</td>
+      <td>{{ hit.station_label }}</td>
+      <td>{{ hit.keyword }}</td>
+      <td style="font-size: 0.85rem; color: var(--muted);">{{ hit.context_excerpt or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No keyword hits for this vertical.</p>
+{% endif %}
+{% endblock %}

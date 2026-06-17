@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}CFPB — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">CFPB trademark seed collector</h2>
+<p style="color: var(--muted); font-size: 0.9rem; max-width: 52rem;">
+  Reviewable brand/company seeds from CFPB consumer complaints — <strong>not</strong> proof of radio advertising.
+</p>
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Raw complaints</h2><div class="value">{{ stats.raw }}</div></div>
+  <div class="card"><h2>Entities</h2><div class="value">{{ stats.entities }}</div></div>
+  <div class="card"><h2>Candidates</h2><div class="value">{{ stats.candidates }}</div></div>
+  <div class="card"><h2>Score ≥ 70</h2><div class="value">{{ stats.candidates_70 }}</div></div>
+  <div class="card"><h2>Score ≥ 85</h2><div class="value">{{ stats.candidates_85 }}</div></div>
+  <div class="card"><h2>Runs</h2><div class="value">{{ stats.runs }}</div></div>
+</div>
+<p style="font-size: 0.9rem;">
+  <a href="/cfpb/candidates?min_score=70">Candidates (≥70)</a> ·
+  <a href="/cfpb/candidates">All candidates</a> ·
+  <a href="/cfpb/entities">Entities</a> ·
+  <a href="/cfpb/runs">Collection runs</a>
+</p>
+{% endblock %}

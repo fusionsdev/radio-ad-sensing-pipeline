@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Landing pages — Sources{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Landing page import results</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Manual URL list importer — conservative fetch, visible marketing text only, no crawler.
+</p>
+<p style="margin-bottom: 1rem;">
+  <a href="/opportunities">← Opportunities</a>
+  · <a href="/novelty">Novelty overview</a>
+  · <a href="/opportunities/batch-review">Batch review</a>
+</p>
+
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Pages imported</h2><div class="value">{{ view.pages_imported }}</div></div>
+  <div class="card"><h2>Candidates</h2><div class="value">{{ view.candidates_extracted }}</div></div>
+  <div class="card"><h2>Report eligible</h2><div class="value">{{ view.report_eligible }}</div></div>
+  <div class="card"><h2>Suppressed</h2><div class="value">{{ view.suppressed }}</div></div>
+</div>
+
+{% if view.top_opportunities %}
+<h3 style="font-size: 0.95rem;">Top opportunities</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>Vertical</th>
+      <th>Novelty</th>
+      <th>Score</th>
+      <th>Source URL</th>
+      <th>Evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in view.top_opportunities %}
+    <tr>
+      <td>{{ row.candidate_text }}</td>
+      <td>{{ row.vertical or "—" }}</td>
+      <td>{{ "%.0f"|format(row.novelty_score) }}</td>
+      <td>{{ "%.0f"|format(row.opportunity_score) }}</td>
+      <td style="font-size: 0.85rem;"><a href="{{ row.url }}" target="_blank" rel="noopener">{{ row.url }}</a></td>
+      <td style="font-size: 0.85rem; max-width: 240px;">{{ row.evidence_text or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if view.pages %}
+<h3 style="font-size: 0.95rem;">Imported landing pages</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead>
+    <tr>
+      <th>URL</th>
+      <th>Title</th>
+      <th>Vertical</th>
+      <th>Candidates</th>
+      <th>Eligible</th>
+      <th>Suppressed</th>
+      <th>Imported</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for page in view.pages %}
+    <tr>
+      <td style="font-size: 0.85rem;"><a href="{{ page.url }}" target="_blank" rel="noopener">{{ page.url }}</a></td>
+      <td>{{ page.title or "—" }}</td>
+      <td>{{ page.vertical or "—" }}</td>
+      <td>{{ page.candidate_count }}</td>
+      <td>{{ page.report_eligible_count }}</td>
+      <td>{{ page.suppressed_count }}</td>
+      <td>{{ format_ts(page.imported_at) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No landing page imports yet. Run <code>scripts/import_landing_pages.py</code> with a manual URL list.</p>
+{% endif %}
+
+{% if view.recent_candidates %}
+<h3 style="font-size: 0.95rem;">Recent extracted candidates</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Report?</th>
+      <th>Suppressed</th>
+      <th>Evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in view.recent_candidates %}
+    <tr>
+      <td>{{ row.candidate_text }}</td>
+      <td>{{ row.candidate_type }}</td>
+      <td>{{ row.novelty_status }}</td>
+      <td>{% if row.report_eligible %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}</td>
+      <td>{{ row.suppression_reason or "—" }}</td>
+      <td style="font-size: 0.85rem; max-width: 240px;">{{ row.evidence_text or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}

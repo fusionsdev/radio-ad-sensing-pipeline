@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Trademark keywords — Radio Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Trademark keyword candidates</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Review-only seeds. <code>status=new</code> — never auto-approved, never exported to Google Ads.
+  {% if source_filter %} Filter: <code>{{ source_filter }}</code>{% endif %}
+</p>
+<p style="font-size: 0.85rem;">
+  <a href="/advertisers/opportunities">Hit advertisers</a>
+  · <a href="/keywords/trademark">All new</a>
+  · <a href="/keywords/trademark?source=radio_transcript">Radio only</a>
+</p>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Entity</th>
+      <th>Keyword</th>
+      <th>Variant</th>
+      <th>Source</th>
+      <th>Status</th>
+      <th>Verification</th>
+      <th>Ad copy</th>
+      <th>Landing page</th>
+      <th>Risk</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.entity_name }}</td>
+      <td><code>{{ row.keyword }}</code></td>
+      <td>{{ row.variant_type }}</td>
+      <td>{{ row.source_type }}</td>
+      <td><span class="badge muted">{{ row.status }}</span></td>
+      <td><span class="badge warn">{{ row.verification_status or "needs_review" }}</span></td>
+      <td>{{ "yes" if row.ad_copy_allowed else "no" }}</td>
+      <td>{{ "yes" if row.landing_page_allowed else "no" }}</td>
+      <td>{{ row.trademark_risk or "unknown" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No trademark keyword candidates match this filter.</p>
+{% endif %}
+{% endblock %}

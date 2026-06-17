@@ -111,12 +111,22 @@ class AdExtractionWithMetadata(AdExtraction):
     timestamp: float
 
 
+class StationPoolMeta(BaseModel):
+    replacement_eligible: bool = True
+    priority: int = 100
+    market: str | None = None
+    vertical: str | None = None
+    needs_stream_resolution: bool = False
+    stream_validation_status: str | None = None
+
+
 class StationConfig(BaseModel):
     name: str
     url: str
     format: str | None = None
     enabled: bool = True
     display_name: str | None = None
+    pool: StationPoolMeta | None = None
 
 
 class StationsFile(BaseModel):
@@ -132,6 +142,44 @@ class LoanKeywordsFile(BaseModel):
     keywords: list[LoanKeywordEntry]
 
 
+class VerticalConfig(BaseModel):
+    label: str
+    tier: str = "active"
+    keywords: list[LoanKeywordEntry] = Field(default_factory=list)
+    extract_advertisers: bool = False
+    report_eligible: bool | None = None
+    report_eligible_min_hits: int | None = None
+    confidence_cap_sparse: float | None = Field(default=None, ge=0.0, le=1.0)
+    no_hit_ok: bool = False
+
+
+class VerticalKeywordsSettings(BaseModel):
+    queue_drop_ratio_warn_threshold: float = 5.0
+
+
+class VerticalKeywordsFile(BaseModel):
+    settings: VerticalKeywordsSettings = Field(default_factory=VerticalKeywordsSettings)
+    verticals: dict[str, VerticalConfig] = Field(default_factory=dict)
+
+
+class WatchdogSettings(BaseModel):
+    enabled: bool = True
+    target_active_stations: int = 10
+    station_stale_after_minutes: int = 6
+    restart_attempts_before_disable: int = 3
+    restart_backoff_seconds: int = 30
+    health_check_interval_seconds: int = 60
+    promote_backup_when_active_below_target: bool = True
+    backup_selection_strategy: str = "priority_then_vertical_then_market"
+    cool_down_minutes_after_failure: int = 60
+    max_station_failures_per_day: int = 5
+    queue_drop_ratio_warning: float = 2.0
+    queue_drop_ratio_critical: float = 5.0
+    auto_restart_on_stale: bool = True
+    max_promotions_per_hour: int = 3
+    max_active_per_market: int = 2
+
+
 class PipelineSettings(BaseModel):
     chunk_len: int = 90
     overlap: int = 7
@@ -143,7 +191,7 @@ class PipelineSettings(BaseModel):
     station_down_alert_minutes: int = 15
     same_station_airing_window_seconds: int = 180
     asr_model: str = "medium.en"
-    asr_compute_type: str = "int8_float16"
+    asr_compute_type: str = "float16"
     dashboard_host: str = "127.0.0.1"
     dashboard_port: int = 8080
     db_path: str = "data/pipeline.db"
@@ -155,6 +203,8 @@ class PipelineSettings(BaseModel):
     ingest_backoff_max_sec: float = 30.0
     ingest_startup_stagger_sec: float = 0.0
     keyword_min_record_confidence: float = 0.6
+    queue_drop_ratio_warn_threshold: float = 5.0
+    watchdog: WatchdogSettings = Field(default_factory=WatchdogSettings)
 
 
 def detection_from_extraction(

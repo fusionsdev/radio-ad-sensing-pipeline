@@ -64,17 +64,26 @@ scrape_configs:
           service: dashboard
           tier: ui
 
-  # ---------------------------------------------------------------------------
-  # Ollama — official image exposes /metrics on 11434 since v0.1.32.
-  # Metric names vary by Ollama version; panels use ollama_* counters when present.
-  # ---------------------------------------------------------------------------
-  - job_name: ollama
+  - job_name: watchdog
     metrics_path: /metrics
     static_configs:
-      - targets: ['ollama:11434']
+      - targets: ['watchdog:9105']
         labels:
-          service: ollama
-          tier: llm
+          service: watchdog
+          tier: ops
+
+  # ---------------------------------------------------------------------------
+  # Ollama native /metrics is not in upstream releases (404 on 0.23.x).
+  # LLM observability uses pipeline_llm_extraction_duration_seconds from worker.
+  # Re-enable when Ollama ships a stable /metrics endpoint.
+  # ---------------------------------------------------------------------------
+  # - job_name: ollama
+  #   metrics_path: /metrics
+  #   static_configs:
+  #     - targets: ['ollama:11434']
+  #       labels:
+  #         service: ollama
+  #         tier: llm
 
   # ---------------------------------------------------------------------------
   # GPU metrics via NVIDIA dcgm-exporter (DCGM >= 3.x).

@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 # Understand-Anything: mark graph stale after commit (Cursor sessionStart picks this up)
 CFG=".understand-anything/config.json"
 GRAPH=".understand-anything/knowledge-graph.json"

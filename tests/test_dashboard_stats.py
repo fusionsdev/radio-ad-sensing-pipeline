@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from dashboard.stats import compute_yield_pct, derive_review_tier, derive_slot_recommendation
+from dashboard.stats import (
+    compute_queue_drop_ratio,
+    compute_yield_pct,
+    derive_review_tier,
+    derive_slot_recommendation,
+    queue_drop_warning,
+)
 
 
 def test_compute_yield_pct() -> None:
@@ -47,6 +53,12 @@ def test_derive_slot_recommendation_keep_productive_station() -> None:
         )
         == "keep"
     )
+
+
+def test_compute_queue_drop_ratio_and_warning() -> None:
+    assert compute_queue_drop_ratio(dropped=5035, done=892) >= 5.0
+    assert queue_drop_warning(dropped=5035, done=892, threshold=5.0) is True
+    assert queue_drop_warning(dropped=10, done=892, threshold=5.0) is False
 
 
 def test_derive_review_tier() -> None:

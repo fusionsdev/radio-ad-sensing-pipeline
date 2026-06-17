@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Novelty Discovery — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Novelty-first keyword discovery</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Known brands, generic keywords, and excluded verticals appear here for visibility but are not report-eligible.
+  Only evidence-backed novel phrases become opportunities.
+</p>
+
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Total evaluated</h2><div class="value">{{ overview.total }}</div></div>
+  <div class="card"><h2>Report eligible</h2><div class="value">{{ overview.report_eligible }}</div></div>
+  <div class="card"><h2>New / review</h2><div class="value">{{ overview.new_count }}</div></div>
+  <div class="card"><h2>Known / generic</h2><div class="value">{{ overview.known_count }}</div></div>
+  <div class="card"><h2>Suppressed</h2><div class="value">{{ overview.noise_count }}</div></div>
+  <div class="card"><h2>Open opportunities</h2><div class="value">{{ overview.opportunities }}</div></div>
+</div>
+
+<p style="margin-bottom: 1rem;">
+  <a href="/novelty/new">New candidates</a> ·
+  <a href="/novelty/known">Known / generic</a> ·
+  <a href="/novelty/noise">Noise / excluded</a> ·
+  <a href="/novelty/known-pending">Known pending</a> ·
+  <a href="/opportunities">Opportunities</a>
+</p>
+
+{% include "novelty/_table.html" %}
+{% endblock %}

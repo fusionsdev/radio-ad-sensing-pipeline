@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Hit advertisers — Radio Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Radio hit advertisers</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Evidence-backed advertisers detected on-air. All records stay in review — nothing auto-approves for ad copy or Google Ads export.
+</p>
+<p style="font-size: 0.85rem;">
+  <a href="/keywords/trademark?source=radio_transcript">Trademark keywords (radio)</a>
+</p>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Advertiser</th>
+      <th>Vertical</th>
+      <th>Domain</th>
+      <th>Confidence</th>
+      <th>Status</th>
+      <th>Detections</th>
+      <th>Stations</th>
+      <th>Updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td><a class="row-link" href="/advertisers/opportunities/{{ row.id }}">{{ row.canonical_name }}</a></td>
+      <td>{{ row.vertical }}</td>
+      <td>{{ row.domain or "—" }}</td>
+      <td>{{ row.confidence }}</td>
+      <td><span class="badge warn">{{ row.status }}</span></td>
+      <td>{{ row.detection_count }}</td>
+      <td>{{ row.station_count }}</td>
+      <td>{{ format_ts(row.updated_at)|safe }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No hit advertisers recorded yet.</p>
+{% endif %}
+{% endblock %}

@@ -9,7 +9,7 @@ import yaml
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from shared.models import LoanKeywordEntry, LoanKeywordsFile, PipelineSettings, StationConfig, StationsFile
+from shared.models import LoanKeywordEntry, LoanKeywordsFile, PipelineSettings, StationConfig, StationsFile, VerticalKeywordsFile
 
 CONFIG_DIR = Path(__file__).resolve().parent.parent / "config"
 
@@ -49,8 +49,22 @@ def _normalize_loan_keywords_data(data: object) -> object:
     return {**data, "keywords": normalized}
 
 
+def load_vertical_keywords(path: Path | None = None) -> VerticalKeywordsFile:
+    """Load vertical-grouped keyword config from YAML."""
+    from shared.verticals import load_vertical_keywords as _load
+
+    return _load(path)
+
+
 def load_loan_keywords(path: Path | None = None) -> list[LoanKeywordEntry]:
-    """Load loan/funding keyword phrases with per-phrase confidence from YAML."""
+    """Load all keyword phrases for transcript scanning (vertical config first)."""
+    from shared.verticals import flatten_vertical_keywords, load_vertical_keywords
+
+    if path is None:
+        vertical_path = CONFIG_DIR / "vertical_keywords.yaml"
+        if vertical_path.is_file():
+            return flatten_vertical_keywords(load_vertical_keywords(vertical_path))
+
     config_path = path or CONFIG_DIR / "loan_keywords.yaml"
     if not config_path.is_file():
         return []

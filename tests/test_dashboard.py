@@ -12,7 +12,28 @@ from dashboard.main import create_app
 from shared.db import get_connection, migrate
 from tests.fixtures.seed_dashboard import seed_dashboard_db
 
-HTML_ROUTES = ["/", "/ads", "/stations", "/scorecard", "/keywords", "/review", "/gaps"]
+HTML_ROUTES = [
+    "/",
+    "/ads",
+    "/stations",
+    "/scorecard",
+    "/keywords",
+    "/keywords/hits",
+    "/verticals",
+    "/review",
+    "/gaps",
+    "/novelty",
+    "/novelty/new",
+    "/novelty/known",
+    "/novelty/noise",
+    "/opportunities",
+    "/opportunities/digest-preview",
+    "/opportunities/batch-review",
+    "/sources/landing-pages",
+    "/novelty/known-pending",
+    "/advertisers/opportunities",
+    "/keywords/trademark",
+]
 
 
 @pytest.fixture
@@ -34,6 +55,22 @@ def seeded(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, dict[
 @pytest.fixture
 def missing_db(tmp_path: Path) -> Path:
     return tmp_path / "does-not-exist.db"
+
+
+def test_vertical_detail_route(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/verticals/loan")
+    assert response.status_code == 200
+    assert "Loan" in response.text or "loan" in response.text.lower()
+
+
+def test_keyword_hits_route(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/keywords/hits")
+    assert response.status_code == 200
+    assert "business funding" in response.text
 
 
 def test_all_html_routes_200_on_empty_db(empty_db: Path) -> None:

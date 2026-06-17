@@ -1,0 +1,53 @@
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>Type</th>
+      <th>Vertical</th>
+      <th>Status</th>
+      <th>Novelty</th>
+      <th>Opportunity</th>
+      <th>Source</th>
+      <th>Evidence</th>
+      <th>Known match</th>
+      <th>Suppressed</th>
+      <th>Report?</th>
+      <th>Reviewed</th>
+      <th>Actions</th>
+      <th>When</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.candidate_text }}</td>
+      <td>{{ row.candidate_type }}</td>
+      <td>{{ row.vertical or "—" }}</td>
+      <td><span class="badge">{{ row.novelty_status }}</span></td>
+      <td>{{ "%.0f"|format(row.novelty_score) }}</td>
+      <td>{{ "%.0f"|format(row.opportunity_score) }}</td>
+      <td style="font-size: 0.85rem;">
+        {{ row.source_type }}
+        {% if row.source_url %}
+        <br><a href="{{ row.source_url }}" target="_blank" rel="noopener">source</a>
+        {% endif %}
+      </td>
+      <td style="font-size: 0.85rem; max-width: 220px;">{{ row.evidence_text or "—" }}</td>
+      <td>{{ row.known_match or "—" }}</td>
+      <td>{{ row.report_suppressed_reason or "—" }}</td>
+      <td>{% if row.report_eligible %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}</td>
+      <td>{{ row.reviewed_status }}</td>
+      <td style="font-size: 0.8rem;">
+        {% with novelty_result_id=row.id, candidate_type=row.candidate_type, reviewed_status=row.reviewed_status, opportunity_id=row.opportunity_id %}
+        {% include "novelty/_novelty_actions.html" %}
+        {% endwith %}
+      </td>
+      <td>{{ format_ts(row.created_at) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No novelty results yet. Run the novelty engine on sample candidates to populate this view.</p>
+{% endif %}

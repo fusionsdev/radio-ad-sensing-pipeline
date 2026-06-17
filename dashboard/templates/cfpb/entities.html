@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}CFPB Entities — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">CFPB company entities</h2>
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Score</th>
+      <th>Company</th>
+      <th>Complaints</th>
+      <th>Narratives</th>
+      <th>Status</th>
+      <th>First seen</th>
+      <th>Last seen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ "%.0f"|format(row.trademark_candidate_score) if row.trademark_candidate_score is not none else "—" }}</td>
+      <td>{{ row.company_raw }}</td>
+      <td>{{ row.complaint_count }}</td>
+      <td>{{ row.narrative_count }}</td>
+      <td>{{ row.review_status }}</td>
+      <td>{{ row.first_seen_at or "—" }}</td>
+      <td>{{ row.last_seen_at or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No entities yet.</p>
+{% endif %}
+<p style="margin-top: 1rem; font-size: 0.85rem;"><a href="/cfpb">← CFPB overview</a></p>
+{% endblock %}

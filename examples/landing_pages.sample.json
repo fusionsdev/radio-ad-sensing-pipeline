@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://example.com/vet-financing",
+    "vertical": "pet_financing",
+    "source_confidence": 0.85,
+    "notes": "Sample veterinary financing landing page"
+  },
+  {
+    "url": "https://example.com/dental-payment-plans",
+    "vertical": "dental_financing",
+    "source_confidence": 0.82,
+    "notes": "Sample dental procedure financing page"
+  },
+  {
+    "url": "https://example.com/medical-care-credit",
+    "vertical": "medical_financing",
+    "source_confidence": 0.80,
+    "notes": "Sample elective surgery financing page"
+  }
+]

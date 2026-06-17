@@ -1,17 +1,27 @@
-data/
-plan/_hermes-bundle*.md
+data/apify/
+data/exports/
+data/manual/
+*.db
+*.sqlite
+
+# --- code-review checkpoint ignores ---
+# Secrets
 .env
-__pycache__/
-*.py[cod]
-*$py.class
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-*.egg-info/
-dist/
-build/
+.env.*
+!.env.example
+# Python
 .venv/
-venv/
+__pycache__/
+*.pyc
+# Runtime data (audio chunks, archives, sqlite handled above)
+data/
+# Backups / stray
+*.bak.*
+=
+# Agent / tooling caches
+.claude/
+.claude-octopus/
+.octo/
+.serena/
+.playwright-cli/
 .understand-anything/intermediate/
-.understand-anything/diff-overlay.json
-.understand-anything/.graph-stale

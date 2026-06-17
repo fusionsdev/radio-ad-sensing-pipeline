@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ advertiser.canonical_name }} — Hit advertiser{% endblock %}
+{% block content %}
+<p style="font-size: 0.85rem;"><a href="/advertisers/opportunities">← Hit advertisers</a></p>
+<h2 style="margin-top: 0; font-size: 1rem;">{{ advertiser.canonical_name }}</h2>
+
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Vertical</h2><div class="value" style="font-size: 1rem;">{{ advertiser.vertical }}</div></div>
+  <div class="card"><h2>Domain</h2><div class="value" style="font-size: 1rem;">{{ advertiser.domain or "—" }}</div></div>
+  <div class="card"><h2>Confidence</h2><div class="value" style="font-size: 1rem;">{{ advertiser.confidence }}</div></div>
+  <div class="card"><h2>Status</h2><div class="value" style="font-size: 1rem;">{{ advertiser.status }}</div></div>
+</div>
+
+{% if advertiser.evidence_path %}
+<p style="font-size: 0.9rem;">Evidence pack: <code>{{ advertiser.evidence_path }}</code></p>
+{% endif %}
+
+<h3 style="font-size: 0.95rem;">Linked detections ({{ detections|length }})</h3>
+{% for det in detections %}
+<div class="card" style="margin-bottom: 1rem;">
+  <h2 style="font-size: 0.85rem;">{{ det.station_display_name }}{% if det.market %} · {{ det.market }}{% endif %}</h2>
+  <p style="font-size: 0.85rem; color: var(--muted); margin: 0.25rem 0;">
+    Detection #{{ det.detection_id }} · {{ format_ts(det.hit_ts)|safe }}
+  </p>
+  <table>
+    <tr><th>Website</th><td>{{ det.website or "—" }}</td></tr>
+    <tr><th>Phone</th><td>{{ det.phone_number or "—" }}</td></tr>
+    <tr><th>CTA</th><td>{{ det.cta or "—" }}</td></tr>
+    <tr><th>Offer</th><td>{{ det.offer_summary or "—" }}</td></tr>
+    <tr><th>Claims</th><td>{{ det.key_claims|join(", ") if det.key_claims else "—" }}</td></tr>
+    <tr><th>Confidence</th><td>{{ det.confidence if det.confidence is not none else "—" }}</td></tr>
+    <tr><th>Audio</th><td><code>{{ det.audio_clip_path or "—" }}</code>{% if det.audio_clip_start_sec is not none %} · clip {{ det.audio_clip_start_sec }}s–{{ det.audio_clip_end_sec }}s{% endif %}</td></tr>
+  </table>
+  {% if det.transcript %}
+  <details style="margin-top: 0.75rem;">
+    <summary style="cursor: pointer; color: var(--accent);">Full transcript</summary>
+    <pre style="white-space: pre-wrap; font-size: 0.82rem; margin-top: 0.5rem;">{{ det.transcript }}</pre>
+  </details>
+  {% endif %}
+</div>
+{% else %}
+<p class="empty">No linked detections.</p>
+{% endfor %}
+
+<p style="font-size: 0.85rem; margin-top: 1rem;">
+  <a href="/keywords/trademark?source=radio_transcript">View trademark keyword candidates →</a>
+</p>
+{% endblock %}

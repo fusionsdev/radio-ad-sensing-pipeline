@@ -1,0 +1,5 @@
+# Seed domains for loan/financing compliance crawling
+domains:
+  - example-loan-site.com
+  - another-lender.net
+  - finance-company.org

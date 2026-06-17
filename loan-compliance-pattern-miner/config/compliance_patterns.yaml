@@ -1,0 +1,60 @@
+# Compliance patterns for extraction
+not_a_lender:
+  - "not a lender"
+  - "we are not a lender"
+  - "does not make loans"
+  - "not a direct lender"
+  - "loan matching service"
+  - "we do not lend money"
+
+no_guarantee:
+  - "no guarantee"
+  - "not guaranteed"
+  - "approval not guaranteed"
+  - "no guarantee of approval"
+  - "guarantee does not constitute"
+
+credit_check:
+  - "credit check"
+  - "credit inquiry"
+  - "we may check your credit"
+  - "credit report"
+  - "credit history"
+
+state_restriction:
+  - "not available in all states"
+  - "state restrictions"
+  - "this service is not available in"
+  - "resident of"
+  - "state regulations"
+
+advertiser_disclosure:
+  - "advertiser disclosure"
+  - "affiliate disclosure"
+  - "we receive compensation"
+  - "compensated by"
+  - "advertising fees"
+
+risky_claims:
+  - "guaranteed approval"
+  - "100% approval"
+  - "no denial"
+  - "no credit check"
+  - "instant approval"
+  - "cash in minutes"
+  - "bad credit accepted"
+  - "everyone approved"
+  - "guaranteed"
+  - "instant"
+  - "fast cash"
+  - "quick approval"
+
+apr_patterns:
+  - "annual percentage rate"
+  - "apr"
+  - "apr:"
+  - "apr is"
+  - "apr ranges"
+  - "maximum apr"
+  - "apr up to"
+  - "apr as low as"

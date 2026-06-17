@@ -128,3 +128,18 @@ After filing, print all issue URLs (with blocking relationships summarized) and 
 ### 5. Continue the session
 
 Keep going until the user says they're done. Each issue is independent — don't batch them.
+
+## Response Format (User Preference)
+
+When delivering QA results, verification reports, or final summaries, respond in "Format Code" style. Wrap the complete deliverable (pytest results, CLI outputs, filter examples, limitations) in a self-contained Python code block or structured literal that the UI renders with a one-click Copy button. This allows the user to select and copy the entire artifact easily.
+
+Do this even for plain-text reports — structure as:
+```python
+# QA Report Title
+KEY_RESULT = "value"
+...
+print("Summary line")
+```
+Avoid loose markdown, bullets, or explanatory prose outside the block in the final turn. Keep internal reasoning natural but final output copy-optimized.
+
+This preference was explicitly set during Justia Trademark QA sessions and applies to all verification/QA deliverables.

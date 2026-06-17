@@ -7,6 +7,7 @@ import sys
 import threading
 from pathlib import Path
 
+from ingestor.control import IngestorControlContext, run_control_poller
 from ingestor.repository import upsert_station
 from ingestor.supervisor import create_station_ingestors, run_station_ingestor, startup_stagger_delay_seconds
 from shared.config import load_settings, load_stations
@@ -36,8 +37,17 @@ def main() -> None:
         settings,
         chunks_dir=chunks_dir,
     )
+    ingestors_by_name = {ingestor.station.name: ingestor for ingestor in ingestors}
+    threads_by_name: dict[str, threading.Thread] = {}
 
     stop_event = threading.Event()
+    control_context = IngestorControlContext(
+        db_path=db_path,
+        settings=settings,
+        chunks_dir=chunks_dir,
+        threads=threads_by_name,
+        stop_event=stop_event,
+    )
 
     def _shutdown(_signum: int, _frame: object) -> None:
         stop_event.set()
@@ -49,6 +59,18 @@ def main() -> None:
 
     signal.signal(signal.SIGINT, _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
+
+    control_thread = threading.Thread(
+        target=run_control_poller,
+        args=(db_path, ingestors_by_name, stop_event),
+        kwargs={
+            "poll_interval_seconds": float(settings.watchdog.health_check_interval_seconds),
+            "context": control_context,
+        },
+        name="ingestor-control",
+        daemon=True,
+    )
+    control_thread.start()
 
     threads = [
         threading.Thread(
@@ -68,6 +90,8 @@ def main() -> None:
         )
         for index, ingestor in enumerate(ingestors)
     ]
+    for index, thread in enumerate(threads):
+        threads_by_name[ingestors[index].station.name] = thread
     for thread in threads:
         thread.start()
     for thread in threads:

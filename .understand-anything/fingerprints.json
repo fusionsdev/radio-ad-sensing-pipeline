@@ -1,16 +1,16 @@
 {
   "version": "1.0.0",
-  "gitCommitHash": "64c0c1a5a7c4bf70ef2c96838fcb909637634921",
-  "generatedAt": "2026-06-10T03:26:47.511Z",
+  "gitCommitHash": "1985f6780c5f5c5c888641451a8a343805a5ea8e",
+  "generatedAt": "2026-06-16T16:12:18.750Z",
   "files": {
     "AGENTS.md": {
       "filePath": "AGENTS.md",
-      "contentHash": "5abad8cf571a88d3b1a95d8daf3280dd5513f73a3f207cc650f9d8bfd30bbf3c",
+      "contentHash": "1c9d9afdc9f3a8c6d4edd1a86b90acb4bfcd27f77d3f50a929a6d03aebdcf71e",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 85,
+      "totalLines": 110,
       "hasStructuralAnalysis": true
     },
     ".agents/skills/caveman/SKILL.md": {
@@ -707,7 +707,7 @@
     },
     "alerter/service.py": {
       "filePath": "alerter/service.py",
-      "contentHash": "2935064c80485fb19dcd4fa9a241f7e4aef0d2e20ff5b24f0060dbe2b9ea94a2",
+      "contentHash": "fdc603db303c61bbf25feb11fb8202703dbf9a6d0398e5f006ecb0fc6af91e5b",
       "functions": [],
       "classes": [
         {
@@ -773,6 +773,7 @@
             "_send_station_down_alert",
             "_send_queue_drop_alert",
             "_send_daily_digest",
+            "_record_alert_sent",
             "_format_first_seen_message",
             "_truncate_transcript",
             "_resolve_audio_path",
@@ -785,7 +786,7 @@
           ],
           "properties": [],
           "exported": true,
-          "lineCount": 424
+          "lineCount": 481
         }
       ],
       "imports": [
@@ -857,6 +858,7 @@
         {
           "source": "shared.metrics",
           "specifiers": [
+            "increment_alerts_sent",
             "increment_chunks_processed",
             "set_queue_pending_hours"
           ]
@@ -866,6 +868,13 @@
           "specifiers": [
             "PipelineSettings"
           ]
+        },
+        {
+          "source": "shared.verticals",
+          "specifiers": [
+            "fetch_vertical_summaries_from_db",
+            "load_vertical_keywords"
+          ]
         }
       ],
       "exports": [
@@ -874,27 +883,27 @@
         "TelegramBotApi",
         "AlerterService"
       ],
-      "totalLines": 531,
+      "totalLines": 589,
       "hasStructuralAnalysis": true
     },
     "config/settings.yaml": {
       "filePath": "config/settings.yaml",
-      "contentHash": "193fdc5afc9c3d8e93fd1e2561879107987da40dd6ee97d157757ebbcea63e6e",
+      "contentHash": "baabd9b0677fd4c66cfed46869ca5f1bdf1bac2dfe984d92b8258ec5a9659d37",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 16,
+      "totalLines": 42,
       "hasStructuralAnalysis": true
     },
     "config/stations.yaml": {
       "filePath": "config/stations.yaml",
-      "contentHash": "ba1c1211cb2a559285b2c1155383fca7fa641746f2620c55308f16f9091eb10b",
+      "contentHash": "8e2f5064b9f15b655c91fbb0671f61dd510e7356a0ac581069d060bb03eba7f0",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 109,
+      "totalLines": 168,
       "hasStructuralAnalysis": true
     },
     ".cursor/rules/project-conventions.mdc": {
@@ -949,7 +958,7 @@
     },
     "dashboard/__main__.py": {
       "filePath": "dashboard/__main__.py",
-      "contentHash": "9f9466220186e9e1118733f5137ab964b1b1ede993c58f684baefe7c4e108044",
+      "contentHash": "690aa02251c94b894c361a1a5435d49154e05db5737950ba804e67f142f4f70e",
       "functions": [
         {
           "name": "main",
@@ -982,7 +991,7 @@
     },
     "dashboard/main.py": {
       "filePath": "dashboard/main.py",
-      "contentHash": "b489703ae79a0a8558d4a43be0e1fe86917798e3df94d79006c51606065390e2",
+      "contentHash": "a5f1e13348ab59aab72db467efb94d140a56cc3b795a4e03e350f304100c6281",
       "functions": [
         {
           "name": "create_app",
@@ -991,7 +1000,7 @@
           ],
           "returnType": "FastAPI",
           "exported": true,
-          "lineCount": 97
+          "lineCount": 367
         },
         {
           "name": "_no_database",
@@ -1001,6 +1010,15 @@
           "returnType": "HTMLResponse",
           "exported": true,
           "lineCount": 2
+        },
+        {
+          "name": "_cfpb_unavailable",
+          "params": [
+            "request"
+          ],
+          "returnType": "HTMLResponse",
+          "exported": true,
+          "lineCount": 7
         },
         {
           "name": "_format_ts",
@@ -1019,6 +1037,62 @@
           "returnType": "str",
           "exported": true,
           "lineCount": 8
+        },
+        {
+          "name": "_format_status",
+          "params": [
+            "status"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_format_recommendation",
+          "params": [
+            "recommendation"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_format_tier",
+          "params": [
+            "tier"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "_format_vertical_tier",
+          "params": [
+            "tier",
+            "hit_count",
+            "no_hit_ok"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_format_cfpb_status",
+          "params": [
+            "status"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "_format_watchdog_state",
+          "params": [
+            "state"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 12
         }
       ],
       "classes": [],
@@ -1049,7 +1123,8 @@
           "specifiers": [
             "FileResponse",
             "HTMLResponse",
-            "JSONResponse"
+            "JSONResponse",
+            "RedirectResponse"
           ]
         },
         {
@@ -1071,25 +1146,46 @@
           ]
         },
         {
+          "source": "shared.db",
+          "specifiers": [
+            "migrate"
+          ]
+        },
+        {
           "source": "shared.metrics",
           "specifiers": [
             "configure_dashboard_metrics",
             "start_metrics_server"
+          ]
+        },
+        {
+          "source": "shared.station_control",
+          "specifiers": [
+            "StationControlCommand",
+            "enqueue_station_command",
+            "station_exists"
           ]
         }
       ],
       "exports": [
         "create_app",
         "_no_database",
+        "_cfpb_unavailable",
         "_format_ts",
-        "_format_age"
+        "_format_age",
+        "_format_status",
+        "_format_recommendation",
+        "_format_tier",
+        "_format_vertical_tier",
+        "_format_cfpb_status",
+        "_format_watchdog_state"
       ],
-      "totalLines": 137,
+      "totalLines": 498,
       "hasStructuralAnalysis": true
     },
     "dashboard/queries.py": {
       "filePath": "dashboard/queries.py",
-      "contentHash": "c7e373e829b1aa9b49356cdfa1ad1b135c1e3860928ea91fd15e9068e710877a",
+      "contentHash": "0feca5d65c910cfd9d2432801296d5e9d3f64cbd58e3b25ff83b918a60ba41a3",
       "functions": [
         {
           "name": "_start_of_today_ts",
@@ -1106,6 +1202,13 @@
           "lineCount": 2
         },
         {
+          "name": "_seven_days_ago",
+          "params": [],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
           "name": "db_exists",
           "params": [
             "db_path"
@@ -1115,13 +1218,62 @@
           "lineCount": 2
         },
         {
+          "name": "derive_station_status",
+          "params": [
+            "enabled",
+            "last_chunk_ts",
+            "now",
+            "down_threshold_seconds",
+            "stale_threshold_seconds"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 19
+        },
+        {
+          "name": "_enrich_station_row",
+          "params": [
+            "row",
+            "now",
+            "down_threshold_seconds"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "station_label",
+          "params": [
+            "row"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "_yaml_station_label_map",
+          "params": [],
+          "returnType": "dict[str, str]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_apply_yaml_labels",
+          "params": [
+            "rows"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
           "name": "fetch_overview",
           "params": [
             "db_path"
           ],
           "returnType": "OverviewStats",
           "exported": true,
-          "lineCount": 50
+          "lineCount": 74
         },
         {
           "name": "fetch_ads_page",
@@ -1141,7 +1293,7 @@
           ],
           "returnType": "tuple[AdRow | None, list[DetectionRow], str | None]",
           "exported": true,
-          "lineCount": 58
+          "lineCount": 64
         },
         {
           "name": "fetch_stations",
@@ -1150,7 +1302,7 @@
           ],
           "returnType": "list[dict]",
           "exported": true,
-          "lineCount": 20
+          "lineCount": 25
         },
         {
           "name": "fetch_gaps",
@@ -1159,7 +1311,103 @@
           ],
           "returnType": "list[dict]",
           "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "fetch_station_scorecard",
+          "params": [
+            "db_path",
+            "window_days"
+          ],
+          "returnType": "list[dict]",
+          "exported": true,
+          "lineCount": 63
+        },
+        {
+          "name": "_truncate_excerpt",
+          "params": [
+            "text",
+            "limit"
+          ],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "fetch_review_inbox",
+          "params": [
+            "db_path",
+            "window_days",
+            "tier",
+            "limit"
+          ],
+          "returnType": "list[ReviewRow]",
+          "exported": true,
+          "lineCount": 105
+        },
+        {
+          "name": "fetch_keyword_matrix",
+          "params": [
+            "db_path",
+            "window_days"
+          ],
+          "returnType": "tuple[list[str], list[str], dict[str, dict[str, int]]]",
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "fetch_keyword_hits",
+          "params": [
+            "db_path",
+            "window_days",
+            "vertical",
+            "limit"
+          ],
+          "returnType": "list[KeywordHitRow]",
+          "exported": true,
+          "lineCount": 58
+        },
+        {
+          "name": "fetch_vertical_summaries",
+          "params": [
+            "db_path",
+            "window_days"
+          ],
+          "returnType": "list[VerticalHitSummary]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "fetch_vertical_detail",
+          "params": [
+            "db_path",
+            "vertical_id",
+            "window_days"
+          ],
+          "returnType": "tuple[VerticalHitSummary | None, list[KeywordHitRow], list[AdvertiserOpportunityRow]]",
+          "exported": true,
           "lineCount": 15
+        },
+        {
+          "name": "fetch_advertiser_opportunities",
+          "params": [
+            "db_path",
+            "vertical",
+            "window_days",
+            "limit"
+          ],
+          "returnType": "list[AdvertiserOpportunityRow]",
+          "exported": true,
+          "lineCount": 69
+        },
+        {
+          "name": "fetch_queue_health",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 24
         },
         {
           "name": "fetch_health",
@@ -1181,6 +1429,142 @@
           "lineCount": 33
         },
         {
+          "name": "cfpb_tables_available",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "fetch_cfpb_overview",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "dict[str, int]",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "fetch_cfpb_candidates",
+          "params": [
+            "db_path",
+            "min_score",
+            "limit"
+          ],
+          "returnType": "list[dict[str, object]]",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "fetch_cfpb_candidate_detail",
+          "params": [
+            "db_path",
+            "candidate_id"
+          ],
+          "returnType": "dict[str, object] | None",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "fetch_cfpb_runs",
+          "params": [
+            "db_path",
+            "limit"
+          ],
+          "returnType": "list[dict[str, object]]",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "fetch_cfpb_entities",
+          "params": [
+            "db_path",
+            "limit"
+          ],
+          "returnType": "list[dict[str, object]]",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "watchdog_tables_available",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "control_commands_available",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "fetch_watchdog_overview",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 68
+        },
+        {
+          "name": "advertiser_entities_available",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "trademark_tables_available",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "fetch_hit_advertisers",
+          "params": [
+            "db_path",
+            "limit"
+          ],
+          "returnType": "list[HitAdvertiserRow]",
+          "exported": true,
+          "lineCount": 39
+        },
+        {
+          "name": "fetch_hit_advertiser_detail",
+          "params": [
+            "db_path",
+            "advertiser_id"
+          ],
+          "returnType": "tuple[HitAdvertiserRow | None, list[HitAdvertiserDetectionRow]]",
+          "exported": true,
+          "lineCount": 84
+        },
+        {
+          "name": "fetch_trademark_keywords",
+          "params": [
+            "db_path",
+            "source_type",
+            "status",
+            "limit"
+          ],
+          "returnType": "list[TrademarkKeywordRow]",
+          "exported": true,
+          "lineCount": 69
+        },
+        {
           "name": "_readonly",
           "params": [
             "db_path"
@@ -1198,10 +1582,16 @@
             "detections_today",
             "ads_total",
             "queue_depth",
-            "station_health"
+            "queue_done",
+            "queue_dropped",
+            "queue_drop_ratio",
+            "queue_drop_warning",
+            "keyword_hits_total",
+            "station_health",
+            "vertical_summaries"
           ],
           "exported": true,
-          "lineCount": 6
+          "lineCount": 12
         },
         {
           "name": "AdRow",
@@ -1234,9 +1624,144 @@
           ],
           "exported": true,
           "lineCount": 10
+        },
+        {
+          "name": "KeywordHitRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "keyword",
+            "vertical",
+            "vertical_label",
+            "station_label",
+            "hit_ts",
+            "chunk_id",
+            "context_excerpt",
+            "detection_id"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "AdvertiserOpportunityRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "vertical",
+            "vertical_label",
+            "station_label",
+            "company_name",
+            "domain",
+            "phone_number",
+            "vanity_phone",
+            "offer_summary",
+            "cta",
+            "hit_ts",
+            "chunk_id",
+            "audio_clip_path",
+            "source_keywords",
+            "confidence",
+            "approved"
+          ],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "ReviewRow",
+          "methods": [],
+          "properties": [
+            "chunk_id",
+            "chunk_start_ts",
+            "station_label",
+            "tier",
+            "keywords",
+            "keyword_excerpt",
+            "transcript_excerpt",
+            "detection_id",
+            "canonical_ad_id",
+            "company_name",
+            "ad_category",
+            "phone_number",
+            "website",
+            "offer_summary",
+            "confidence",
+            "alerted"
+          ],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "HitAdvertiserRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "canonical_name",
+            "normalized_name",
+            "vertical",
+            "domain",
+            "source_type",
+            "confidence",
+            "status",
+            "trademark_entity_id",
+            "evidence_path",
+            "detection_count",
+            "station_count",
+            "updated_at"
+          ],
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "HitAdvertiserDetectionRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "detection_id",
+            "station_display_name",
+            "market",
+            "hit_ts",
+            "website",
+            "phone_number",
+            "cta",
+            "offer_summary",
+            "key_claims",
+            "confidence",
+            "audio_clip_path",
+            "audio_clip_start_sec",
+            "audio_clip_end_sec",
+            "transcript"
+          ],
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "TrademarkKeywordRow",
+          "methods": [],
+          "properties": [
+            "id",
+            "trademark_entity_id",
+            "entity_name",
+            "keyword",
+            "variant_type",
+            "source_type",
+            "status",
+            "verification_status",
+            "trademark_risk",
+            "ad_copy_allowed",
+            "landing_page_allowed",
+            "confidence"
+          ],
+          "exported": true,
+          "lineCount": 13
         }
       ],
       "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
         {
           "source": "time",
           "specifiers": [
@@ -1269,9 +1794,35 @@
           ]
         },
         {
+          "source": "dashboard.stats",
+          "specifiers": [
+            "compute_queue_drop_ratio",
+            "compute_yield_pct",
+            "derive_review_tier",
+            "derive_slot_recommendation",
+            "queue_drop_warning"
+          ]
+        },
+        {
+          "source": "shared.config",
+          "specifiers": [
+            "load_settings",
+            "load_stations",
+            "load_vertical_keywords"
+          ]
+        },
+        {
           "source": "shared.db",
           "specifiers": [
             "get_connection"
+          ]
+        },
+        {
+          "source": "shared.verticals",
+          "specifiers": [
+            "VerticalHitSummary",
+            "fetch_vertical_summaries_from_db",
+            "keyword_to_vertical_map"
           ]
         }
       ],
@@ -1279,24 +1830,59 @@
         "OverviewStats",
         "AdRow",
         "DetectionRow",
+        "KeywordHitRow",
+        "AdvertiserOpportunityRow",
+        "ReviewRow",
         "_start_of_today_ts",
         "_forty_eight_hours_ago",
+        "_seven_days_ago",
         "db_exists",
+        "derive_station_status",
+        "_enrich_station_row",
+        "station_label",
+        "_yaml_station_label_map",
+        "_apply_yaml_labels",
         "fetch_overview",
         "fetch_ads_page",
         "fetch_ad_detail",
         "fetch_stations",
         "fetch_gaps",
+        "fetch_station_scorecard",
+        "_truncate_excerpt",
+        "fetch_review_inbox",
+        "fetch_keyword_matrix",
+        "fetch_keyword_hits",
+        "fetch_vertical_summaries",
+        "fetch_vertical_detail",
+        "fetch_advertiser_opportunities",
+        "fetch_queue_health",
         "fetch_health",
         "resolve_audio_path",
+        "cfpb_tables_available",
+        "fetch_cfpb_overview",
+        "fetch_cfpb_candidates",
+        "fetch_cfpb_candidate_detail",
+        "fetch_cfpb_runs",
+        "fetch_cfpb_entities",
+        "watchdog_tables_available",
+        "control_commands_available",
+        "fetch_watchdog_overview",
+        "HitAdvertiserRow",
+        "HitAdvertiserDetectionRow",
+        "TrademarkKeywordRow",
+        "advertiser_entities_available",
+        "trademark_tables_available",
+        "fetch_hit_advertisers",
+        "fetch_hit_advertiser_detail",
+        "fetch_trademark_keywords",
         "_readonly"
       ],
-      "totalLines": 300,
+      "totalLines": 1353,
       "hasStructuralAnalysis": true
     },
     "dashboard/templates/ad_detail.html": {
       "filePath": "dashboard/templates/ad_detail.html",
-      "contentHash": "55c9295c59278572e4803408fe96616f5fbea7ac9ee97dbe6fa2d86240b657ae",
+      "contentHash": "9ef458c6f28bffc308f7e0b0c4f0b0bc4d3b151cb8d2b2a773f422341a16fe85",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1306,7 +1892,7 @@
     },
     "dashboard/templates/ads.html": {
       "filePath": "dashboard/templates/ads.html",
-      "contentHash": "14f6c9fc4599c6885b884790ff69872af7e96652b46efbffd626d534a6743c44",
+      "contentHash": "b328923fb239dfe9b9bbd951a3ed70b1f43db4ace0ad7f5a9301e9cd4e61e34f",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1316,17 +1902,17 @@
     },
     "dashboard/templates/base.html": {
       "filePath": "dashboard/templates/base.html",
-      "contentHash": "e57fd45b452bd0638ab22e9d14485d9df5a7267b9549492616e76db2b9a78308",
+      "contentHash": "fc62c4ec78489758503ef4e2247eb0de7d4607fbb88b0272e4163c5c8e27c23d",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 53,
+      "totalLines": 79,
       "hasStructuralAnalysis": false
     },
     "dashboard/templates/gaps.html": {
       "filePath": "dashboard/templates/gaps.html",
-      "contentHash": "a9c754dd30ae8bdc9e68b156608810af9bbe1f4d6eeeac016456067858bdae72",
+      "contentHash": "be1aea7d1ece1a77225e6d4b8b7ed7477dbb423afa81dfa47b1f04aed80e9450",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1336,17 +1922,17 @@
     },
     "dashboard/templates/index.html": {
       "filePath": "dashboard/templates/index.html",
-      "contentHash": "54a81081fac4aabc67c9e0e90da2bc082b51224ca2180e0eeac487e6f617b165",
+      "contentHash": "6f033e282a002316c6bb0c0cafdb6d84107f2130d10fb72828245161ff954284",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 30,
+      "totalLines": 76,
       "hasStructuralAnalysis": false
     },
     "dashboard/templates/no_database.html": {
       "filePath": "dashboard/templates/no_database.html",
-      "contentHash": "d5964d1ba480af7314f60b474b491df4692cc62ffff24cd12df7a1f2822dfe62",
+      "contentHash": "a4731fea48a4fd2ea827559ede1c0fd2144e45b9d07041a92a79256ebc03f792",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1356,7 +1942,7 @@
     },
     "dashboard/templates/partials/ads_rows.html": {
       "filePath": "dashboard/templates/partials/ads_rows.html",
-      "contentHash": "c4effbf9e842aeab2422275f126b7e189755bc9312afb065ef84acc6189f42bc",
+      "contentHash": "1ba322074524df9b08382ab0408cd26c2b2238195ef47da4598057ce9e137b73",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -1366,42 +1952,42 @@
     },
     "dashboard/templates/stations.html": {
       "filePath": "dashboard/templates/stations.html",
-      "contentHash": "2e8561401bb2e27a5d4db33f440b8970db7aa38dec44d619742c2c781b52bb33",
+      "contentHash": "9c276ff3441fca9fce90727a2432b378f3c3f542756690f550629eb417b7e2f3",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 24,
+      "totalLines": 26,
       "hasStructuralAnalysis": false
     },
     "docker-compose.prod.yml": {
       "filePath": "docker-compose.prod.yml",
-      "contentHash": "4d524e37c42f682123a740847fee1df08bff2131fab3319f6ab5f52766c8c116",
+      "contentHash": "c96e1a1dfe8b896fca80fbfe10070fda3012f46a3d916d72c6ba5b841f502e8f",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 40,
+      "totalLines": 45,
       "hasStructuralAnalysis": true
     },
     "docker-compose.windows-dev.yml": {
       "filePath": "docker-compose.windows-dev.yml",
-      "contentHash": "3d9e5284307600fa77e7b25b4812fa81553c10b537ed6e926ce793cd0c1f0893",
+      "contentHash": "118217849a146d76936736899363bc52da7f8336c07b07a8fe52766a0dc89eb4",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 28,
+      "totalLines": 35,
       "hasStructuralAnalysis": true
     },
     "docker-compose.yml": {
       "filePath": "docker-compose.yml",
-      "contentHash": "ea33ed81c8950a59870885f54c863a71887d3bfeca350eaf1185f723dd54f4bc",
+      "contentHash": "d5b2619bcaea141df819b47e0aea97d434a94f56280d2a6f3a9278e5aa16fbee",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 379,
+      "totalLines": 423,
       "hasStructuralAnalysis": true
     },
     ".dockerignore": {
@@ -1416,12 +2002,12 @@
     },
     ".env.example": {
       "filePath": ".env.example",
-      "contentHash": "8a033b1423a287ec56cfe0f2f459d89b088e718fa37ef2a1d39b127011785ae8",
+      "contentHash": "b9eaf739bfc4875da3b9366b506685fff36fcbdc0da95cff9d4b01336dc92df6",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 16,
+      "totalLines": 21,
       "hasStructuralAnalysis": true
     },
     "final-install-list.md": {
@@ -1446,8 +2032,26 @@
     },
     "ingestor/ffmpeg.py": {
       "filePath": "ingestor/ffmpeg.py",
-      "contentHash": "29b37816436b6b4279175e6c9a1b8fbef7d5877363f47e945f1cb8fa0a4d78c6",
+      "contentHash": "05b452d0286295abd4ac374c1deea61639cf7ad020d180388a7c05780cf46008",
       "functions": [
+        {
+          "name": "_is_hls_url",
+          "params": [
+            "url"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "_reconnect_input_flags",
+          "params": [
+            "url"
+          ],
+          "returnType": "list[str]",
+          "exported": true,
+          "lineCount": 16
+        },
         {
           "name": "build_ffmpeg_command",
           "params": [
@@ -1457,7 +2061,7 @@
           ],
           "returnType": "list[str]",
           "exported": true,
-          "lineCount": 39
+          "lineCount": 32
         },
         {
           "name": "get_wav_duration_seconds",
@@ -1587,6 +2191,8 @@
         }
       ],
       "exports": [
+        "_is_hls_url",
+        "_reconnect_input_flags",
         "ChunkRunner",
         "build_ffmpeg_command",
         "get_wav_duration_seconds",
@@ -1596,7 +2202,7 @@
         "_reap_process",
         "FfmpegChunkRunner"
       ],
-      "totalLines": 190,
+      "totalLines": 207,
       "hasStructuralAnalysis": true
     },
     "ingestor/__init__.py": {
@@ -1611,14 +2217,14 @@
     },
     "ingestor/__main__.py": {
       "filePath": "ingestor/__main__.py",
-      "contentHash": "ae096dee72737faed297a706066c13e223e3654866488b5b35844d96b54e11be",
+      "contentHash": "ba792d1c34d0e0b75cd3d2e82bf6396f6e831cc3372a7ebab7d7773964a111fe",
       "functions": [
         {
           "name": "main",
           "params": [],
           "returnType": "None",
           "exported": true,
-          "lineCount": 44
+          "lineCount": 78
         }
       ],
       "classes": [],
@@ -1648,9 +2254,24 @@
           ]
         },
         {
+          "source": "ingestor.control",
+          "specifiers": [
+            "IngestorControlContext",
+            "run_control_poller"
+          ]
+        },
+        {
+          "source": "ingestor.repository",
+          "specifiers": [
+            "upsert_station"
+          ]
+        },
+        {
           "source": "ingestor.supervisor",
           "specifiers": [
-            "create_station_ingestors"
+            "create_station_ingestors",
+            "run_station_ingestor",
+            "startup_stagger_delay_seconds"
           ]
         },
         {
@@ -1682,13 +2303,33 @@
       "exports": [
         "main"
       ],
-      "totalLines": 67,
+      "totalLines": 103,
       "hasStructuralAnalysis": true
     },
     "ingestor/repository.py": {
       "filePath": "ingestor/repository.py",
-      "contentHash": "a16d5a5d61570963e9e7ee647722d2fda4742e6b64699086774e8ab32240befa",
+      "contentHash": "c0ff24ccc5a2ebe67ad7094f353a2a8657c29fe6bca1c8854e1f8337d1340e28",
       "functions": [
+        {
+          "name": "fetch_station_config",
+          "params": [
+            "db_path",
+            "station_name"
+          ],
+          "returnType": "StationConfig | None",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "is_station_enabled",
+          "params": [
+            "db_path",
+            "station_name"
+          ],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 12
+        },
         {
           "name": "upsert_station",
           "params": [
@@ -1697,7 +2338,7 @@
           ],
           "returnType": "int",
           "exported": true,
-          "lineCount": 30
+          "lineCount": 32
         },
         {
           "name": "enqueue_chunk",
@@ -1767,17 +2408,19 @@
         }
       ],
       "exports": [
+        "fetch_station_config",
+        "is_station_enabled",
         "upsert_station",
         "enqueue_chunk",
         "log_gap",
         "fetch_station"
       ],
-      "totalLines": 98,
+      "totalLines": 138,
       "hasStructuralAnalysis": true
     },
     "ingestor/supervisor.py": {
       "filePath": "ingestor/supervisor.py",
-      "contentHash": "4525502f4c29ce8fc262fe3e2034f4cb2da200d2c29ff57e03acb98ab46f75ff",
+      "contentHash": "22abf0d00e5fe1c431004b904166ee78fdda19ef3a2ab24ed156175854e740a6",
       "functions": [
         {
           "name": "slugify_station_name",
@@ -1787,6 +2430,55 @@
           "returnType": "str",
           "exported": true,
           "lineCount": 4
+        },
+        {
+          "name": "startup_stagger_delay_seconds",
+          "params": [
+            "index",
+            "stagger_sec"
+          ],
+          "returnType": "float",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "wait_startup_stagger",
+          "params": [
+            "stop_event",
+            "delay_sec",
+            "sleep_fn",
+            "monotonic_fn"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "run_station_ingestor",
+          "params": [
+            "ingestor",
+            "stop_event",
+            "startup_delay_sec"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "spawn_station_ingestor",
+          "params": [
+            "db_path",
+            "station",
+            "settings",
+            "chunks_dir",
+            "ingestors",
+            "threads",
+            "stop_event",
+            "startup_delay_sec"
+          ],
+          "returnType": "StationIngestor",
+          "exported": true,
+          "lineCount": 37
         },
         {
           "name": "create_station_ingestors",
@@ -1799,7 +2491,7 @@
           ],
           "returnType": "list[StationIngestor]",
           "exported": true,
-          "lineCount": 23
+          "lineCount": 33
         }
       ],
       "classes": [
@@ -1841,15 +2533,20 @@
           "name": "StationIngestor",
           "methods": [
             "__init__",
+            "request_restart",
+            "request_stop",
+            "_apply_restart",
+            "_sleep_interruptible",
             "stride_seconds",
             "run",
             "run_once",
+            "_stride_delay",
             "_sleep_until_next_stride",
             "_output_path"
           ],
           "properties": [],
           "exported": true,
-          "lineCount": 119
+          "lineCount": 210
         }
       ],
       "imports": [
@@ -1908,6 +2605,7 @@
           "source": "ingestor.repository",
           "specifiers": [
             "enqueue_chunk",
+            "is_station_enabled",
             "log_gap",
             "upsert_station"
           ]
@@ -1916,6 +2614,8 @@
           "source": "shared.metrics",
           "specifiers": [
             "increment_chunks_processed",
+            "increment_ingest_chunks",
+            "increment_ingest_errors",
             "set_station_last_chunk_timestamp"
           ]
         },
@@ -1933,29 +2633,33 @@
         "BackoffPolicy",
         "StationIngestor",
         "slugify_station_name",
+        "startup_stagger_delay_seconds",
+        "wait_startup_stagger",
+        "run_station_ingestor",
+        "spawn_station_ingestor",
         "create_station_ingestors"
       ],
-      "totalLines": 206,
+      "totalLines": 384,
       "hasStructuralAnalysis": true
     },
     "monitoring/alerts.yml": {
       "filePath": "monitoring/alerts.yml",
-      "contentHash": "773534ff7df0ad10dcb7970fefae480abea2b8fb72807773ff09fd96ef249864",
+      "contentHash": "66110b02c6982fbf0677128501a9a34126ee6d03e66cb1b261d7c44b5cd70e42",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 97,
+      "totalLines": 103,
       "hasStructuralAnalysis": true
     },
     "monitoring/grafana/dashboards/pipeline.json": {
       "filePath": "monitoring/grafana/dashboards/pipeline.json",
-      "contentHash": "183f087700b50de8c3b0bb887e46d2a95cfd4d3009c9cb19ae99205c51ac5f7b",
+      "contentHash": "c0bcd80d2832e28e7433abf30c26e26c6dada949597787852829be5e84ca3635",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 250,
+      "totalLines": 481,
       "hasStructuralAnalysis": true
     },
     "monitoring/grafana/provisioning/dashboards/default.yml": {
@@ -1990,12 +2694,12 @@
     },
     "monitoring/prometheus.yml": {
       "filePath": "monitoring/prometheus.yml",
-      "contentHash": "83aec57193b5ac7475f87f6d4507e5defcb45a1cbcaedbe6d2cd7cb121f03c5b",
+      "contentHash": "98ad8fc1c68d756386ead847ef09972f3e5cbfac827a63c32704a938fc0183c7",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 101,
+      "totalLines": 109,
       "hasStructuralAnalysis": true
     },
     "plan/ca-tx-ingestor-smoke-20260610.md": {
@@ -2560,7 +3264,7 @@
     },
     "plan/wp9-report.md": {
       "filePath": "plan/wp9-report.md",
-      "contentHash": "d3ab5385149acd434afa27c604862029e9e0129e2080933956a2ed3c6b6591b4",
+      "contentHash": "a47be2252a85167b297aeb8a3bdbc47df241fe9b9ce33eb8f3f982bac0a7e4cc",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -2570,7 +3274,7 @@
     },
     "pyproject.toml": {
       "filePath": "pyproject.toml",
-      "contentHash": "82b0e3a8fc70a5454c48df241c0b9db28bbb04d4460c455a755d6c63e86b0aa5",
+      "contentHash": "697a41155f68003b2eb47b923d7420daba73e2f3d32e5f4056b4bafee2f16445",
       "functions": [],
       "classes": [],
       "imports": [],
@@ -2660,7 +3364,7 @@
     },
     "shared/config.py": {
       "filePath": "shared/config.py",
-      "contentHash": "e44d543a1df2dbce270bbc0cac1b91fdb59864e1301432e76e0d5021f13e8ca6",
+      "contentHash": "b2aaf2b93f04d279e91e9e143f5e3ace006e88e8331b1d2d3f85b2aeceb58fa1",
       "functions": [
         {
           "name": "load_stations",
@@ -2670,6 +3374,33 @@
           "returnType": "list[StationConfig]",
           "exported": true,
           "lineCount": 5
+        },
+        {
+          "name": "_normalize_loan_keywords_data",
+          "params": [
+            "data"
+          ],
+          "returnType": "object",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "load_vertical_keywords",
+          "params": [
+            "path"
+          ],
+          "returnType": "VerticalKeywordsFile",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "load_loan_keywords",
+          "params": [
+            "path"
+          ],
+          "returnType": "list[LoanKeywordEntry]",
+          "exported": true,
+          "lineCount": 15
         },
         {
           "name": "load_settings",
@@ -2735,24 +3466,30 @@
         {
           "source": "shared.models",
           "specifiers": [
+            "LoanKeywordEntry",
+            "LoanKeywordsFile",
             "PipelineSettings",
             "StationConfig",
-            "StationsFile"
+            "StationsFile",
+            "VerticalKeywordsFile"
           ]
         }
       ],
       "exports": [
         "TelegramSettings",
         "load_stations",
+        "_normalize_loan_keywords_data",
+        "load_vertical_keywords",
+        "load_loan_keywords",
         "load_settings",
         "load_telegram_settings"
       ],
-      "totalLines": 62,
+      "totalLines": 102,
       "hasStructuralAnalysis": true
     },
     "shared/db.py": {
       "filePath": "shared/db.py",
-      "contentHash": "bf29193eb61d4ae823211ef0a82b5b6d34a3a3358b76321c1fe77366644508a3",
+      "contentHash": "0aba3b2b3816757cb2b7658b4e77e9ddf8d6ce52a497e1903c7b81ffc1314271",
       "functions": [
         {
           "name": "_is_busy_error",
@@ -2915,7 +3652,7 @@
         "migrate",
         "list_tables"
       ],
-      "totalLines": 180,
+      "totalLines": 193,
       "hasStructuralAnalysis": true
     },
     "shared/__init__.py": {
@@ -2998,7 +3735,7 @@
     },
     "shared/metrics.py": {
       "filePath": "shared/metrics.py",
-      "contentHash": "db1e418286bae4c48a349a30d21e33e3be3fc78287eb927ee3d1e140b5da74c7",
+      "contentHash": "61f8a11185118bacd14e3d5f02e4aafefe0bcce70bb74dc85261bbf79272af75",
       "functions": [
         {
           "name": "start_metrics_server",
@@ -3047,6 +3784,123 @@
           "lineCount": 2
         },
         {
+          "name": "observe_asr_metrics",
+          "params": [
+            "station",
+            "wall_time_sec",
+            "rtf"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "observe_stage_duration",
+          "params": [
+            "stage",
+            "duration_sec"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "observe_llm_extraction_duration",
+          "params": [
+            "duration_sec"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_detections",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_ingest_chunks",
+          "params": [
+            "station",
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_ingest_errors",
+          "params": [
+            "station",
+            "reason",
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_dedup_matches",
+          "params": [
+            "match_type",
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_dedup_suppressed",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_fingerprint_hits",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_fingerprint_errors",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_alerts_sent",
+          "params": [
+            "alert_type",
+            "outcome",
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "refresh_chunks_by_status",
+          "params": [
+            "db_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
           "name": "set_station_last_chunk_timestamp",
           "params": [
             "station",
@@ -3055,6 +3909,25 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 2
+        },
+        {
+          "name": "set_station_enabled",
+          "params": [
+            "station",
+            "enabled"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "remove_station_last_chunk_timestamp",
+          "params": [
+            "station"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
         },
         {
           "name": "set_wal_checkpoint_metrics",
@@ -3081,7 +3954,7 @@
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 26
+          "lineCount": 31
         },
         {
           "name": "refresh_dashboard_metrics",
@@ -3090,7 +3963,23 @@
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 3
+          "lineCount": 4
+        },
+        {
+          "name": "refresh_gpu_metrics",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "start_gpu_metrics_refresh",
+          "params": [
+            "refresh_interval_seconds"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 22
         },
         {
           "name": "configure_dashboard_metrics",
@@ -3101,10 +3990,83 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 26
+        },
+        {
+          "name": "set_station_health_counts",
+          "params": [
+            "active",
+            "healthy",
+            "stale",
+            "failed"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "set_station_last_chunk_age",
+          "params": [
+            "station",
+            "age_seconds"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "set_queue_dropped_done_ratio",
+          "params": [
+            "ratio"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "record_watchdog_loop",
+          "params": [
+            "duration_seconds"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_station_restarts",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "set_station_pool_available",
+          "params": [
+            "count"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "increment_station_promotions",
+          "params": [
+            "amount"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 2
         }
       ],
       "classes": [],
       "imports": [
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
         {
           "source": "threading",
           "specifiers": [
@@ -3128,6 +4090,7 @@
           "specifiers": [
             "Counter",
             "Gauge",
+            "Histogram",
             "start_http_server"
           ]
         },
@@ -3145,14 +4108,37 @@
         "increment_chunks_dropped",
         "increment_chunk_files_deleted",
         "set_asr_rtf_avg",
+        "observe_asr_metrics",
+        "observe_stage_duration",
+        "observe_llm_extraction_duration",
+        "increment_detections",
+        "increment_ingest_chunks",
+        "increment_ingest_errors",
+        "increment_dedup_matches",
+        "increment_dedup_suppressed",
+        "increment_fingerprint_hits",
+        "increment_fingerprint_errors",
+        "increment_alerts_sent",
+        "refresh_chunks_by_status",
         "set_station_last_chunk_timestamp",
+        "set_station_enabled",
+        "remove_station_last_chunk_timestamp",
         "set_wal_checkpoint_metrics",
         "set_queue_pending_hours",
         "refresh_station_metrics",
         "refresh_dashboard_metrics",
-        "configure_dashboard_metrics"
+        "refresh_gpu_metrics",
+        "start_gpu_metrics_refresh",
+        "configure_dashboard_metrics",
+        "set_station_health_counts",
+        "set_station_last_chunk_age",
+        "set_queue_dropped_done_ratio",
+        "record_watchdog_loop",
+        "increment_station_restarts",
+        "set_station_pool_available",
+        "increment_station_promotions"
       ],
-      "totalLines": 176,
+      "totalLines": 497,
       "hasStructuralAnalysis": true
     },
     "shared/migrations/001_initial.sql": {
@@ -3177,7 +4163,7 @@
     },
     "shared/models.py": {
       "filePath": "shared/models.py",
-      "contentHash": "1527c02c45ab71ce97633209a2e11d9d53aa99d1962adc482bfb667d29b65742",
+      "contentHash": "21ab458dcd1af628413bbb3307dc1cc910e54cab64278d7bbbca58c18f291f43",
       "functions": [
         {
           "name": "detection_from_extraction",
@@ -3216,10 +4202,11 @@
             "name",
             "url",
             "format",
-            "enabled"
+            "enabled",
+            "display_name"
           ],
           "exported": true,
-          "lineCount": 6
+          "lineCount": 7
         },
         {
           "name": "CanonicalAd",
@@ -3349,16 +4336,32 @@
           "lineCount": 5
         },
         {
+          "name": "StationPoolMeta",
+          "methods": [],
+          "properties": [
+            "replacement_eligible",
+            "priority",
+            "market",
+            "vertical",
+            "needs_stream_resolution",
+            "stream_validation_status"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
           "name": "StationConfig",
           "methods": [],
           "properties": [
             "name",
             "url",
             "format",
-            "enabled"
+            "enabled",
+            "display_name",
+            "pool"
           ],
           "exported": true,
-          "lineCount": 5
+          "lineCount": 7
         },
         {
           "name": "StationsFile",
@@ -3368,6 +4371,83 @@
           ],
           "exported": true,
           "lineCount": 2
+        },
+        {
+          "name": "LoanKeywordEntry",
+          "methods": [],
+          "properties": [
+            "phrase",
+            "confidence"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "LoanKeywordsFile",
+          "methods": [],
+          "properties": [
+            "keywords"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "VerticalConfig",
+          "methods": [],
+          "properties": [
+            "label",
+            "tier",
+            "keywords",
+            "extract_advertisers",
+            "report_eligible",
+            "report_eligible_min_hits",
+            "confidence_cap_sparse",
+            "no_hit_ok"
+          ],
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "VerticalKeywordsSettings",
+          "methods": [],
+          "properties": [
+            "queue_drop_ratio_warn_threshold"
+          ],
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "VerticalKeywordsFile",
+          "methods": [],
+          "properties": [
+            "settings",
+            "verticals"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "WatchdogSettings",
+          "methods": [],
+          "properties": [
+            "enabled",
+            "target_active_stations",
+            "station_stale_after_minutes",
+            "restart_attempts_before_disable",
+            "restart_backoff_seconds",
+            "health_check_interval_seconds",
+            "promote_backup_when_active_below_target",
+            "backup_selection_strategy",
+            "cool_down_minutes_after_failure",
+            "max_station_failures_per_day",
+            "queue_drop_ratio_warning",
+            "queue_drop_ratio_critical",
+            "auto_restart_on_stale",
+            "max_promotions_per_hour",
+            "max_active_per_market"
+          ],
+          "exported": true,
+          "lineCount": 16
         },
         {
           "name": "PipelineSettings",
@@ -3387,10 +4467,18 @@
             "dashboard_host",
             "dashboard_port",
             "db_path",
-            "chunks_dir"
+            "chunks_dir",
+            "ingest_immediate_retries",
+            "ingest_immediate_retry_delay_sec",
+            "ingest_backoff_initial_sec",
+            "ingest_backoff_max_sec",
+            "ingest_startup_stagger_sec",
+            "keyword_min_record_confidence",
+            "queue_drop_ratio_warn_threshold",
+            "watchdog"
           ],
           "exported": true,
-          "lineCount": 16
+          "lineCount": 25
         }
       ],
       "imports": [
@@ -3432,13 +4520,20 @@
         "StatusEntry",
         "AdExtraction",
         "AdExtractionWithMetadata",
+        "StationPoolMeta",
         "StationConfig",
         "StationsFile",
+        "LoanKeywordEntry",
+        "LoanKeywordsFile",
+        "VerticalConfig",
+        "VerticalKeywordsSettings",
+        "VerticalKeywordsFile",
+        "WatchdogSettings",
         "PipelineSettings",
         "detection_from_extraction",
         "parse_key_claims_json"
       ],
-      "totalLines": 171,
+      "totalLines": 239,
       "hasStructuralAnalysis": true
     },
     "tests/fixtures/extraction_eval/cashbridge_lending_positive.txt": {
@@ -3523,17 +4618,17 @@
     },
     "tests/fixtures/__init__.py": {
       "filePath": "tests/fixtures/__init__.py",
-      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "contentHash": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
       "functions": [],
       "classes": [],
       "imports": [],
       "exports": [],
-      "totalLines": 1,
+      "totalLines": 2,
       "hasStructuralAnalysis": true
     },
     "tests/fixtures/seed_dashboard.py": {
       "filePath": "tests/fixtures/seed_dashboard.py",
-      "contentHash": "a28f7f2bb482033df4d698c96470c516f14c4f016cdc6381c54f452fce12174b",
+      "contentHash": "b2fa90025bf34dde9a852cb6db4174f84c80fd02bb40c3937f831909fd72caed",
       "functions": [
         {
           "name": "_write_silent_wav",
@@ -3553,7 +4648,7 @@
           ],
           "returnType": "dict[str, int]",
           "exported": true,
-          "lineCount": 110
+          "lineCount": 140
         }
       ],
       "classes": [],
@@ -3595,7 +4690,7 @@
         "_write_silent_wav",
         "seed_dashboard_db"
       ],
-      "totalLines": 137,
+      "totalLines": 167,
       "hasStructuralAnalysis": true
     },
     "tests/__init__.py": {
@@ -3915,7 +5010,7 @@
     },
     "tests/test_config.py": {
       "filePath": "tests/test_config.py",
-      "contentHash": "d1f082a60aa602281cf0e296f85347cbd08f092470031f47283eebe6ba0518dd",
+      "contentHash": "a5b0c6cb452ddfe5508bef76a7fb47bc8f6d78ba461ad9e0cd1baf6cdd1f2cca",
       "functions": [
         {
           "name": "test_load_stations_from_repo_config",
@@ -3923,6 +5018,13 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 7
+        },
+        {
+          "name": "test_load_stations_have_display_names",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 4
         },
         {
           "name": "test_load_settings_from_repo_config",
@@ -3968,13 +5070,39 @@
           "lineCount": 17
         },
         {
+          "name": "test_load_loan_keywords_from_repo_config",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_load_loan_keywords_legacy_string_format",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_load_loan_keywords_missing_file_returns_empty",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
           "name": "test_telegram_settings_optional",
           "params": [
             "monkeypatch"
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 6
+          "lineCount": 8
         }
       ],
       "classes": [],
@@ -3994,6 +5122,7 @@
         {
           "source": "shared.config",
           "specifiers": [
+            "load_loan_keywords",
             "load_settings",
             "load_stations",
             "load_telegram_settings"
@@ -4002,19 +5131,23 @@
       ],
       "exports": [
         "test_load_stations_from_repo_config",
+        "test_load_stations_have_display_names",
         "test_load_settings_from_repo_config",
         "test_load_settings_chunks_dir_env_override",
         "test_load_settings_dashboard_env_override",
         "test_load_settings_asr_env_override",
         "test_load_stations_from_custom_yaml",
+        "test_load_loan_keywords_from_repo_config",
+        "test_load_loan_keywords_legacy_string_format",
+        "test_load_loan_keywords_missing_file_returns_empty",
         "test_telegram_settings_optional"
       ],
-      "totalLines": 81,
+      "totalLines": 113,
       "hasStructuralAnalysis": true
     },
     "tests/test_dashboard.py": {
       "filePath": "tests/test_dashboard.py",
-      "contentHash": "2f09db86fbd36f3578ed2f8c75e91afb319b10aab200221027563fe3523cecd1",
+      "contentHash": "f22075758d88ce48a51ed36d684db2781064caadd028eaeb7a83dd290ef47887",
       "functions": [
         {
           "name": "empty_db",
@@ -4043,6 +5176,24 @@
           "returnType": "Path",
           "exported": true,
           "lineCount": 2
+        },
+        {
+          "name": "test_vertical_detail_route",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "test_keyword_hits_route",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 6
         },
         {
           "name": "test_all_html_routes_200_on_empty_db",
@@ -4154,6 +5305,31 @@
           "lineCount": 20
         },
         {
+          "name": "test_derive_station_status",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "test_stations_page_shows_status_column",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_overview_shows_status_column",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
           "name": "test_ads_htmx_partial",
           "params": [
             "seeded"
@@ -4161,6 +5337,42 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 7
+        },
+        {
+          "name": "test_scorecard_shows_yield_and_recommendation",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_keywords_matrix_shows_station_hits",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_review_inbox_tiers_on_seeded_db",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "test_review_page_renders_tiers",
+          "params": [
+            "seeded"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 11
         }
       ],
       "classes": [],
@@ -4213,6 +5425,8 @@
         "empty_db",
         "seeded",
         "missing_db",
+        "test_vertical_detail_route",
+        "test_keyword_hits_route",
         "test_all_html_routes_200_on_empty_db",
         "test_all_html_routes_200_on_seeded_db",
         "test_ad_detail_200_seeded",
@@ -4225,14 +5439,21 @@
         "test_audio_path_traversal_rejected",
         "test_audio_missing_db",
         "test_dashboard_never_opens_writable_connection",
-        "test_ads_htmx_partial"
+        "test_derive_station_status",
+        "test_stations_page_shows_status_column",
+        "test_overview_shows_status_column",
+        "test_ads_htmx_partial",
+        "test_scorecard_shows_yield_and_recommendation",
+        "test_keywords_matrix_shows_station_hits",
+        "test_review_inbox_tiers_on_seeded_db",
+        "test_review_page_renders_tiers"
       ],
-      "totalLines": 153,
+      "totalLines": 286,
       "hasStructuralAnalysis": true
     },
     "tests/test_db.py": {
       "filePath": "tests/test_db.py",
-      "contentHash": "c154cfeb41be8e0f7e6a88b9064779dd95b8dee5ac521b253b17fbb918f81e30",
+      "contentHash": "ea3159548618d31230965c18dd97cdf138cb4f685b2a78260a13f19777aef989",
       "functions": [
         {
           "name": "test_migrate_creates_all_tables",
@@ -5191,7 +6412,7 @@
     },
     "tests/test_ingestor.py": {
       "filePath": "tests/test_ingestor.py",
-      "contentHash": "d1126f1d5f5679dcc80960143fabf056fa81be9907f7d8d62d2be95da9a51213",
+      "contentHash": "edf994672414a4276bb8cc137843f66249388f268d37caf3628d396811369066",
       "functions": [
         {
           "name": "_write_silent_wav",
@@ -5220,7 +6441,16 @@
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 18
+          "lineCount": 19
+        },
+        {
+          "name": "test_build_ffmpeg_command_omits_reconnect_at_eof_for_hls",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 14
         },
         {
           "name": "test_is_valid_chunk_duration_uses_two_second_tolerance",
@@ -5256,7 +6486,7 @@
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 33
+          "lineCount": 34
         },
         {
           "name": "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
@@ -5265,7 +6495,7 @@
           ],
           "returnType": "None",
           "exported": true,
-          "lineCount": 34
+          "lineCount": 35
         },
         {
           "name": "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
@@ -5278,6 +6508,33 @@
           "lineCount": 40
         },
         {
+          "name": "test_immediate_retries_recover_without_gap",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 42
+        },
+        {
+          "name": "test_immediate_retries_exhausted_logs_single_gap",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 41
+        },
+        {
+          "name": "test_backoff_uses_settings_defaults",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 36
+        },
+        {
           "name": "test_create_station_ingestors_skips_disabled_stations",
           "params": [
             "tmp_path"
@@ -5285,6 +6542,38 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 18
+        },
+        {
+          "name": "test_request_stop_exits_run_loop",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "test_startup_stagger_delay_seconds",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_wait_startup_stagger_honors_stop_event",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "test_run_station_ingestor_runs_after_stagger",
+          "params": [
+            "monkeypatch"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 21
         }
       ],
       "classes": [
@@ -5308,6 +6597,16 @@
           "properties": [],
           "exported": true,
           "lineCount": 35
+        },
+        {
+          "name": "SequencedFakeRunner",
+          "methods": [
+            "__init__",
+            "record_chunk"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 33
         }
       ],
       "imports": [
@@ -5373,7 +6672,10 @@
           "specifiers": [
             "BackoffPolicy",
             "StationIngestor",
-            "create_station_ingestors"
+            "create_station_ingestors",
+            "run_station_ingestor",
+            "startup_stagger_delay_seconds",
+            "wait_startup_stagger"
           ]
         },
         {
@@ -5397,20 +6699,29 @@
         "FakeRunner",
         "_conn",
         "test_build_ffmpeg_command_uses_reconnect_flags_and_chunk_duration",
+        "test_build_ffmpeg_command_omits_reconnect_at_eof_for_hls",
         "test_is_valid_chunk_duration_uses_two_second_tolerance",
         "test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station",
         "test_stride_accounts_for_recording_elapsed_with_valid_wav",
         "test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue",
         "test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff",
         "test_ffmpeg_runner_terminate_active_stops_in_flight_process",
-        "test_create_station_ingestors_skips_disabled_stations"
+        "SequencedFakeRunner",
+        "test_immediate_retries_recover_without_gap",
+        "test_immediate_retries_exhausted_logs_single_gap",
+        "test_backoff_uses_settings_defaults",
+        "test_create_station_ingestors_skips_disabled_stations",
+        "test_request_stop_exits_run_loop",
+        "test_startup_stagger_delay_seconds",
+        "test_wait_startup_stagger_honors_stop_event",
+        "test_run_station_ingestor_runs_after_stagger"
       ],
-      "totalLines": 335,
+      "totalLines": 596,
       "hasStructuralAnalysis": true
     },
     "tests/test_janitor.py": {
       "filePath": "tests/test_janitor.py",
-      "contentHash": "0f38b41290211c6a7505ae98758d8ef729379fc72a13b53a9f3458dbc6181f79",
+      "contentHash": "72efef786ad10361d6424451a91b3ed83a3d43eb0a774372559eef8f991367d8",
       "functions": [
         {
           "name": "_seed_station",
@@ -5539,6 +6850,16 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 13
+        },
+        {
+          "name": "test_rollup_station_daily_aggregates_keyword_hits",
+          "params": [
+            "db_path",
+            "settings"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 57
         }
       ],
       "classes": [],
@@ -5602,9 +6923,10 @@
         "test_janitor_never_deletes_ad_archive_files",
         "test_cleanup_dropped_files_removes_wav",
         "test_run_sweep_runs_passive_wal_checkpoint",
-        "test_passive_wal_checkpoint_continues_on_failure"
+        "test_passive_wal_checkpoint_continues_on_failure",
+        "test_rollup_station_daily_aggregates_keyword_hits"
       ],
-      "totalLines": 264,
+      "totalLines": 323,
       "hasStructuralAnalysis": true
     },
     "tests/test_logging.py": {
@@ -5654,7 +6976,7 @@
     },
     "tests/test_metrics.py": {
       "filePath": "tests/test_metrics.py",
-      "contentHash": "8d4714103292a3b44d9af0ae999e173fec05bff5ac3fa32345042d6e991bdaa3",
+      "contentHash": "af8b362f50613c66fb3d057cf80cca765d6eddd1b43b9fa34009300ace3b20cd",
       "functions": [
         {
           "name": "test_set_wal_checkpoint_metrics_updates_gauges",
@@ -5662,30 +6984,130 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 12
+        },
+        {
+          "name": "test_observe_stage_duration_records_histogram",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_observe_llm_extraction_duration_records_histogram",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_increment_detections_increments_counter",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_observe_asr_metrics_records_station_histograms",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "test_ingest_metrics_use_station_and_reason_labels",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "test_dedup_and_fingerprint_counters_increment",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "test_increment_alerts_sent_uses_labels",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "test_refresh_chunks_by_status_sets_gauges",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 23
         }
       ],
       "classes": [],
       "imports": [
         {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
           "source": "shared.db",
           "specifiers": [
-            "WalCheckpointResult"
+            "WalCheckpointResult",
+            "get_connection",
+            "migrate",
+            "transaction"
           ]
         },
         {
           "source": "shared.metrics",
           "specifiers": [
+            "ALERTS_SENT_TOTAL",
+            "ASR_DURATION_SECONDS",
+            "ASR_RTF",
+            "CHUNKS_BY_STATUS",
+            "DEDUP_MATCHES_TOTAL",
+            "DEDUP_SUPPRESSED_TOTAL",
+            "DETECTIONS_TOTAL",
+            "FINGERPRINT_ERRORS_TOTAL",
+            "FINGERPRINT_HITS_TOTAL",
+            "INGEST_CHUNKS_TOTAL",
+            "INGEST_ERRORS_TOTAL",
+            "LLM_EXTRACTION_DURATION_SECONDS",
             "SQLITE_WAL_BUSY",
             "SQLITE_WAL_CHECKPOINTED_FRAMES",
             "SQLITE_WAL_LOG_FRAMES",
+            "STAGE_DURATION_SECONDS",
+            "increment_alerts_sent",
+            "increment_dedup_matches",
+            "increment_dedup_suppressed",
+            "increment_detections",
+            "increment_fingerprint_errors",
+            "increment_fingerprint_hits",
+            "increment_ingest_chunks",
+            "increment_ingest_errors",
+            "observe_asr_metrics",
+            "observe_llm_extraction_duration",
+            "observe_stage_duration",
+            "refresh_chunks_by_status",
             "set_wal_checkpoint_metrics"
           ]
         }
       ],
       "exports": [
-        "test_set_wal_checkpoint_metrics_updates_gauges"
+        "test_set_wal_checkpoint_metrics_updates_gauges",
+        "test_observe_stage_duration_records_histogram",
+        "test_observe_llm_extraction_duration_records_histogram",
+        "test_increment_detections_increments_counter",
+        "test_observe_asr_metrics_records_station_histograms",
+        "test_ingest_metrics_use_station_and_reason_labels",
+        "test_dedup_and_fingerprint_counters_increment",
+        "test_increment_alerts_sent_uses_labels",
+        "test_refresh_chunks_by_status_sets_gauges"
       ],
-      "totalLines": 26,
+      "totalLines": 142,
       "hasStructuralAnalysis": true
     },
     "tests/test_models.py": {
@@ -5773,7 +7195,7 @@
     },
     "tests/test_worker_consumer.py": {
       "filePath": "tests/test_worker_consumer.py",
-      "contentHash": "afae83a0847981949578b8cf1dec4ba16ddfe7e22b768ba56e941a3181b7cecf",
+      "contentHash": "a7218b64ec250534420bae2150c4ae8dce57ec85ac6b1cffa585d1dac8cd790c",
       "functions": [
         {
           "name": "_seed_station",
@@ -5825,6 +7247,17 @@
           "returnType": "None",
           "exported": true,
           "lineCount": 49
+        },
+        {
+          "name": "test_consumer_records_keyword_hits_after_transcription",
+          "params": [
+            "worker_db",
+            "settings",
+            "tmp_path"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 52
         },
         {
           "name": "test_consumer_runs_extraction_and_dedup_after_transcription",
@@ -6033,6 +7466,7 @@
         "worker_db",
         "settings",
         "test_consumer_claim_transcript_and_done",
+        "test_consumer_records_keyword_hits_after_transcription",
         "test_consumer_runs_extraction_and_dedup_after_transcription",
         "test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad",
         "test_drop_oldest_overflow_writes_gaps",
@@ -6042,7 +7476,7 @@
         "test_run_once_returns_false_when_queue_empty",
         "test_extraction_failure_marks_chunk_dropped_but_keeps_transcript"
       ],
-      "totalLines": 575,
+      "totalLines": 629,
       "hasStructuralAnalysis": true
     },
     ".understand-anything/.understandignore": {
@@ -6054,36 +7488,6 @@
       "exports": [],
       "totalLines": 33,
       "hasStructuralAnalysis": false
-    },
-    ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md": {
-      "filePath": ".windsurf/plans/handoff-phase1-scaffold-db-6165b3.md",
-      "contentHash": "5abaa14d1803839a0cfb60ba08423a0f107842cae6e1b95492316bbd2d466bf6",
-      "functions": [],
-      "classes": [],
-      "imports": [],
-      "exports": [],
-      "totalLines": 50,
-      "hasStructuralAnalysis": true
-    },
-    ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md": {
-      "filePath": ".windsurf/plans/handoff-wp3-asr-worker-6165b3.md",
-      "contentHash": "2ac6be3139e021184cf6ce77431356d5caba4449775db02eaed9f5f1c3a0b62b",
-      "functions": [],
-      "classes": [],
-      "imports": [],
-      "exports": [],
-      "totalLines": 51,
-      "hasStructuralAnalysis": true
-    },
-    ".windsurf/plans/handoff-wp9-dashboard-6165b3.md": {
-      "filePath": ".windsurf/plans/handoff-wp9-dashboard-6165b3.md",
-      "contentHash": "011916bd12ac7bc6575ca30b05cd96fcf94de0e9b8b48a6038327d6f1a1b313e",
-      "functions": [],
-      "classes": [],
-      "imports": [],
-      "exports": [],
-      "totalLines": 48,
-      "hasStructuralAnalysis": true
     },
     "worker/asr_benchmark.py": {
       "filePath": "worker/asr_benchmark.py",
@@ -6182,7 +7586,7 @@
     },
     "worker/consumer.py": {
       "filePath": "worker/consumer.py",
-      "contentHash": "d424c061685d89caa3e316c46ef9e0f25fea1941af7cca9359d63ab61419d16d",
+      "contentHash": "d988587db9aba8894e1f70721fe50a843009a78e1b18faf71f788c430de30d21",
       "functions": [
         {
           "name": "_merge_contiguous_ranges",
@@ -6218,12 +7622,13 @@
           "properties": [
             "id",
             "station_id",
+            "station",
             "path",
             "start_ts",
             "end_ts"
           ],
           "exported": true,
-          "lineCount": 10
+          "lineCount": 11
         },
         {
           "name": "ExtractionBackend",
@@ -6261,14 +7666,16 @@
             "_enforce_drop_oldest",
             "_insert_backlog_gaps",
             "_claim_chunk",
+            "_resolve_audio_path",
             "_process_claimed",
             "_persist_success",
             "_mark_dropped",
+            "_extract_advertiser_opportunities",
             "_update_rtf_avg"
           ],
           "properties": [],
           "exported": true,
-          "lineCount": 287
+          "lineCount": 416
         }
       ],
       "imports": [
@@ -6316,6 +7723,12 @@
           ]
         },
         {
+          "source": "shared.config",
+          "specifiers": [
+            "load_loan_keywords"
+          ]
+        },
+        {
           "source": "shared.db",
           "specifiers": [
             "get_connection",
@@ -6328,6 +7741,12 @@
           "specifiers": [
             "increment_chunks_dropped",
             "increment_chunks_processed",
+            "increment_fingerprint_errors",
+            "increment_fingerprint_hits",
+            "observe_asr_metrics",
+            "observe_llm_extraction_duration",
+            "observe_stage_duration",
+            "refresh_chunks_by_status",
             "set_asr_rtf_avg",
             "set_queue_pending_hours"
           ]
@@ -6337,6 +7756,7 @@
           "specifiers": [
             "AdExtraction",
             "ChunkStatus",
+            "LoanKeywordEntry",
             "PipelineSettings"
           ]
         },
@@ -6366,6 +7786,28 @@
           ]
         },
         {
+          "source": "shared.verticals",
+          "specifiers": [
+            "keyword_to_vertical_map",
+            "load_vertical_keywords"
+          ]
+        },
+        {
+          "source": "worker.advertiser_intel",
+          "specifiers": [
+            "extract_advertiser_intel",
+            "record_advertiser_opportunity"
+          ]
+        },
+        {
+          "source": "worker.keywords",
+          "specifiers": [
+            "KeywordMatch",
+            "find_keyword_matches",
+            "record_keyword_hits"
+          ]
+        },
+        {
           "source": "worker.transcribe",
           "specifiers": [
             "Transcriber",
@@ -6383,12 +7825,12 @@
         "_merge_contiguous_ranges",
         "create_consumer"
       ],
-      "totalLines": 415,
+      "totalLines": 555,
       "hasStructuralAnalysis": true
     },
     "worker/dedup.py": {
       "filePath": "worker/dedup.py",
-      "contentHash": "7015487741670f2806e8a34336a0a432980aeed6b3b34b7d3806d74f916f4014",
+      "contentHash": "f05e82a6da219ef7fa42cd8a3af881fc44c0031d9c5b8f31be471b5130ee32a0",
       "functions": [
         {
           "name": "_norm_text",
@@ -6449,7 +7891,7 @@
           ],
           "properties": [],
           "exported": true,
-          "lineCount": 211
+          "lineCount": 217
         }
       ],
       "imports": [
@@ -6505,6 +7947,14 @@
           ]
         },
         {
+          "source": "shared.metrics",
+          "specifiers": [
+            "increment_dedup_matches",
+            "increment_dedup_suppressed",
+            "increment_detections"
+          ]
+        },
+        {
           "source": "shared.models",
           "specifiers": [
             "AdExtraction",
@@ -6531,7 +7981,7 @@
         "ffmpeg_clip",
         "DetectionPersister"
       ],
-      "totalLines": 329,
+      "totalLines": 340,
       "hasStructuralAnalysis": true
     },
     "worker/Dockerfile": {
@@ -6917,7 +8367,7 @@
     },
     "worker/janitor.py": {
       "filePath": "worker/janitor.py",
-      "contentHash": "86bc3994e339beaf67a50eb7c128e17007206dba2446eae29c404b26afc0987c",
+      "contentHash": "3c6d909d8df244d5759ddbf6157592eb95d0f3d0295c53309614d91968b2bd09",
       "functions": [
         {
           "name": "delete_chunk_file",
@@ -6940,12 +8390,13 @@
             "sweep_orphans",
             "passive_wal_checkpoint",
             "run_sweep",
+            "rollup_station_daily",
             "_known_chunk_paths",
             "_is_protected_path"
           ],
           "properties": [],
           "exported": true,
-          "lineCount": 150
+          "lineCount": 252
         }
       ],
       "imports": [
@@ -6971,6 +8422,14 @@
           "source": "collections.abc",
           "specifiers": [
             "Callable"
+          ]
+        },
+        {
+          "source": "datetime",
+          "specifiers": [
+            "UTC",
+            "datetime",
+            "timedelta"
           ]
         },
         {
@@ -7007,19 +8466,19 @@
         "delete_chunk_file",
         "ChunkJanitor"
       ],
-      "totalLines": 178,
+      "totalLines": 283,
       "hasStructuralAnalysis": true
     },
     "worker/__main__.py": {
       "filePath": "worker/__main__.py",
-      "contentHash": "a3217b61dfd2863049ac499b267daa3b3824337bdaadade97e780c201e6a9c47",
+      "contentHash": "d2363460b32efcf232d928572d6893b873d8d48e6e9e43d7addd40dcf26d5e09",
       "functions": [
         {
           "name": "main",
           "params": [],
           "returnType": "None",
           "exported": true,
-          "lineCount": 18
+          "lineCount": 19
         }
       ],
       "classes": [],
@@ -7069,6 +8528,7 @@
         {
           "source": "shared.metrics",
           "specifiers": [
+            "start_gpu_metrics_refresh",
             "start_metrics_server"
           ]
         },
@@ -7082,7 +8542,7 @@
       "exports": [
         "main"
       ],
-      "totalLines": 41,
+      "totalLines": 42,
       "hasStructuralAnalysis": true
     },
     "worker/transcribe.py": {

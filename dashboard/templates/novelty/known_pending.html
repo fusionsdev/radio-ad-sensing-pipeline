@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Known terms pending — Novelty{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Known terms pending review</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Terms queued from dashboard review actions. YAML config is <strong>not</strong> updated automatically in this phase.
+</p>
+<p style="margin-bottom: 1rem;"><a href="/novelty">← Back to novelty overview</a></p>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Term</th>
+      <th>Type</th>
+      <th>Vertical</th>
+      <th>Reason</th>
+      <th>Source candidate</th>
+      <th>Status</th>
+      <th>When</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.term }}</td>
+      <td>{{ row.term_type }}</td>
+      <td>{{ row.vertical or "—" }}</td>
+      <td>{{ row.reason or "—" }}</td>
+      <td>{{ row.source_candidate_id or "—" }}</td>
+      <td><span class="badge warn">{{ row.status }}</span></td>
+      <td>{{ format_ts(row.created_at) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No pending known terms yet. Use <strong>Add to known</strong> on a novelty result to queue one.</p>
+{% endif %}
+{% endblock %}

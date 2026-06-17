@@ -1,7 +1,8 @@
 # Windows Docker Desktop dev overrides (GPU host on Win32).
 # - SQLite WAL fails on ./data bind mounts → pair with docker-compose.prod.yml
 # - Port 8080 is often reserved by HTTP.sys; publish dashboard on 8081
-# - dcgm-exporter needs Linux /sys/bus/pci; stub it on Windows dev
+# - dcgm-exporter needs Linux /sys/bus/pci; stub it on Windows dev.
+#   GPU panels fall back to pipeline_gpu_* gauges from worker nvidia-smi polling.
 #
 # Usage:
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.windows-dev.yml up -d
@@ -25,3 +26,9 @@ services:
       - alerter
       - dashboard
       - dcgm-exporter
+
+  worker:
+    deploy:
+      resources:
+        reservations:
+          devices: !override []

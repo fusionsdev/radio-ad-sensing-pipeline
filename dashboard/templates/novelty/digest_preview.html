@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Digest preview — Opportunities{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Telegram digest preview (dry-run)</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  This is what <code>novelty_reporter.format_pending_digest</code> would send.
+  Nothing is transmitted to Telegram from this page.
+</p>
+<p style="margin-bottom: 1rem;">
+  <a href="/opportunities">← Back to opportunities</a>
+  · Pending opportunities: {{ pending_count }}
+</p>
+<pre style="background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; white-space: pre-wrap; font-size: 0.85rem; overflow-x: auto;">{{ digest }}</pre>
+{% endblock %}

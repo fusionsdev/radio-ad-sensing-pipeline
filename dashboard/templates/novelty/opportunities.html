@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Opportunities — Novelty{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Report-eligible keyword opportunities</h2>
+<p style="margin-bottom: 1rem;">
+  <a href="/novelty">← Back to novelty overview</a>
+  · <a href="/opportunities/digest-preview">Digest preview (dry-run)</a>
+  · <a href="/opportunities/batch-review">Batch review</a>
+  · <a href="/sources/landing-pages">Landing pages</a>
+</p>
+
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Opportunity</th>
+      <th>Type</th>
+      <th>Vertical</th>
+      <th>Novelty</th>
+      <th>Score</th>
+      <th>Risk</th>
+      <th>Action</th>
+      <th>Status</th>
+      <th>Review</th>
+      <th>Source</th>
+      <th>Evidence</th>
+      <th>When</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.opportunity_text }}</td>
+      <td>{{ row.opportunity_type }}</td>
+      <td>{{ row.vertical or "—" }}</td>
+      <td>{{ "%.0f"|format(row.novelty_score) }}</td>
+      <td>{{ "%.0f"|format(row.opportunity_score) }}</td>
+      <td>{{ row.risk_level }}</td>
+      <td>{{ row.suggested_action or "—" }}</td>
+      <td><span class="badge ok">{{ row.status }}</span></td>
+      <td style="font-size: 0.8rem;">
+        {% with opportunity_id=row.id, opportunity_status=row.status %}
+        {% include "novelty/_opportunity_actions.html" %}
+        {% endwith %}
+      </td>
+      <td style="font-size: 0.85rem;">
+        {{ row.source_type }}
+        {% if row.source_url %}
+        <br><a href="{{ row.source_url }}" target="_blank" rel="noopener">source</a>
+        {% endif %}
+      </td>
+      <td style="font-size: 0.85rem; max-width: 220px;">{{ row.evidence_text or "—" }}</td>
+      <td>{{ format_ts(row.created_at) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No report-eligible opportunities yet.</p>
+{% endif %}
+{% endblock %}

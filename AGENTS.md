@@ -89,6 +89,21 @@ Full command list: `README.md` § Codebase map. Plugin paths: `final-install-lis
 - Live status: `.\scripts\pipeline-status.ps1` (query DB via `docker exec radio-worker`)
 - **Do not** read `data/pipeline.db` from Windows host during Docker ingest (stale bind-mount)
 
+## Every session (required)
+
+Agent runs automatically — **do not ask user to type commands**. Full runbook: `.cursor/rules/agent-commands.mdc`
+
+| เมื่อ | Agent ทำ |
+|---|---|
+| เริ่ม session | `AGENTS.md` + `understand-chat` สำหรับ architecture |
+| ก่อนปิดงาน | `.venv\Scripts\pytest` + migrate `data/test.db` |
+| หลัง commit โครงสร้างใหญ่ | `/understand` |
+| pipeline ops | `.\scripts\pipeline-status.ps1` + docker exec queries |
+
+Optional: `/caveman`, `headroom proxy`
+
+Bootstrap: `final-install-list.md` · `docs/agent-tooling.md`
+
 ## Session checklist for agent
 
 - [ ] Read this file + relevant `plan/handoff-*.md` if starting new work

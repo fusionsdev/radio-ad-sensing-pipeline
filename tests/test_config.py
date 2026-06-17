@@ -94,8 +94,12 @@ def test_load_loan_keywords_legacy_string_format(tmp_path: Path) -> None:
     assert keywords[0].confidence == 0.7
 
 
-def test_load_loan_keywords_missing_file_returns_empty(tmp_path: Path) -> None:
-    assert load_loan_keywords(tmp_path / "missing.yaml") == []
+def test_load_loan_keywords_missing_file_returns_empty(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        "shared.config.CONFIG_DIR",
+        tmp_path,
+    )
+    assert load_loan_keywords() == []
 
 
 def test_telegram_settings_optional(monkeypatch: pytest.MonkeyPatch) -> None:

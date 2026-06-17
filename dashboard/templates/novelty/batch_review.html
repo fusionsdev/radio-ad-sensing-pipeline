@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Batch review — Opportunities{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Research batch review</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Latest imported batch from <code>raw_discovery_items.batch_id</code>.
+  Use this view to judge novelty scoring quality before enabling outbound reporting.
+</p>
+<p style="margin-bottom: 1rem;">
+  <a href="/opportunities">← Opportunities</a>
+  · <a href="/opportunities/digest-preview">Digest preview</a>
+  · <a href="/novelty">Novelty overview</a>
+</p>
+
+{% if review.batch_id %}
+<div class="grid" style="margin-bottom: 1.5rem;">
+  <div class="card"><h2>Batch</h2><div class="value" style="font-size: 1rem;">{{ review.batch_id }}</div></div>
+  <div class="card"><h2>Imported</h2><div class="value" style="font-size: 1rem;">{{ format_ts(review.batch_imported_at) }}</div></div>
+  <div class="card"><h2>Total</h2><div class="value">{{ review.total }}</div></div>
+  <div class="card"><h2>Report eligible</h2><div class="value">{{ review.report_eligible }}</div></div>
+</div>
+{% else %}
+<p class="empty">No batch-tagged imports found. Run <code>scripts/validate_research_batch.py</code> on a JSON batch first.</p>
+{% endif %}
+
+{% if review.status_counts %}
+<h3 style="font-size: 0.95rem;">Novelty status counts</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead><tr><th>Status</th><th>Count</th></tr></thead>
+  <tbody>
+    {% for status, count in review.status_counts.items() %}
+    <tr><td>{{ status }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if review.suppression_counts %}
+<h3 style="font-size: 0.95rem;">Suppressed reasons</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead><tr><th>Reason</th><th>Count</th></tr></thead>
+  <tbody>
+    {% for reason, count in review.suppression_counts.items() %}
+    <tr><td>{{ reason }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if review.score_distribution %}
+<h3 style="font-size: 0.95rem;">Novelty score distribution</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead><tr><th>Bucket</th><th>Count</th></tr></thead>
+  <tbody>
+    {% for bucket, count in review.score_distribution.items() %}
+    <tr><td>{{ bucket }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if top_opportunities %}
+<h3 style="font-size: 0.95rem;">Top report-eligible opportunities</h3>
+<table style="margin-bottom: 1.5rem;">
+  <thead>
+    <tr>
+      <th>Candidate</th>
+      <th>Vertical</th>
+      <th>Novelty</th>
+      <th>Opportunity</th>
+      <th>Source</th>
+      <th>Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in top_opportunities %}
+    <tr>
+      <td>{{ row.candidate_text }}</td>
+      <td>{{ row.vertical or "—" }}</td>
+      <td>{{ "%.0f"|format(row.novelty_score) }}</td>
+      <td>{{ "%.0f"|format(row.opportunity_score) }}</td>
+      <td style="font-size: 0.85rem;">{{ row.source_type }}</td>
+      <td style="font-size: 0.8rem;">
+        {% if row.opportunity_id %}
+        {% with opportunity_id=row.opportunity_id, opportunity_status=row.opportunity_status or 'new' %}
+        {% include "novelty/_opportunity_actions.html" %}
+        {% endwith %}
+        {% endif %}
+        {% with novelty_result_id=row.id, candidate_type=row.candidate_type, reviewed_status=row.reviewed_status, opportunity_id=row.opportunity_id %}
+        {% include "novelty/_novelty_actions.html" %}
+        {% endwith %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if review.grouped_by_status %}
+<h3 style="font-size: 0.95rem;">Candidates by novelty status</h3>
+{% for status, rows in review.grouped_by_status.items() %}
+<details style="margin-bottom: 0.75rem;">
+  <summary><strong>{{ status }}</strong> ({{ rows|length }})</summary>
+  <table>
+    <thead>
+      <tr>
+        <th>Candidate</th>
+        <th>Vertical</th>
+        <th>Novelty</th>
+        <th>Opp</th>
+        <th>Suppressed</th>
+        <th>Report?</th>
+        <th>Review</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.candidate_text }}</td>
+        <td>{{ row.vertical or "—" }}</td>
+        <td>{{ "%.0f"|format(row.novelty_score) }}</td>
+        <td>{{ "%.0f"|format(row.opportunity_score) }}</td>
+        <td>{{ row.report_suppressed_reason or "—" }}</td>
+        <td>{% if row.report_eligible %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}</td>
+        <td style="font-size: 0.8rem;">
+          {% if row.opportunity_id %}
+          {% with opportunity_id=row.opportunity_id, opportunity_status=row.opportunity_status or 'new' %}
+          {% include "novelty/_opportunity_actions.html" %}
+          {% endwith %}
+          {% endif %}
+          {% with novelty_result_id=row.id, candidate_type=row.candidate_type, reviewed_status=row.reviewed_status, opportunity_id=row.opportunity_id %}
+          {% include "novelty/_novelty_actions.html" %}
+          {% endwith %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</details>
+{% endfor %}
+{% endif %}
+{% endblock %}

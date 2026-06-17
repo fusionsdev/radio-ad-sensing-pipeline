@@ -30,6 +30,11 @@ services:
       - pipeline_data:/app/data
       - ./config:/app/config:ro
 
+  watchdog:
+    volumes:
+      - pipeline_data:/app/data
+      - ./config:/app/config:ro
+
   pipeline-migrate:
     volumes:
       - pipeline_data:/app/data

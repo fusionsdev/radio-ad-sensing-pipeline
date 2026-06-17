@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}CFPB Candidates — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">CFPB brand candidates</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Leads only — verify before keyword/trademark use. Filter:
+  <a href="/cfpb/candidates?min_score=0"{% if min_score == 0 %} style="font-weight:600"{% endif %}>All</a> ·
+  <a href="/cfpb/candidates?min_score=70"{% if min_score == 70 %} style="font-weight:600"{% endif %}>≥70</a> ·
+  <a href="/cfpb/candidates?min_score=85"{% if min_score == 85 %} style="font-weight:600"{% endif %}>≥85</a>
+  <span style="color: var(--muted);"> — {{ rows|length }} row(s)</span>
+</p>
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>Score</th>
+      <th>Candidate</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Company</th>
+      <th>Complaints</th>
+      <th>Product</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td><strong>{{ "%.0f"|format(row.score) }}</strong></td>
+      <td><a class="row-link" href="/cfpb/candidates/{{ row.id }}">{{ row.candidate_name }}</a></td>
+      <td>{{ row.candidate_type }}</td>
+      <td>{{ format_cfpb_status(row.verification_status)|safe }}</td>
+      <td>{{ row.company_raw or "—" }}</td>
+      <td>{{ row.complaint_count or "—" }}</td>
+      <td>{{ row.source_product or "—" }}</td>
+      <td>{{ row.source_state or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No candidates at this score threshold.</p>
+{% endif %}
+<p style="margin-top: 1rem; font-size: 0.85rem;"><a href="/cfpb">← CFPB overview</a></p>
+{% endblock %}

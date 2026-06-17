@@ -16,6 +16,7 @@ from shared.db import get_connection, transaction
 from shared.logging import setup_logging
 from shared.metrics import increment_alerts_sent, increment_chunks_processed, set_queue_pending_hours
 from shared.models import PipelineSettings
+from shared.verticals import fetch_vertical_summaries_from_db, load_vertical_keywords
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLL_INTERVAL_SECONDS = 30
@@ -355,12 +356,33 @@ class AlerterService:
             (since,),
         ).fetchone()[0]
         down_now = self._load_station_down_alerts(conn, now_ts)
+        since_day = (
+            datetime.fromtimestamp(now_ts, tz=UTC)
+            .replace(hour=0, minute=0, second=0, microsecond=0)
+            .timestamp()
+        )
+        vertical_summaries = fetch_vertical_summaries_from_db(conn, since=since_day)
+        reportable = [v for v in vertical_summaries if v.report_eligible]
+        queue_done = int(
+            conn.execute("SELECT COUNT(*) FROM chunks WHERE status = 'done'").fetchone()[0]
+        )
+        queue_dropped = int(
+            conn.execute("SELECT COUNT(*) FROM chunks WHERE status = 'dropped'").fetchone()[0]
+        )
+        drop_ratio = round(queue_dropped / queue_done, 2) if queue_done else float(queue_dropped)
+        vertical_config = load_vertical_keywords()
+        drop_threshold = vertical_config.settings.queue_drop_ratio_warn_threshold
         return {
             "digest_date": digest_date,
             "alerted_today": int(alerted_today),
             "pending": int(pending),
             "dropped_today": int(dropped_today),
             "down_stations": down_now,
+            "vertical_summaries": reportable,
+            "queue_done": queue_done,
+            "queue_dropped": queue_dropped,
+            "queue_drop_ratio": drop_ratio,
+            "queue_drop_warning": drop_ratio >= drop_threshold,
         }
 
     def _send_first_seen_alert(self, alert: FirstSeenAlert) -> bool:
@@ -440,11 +462,28 @@ class AlerterService:
             f"First-seen alerts sent: {digest['alerted_today']}\n"
             f"Pending queue: {digest['pending']}\n"
             f"Dropped chunks today: {digest['dropped_today']}\n"
-            f"Stations currently down: {len(digest['down_stations'])}"
+            f"Queue done/dropped: {digest['queue_done']}/{digest['queue_dropped']}"
         )
+        if digest.get("queue_drop_warning"):
+            message += f"\n⚠ Drop ratio: {digest['queue_drop_ratio']}× (investigate backlog/path issues)"
         if digest["down_stations"]:
             names = ", ".join(alert.station_name for alert in digest["down_stations"])
-            message += f"\nDown stations: {names}"
+            message += f"\nStations currently down: {len(digest['down_stations'])} ({names})"
+        verticals = digest.get("vertical_summaries") or []
+        if verticals:
+            message += "\n\nReport-eligible verticals:"
+            for vertical in verticals:
+                kw_preview = ", ".join(vertical.source_keywords[:4])
+                if len(vertical.source_keywords) > 4:
+                    kw_preview += ", …"
+                message += (
+                    f"\n• {vertical.label} ({vertical.tier}): "
+                    f"{vertical.vertical_hit_count} hits / {vertical.station_count} stn"
+                )
+                if kw_preview:
+                    message += f" — {kw_preview}"
+        else:
+            message += "\n\nNo report-eligible vertical hits today."
         if self._dry_run:
             self.log.info(message)
             self._record_alert_sent("digest", success=True)

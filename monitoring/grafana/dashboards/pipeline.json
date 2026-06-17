@@ -361,25 +361,20 @@
     },
     {
       "id": 16,
-      "title": "Ollama request rate (native /metrics)",
+      "title": "LLM extractions / min (worker → Ollama)",
       "type": "timeseries",
       "gridPos": {"h": 8, "w": 24, "x": 0, "y": 68},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "sum(rate(ollama_total_duration_total[5m]))",
+          "expr": "sum(rate(pipeline_llm_extraction_duration_seconds_count{job=\"worker\"}[5m])) * 60",
           "refId": "A",
-          "legendFormat": "total duration rate"
+          "legendFormat": "extractions/min"
         },
         {
-          "expr": "sum(rate(ollama_eval_total[5m]))",
+          "expr": "histogram_quantile(0.95, sum(rate(pipeline_llm_extraction_duration_seconds_bucket{job=\"worker\"}[5m])) by (le))",
           "refId": "B",
-          "legendFormat": "eval tokens rate"
-        },
-        {
-          "expr": "sum(rate(ollama_prompt_eval_total[5m]))",
-          "refId": "C",
-          "legendFormat": "prompt tokens rate"
+          "legendFormat": "p95 latency (s)"
         }
       ],
       "fieldConfig": {"defaults": {"unit": "short"}},
@@ -400,7 +395,7 @@
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "DCGM_FI_DEV_GPU_UTIL",
+          "expr": "DCGM_FI_DEV_GPU_UTIL or pipeline_gpu_utilization_percent{job=\"worker\"}",
           "refId": "A",
           "legendFormat": "gpu{{gpu}} util"
         }
@@ -415,18 +410,18 @@
     },
     {
       "id": 9,
-      "title": "GPU memory used (DCGM)",
+      "title": "GPU memory used (DCGM / nvidia-smi)",
       "type": "timeseries",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 77},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
       "targets": [
         {
-          "expr": "DCGM_FI_DEV_FB_USED",
+          "expr": "DCGM_FI_DEV_FB_USED or pipeline_gpu_memory_used_bytes{job=\"worker\"}",
           "refId": "A",
           "legendFormat": "gpu{{gpu}} used"
         },
         {
-          "expr": "DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE",
+          "expr": "(DCGM_FI_DEV_FB_USED + DCGM_FI_DEV_FB_FREE) or pipeline_gpu_memory_total_bytes{job=\"worker\"}",
           "refId": "B",
           "legendFormat": "gpu{{gpu}} total"
         }

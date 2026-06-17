@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Novelty{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">{{ title }}</h2>
+<p style="margin-bottom: 1rem;"><a href="/novelty">← Back to novelty overview</a></p>
+{% include "novelty/_table.html" %}
+{% endblock %}

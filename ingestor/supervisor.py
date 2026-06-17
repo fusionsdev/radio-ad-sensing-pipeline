@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Callable, Protocol
 
 from ingestor.ffmpeg import ChunkRunner, FfmpegChunkRunner, is_valid_chunk_duration
-from ingestor.repository import enqueue_chunk, log_gap, upsert_station
+from ingestor.repository import enqueue_chunk, is_station_enabled, log_gap, upsert_station
 from shared.metrics import (
     increment_chunks_processed,
     increment_ingest_chunks,
@@ -76,6 +76,42 @@ class StationIngestor:
         self.runner = runner or FfmpegChunkRunner(settings)
         self.clock = clock or SystemClock()
         self.backoff = backoff or BackoffPolicy()
+        self.restart_event = threading.Event()
+        self.stop_event = threading.Event()
+
+    def request_restart(self) -> None:
+        """Interrupt in-flight ffmpeg and reset backoff on next loop iteration."""
+        terminate = getattr(self.runner, "terminate_active", None)
+        if callable(terminate):
+            terminate()
+        self.restart_event.set()
+
+    def request_stop(self) -> None:
+        """Stop this station ingestor thread and terminate in-flight ffmpeg."""
+        terminate = getattr(self.runner, "terminate_active", None)
+        if callable(terminate):
+            terminate()
+        self.stop_event.set()
+
+    def _apply_restart(self) -> None:
+        self.backoff.reset()
+        self.restart_event.clear()
+
+    def _sleep_interruptible(self, seconds: float, stop_event: threading.Event | None = None) -> None:
+        if seconds <= 0:
+            return
+        deadline = self.clock.time() + seconds
+        while self.clock.time() < deadline:
+            if self.restart_event.is_set():
+                return
+            if self.stop_event.is_set():
+                return
+            if stop_event is not None and stop_event.is_set():
+                return
+            remaining = deadline - self.clock.time()
+            if remaining <= 0:
+                return
+            self.clock.sleep(min(0.5, remaining))
 
     @property
     def stride_seconds(self) -> float:
@@ -83,12 +119,16 @@ class StationIngestor:
 
     def run(self, stop_event: threading.Event | None = None) -> None:
         """Run until stopped. Intended as a thread target per enabled station."""
-        while stop_event is None or not stop_event.is_set():
-            self.run_once()
+        while (stop_event is None or not stop_event.is_set()) and not self.stop_event.is_set():
+            if self.restart_event.is_set():
+                self._apply_restart()
+            self.run_once(stop_event)
             if stop_event is not None and stop_event.is_set():
                 break
+            if self.stop_event.is_set():
+                break
 
-    def run_once(self) -> bool:
+    def run_once(self, stop_event: threading.Event | None = None) -> bool:
         """Record and enqueue one chunk.
 
         On first failure: immediately retries up to ``ingest_immediate_retries``
@@ -110,6 +150,13 @@ class StationIngestor:
         succeeded = False
 
         for attempt in range(max_attempts):
+            if self.restart_event.is_set():
+                self._apply_restart()
+                return False
+            if self.stop_event.is_set():
+                return False
+            if stop_event is not None and stop_event.is_set():
+                return False
             if attempt > 0:
                 # Brief sleep between immediate retry attempts
                 if retry_delay > 0:
@@ -141,6 +188,14 @@ class StationIngestor:
                 break
 
         if succeeded:
+            if not is_station_enabled(self.db_path, self.station.name):
+                if output_path.exists():
+                    output_path.unlink(missing_ok=True)
+                logger.info(
+                    "chunk discarded for disabled station",
+                    extra={"station": self.station.name},
+                )
+                return False
             station_id = upsert_station(self.db_path, self.station)
             enqueue_chunk(
                 self.db_path,
@@ -153,7 +208,10 @@ class StationIngestor:
             set_station_last_chunk_timestamp(self.station.name, expected_end_ts)
             increment_chunks_processed("ingestor")
             increment_ingest_chunks(self.station.name)
-            self._sleep_until_next_stride(start_ts)
+            self._sleep_interruptible(self._stride_delay(start_ts), stop_event)
+            if self.restart_event.is_set():
+                self._apply_restart()
+                return True
             logger.info(
                 "chunk enqueued",
                 extra={
@@ -189,12 +247,17 @@ class StationIngestor:
                 "attempts": max_attempts,
             },
         )
-        self.clock.sleep(delay)
+        self._sleep_interruptible(delay, stop_event)
+        if self.restart_event.is_set():
+            self._apply_restart()
         return False
 
-    def _sleep_until_next_stride(self, start_ts: float) -> None:
+    def _stride_delay(self, start_ts: float) -> float:
         elapsed = max(self.clock.time() - start_ts, 0.0)
-        delay = max(self.stride_seconds - elapsed, 0.0)
+        return max(self.stride_seconds - elapsed, 0.0)
+
+    def _sleep_until_next_stride(self, start_ts: float) -> None:
+        delay = self._stride_delay(start_ts)
         if delay > 0:
             self.clock.sleep(delay)
 
@@ -242,8 +305,47 @@ def run_station_ingestor(
 ) -> None:
     """Thread target: optional stagger delay, then run until stopped."""
     wait_startup_stagger(stop_event, startup_delay_sec)
-    if not stop_event.is_set():
+    if not stop_event.is_set() and not ingestor.stop_event.is_set():
         ingestor.run(stop_event)
+
+
+def spawn_station_ingestor(
+    *,
+    db_path: str | Path,
+    station: StationConfig,
+    settings: PipelineSettings,
+    chunks_dir: str | Path,
+    ingestors: dict[str, StationIngestor],
+    threads: dict[str, threading.Thread],
+    stop_event: threading.Event,
+    startup_delay_sec: float = 0.0,
+) -> StationIngestor:
+    """Start a new ingestor thread for one station if not already running."""
+    existing = ingestors.get(station.name)
+    if existing is not None and not existing.stop_event.is_set():
+        return existing
+
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=chunks_dir,
+        backoff=BackoffPolicy(
+            initial_seconds=float(settings.ingest_backoff_initial_sec),
+            max_seconds=float(settings.ingest_backoff_max_sec),
+        ),
+    )
+    ingestors[station.name] = ingestor
+    thread = threading.Thread(
+        target=run_station_ingestor,
+        args=(ingestor, stop_event),
+        kwargs={"startup_delay_sec": startup_delay_sec},
+        name=f"ingestor-{station.name}",
+        daemon=True,
+    )
+    threads[station.name] = thread
+    thread.start()
+    return ingestor
 
 
 def create_station_ingestors(

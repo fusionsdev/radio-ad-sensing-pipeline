@@ -1,0 +1,180 @@
+---
+description: Agent runbook — รันคำสั่งเหล่านี้เอง ห้ามบอก user ให้พิมพ์ (ยกเว้น restart IDE / login)
+alwaysApply: true
+---
+
+# Agent Commands — รันเองทุกครั้ง
+
+**cwd ทุกคำสั่ง:** `h:\DEV\projects\radio-ad-sensing-pipeline`
+
+**หลักการ:** เมื่อ trigger ตรงด้านล่าง → **agent เรียก Shell เอง** — อย่าบอก user ว่า "รันคำสั่งนี้" ยกเว้น restart Cursor, OAuth/login, หรือ user ขอ explicit confirmation ก่อน destructive action
+
+---
+
+## 1. เริ่ม session (ทุกครั้ง)
+
+| ลำดับ | Agent ทำ | คำสั่ง / action |
+|---|---|---|
+| 1 | อ่าน session memory | Read `AGENTS.md` + `plan/handoff-*.md` ล่าสุดถ้ามีงานต่อ |
+| 2 | ถาม architecture / หาไฟล์ | ใช้ skill **`understand-chat`** กับ `.understand-anything/knowledge-graph.json` — **อย่า bulk-read ทั้ง repo** |
+| 3 | Graph stale? | ถ้ามี `.understand-anything/.graph-stale` หรือ hook บอก stale → ทำตาม `C:\Users\Barbara\.understand-anything\repo\understand-anything-plugin\hooks\auto-update-prompt.md` หรือรัน skill **`understand`** (incremental) |
+
+---
+
+## 2. ก่อนปิดงาน / ก่อนบอกว่า "เสร็จ"
+
+รันทั้งคู่ — ไม่ผ่าน = อย่าบอกเสร็จ:
+
+```powershell
+cd h:\DEV\projects\radio-ad-sensing-pipeline
+.venv\Scripts\pytest -q
+.venv\Scripts\python -c "from shared.db import migrate; migrate('data/test.db')"
+```
+
+| Trigger | Agent ทำ |
+|---|---|
+| แก้ schema / migrations | รัน migrate ด้านบน + อัปเดต tests |
+| แก้ worker/ingestor/DB logic | รัน pytest ชุดที่เกี่ยว (`tests/test_db.py`, `tests/test_ingestor.py`, …) อย่างน้อยครั้งหนึ่ง |
+| ปิด phase / WP | เขียน `plan/` report หรือ handoff |
+
+---
+
+## 3. หลัง commit โครงสร้างใหญ่
+
+| Trigger | Agent ทำ |
+|---|---|
+| ไฟล์ใหม่/ลบ module, เปลี่ยน import graph | skill **`understand`** (incremental) |
+| refactor ใหญ่ / >30 ไฟล์ structural | skill **`understand --full`** |
+| ก่อน PR | skill **`understand-diff`** |
+
+Graph status (ไม่ rebuild):
+
+```powershell
+.\scripts\understand-graph-status.ps1
+```
+
+Dashboard (ถ้า user ขอดู graph UI):
+
+```powershell
+.\scripts\understand-dashboard.ps1
+```
+
+---
+
+## 4. ถาม codebase (แทนการอ่านทั้ง repo)
+
+| เป้าหมาย | Agent ทำ |
+|---|---|
+| architecture / flow | skill **`understand-chat`** |
+| อธิบาย function/file | skill **`understand-explain`** + path |
+| onboarding | skill **`understand-onboard`** |
+| domain flows | skill **`understand-domain`** |
+
+**Library docs (ffmpeg, faster-whisper, Ollama, FastAPI):** Context7 MCP — **ไม่ใช้**แทน understand สำหรับ logic ใน repo
+
+---
+
+## 5. Pipeline ops — user ถามสถานะ / queue / stations / ads
+
+**อ่านก่อน:** `.agents/skills/pipeline-ops/SKILL.md`
+
+รันชุด diagnostic นี้เอง:
+
+```powershell
+cd h:\DEV\projects\radio-ad-sensing-pipeline
+.\scripts\pipeline-status.ps1
+docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.windows-dev.yml ps
+docker logs radio-worker --tail 15
+docker logs radio-ingestor --tail 15
+```
+
+**CRITICAL:** อย่าอ่าน `data/pipeline.db` จาก Windows host ตอน Docker ingest ทำงาน — ใช้:
+
+```powershell
+docker exec radio-worker python -c "import sqlite3; c=sqlite3.connect('/app/data/pipeline.db'); print(c.execute('SELECT status, COUNT(*) FROM chunks GROUP BY status').fetchall()); c.close()"
+```
+
+| Trigger | คำสั่งเพิ่ม |
+|---|---|
+| enabled stations | `docker exec radio-ingestor python -c "from shared.config import load_stations; print([s.name for s in load_stations() if s.enabled])"` |
+| keyword hits | `docker exec radio-worker python -c "import sqlite3; c=sqlite3.connect('/app/data/pipeline.db'); print(c.execute('SELECT keyword, COUNT(*) n FROM keyword_hits GROUP BY keyword ORDER BY n DESC LIMIT 15').fetchall()); c.close()"` |
+| schema probe | `docker exec radio-worker python -c "import sqlite3; c=sqlite3.connect('/app/data/pipeline.db'); [print(r) for r in c.execute('PRAGMA table_info(chunks)').fetchall()]; c.close()"` |
+| Ollama models | `docker exec radio-worker python -c "import urllib.request,json; d=json.loads(urllib.request.urlopen('http://radio-ollama:11434/api/tags',timeout=5).read()); [print(m.get('name')) for m in d.get('models',[])]"` |
+
+Dashboard URL (compose up): `http://127.0.0.1:8081`
+
+**Ask user ก่อนทำ:** แก้ `stations.yaml`, `docker compose down`, restart services, แก้ production DB, commit/push, อ่าน `.env`
+
+---
+
+## 6. Docker stack
+
+| Trigger | คำสั่ง |
+|---|---|
+| ดูสถานะ | `docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.windows-dev.yml ps` |
+| ขึ้น stack (Win GPU) | `docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.windows-dev.yml up -d` |
+| rebuild worker หลังแก้ consumer | `docker compose build worker` แล้ว `docker compose up -d --no-deps worker` |
+| logs | `docker logs radio-worker --tail 40` / `docker logs radio-ingestor --tail 40` |
+
+---
+
+## 7. DB migrate (production path — ระวัง)
+
+| ใช้เมื่อ | คำสั่ง |
+|---|---|
+| **Verify / CI / agent test** | `.venv\Scripts\python -c "from shared.db import migrate; migrate('data/test.db')"` |
+| **Operator ขอ migrate prod** | `.venv\Scripts\python -c "from shared.db import migrate; migrate('data/pipeline.db')"` — ยืนยันก่อนถ้า Docker กำลัง ingest |
+
+---
+
+## 8. Hermes review gate
+
+| Trigger | Agent ทำ |
+|---|---|
+| "hermes review", "ส่ง hermes", ก่อน merge WP | อ่าน `.agents/skills/hermes-dispatch/SKILL.md` → `.\scripts\hermes-review.ps1` หรือ skill workflow → parse VERDICT |
+
+---
+
+## 9. Token / tooling (optional — รันเองเมื่อ trigger ตรง)
+
+| Trigger | Agent ทำ |
+|---|---|
+| user: "caveman", "less tokens", `/caveman*` | อ่าน `C:\Users\Barbara\.agents\skills\caveman\SKILL.md` → terse mode |
+| session ยาว / context บวม | ถ้ามี Headroom MCP → ใช้ tools; ไม่มี → `headroom proxy --memory --code-graph` (background) |
+| commit message | `/caveman-commit` skill เมื่อ user ขอ commit |
+| code review output สั้น | `/caveman-review` skill |
+
+---
+
+## 10. Skill routing (อ่าน SKILL.md ก่อน act)
+
+| Trigger | Skill |
+|---|---|
+| bug / debug | `diagnose` |
+| feature / bugfix code | `tdd` |
+| review branch/PR | `review` |
+| end session | `handoff` |
+| stress-test plan | `grill-me` / `grill-with-docs` |
+| UI prototype | `prototype` |
+| lost in details | `zoom-out` |
+
+Path: `.agents/skills/<name>/SKILL.md` หรือ `C:\Users\Barbara\.agents\skills\<name>/SKILL.md`
+
+**อย่าใช้ (ถอดแล้ว):** `design-an-interface`, `qa`, `request-refactor-plan`, `writing-*`, `teach`, `scaffold-exercises`, `git-guardrails-claude-code`, `migrate-to-shoehorn`, `ubiquitous-language`, `edit-article`, `obsidian-vault`
+
+---
+
+## 11. สิ่งที่ user ต้องทำเอง (agent ห้ามแทน)
+
+- Restart Cursor (หลังเปลี่ยน hooks/plugins)
+- Login OAuth / API keys
+- `git push` / merge — ยกเว้น user ขอ explicit
+- ยืนยัน destructive ops (down stack, แก้ prod DB, disable stations)
+
+---
+
+## อ้างอิง
+
+- `docs/agent-tooling.md` — ค่าเฉพาะ repo
+- `final-install-list.md` — ติดตั้งเครื่อง
+- `AGENTS.md` — session memory

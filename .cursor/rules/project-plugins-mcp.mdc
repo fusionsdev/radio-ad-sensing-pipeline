@@ -12,7 +12,7 @@ alwaysApply: true
 | Tool | Type | Use when | How |
 |---|---|---|---|
 | **caveman** (JuliusBrussee) | Skill pack | User wants terse replies or `/caveman-commit`, `/caveman-review`, `/caveman-stats` | Read `.agents/skills/caveman/SKILL.md` |
-| **headroom** | MCP (input compressor) | Large codebase reads, long chat, many file/tool results before next step | `headroom` MCP tools if available; else note in summary |
+| **headroom** | MCP (input compressor) | Large codebase reads, long chat, many file/tool results | Agent runs `headroom proxy --memory --code-graph` in background when session is long — see `agent-commands.mdc` §9 |
 
 ## Cursor MCP plugins (enabled in workspace)
 

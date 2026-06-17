@@ -1,0 +1,18 @@
+{% if opportunity_id and opportunity_status in ['new', 'approved'] %}
+<div class="review-actions">
+  <form method="post" action="/opportunities/{{ opportunity_id }}/approve" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/opportunities') }}">
+    <button type="submit" class="btn-review">Approve</button>
+  </form>
+  <form method="post" action="/opportunities/{{ opportunity_id }}/reject" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/opportunities') }}">
+    <button type="submit" class="btn-review">Reject</button>
+  </form>
+  <form method="post" action="/opportunities/{{ opportunity_id }}/archive" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/opportunities') }}">
+    <button type="submit" class="btn-review">Archive</button>
+  </form>
+</div>
+{% elif opportunity_id %}
+<span class="badge muted">{{ opportunity_status }}</span>
+{% endif %}

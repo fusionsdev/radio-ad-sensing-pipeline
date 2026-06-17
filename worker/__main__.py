@@ -10,7 +10,7 @@ from pathlib import Path
 from shared.config import load_settings
 from shared.db import migrate
 from shared.logging import setup_logging
-from shared.metrics import start_metrics_server
+from shared.metrics import start_gpu_metrics_refresh, start_metrics_server
 from worker.consumer import create_consumer
 
 DEFAULT_DB_PATH = Path("data/pipeline.db")
@@ -19,6 +19,7 @@ DEFAULT_DB_PATH = Path("data/pipeline.db")
 def main() -> None:
     setup_logging("worker")
     start_metrics_server(9102)
+    start_gpu_metrics_refresh()
     db_path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_DB_PATH
     migrate(db_path)
 

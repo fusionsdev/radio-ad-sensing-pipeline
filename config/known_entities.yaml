@@ -1,0 +1,29 @@
+known_brands:
+  pet_financing:
+    - carecredit
+    - care credit
+    - scratchpay
+    - scratch pay
+  personal_loan:
+    - sofi
+    - lendingtree
+    - upstart
+    - upgrade
+    - rocket loans
+    - best egg
+    - avant
+    - lendingpoint
+    - onemain financial
+    - mariner finance
+  bnpl_financing:
+    - klarna
+    - afterpay
+    - affirm
+    - sezzle
+  service_financing:
+    - sunbit
+    - cherry financing
+    - wisetack
+    - snap finance
+    - progressive leasing
+    - katapult

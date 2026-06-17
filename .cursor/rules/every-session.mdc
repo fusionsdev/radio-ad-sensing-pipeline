@@ -1,0 +1,23 @@
+---
+description: Required agent checklist every session — graph first, tests before done
+globs:
+alwaysApply: true
+---
+
+# Every Session — Agent ทำเอง (ไม่ให้ user พิมพ์)
+
+**Runbook เต็ม:** `.cursor/rules/agent-commands.mdc` — มีคำสั่ง Shell ทุกตัวที่ agent ต้องรันเอง
+
+## บังคับ
+
+| เมื่อ | Agent ทำ (เอง) |
+|---|---|
+| เริ่ม session | อ่าน `AGENTS.md` · ถาม architecture ผ่าน **`understand-chat`** ไม่ bulk-read repo |
+| ก่อนบอก "เสร็จ" | `.venv\Scripts\pytest -q` + migrate `data/test.db` |
+| หลัง commit โครงสร้างใหญ่ | skill **`understand`** (graph rebuild) |
+| user ถาม pipeline/queue/stations | `.\scripts\pipeline-status.ps1` + docker diagnostics — ดู §5 ใน `agent-commands.mdc` |
+
+## Optional (trigger จาก user)
+
+- **`/caveman`** — output สั้น
+- **`headroom proxy`** — session ยาว

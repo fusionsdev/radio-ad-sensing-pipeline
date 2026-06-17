@@ -7,6 +7,8 @@ alwaysApply: true
 
 Read the matching `SKILL.md` under `.agents/skills/<name>/` **before** acting. Do not improvise when a skill applies.
 
+**Shell commands:** agent runs them per `.cursor/rules/agent-commands.mdc` — never ask user to type.
+
 **Source of truth:** `final-install-list.md` and `PLAN.md` § Dev Tooling Setup.
 
 ## Active skills (16 kept + caveman)

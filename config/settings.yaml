@@ -8,7 +8,7 @@ queue_max_hours: 2
 station_down_alert_minutes: 15
 same_station_airing_window_seconds: 180
 asr_model: medium.en
-asr_compute_type: int8_float16
+asr_compute_type: float16
 dashboard_host: 127.0.0.1
 dashboard_port: 8080
 db_path: data/pipeline.db
@@ -22,3 +22,20 @@ ingest_backoff_max_sec: 60
 ingest_startup_stagger_sec: 15
 # Minimum phrase confidence from loan_keywords.yaml to insert keyword_hits
 keyword_min_record_confidence: 0.6
+
+watchdog:
+  enabled: true
+  target_active_stations: 10
+  station_stale_after_minutes: 6
+  restart_attempts_before_disable: 3
+  restart_backoff_seconds: 30
+  health_check_interval_seconds: 60
+  promote_backup_when_active_below_target: true
+  backup_selection_strategy: priority_then_vertical_then_market
+  cool_down_minutes_after_failure: 60
+  max_station_failures_per_day: 5
+  queue_drop_ratio_warning: 2.0
+  queue_drop_ratio_critical: 5.0
+  auto_restart_on_stale: true
+  max_promotions_per_hour: 3
+  max_active_per_market: 2

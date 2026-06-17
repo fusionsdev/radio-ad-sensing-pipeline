@@ -1,86 +1,94 @@
-# Loan/funding keyword dictionary v2 — phrase + per-phrase confidence.
-# Calibrated against US news/talk radio corpus (WBAP, KLIF, WTAM, KTRH, WOAI, WSB, WIBC, WWTN, WHBO).
-# Worker records hits only when confidence >= keyword_min_record_confidence in settings.yaml.
+# Consumer Loan Keywords — Loans in USA campaign
+# Only consumer/personal loans; NO business funding, small business loans, merchant cash advance, etc.
+# Updated 2026-06-12 per operator request: consumer loans only
 
 keywords:
-  # Tier 1: high-precision tax/debt-relief phrases
-  - phrase: tax relief
+  # Personal Loans (Unsecured Consumer)
+  - phrase: "personal loan"
+    confidence: 0.90
+  - phrase: "personal loans"
+    confidence: 0.90
+  - phrase: "unsecured personal loan"
     confidence: 0.85
-  - phrase: tax debt
+  - phrase: "debt consolidation loan"
+    confidence: 0.90
+  - phrase: "debt consolidation"
     confidence: 0.85
-  - phrase: tax debt relief
-    confidence: 0.90
-  - phrase: irs tax debt
-    confidence: 0.95
-  - phrase: irs debt
-    confidence: 0.90
-  - phrase: back taxes
+  - phrase: "consolidate debt"
     confidence: 0.80
-  - phrase: unfiled tax returns
-    confidence: 0.95
-  - phrase: stop collections
-    confidence: 0.80
-  - phrase: stop wage garnishment
+
+  # Mortgage Refinance (Consumer)
+  - phrase: "refinance mortgage"
     confidence: 0.90
-  - phrase: wage garnishment
-    confidence: 0.80
-  - phrase: garnish paycheck
+  - phrase: "mortgage refinance"
     confidence: 0.90
-  - phrase: seize bank accounts
+  - phrase: "cash out refinance"
+    confidence: 0.85
+  - phrase: "cash-out refinance"
+    confidence: 0.85
+  - phrase: "refi mortgage"
+    confidence: 0.80
+  - phrase: "home loan refinance"
+    confidence: 0.80
+
+  # Home Equity (Consumer)
+  - phrase: "home equity loan"
+    confidence: 0.90
+  - phrase: "home equity line of credit"
+    confidence: 0.90
+  - phrase: "heloc"
+    confidence: 0.85
+  - phrase: "home equity line"
+    confidence: 0.80
+  - phrase: "second mortgage"
+    confidence: 0.75
+
+  # Reverse Mortgage (Senior Consumer)
+  - phrase: "reverse mortgage"
+    confidence: 0.90
+  - phrase: "hecm loan"
     confidence: 0.85
 
-  # Tier 2: lender-adjacent insurance
-  - phrase: term life insurance
+  # Auto Loans (Consumer)
+  - phrase: "auto loan"
+    confidence: 0.85
+  - phrase: "car loan"
+    confidence: 0.85
+  - phrase: "vehicle financing"
+    confidence: 0.80
+  - phrase: "auto refinance"
+    confidence: 0.80
+
+  # Other Consumer Loans
+  - phrase: "student loan refinance"
+    confidence: 0.85
+  - phrase: "medical loan"
+    confidence: 0.80
+  - phrase: "home improvement loan"
+    confidence: 0.80
+  - phrase: "wedding loan"
+    confidence: 0.75
+  - phrase: "vacation loan"
     confidence: 0.70
-  - phrase: final expense
-    confidence: 0.80
-  - phrase: burial insurance
-    confidence: 0.80
-  - phrase: life insurance
-    confidence: 0.55
-  - phrase: homeowners insurance
-    confidence: 0.55
+  - phrase: "major purchase loan"
+    confidence: 0.70
 
-  # Tier 3: timeshare cancellation
-  - phrase: cancel timeshare
-    confidence: 0.95
-  - phrase: timeshare exit
-    confidence: 0.90
-  - phrase: timeshare cancellation
-    confidence: 0.95
-  - phrase: exit your timeshare
-    confidence: 0.95
-  - phrase: maintenance fees
+  # High-risk Consumer (flag for review if needed)
+  - phrase: "payday loan"
     confidence: 0.60
-
-  # Tier 4: refi / equity — phrase form only
-  - phrase: refinance your mortgage
-    confidence: 0.80
-  - phrase: cash-out refinance
-    confidence: 0.85
-  - phrase: home equity loan
-    confidence: 0.75
-  - phrase: home equity line
-    confidence: 0.75
-  - phrase: second mortgage
-    confidence: 0.80
-
-  # Tier 5: business funding
-  - phrase: business funding
-    confidence: 0.85
-  - phrase: business loan
-    confidence: 0.70
-  - phrase: working capital
+  - phrase: "title loan"
+    confidence: 0.60
+  - phrase: "cash advance"
     confidence: 0.65
-  - phrase: merchant cash advance
+  - phrase: "installment loan"
+    confidence: 0.75
+  - phrase: "bad credit loan"
+    confidence: 0.70
+  - phrase: "no credit check loan"
+    confidence: 0.65
+  - phrase: "fast cash loan"
+    confidence: 0.70
+  - phrase: "same day loan"
+    confidence: 0.75
+  - phrase: "emergency loan"
     confidence: 0.80
-
-  # Tier 6: personal-loan / consolidation (broad — discovery)
-  - phrase: debt consolidation
-    confidence: 0.70
-  - phrase: debt relief
-    confidence: 0.70
-  - phrase: reverse mortgage
-    confidence: 0.85
-  - phrase: personal loan
-    confidence: 0.55

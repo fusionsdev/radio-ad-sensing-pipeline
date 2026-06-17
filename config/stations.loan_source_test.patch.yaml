@@ -1,0 +1,127 @@
+stations:
+  - id: wscr-670-the-score-chicago
+    name: "104.3 The Score"
+    call_sign: "WSCR"
+    market: "Chicago, IL"
+    format: "Sports"
+    url: "https://live.amperwave.net/manifest/audacy-wscramaac-hlsc.m3u8"
+    enabled: false
+    experiment_group: "loan_source_test"
+    expected_verticals:
+      - loan
+      - cash_advance
+      - credit_repair
+      - bad_credit_auto
+    ffmpeg_status: "REDIRECT"
+    stream_type: "m3u8"
+    source_platform: "Audacy / AmperWave"
+    stream_stability: "redirect"
+    browser_resolved: true
+    browser_candidate_count: 1
+    tested_with_headers: false
+    needs_stream_resolution: false
+    notes: "Validated with ffmpeg for 10s; stream follows an AmperWave redirect and is usable now."
+
+  - id: kmvk-la-grande-1075-dallas
+    name: "La Grande 107.5 FM"
+    call_sign: "KMVK"
+    market: "Dallas-Fort Worth, TX"
+    format: "Spanish Regional Mexican"
+    url: "https://live.amperwave.net/direct/audacy-kmvkfmaac-imc?source=tritonredirect"
+    enabled: false
+    experiment_group: "loan_source_test"
+    expected_verticals:
+      - loan
+      - cash_advance
+      - credit_repair
+      - bad_credit_auto
+    ffmpeg_status: "FAIL"
+    stream_type: "direct"
+    source_platform: "radio.net / Audacy / AmperWave"
+    stream_stability: "unknown"
+    browser_resolved: true
+    browser_candidate_count: 1
+    tested_with_headers: false
+    needs_stream_resolution: true
+    notes: "radio.net exposed this direct AmperWave URL, but ffmpeg still returned HTTP 503; the earlier manifest candidate also failed."
+
+  - id: kbxx-979-the-box-houston
+    name: "97.9 The Box"
+    call_sign: "KBXX-FM"
+    market: "Houston, TX"
+    format: "Urban / Hip-Hop"
+    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/KBXXFMAAC.aac"
+    enabled: false
+    experiment_group: "loan_source_test"
+    expected_verticals:
+      - loan
+      - cash_advance
+      - credit_repair
+      - bad_credit_auto
+    ffmpeg_status: "FAIL"
+    stream_type: "redirect"
+    source_platform: "radio.net / StreamTheWorld"
+    stream_stability: "unknown"
+    browser_resolved: true
+    browser_candidate_count: 1
+    tested_with_headers: true
+    header_profile:
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+      Referer: "https://www.radio.net/s/979thebox"
+      Origin: "https://www.radio.net"
+      Accept: "*/*"
+      Icy-MetaData: "1"
+    needs_stream_resolution: true
+    notes: "radio.net exposed this public StreamTheWorld redirect, but ffmpeg returned HTTP 403 even with radio.net referer headers."
+
+  - id: whta-hot-1079-atl
+    name: "Hot 107.9"
+    call_sign: "WHTA-FM"
+    market: "Atlanta, GA"
+    format: "Urban / Hip-Hop"
+    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/WHTAFM.mp3"
+    enabled: false
+    experiment_group: "loan_source_test"
+    expected_verticals:
+      - loan
+      - cash_advance
+      - credit_repair
+      - bad_credit_auto
+    ffmpeg_status: "FAIL"
+    stream_type: "redirect"
+    source_platform: "radio.net / StreamTheWorld"
+    stream_stability: "unknown"
+    browser_resolved: true
+    browser_candidate_count: 1
+    tested_with_headers: true
+    header_profile:
+      User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+      Referer: "https://hotspotatl.com/listen-live/"
+      Origin: "https://hotspotatl.com"
+      Accept: "*/*"
+      Icy-MetaData: "1"
+    needs_stream_resolution: true
+    notes: "radio.net exposed this public StreamTheWorld redirect, but ffmpeg returned HTTP 403 on the direct URL."
+
+  - id: wxyt-971-the-ticket-detroit
+    name: "97.1 The Ticket"
+    call_sign: "WXYT-FM"
+    market: "Detroit, MI"
+    format: "Sports"
+    url: "https://live.amperwave.net/manifest/audacy-wxytfmaac-hlsc.m3u8"
+    enabled: false
+    experiment_group: "loan_source_test"
+    expected_verticals:
+      - loan
+      - cash_advance
+      - credit_repair
+      - bad_credit_auto
+    ffmpeg_status: "FAIL"
+    stream_type: "m3u8"
+    source_platform: "radio.net / Audacy / AmperWave"
+    stream_stability: "unknown"
+    browser_resolved: true
+    browser_candidate_count: 1
+    tested_with_headers: false
+    needs_stream_resolution: true
+    notes: "radio.net exposed a public AmperWave manifest, but ffmpeg returned HTTP 503 on repeated attempts."

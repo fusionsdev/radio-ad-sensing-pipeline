@@ -29,8 +29,11 @@ alwaysApply: true
 
 ## Verification before "done"
 
-```bash
-.venv\Scripts\pytest
+Agent **runs these automatically** — see `.cursor/rules/agent-commands.mdc` §2 (never ask user to type):
+
+```powershell
+cd h:\DEV\projects\radio-ad-sensing-pipeline
+.venv\Scripts\pytest -q
 .venv\Scripts\python -c "from shared.db import migrate; migrate('data/test.db')"
 ```
 

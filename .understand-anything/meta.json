@@ -1,8 +1,8 @@
 {
-    "version":  "1.0.0",
-    "gitCommitHash":  "64c0c1a5a7c4bf70ef2c96838fcb909637634921",
-    "edgeCount":  677,
-    "nodeCount":  491,
-    "lastAnalyzedAt":  "2026-06-10T03:26:47.5581149Z",
-    "analyzedFiles":  209
+  "edgeCount": 677,
+  "nodeCount": 491,
+  "lastAnalyzedAt": "2026-06-16T16:12:18.8121806Z",
+  "version": "1.0.0",
+  "analyzedFiles": 209,
+  "gitCommitHash": "1985f6780c5f5c5c888641451a8a343805a5ea8e"
 }

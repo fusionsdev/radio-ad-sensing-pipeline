@@ -31,7 +31,7 @@ worker = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["shared", "ingestor", "worker", "alerter", "dashboard", "monitoring"]
+packages = ["shared", "ingestor", "worker", "alerter", "dashboard", "monitoring", "watchdog"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

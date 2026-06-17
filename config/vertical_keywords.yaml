@@ -1,0 +1,105 @@
+# Vertical intelligence — keyword phrases grouped by ad vertical.
+# Worker scans all phrases; reporting and Telegram digest group hits by vertical.
+
+settings:
+  queue_drop_ratio_warn_threshold: 5.0
+
+verticals:
+  tax_relief:
+    label: Tax Relief
+    tier: hot
+    extract_advertisers: true
+    keywords:
+      - phrase: tax relief
+        confidence: 0.85
+      - phrase: tax debt
+        confidence: 0.85
+      - phrase: tax debt relief
+        confidence: 0.90
+      - phrase: irs tax debt
+        confidence: 0.95
+      - phrase: irs debt
+        confidence: 0.90
+      - phrase: back taxes
+        confidence: 0.80
+      - phrase: unfiled tax returns
+        confidence: 0.95
+      - phrase: stop collections
+        confidence: 0.80
+      - phrase: stop wage garnishment
+        confidence: 0.90
+      - phrase: wage garnishment
+        confidence: 0.80
+      - phrase: garnish paycheck
+        confidence: 0.90
+      - phrase: seize bank accounts
+        confidence: 0.85
+
+  insurance:
+    label: Insurance
+    tier: watchlist
+    keywords:
+      - phrase: term life insurance
+        confidence: 0.70
+      - phrase: final expense
+        confidence: 0.80
+      - phrase: burial insurance
+        confidence: 0.80
+      - phrase: life insurance
+        confidence: 0.55
+      - phrase: homeowners insurance
+        confidence: 0.55
+
+  timeshare_exit:
+    label: Timeshare Exit
+    tier: watchlist
+    keywords:
+      - phrase: cancel timeshare
+        confidence: 0.95
+      - phrase: timeshare exit
+        confidence: 0.90
+      - phrase: timeshare cancellation
+        confidence: 0.95
+      - phrase: exit your timeshare
+        confidence: 0.95
+      - phrase: maintenance fees
+        confidence: 0.60
+
+  debt_relief:
+    label: Debt Relief
+    tier: active
+    report_eligible_min_hits: 3
+    confidence_cap_sparse: 0.50
+    keywords:
+      - phrase: debt consolidation
+        confidence: 0.70
+      - phrase: debt relief
+        confidence: 0.70
+
+  loan:
+    label: Loan & Funding
+    tier: active
+    no_hit_ok: true
+    keywords:
+      - phrase: refinance your mortgage
+        confidence: 0.80
+      - phrase: cash-out refinance
+        confidence: 0.85
+      - phrase: home equity loan
+        confidence: 0.75
+      - phrase: home equity line
+        confidence: 0.75
+      - phrase: second mortgage
+        confidence: 0.80
+      - phrase: business funding
+        confidence: 0.85
+      - phrase: business loan
+        confidence: 0.70
+      - phrase: working capital
+        confidence: 0.65
+      - phrase: merchant cash advance
+        confidence: 0.80
+      - phrase: reverse mortgage
+        confidence: 0.85
+      - phrase: personal loan
+        confidence: 0.55

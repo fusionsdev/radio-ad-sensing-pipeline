@@ -1,0 +1,2 @@
+domain,category,url,page_type,apr_found,apr_min,apr_max,apr_text,not_lender_found,no_guarantee_found,credit_check_found,state_restriction_found,advertiser_disclosure_found,risky_claims,evidence_excerpt,compliance_completeness_score,policy_risk_score,recommended_action,crawled_at
+example.com,direct_lender,https://example.com/terms,terms,1,5.99,35.99,5.99% to 35.99%,0,1,1,1,1,,The APR ranges from 5.99% to 35.99%. We check your credit and approval is not guaranteed.,85,20,REVIEW,1623456789

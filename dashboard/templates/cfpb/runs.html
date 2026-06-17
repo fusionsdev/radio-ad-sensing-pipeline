@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}CFPB Runs — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">CFPB collection runs</h2>
+{% if rows %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Status</th>
+      <th>Started</th>
+      <th>Finished</th>
+      <th>Seen</th>
+      <th>Inserted</th>
+      <th>Entities</th>
+      <th>Candidates</th>
+      <th>Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.id }}</td>
+      <td>{{ row.status }}</td>
+      <td>{{ row.started_at or "—" }}</td>
+      <td>{{ row.finished_at or "—" }}</td>
+      <td>{{ row.records_seen }}</td>
+      <td>{{ row.records_inserted }}</td>
+      <td>{{ row.entities_created }}</td>
+      <td>{{ row.candidates_created }}</td>
+      <td style="max-width: 240px; font-size: 0.8rem; color: var(--muted);">{{ row.error_message or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No collection runs recorded.</p>
+{% endif %}
+<p style="margin-top: 1rem; font-size: 0.85rem;"><a href="/cfpb">← CFPB overview</a></p>
+{% endblock %}

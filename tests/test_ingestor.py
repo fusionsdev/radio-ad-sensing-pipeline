@@ -191,7 +191,7 @@ def test_successful_station_ingest_enqueues_pending_chunk_and_upserts_station(tm
         conn.close()
 
     assert runner.calls[0][2] == 90
-    assert clock.sleeps == [83]
+    assert sum(clock.sleeps) == pytest.approx(83)
 
 
 def test_stride_accounts_for_recording_elapsed_with_valid_wav(tmp_path: Path) -> None:
@@ -222,7 +222,7 @@ def test_stride_accounts_for_recording_elapsed_with_valid_wav(tmp_path: Path) ->
     with wave.open(str(output_path), "rb") as handle:
         measured_duration = handle.getnframes() / handle.getframerate()
     assert abs(measured_duration - 90.0) <= 2.0
-    assert clock.sleeps == [76.0]
+    assert sum(clock.sleeps) == pytest.approx(76.0)
 
 
 def test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue(tmp_path: Path) -> None:
@@ -258,7 +258,7 @@ def test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue(tmp_path: Path) -
 
     output_path = Path(runner.calls[0][1])
     assert not output_path.exists()
-    assert clock.sleeps == [4]
+    assert sum(clock.sleeps) == pytest.approx(4)
 
 
 def test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff(tmp_path: Path) -> None:
@@ -295,7 +295,7 @@ def test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff(tmp_path: Pa
     finally:
         conn.close()
 
-    assert clock.sleeps == [5, 10]
+    assert sum(clock.sleeps) == pytest.approx(15)
 
 
 def test_ffmpeg_runner_terminate_active_stops_in_flight_process(
@@ -500,8 +500,8 @@ def test_backoff_uses_settings_defaults(tmp_path: Path) -> None:
     ingestor.run_once()  # fail → backoff sleep 2
 
     backoff_sleeps = clock.sleeps
-    assert backoff_sleeps == [1, 2], (
-        f"expected backoff sleeps [1, 2] from settings, got {backoff_sleeps}"
+    assert sum(backoff_sleeps) == pytest.approx(3), (
+        f"expected backoff sleep total 3 from settings, got {sum(backoff_sleeps)}"
     )
 
 
@@ -523,6 +523,34 @@ def test_create_station_ingestors_skips_disabled_stations(tmp_path: Path) -> Non
     )
 
     assert [ingestor.station.name for ingestor in ingestors] == ["enabled"]
+
+
+def test_request_stop_exits_run_loop(tmp_path: Path) -> None:
+    db_path = tmp_path / "pipeline.db"
+    migrate(db_path)
+    station = StationConfig(name="Stop FM", url="https://example.com/live", enabled=True)
+    settings = PipelineSettings(chunk_len=90, overlap=7)
+    clock = FakeClock(start=1_000.0)
+    runner = FakeRunner(returncode=0, write_file=True, wav_duration_sec=90.0, clock=clock)
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=tmp_path / "chunks",
+        runner=runner,
+        clock=clock,
+    )
+    global_stop = threading.Event()
+    thread = threading.Thread(
+        target=ingestor.run,
+        args=(global_stop,),
+        daemon=True,
+    )
+    thread.start()
+    time.sleep(0.05)
+    ingestor.request_stop()
+    thread.join(timeout=2.0)
+    assert thread.is_alive() is False
 
 
 def test_startup_stagger_delay_seconds() -> None:
@@ -549,6 +577,8 @@ def test_run_station_ingestor_runs_after_stagger(monkeypatch: pytest.MonkeyPatch
     calls: list[str] = []
 
     class FakeIngestor:
+        stop_event = threading.Event()
+
         def run(self, event: threading.Event) -> None:
             calls.append("run")
 

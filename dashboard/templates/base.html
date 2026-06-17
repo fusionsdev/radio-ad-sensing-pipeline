@@ -34,6 +34,17 @@
     .badge.err { background: #3d1a1a; color: #f08a8a; }
     .badge.muted { background: var(--border); color: var(--muted); }
     audio { width: 100%; margin: 1rem 0; }
+    .review-actions form { display: inline; margin-right: 0.25rem; }
+    .btn-review {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .btn-review:hover { border-color: var(--accent); color: var(--accent); }
   </style>
 </head>
 <body>
@@ -44,8 +55,18 @@
       <a href="/review">Review</a>
       <a href="/ads">Ads</a>
       <a href="/stations">Stations</a>
+      <a href="/ops/watchdog">Watchdog</a>
       <a href="/scorecard">Scorecard</a>
-      <a href="/keywords">Keywords</a>
+      <a href="/verticals">Verticals</a>
+      <a href="/novelty">Novelty</a>
+      <a href="/novelty/known-pending">Known pending</a>
+      <a href="/sources/landing-pages">Landing pages</a>
+      <a href="/opportunities">Opportunities</a>
+      <a href="/advertisers/opportunities">Hit advertisers</a>
+      <a href="/keywords/trademark">Trademark keywords</a>
+      <a href="/keywords/hits">Keyword hits</a>
+      <a href="/keywords">Keyword matrix</a>
+      <a href="/cfpb">CFPB</a>
       <a href="/gaps">Gaps</a>
       <a href="/health">Health (JSON)</a>
     </nav>

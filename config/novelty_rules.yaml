@@ -1,0 +1,14 @@
+thresholds:
+  report_novelty_score: 75
+  report_opportunity_score: 70
+  min_source_confidence: 0.70
+  dashboard_only_score: 40
+  noise_score: 20
+  near_duplicate_ratio: 85
+
+reporting:
+  report_known_brands: false
+  report_known_keywords: false
+  report_excluded_verticals: false
+  require_evidence_text: true
+  require_source_url: true

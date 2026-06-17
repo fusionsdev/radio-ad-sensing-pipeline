@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import subprocess
 import threading
 import time
 from pathlib import Path
@@ -133,6 +134,51 @@ SQLITE_WAL_BUSY = Gauge(
     "pipeline_sqlite_wal_busy",
     "1 when the last wal_checkpoint(PASSIVE) could not finish due to readers/writers.",
 )
+GPU_UTILIZATION_PERCENT = Gauge(
+    "pipeline_gpu_utilization_percent",
+    "GPU compute utilization percent from nvidia-smi (Windows Docker / no DCGM fallback).",
+    ["gpu"],
+)
+GPU_MEMORY_USED_BYTES = Gauge(
+    "pipeline_gpu_memory_used_bytes",
+    "GPU framebuffer memory used in bytes from nvidia-smi.",
+    ["gpu"],
+)
+GPU_MEMORY_TOTAL_BYTES = Gauge(
+    "pipeline_gpu_memory_total_bytes",
+    "GPU framebuffer memory total in bytes from nvidia-smi.",
+    ["gpu"],
+)
+STATION_ACTIVE_COUNT = Gauge("station_active_count", "Enabled stations under watchdog supervision.")
+STATION_HEALTHY_COUNT = Gauge("station_healthy_count", "Enabled stations with recent chunks.")
+STATION_STALE_COUNT = Gauge("station_stale_count", "Enabled stations with stale chunk production.")
+STATION_FAILED_COUNT = Gauge("station_failed_count", "Stations marked failed by watchdog.")
+QUEUE_DROPPED_DONE_RATIO = Gauge(
+    "queue_dropped_done_ratio",
+    "Ratio of dropped chunks to done chunks.",
+)
+STATION_LAST_CHUNK_AGE_SECONDS = Gauge(
+    "station_last_chunk_age_seconds",
+    "Seconds since the last chunk for each station.",
+    ["station"],
+)
+WATCHDOG_LOOP_DURATION_SECONDS = Histogram(
+    "watchdog_loop_duration_seconds",
+    "Wall time for one watchdog health-check loop.",
+    buckets=_STAGE_DURATION_BUCKETS,
+)
+STATION_RESTARTS_TOTAL = Counter(
+    "station_restarts_total",
+    "Station restart commands queued by the watchdog.",
+)
+STATION_POOL_AVAILABLE = Gauge(
+    "station_pool_available",
+    "Backup stations eligible for promotion.",
+)
+STATION_PROMOTIONS_TOTAL = Counter(
+    "station_promotions_total",
+    "Backup stations promoted by the watchdog.",
+)
 
 _STARTED_PORTS: set[int] = set()
 _STARTED_PORTS_LOCK = threading.Lock()
@@ -141,6 +187,10 @@ _DASHBOARD_REFRESH_LOCK = threading.Lock()
 _DASHBOARD_REFRESH_DB_PATH: Path | None = None
 _DASHBOARD_REFRESH_INTERVAL_SECONDS = 30.0
 _DASHBOARD_REFRESH_THREAD: threading.Thread | None = None
+
+_GPU_REFRESH_LOCK = threading.Lock()
+_GPU_REFRESH_INTERVAL_SECONDS = 15.0
+_GPU_REFRESH_THREAD: threading.Thread | None = None
 
 
 def start_metrics_server(port: int) -> None:
@@ -322,6 +372,62 @@ def refresh_dashboard_metrics(db_path: str | Path) -> None:
     refresh_chunks_by_status(db_path)
 
 
+def refresh_gpu_metrics() -> None:
+    """Poll nvidia-smi for GPU util/VRAM when DCGM exporter is unavailable."""
+    try:
+        result = subprocess.run(
+            [
+                "nvidia-smi",
+                "--query-gpu=index,utilization.gpu,memory.used,memory.total",
+                "--format=csv,noheader,nounits",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+    except (FileNotFoundError, OSError, subprocess.TimeoutExpired):
+        return
+    if result.returncode != 0 or not result.stdout.strip():
+        return
+
+    for line in result.stdout.strip().splitlines():
+        parts = [part.strip() for part in line.split(",")]
+        if len(parts) < 4:
+            continue
+        gpu_idx, util, mem_used_mib, mem_total_mib = parts[:4]
+        try:
+            GPU_UTILIZATION_PERCENT.labels(gpu=gpu_idx).set(float(util))
+            GPU_MEMORY_USED_BYTES.labels(gpu=gpu_idx).set(float(mem_used_mib) * 1024 * 1024)
+            GPU_MEMORY_TOTAL_BYTES.labels(gpu=gpu_idx).set(float(mem_total_mib) * 1024 * 1024)
+        except ValueError:
+            continue
+
+
+def start_gpu_metrics_refresh(
+    *,
+    refresh_interval_seconds: float = _GPU_REFRESH_INTERVAL_SECONDS,
+) -> None:
+    """Poll GPU gauges periodically in a background thread (worker only)."""
+    global _GPU_REFRESH_THREAD
+
+    with _GPU_REFRESH_LOCK:
+        if _GPU_REFRESH_THREAD is not None and _GPU_REFRESH_THREAD.is_alive():
+            return
+
+        def _run() -> None:
+            while True:
+                refresh_gpu_metrics()
+                time.sleep(refresh_interval_seconds)
+
+        _GPU_REFRESH_THREAD = threading.Thread(
+            target=_run,
+            name="gpu-metrics-refresh",
+            daemon=True,
+        )
+        _GPU_REFRESH_THREAD.start()
+
+
 def configure_dashboard_metrics(
     db_path: str | Path,
     *,
@@ -348,3 +454,43 @@ def configure_dashboard_metrics(
             daemon=True,
         )
         _DASHBOARD_REFRESH_THREAD.start()
+
+
+def set_station_health_counts(
+    *,
+    active: int,
+    healthy: int,
+    stale: int,
+    failed: int,
+) -> None:
+    STATION_ACTIVE_COUNT.set(active)
+    STATION_HEALTHY_COUNT.set(healthy)
+    STATION_STALE_COUNT.set(stale)
+    STATION_FAILED_COUNT.set(failed)
+
+
+def set_station_last_chunk_age(station: str, age_seconds: float | None) -> None:
+    if age_seconds is None:
+        STATION_LAST_CHUNK_AGE_SECONDS.labels(station=station).set(-1)
+        return
+    STATION_LAST_CHUNK_AGE_SECONDS.labels(station=station).set(age_seconds)
+
+
+def set_queue_dropped_done_ratio(ratio: float) -> None:
+    QUEUE_DROPPED_DONE_RATIO.set(ratio)
+
+
+def record_watchdog_loop(duration_seconds: float) -> None:
+    WATCHDOG_LOOP_DURATION_SECONDS.observe(duration_seconds)
+
+
+def increment_station_restarts(amount: float = 1.0) -> None:
+    STATION_RESTARTS_TOTAL.inc(amount)
+
+
+def set_station_pool_available(count: int) -> None:
+    STATION_POOL_AVAILABLE.set(count)
+
+
+def increment_station_promotions(amount: float = 1.0) -> None:
+    STATION_PROMOTIONS_TOTAL.inc(amount)

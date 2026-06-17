@@ -98,6 +98,48 @@ services:
       - pipeline-internal
 
   # ---------------------------------------------------------------------------
+  # Watchdog — station health loop, auto-restart, disable on repeated failure
+  # ---------------------------------------------------------------------------
+  watchdog:
+    build:
+      context: .
+      dockerfile: watchdog/Dockerfile
+    image: radio-ad-pipeline/watchdog:dev
+    container_name: radio-watchdog
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+      ingestor:
+        condition: service_started
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config:ro
+    expose:
+      - "9105"
+    environment:
+      - PYTHONPATH=/app
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import watchdog; from shared.config import load_settings; load_settings()"
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    networks:
+      - pipeline-internal
+
+  # ---------------------------------------------------------------------------
   # Alerter — Telegram outbound-only (sendMessage + sendAudio + ops + digest)
   # ---------------------------------------------------------------------------
   alerter:
@@ -291,6 +333,7 @@ services:
       - ingestor
       - worker
       - alerter
+      - watchdog
       - dashboard
       - dcgm-exporter
       - ollama

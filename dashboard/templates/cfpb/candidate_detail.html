@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ row.candidate_name }} — CFPB{% endblock %}
+{% block content %}
+<p style="font-size: 0.85rem;"><a href="/cfpb/candidates?min_score=70">← Candidates</a></p>
+<h2 style="margin-top: 0;">{{ row.candidate_name }}</h2>
+<p>{{ format_cfpb_status(row.verification_status)|safe }}
+  <span class="badge muted">{{ row.candidate_type }}</span>
+  <strong style="margin-left: 0.5rem;">Score {{ "%.0f"|format(row.score) }}</strong></p>
+<table>
+  <tbody>
+    <tr><th>Normalized</th><td>{{ row.normalized_candidate }}</td></tr>
+    <tr><th>Company (raw)</th><td>{{ row.company_raw or "—" }}</td></tr>
+    <tr><th>Company (normalized)</th><td>{{ row.company_normalized or "—" }}</td></tr>
+    <tr><th>Entity complaints</th><td>{{ row.complaint_count or "—" }}</td></tr>
+    <tr><th>Entity score</th><td>{{ row.trademark_candidate_score or "—" }}</td></tr>
+    <tr><th>Source product</th><td>{{ row.source_product or "—" }}</td></tr>
+    <tr><th>Source state</th><td>{{ row.source_state or "—" }}</td></tr>
+    <tr><th>Complaint ID</th><td>{{ row.source_complaint_id or "—" }}</td></tr>
+    <tr><th>Created</th><td>{{ row.created_at or "—" }}</td></tr>
+  </tbody>
+</table>
+{% if row.evidence_text %}
+<h3 style="font-size: 0.95rem; margin-top: 1.5rem;">Evidence</h3>
+<p style="white-space: pre-wrap; font-size: 0.9rem; color: var(--muted); max-width: 52rem;">{{ row.evidence_text }}</p>
+{% endif %}
+{% endblock %}

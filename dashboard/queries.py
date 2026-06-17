@@ -2,15 +2,27 @@
 
 from __future__ import annotations
 
+import json
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
-from dashboard.stats import compute_yield_pct, derive_review_tier, derive_slot_recommendation
-from shared.config import load_settings, load_stations
+from dashboard.stats import (
+    compute_queue_drop_ratio,
+    compute_yield_pct,
+    derive_review_tier,
+    derive_slot_recommendation,
+    queue_drop_warning,
+)
+from shared.config import load_settings, load_stations, load_vertical_keywords
 from shared.db import get_connection
+from shared.verticals import (
+    VerticalHitSummary,
+    fetch_vertical_summaries_from_db,
+    keyword_to_vertical_map,
+)
 
 STALE_CHUNK_AGE_SECONDS = 180.0
 
@@ -25,7 +37,13 @@ class OverviewStats:
     detections_today: int
     ads_total: int
     queue_depth: int
+    queue_done: int
+    queue_dropped: int
+    queue_drop_ratio: float
+    queue_drop_warning: bool
+    keyword_hits_total: int
     station_health: list[dict]
+    vertical_summaries: list[VerticalHitSummary]
 
 
 @dataclass(frozen=True)
@@ -50,6 +68,39 @@ class DetectionRow:
     transcript_excerpt: str | None
     station_name: str | None
     chunk_start_ts: float | None
+
+
+@dataclass(frozen=True)
+class KeywordHitRow:
+    id: int
+    keyword: str
+    vertical: str | None
+    vertical_label: str | None
+    station_label: str
+    hit_ts: float
+    chunk_id: int
+    context_excerpt: str | None
+    detection_id: int | None
+
+
+@dataclass(frozen=True)
+class AdvertiserOpportunityRow:
+    id: int
+    vertical: str
+    vertical_label: str
+    station_label: str
+    company_name: str | None
+    domain: str | None
+    phone_number: str | None
+    vanity_phone: str | None
+    offer_summary: str | None
+    cta: str | None
+    hit_ts: float
+    chunk_id: int
+    audio_clip_path: str | None
+    source_keywords: tuple[str, ...]
+    confidence: float | None
+    approved: bool
 
 
 @dataclass(frozen=True)
@@ -181,6 +232,22 @@ def fetch_overview(db_path: Path) -> OverviewStats:
         queue_depth = conn.execute(
             "SELECT COUNT(*) FROM chunks WHERE status = 'pending'"
         ).fetchone()[0]
+        queue_done = conn.execute(
+            "SELECT COUNT(*) FROM chunks WHERE status = 'done'"
+        ).fetchone()[0]
+        queue_dropped = conn.execute(
+            "SELECT COUNT(*) FROM chunks WHERE status = 'dropped'"
+        ).fetchone()[0]
+        keyword_hits_total = conn.execute("SELECT COUNT(*) FROM keyword_hits").fetchone()[0]
+        vertical_config = load_vertical_keywords()
+        drop_threshold = vertical_config.settings.queue_drop_ratio_warn_threshold
+        drop_ratio = compute_queue_drop_ratio(dropped=int(queue_dropped), done=int(queue_done))
+        drop_warn = queue_drop_warning(
+            dropped=int(queue_dropped),
+            done=int(queue_done),
+            threshold=drop_threshold,
+        )
+        vertical_summaries = fetch_vertical_summaries_from_db(conn, config=vertical_config)
         rows = conn.execute(
             """
             SELECT s.id, s.name, s.display_name, s.enabled,
@@ -210,7 +277,13 @@ def fetch_overview(db_path: Path) -> OverviewStats:
         detections_today=detections_today,
         ads_total=ads_total,
         queue_depth=queue_depth,
+        queue_done=int(queue_done),
+        queue_dropped=int(queue_dropped),
+        queue_drop_ratio=drop_ratio,
+        queue_drop_warning=drop_warn,
+        keyword_hits_total=int(keyword_hits_total),
         station_health=station_health,
+        vertical_summaries=vertical_summaries,
     )
 
 
@@ -582,6 +655,188 @@ def fetch_keyword_matrix(
     return sorted(stations), sorted(keywords), matrix
 
 
+def fetch_keyword_hits(
+    db_path: Path,
+    *,
+    window_days: int = 7,
+    vertical: str | None = None,
+    limit: int = 500,
+) -> list[KeywordHitRow]:
+    """All raw keyword hits with vertical mapping for dashboard."""
+    since = time.time() - window_days * 24 * 3600
+    vertical_config = load_vertical_keywords()
+    kw_map = keyword_to_vertical_map(vertical_config)
+    labels = {vid: v.label for vid, v in vertical_config.verticals.items()}
+
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT kh.id, kh.keyword, kh.hit_ts, kh.chunk_id,
+                   kh.context_excerpt, kh.detection_id,
+                   s.name AS station_name, s.display_name AS station_display_name
+            FROM keyword_hits kh
+            JOIN stations s ON s.id = kh.station_id
+            WHERE kh.hit_ts >= ?
+            ORDER BY kh.hit_ts DESC
+            LIMIT ?
+            """,
+            (since, limit),
+        ).fetchall()
+
+    hits: list[KeywordHitRow] = []
+    yaml_labels = _yaml_station_label_map()
+    for row in rows:
+        keyword = str(row["keyword"])
+        vertical_id = kw_map.get(keyword.lower())
+        if vertical is not None and vertical_id != vertical:
+            continue
+        station_name = str(row["station_name"])
+        display_name = row["station_display_name"]
+        station_label_text = (
+            str(display_name).strip()
+            if display_name and str(display_name).strip()
+            else yaml_labels.get(station_name, station_name)
+        )
+        hits.append(
+            KeywordHitRow(
+                id=int(row["id"]),
+                keyword=keyword,
+                vertical=vertical_id,
+                vertical_label=labels.get(vertical_id) if vertical_id else None,
+                station_label=station_label_text,
+                hit_ts=float(row["hit_ts"]),
+                chunk_id=int(row["chunk_id"]),
+                context_excerpt=row["context_excerpt"],
+                detection_id=int(row["detection_id"])
+                if row["detection_id"] is not None
+                else None,
+            )
+        )
+    return hits
+
+
+def fetch_vertical_summaries(
+    db_path: Path, *, window_days: int = 7
+) -> list[VerticalHitSummary]:
+    since = time.time() - window_days * 24 * 3600
+    with _readonly(db_path) as conn:
+        return fetch_vertical_summaries_from_db(conn, since=since)
+
+
+def fetch_vertical_detail(
+    db_path: Path,
+    vertical_id: str,
+    *,
+    window_days: int = 7,
+) -> tuple[VerticalHitSummary | None, list[KeywordHitRow], list[AdvertiserOpportunityRow]]:
+    summaries = fetch_vertical_summaries(db_path, window_days=window_days)
+    summary = next((s for s in summaries if s.vertical == vertical_id), None)
+    hits = fetch_keyword_hits(
+        db_path, window_days=window_days, vertical=vertical_id, limit=200
+    )
+    opportunities = fetch_advertiser_opportunities(
+        db_path, vertical=vertical_id, window_days=window_days
+    )
+    return summary, hits, opportunities
+
+
+def fetch_advertiser_opportunities(
+    db_path: Path,
+    *,
+    vertical: str | None = None,
+    window_days: int = 30,
+    limit: int = 200,
+) -> list[AdvertiserOpportunityRow]:
+    since = time.time() - window_days * 24 * 3600
+    vertical_config = load_vertical_keywords()
+    labels = {vid: v.label for vid, v in vertical_config.verticals.items()}
+    params: list = [since, limit]
+    vertical_clause = ""
+    if vertical is not None:
+        vertical_clause = "AND ao.vertical = ?"
+        params = [since, vertical, limit]
+
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            f"""
+            SELECT ao.id, ao.vertical, ao.company_name, ao.domain,
+                   ao.phone_number, ao.vanity_phone, ao.offer_summary, ao.cta,
+                   ao.hit_ts, ao.chunk_id, ao.audio_clip_path,
+                   ao.source_keywords, ao.confidence, ao.approved,
+                   s.name AS station_name, s.display_name AS station_display_name
+            FROM advertiser_opportunities ao
+            JOIN stations s ON s.id = ao.station_id
+            WHERE ao.hit_ts >= ? {vertical_clause}
+            ORDER BY ao.hit_ts DESC
+            LIMIT ?
+            """,
+            tuple(params),
+        ).fetchall()
+
+    yaml_labels = _yaml_station_label_map()
+    results: list[AdvertiserOpportunityRow] = []
+    for row in rows:
+        station_name = str(row["station_name"])
+        display_name = row["station_display_name"]
+        station_label_text = (
+            str(display_name).strip()
+            if display_name and str(display_name).strip()
+            else yaml_labels.get(station_name, station_name)
+        )
+        raw_kw = row["source_keywords"] or "[]"
+        try:
+            keywords = tuple(json.loads(raw_kw))
+        except json.JSONDecodeError:
+            keywords = ()
+        results.append(
+            AdvertiserOpportunityRow(
+                id=int(row["id"]),
+                vertical=str(row["vertical"]),
+                vertical_label=labels.get(str(row["vertical"]), str(row["vertical"])),
+                station_label=station_label_text,
+                company_name=row["company_name"],
+                domain=row["domain"],
+                phone_number=row["phone_number"],
+                vanity_phone=row["vanity_phone"],
+                offer_summary=row["offer_summary"],
+                cta=row["cta"],
+                hit_ts=float(row["hit_ts"]),
+                chunk_id=int(row["chunk_id"]),
+                audio_clip_path=row["audio_clip_path"],
+                source_keywords=keywords,
+                confidence=float(row["confidence"]) if row["confidence"] is not None else None,
+                approved=bool(row["approved"]),
+            )
+        )
+    return results
+
+
+def fetch_queue_health(db_path: Path) -> dict:
+    """Queue done/dropped counts and drop ratio for dashboard warnings."""
+    settings = load_settings()
+    vertical_config = load_vertical_keywords()
+    threshold = vertical_config.settings.queue_drop_ratio_warn_threshold
+    with _readonly(db_path) as conn:
+        done = int(
+            conn.execute("SELECT COUNT(*) FROM chunks WHERE status = 'done'").fetchone()[0]
+        )
+        dropped = int(
+            conn.execute("SELECT COUNT(*) FROM chunks WHERE status = 'dropped'").fetchone()[0]
+        )
+        pending = int(
+            conn.execute("SELECT COUNT(*) FROM chunks WHERE status = 'pending'").fetchone()[0]
+        )
+    ratio = compute_queue_drop_ratio(dropped=dropped, done=done)
+    return {
+        "done": done,
+        "dropped": dropped,
+        "pending": pending,
+        "drop_ratio": ratio,
+        "drop_warning": queue_drop_warning(dropped=dropped, done=done, threshold=threshold),
+        "threshold": threshold,
+    }
+
+
 def fetch_health(db_path: Path) -> dict:
     if not db_exists(db_path):
         return {"db_reachable": False, "pending_count": 0}
@@ -628,6 +883,464 @@ def resolve_audio_path(db_path: Path, resource_id: int) -> Path | None:
         if not candidate.is_file():
             return None
         return candidate
+
+
+def cfpb_tables_available(db_path: Path) -> bool:
+    if not db_exists(db_path):
+        return False
+    with _readonly(db_path) as conn:
+        row = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='cfpb_brand_candidates'"
+        ).fetchone()
+        return row is not None
+
+
+def fetch_cfpb_overview(db_path: Path) -> dict[str, int]:
+    with _readonly(db_path) as conn:
+        return {
+            "raw": int(conn.execute("SELECT COUNT(*) FROM cfpb_complaints_raw").fetchone()[0]),
+            "entities": int(conn.execute("SELECT COUNT(*) FROM cfpb_company_entities").fetchone()[0]),
+            "candidates": int(conn.execute("SELECT COUNT(*) FROM cfpb_brand_candidates").fetchone()[0]),
+            "candidates_70": int(
+                conn.execute("SELECT COUNT(*) FROM cfpb_brand_candidates WHERE score >= 70").fetchone()[0]
+            ),
+            "candidates_85": int(
+                conn.execute("SELECT COUNT(*) FROM cfpb_brand_candidates WHERE score >= 85").fetchone()[0]
+            ),
+            "runs": int(conn.execute("SELECT COUNT(*) FROM cfpb_collection_runs").fetchone()[0]),
+        }
+
+
+def fetch_cfpb_candidates(
+    db_path: Path, *, min_score: float = 0.0, limit: int = 200
+) -> list[dict[str, object]]:
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT c.id, c.candidate_name, c.normalized_candidate, c.candidate_type,
+                   c.score, c.verification_status, c.source_product, c.source_state,
+                   e.company_raw, e.complaint_count, e.trademark_candidate_score
+            FROM cfpb_brand_candidates c
+            LEFT JOIN cfpb_company_entities e ON e.id = c.cfpb_company_entity_id
+            WHERE c.score >= ?
+            ORDER BY c.score DESC, c.id DESC
+            LIMIT ?
+            """,
+            (min_score, limit),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def fetch_cfpb_candidate_detail(db_path: Path, candidate_id: int) -> dict[str, object] | None:
+    with _readonly(db_path) as conn:
+        row = conn.execute(
+            """
+            SELECT c.*, e.company_raw, e.company_normalized, e.complaint_count,
+                   e.narrative_count, e.trademark_candidate_score, e.review_status AS entity_review_status
+            FROM cfpb_brand_candidates c
+            LEFT JOIN cfpb_company_entities e ON e.id = c.cfpb_company_entity_id
+            WHERE c.id = ?
+            """,
+            (candidate_id,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def fetch_cfpb_runs(db_path: Path, *, limit: int = 20) -> list[dict[str, object]]:
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT id, started_at, finished_at, source_mode, records_seen, records_inserted,
+                   entities_created, candidates_created, status, error_message
+            FROM cfpb_collection_runs
+            ORDER BY id DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def fetch_cfpb_entities(db_path: Path, *, limit: int = 200) -> list[dict[str, object]]:
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT id, company_raw, company_normalized, complaint_count, narrative_count,
+                   trademark_candidate_score, review_status, first_seen_at, last_seen_at
+            FROM cfpb_company_entities
+            ORDER BY trademark_candidate_score DESC, complaint_count DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def watchdog_tables_available(db_path: Path) -> bool:
+    if not db_path.is_file():
+        return False
+    conn = get_connection(db_path, read_only=True)
+    try:
+        tables = {
+            row[0]
+            for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+        }
+    finally:
+        conn.close()
+    return "station_health" in tables and "station_recovery_events" in tables
+
+
+def control_commands_available(db_path: Path) -> bool:
+    if not db_path.is_file():
+        return False
+    conn = get_connection(db_path, read_only=True)
+    try:
+        row = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='station_control_commands'"
+        ).fetchone()
+    finally:
+        conn.close()
+    return row is not None
+
+
+def fetch_watchdog_overview(db_path: Path) -> dict:
+    """Watchdog ops summary for /ops/watchdog."""
+    settings = load_settings()
+    watchdog = settings.watchdog
+    now = time.time()
+    queue = fetch_queue_health(db_path)
+    critical = queue["drop_ratio"] >= watchdog.queue_drop_ratio_critical
+    warning = queue["drop_ratio"] >= watchdog.queue_drop_ratio_warning
+
+    with _readonly(db_path) as conn:
+        health_rows = conn.execute(
+            """
+            SELECT sh.station_id, sh.health_state, sh.enabled, sh.last_chunk_at,
+                   sh.restart_count_today, sh.cool_down_until, sh.last_error,
+                   s.display_name
+            FROM station_health sh
+            LEFT JOIN stations s ON s.name = sh.station_id
+            ORDER BY sh.station_id
+            """
+        ).fetchall()
+        events = conn.execute(
+            """
+            SELECT station_id, event_type, old_state, new_state, reason,
+                   action_taken, created_at
+            FROM station_recovery_events
+            ORDER BY id DESC
+            LIMIT 20
+            """
+        ).fetchall()
+
+    stations: list[dict] = []
+    counts = {"active": 0, "healthy": 0, "stale": 0, "disabled": 0}
+    for row in health_rows:
+        item = dict(row)
+        last_chunk_at = item.get("last_chunk_at")
+        age_seconds = None
+        if last_chunk_at:
+            try:
+                parsed = datetime.fromisoformat(str(last_chunk_at))
+                if parsed.tzinfo is None:
+                    parsed = parsed.replace(tzinfo=UTC)
+                age_seconds = max(now - parsed.timestamp(), 0.0)
+            except ValueError:
+                age_seconds = None
+        item["age_seconds"] = age_seconds
+        enabled = bool(item.get("enabled"))
+        state = item.get("health_state") or "unknown"
+        if enabled:
+            counts["active"] += 1
+            if state == "healthy":
+                counts["healthy"] += 1
+            elif state == "stale":
+                counts["stale"] += 1
+        else:
+            counts["disabled"] += 1
+        stations.append(item)
+
+    return {
+        "target_active_stations": watchdog.target_active_stations,
+        "counts": counts,
+        "stations": stations,
+        "events": [dict(row) for row in events],
+        "queue": queue,
+        "queue_critical": critical,
+        "queue_warning": warning,
+        "watchdog_enabled": watchdog.enabled,
+        "stale_after_minutes": watchdog.station_stale_after_minutes,
+    }
+
+
+@dataclass(frozen=True)
+class HitAdvertiserRow:
+    id: int
+    canonical_name: str
+    normalized_name: str
+    vertical: str
+    domain: str | None
+    source_type: str
+    confidence: str
+    status: str
+    trademark_entity_id: int | None
+    evidence_path: str | None
+    detection_count: int
+    station_count: int
+    updated_at: float
+
+
+@dataclass(frozen=True)
+class HitAdvertiserDetectionRow:
+    id: int
+    detection_id: int
+    station_display_name: str
+    market: str | None
+    hit_ts: float
+    website: str | None
+    phone_number: str | None
+    cta: str | None
+    offer_summary: str | None
+    key_claims: tuple[str, ...]
+    confidence: float | None
+    audio_clip_path: str | None
+    audio_clip_start_sec: float | None
+    audio_clip_end_sec: float | None
+    transcript: str | None
+
+
+@dataclass(frozen=True)
+class TrademarkKeywordRow:
+    id: int
+    trademark_entity_id: int
+    entity_name: str
+    keyword: str
+    variant_type: str
+    source_type: str
+    status: str
+    verification_status: str | None
+    trademark_risk: str | None
+    ad_copy_allowed: bool
+    landing_page_allowed: bool
+    confidence: float | None
+
+
+def advertiser_entities_available(db_path: Path) -> bool:
+    if not db_exists(db_path):
+        return False
+    with _readonly(db_path) as conn:
+        row = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='advertiser_entities'"
+        ).fetchone()
+        return row is not None
+
+
+def trademark_tables_available(db_path: Path) -> bool:
+    if not db_exists(db_path):
+        return False
+    with _readonly(db_path) as conn:
+        row = conn.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='trademark_keyword_candidates'"
+        ).fetchone()
+        return row is not None
+
+
+def fetch_hit_advertisers(db_path: Path, *, limit: int = 100) -> list[HitAdvertiserRow]:
+    if not advertiser_entities_available(db_path):
+        return []
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT ae.id, ae.canonical_name, ae.normalized_name, ae.vertical, ae.domain,
+                   ae.source_type, ae.confidence, ae.status, ae.trademark_entity_id,
+                   ae.evidence_path, ae.updated_at,
+                   COUNT(DISTINCT aed.id) AS detection_count,
+                   COUNT(DISTINCT aed.station_id) AS station_count
+            FROM advertiser_entities ae
+            LEFT JOIN advertiser_entity_detections aed ON aed.advertiser_entity_id = ae.id
+            GROUP BY ae.id
+            ORDER BY ae.updated_at DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [
+        HitAdvertiserRow(
+            id=int(row["id"]),
+            canonical_name=str(row["canonical_name"]),
+            normalized_name=str(row["normalized_name"]),
+            vertical=str(row["vertical"]),
+            domain=row["domain"],
+            source_type=str(row["source_type"]),
+            confidence=str(row["confidence"]),
+            status=str(row["status"]),
+            trademark_entity_id=int(row["trademark_entity_id"])
+            if row["trademark_entity_id"] is not None
+            else None,
+            evidence_path=row["evidence_path"],
+            detection_count=int(row["detection_count"]),
+            station_count=int(row["station_count"]),
+            updated_at=float(row["updated_at"]),
+        )
+        for row in rows
+    ]
+
+
+def fetch_hit_advertiser_detail(
+    db_path: Path, advertiser_id: int
+) -> tuple[HitAdvertiserRow | None, list[HitAdvertiserDetectionRow]]:
+    if not advertiser_entities_available(db_path):
+        return None, []
+    with _readonly(db_path) as conn:
+        header = conn.execute(
+            """
+            SELECT ae.id, ae.canonical_name, ae.normalized_name, ae.vertical, ae.domain,
+                   ae.source_type, ae.confidence, ae.status, ae.trademark_entity_id,
+                   ae.evidence_path, ae.updated_at,
+                   COUNT(DISTINCT aed.id) AS detection_count,
+                   COUNT(DISTINCT aed.station_id) AS station_count
+            FROM advertiser_entities ae
+            LEFT JOIN advertiser_entity_detections aed ON aed.advertiser_entity_id = ae.id
+            WHERE ae.id = ?
+            GROUP BY ae.id
+            """,
+            (advertiser_id,),
+        ).fetchone()
+        if header is None:
+            return None, []
+        detections = conn.execute(
+            """
+            SELECT id, detection_id, station_display_name, market, hit_ts, website,
+                   phone_number, cta, offer_summary, key_claims, detection_confidence,
+                   audio_clip_path, audio_clip_start_sec, audio_clip_end_sec, transcript
+            FROM advertiser_entity_detections
+            WHERE advertiser_entity_id = ?
+            ORDER BY hit_ts
+            """,
+            (advertiser_id,),
+        ).fetchall()
+
+    summary = HitAdvertiserRow(
+        id=int(header["id"]),
+        canonical_name=str(header["canonical_name"]),
+        normalized_name=str(header["normalized_name"]),
+        vertical=str(header["vertical"]),
+        domain=header["domain"],
+        source_type=str(header["source_type"]),
+        confidence=str(header["confidence"]),
+        status=str(header["status"]),
+        trademark_entity_id=int(header["trademark_entity_id"])
+        if header["trademark_entity_id"] is not None
+        else None,
+        evidence_path=header["evidence_path"],
+        detection_count=int(header["detection_count"]),
+        station_count=int(header["station_count"]),
+        updated_at=float(header["updated_at"]),
+    )
+    detail_rows: list[HitAdvertiserDetectionRow] = []
+    for row in detections:
+        raw_claims = row["key_claims"] or "[]"
+        try:
+            claims = tuple(json.loads(raw_claims))
+        except json.JSONDecodeError:
+            claims = (str(raw_claims),)
+        detail_rows.append(
+            HitAdvertiserDetectionRow(
+                id=int(row["id"]),
+                detection_id=int(row["detection_id"]),
+                station_display_name=str(row["station_display_name"] or "—"),
+                market=row["market"],
+                hit_ts=float(row["hit_ts"]),
+                website=row["website"],
+                phone_number=row["phone_number"],
+                cta=row["cta"],
+                offer_summary=row["offer_summary"],
+                key_claims=claims,
+                confidence=float(row["detection_confidence"])
+                if row["detection_confidence"] is not None
+                else None,
+                audio_clip_path=row["audio_clip_path"],
+                audio_clip_start_sec=float(row["audio_clip_start_sec"])
+                if row["audio_clip_start_sec"] is not None
+                else None,
+                audio_clip_end_sec=float(row["audio_clip_end_sec"])
+                if row["audio_clip_end_sec"] is not None
+                else None,
+                transcript=row["transcript"],
+            )
+        )
+    return summary, detail_rows
+
+
+def fetch_trademark_keywords(
+    db_path: Path,
+    *,
+    source_type: str | None = None,
+    status: str | None = None,
+    limit: int = 300,
+) -> list[TrademarkKeywordRow]:
+    if not trademark_tables_available(db_path):
+        return []
+    params: list[object] = []
+    clauses = ["1=1"]
+    if source_type:
+        clauses.append("tk.source_type = ?")
+        params.append(source_type)
+    if status:
+        clauses.append("tk.status = ?")
+        params.append(status)
+    params.append(limit)
+    with _readonly(db_path) as conn:
+        columns = {
+            row[1]
+            for row in conn.execute("PRAGMA table_info(trademark_keyword_candidates)").fetchall()
+        }
+        verification_select = (
+            "tk.verification_status"
+            if "verification_status" in columns
+            else "'needs_review'"
+        )
+        risk_select = (
+            "tk.trademark_risk" if "trademark_risk" in columns else "'unknown'"
+        )
+        landing_select = (
+            "tk.landing_page_allowed"
+            if "landing_page_allowed" in columns
+            else "1"
+        )
+        rows = conn.execute(
+            f"""
+            SELECT tk.id, tk.trademark_entity_id, te.canonical_name AS entity_name,
+                   tk.keyword, tk.variant_type, tk.source_type, tk.status,
+                   {verification_select} AS verification_status,
+                   {risk_select} AS trademark_risk,
+                   tk.ad_copy_allowed, {landing_select} AS landing_page_allowed,
+                   tk.confidence
+            FROM trademark_keyword_candidates tk
+            JOIN trademark_entities te ON te.id = tk.trademark_entity_id
+            WHERE {' AND '.join(clauses)}
+            ORDER BY te.canonical_name, tk.keyword
+            LIMIT ?
+            """,
+            tuple(params),
+        ).fetchall()
+    return [
+        TrademarkKeywordRow(
+            id=int(row["id"]),
+            trademark_entity_id=int(row["trademark_entity_id"]),
+            entity_name=str(row["entity_name"]),
+            keyword=str(row["keyword"]),
+            variant_type=str(row["variant_type"]),
+            source_type=str(row["source_type"]),
+            status=str(row["status"]),
+            verification_status=row["verification_status"],
+            trademark_risk=row["trademark_risk"],
+            ad_copy_allowed=bool(row["ad_copy_allowed"]),
+            landing_page_allowed=bool(row["landing_page_allowed"]),
+            confidence=float(row["confidence"]) if row["confidence"] is not None else None,
+        )
+        for row in rows
+    ]
 
 
 @contextmanager

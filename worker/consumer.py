@@ -29,7 +29,9 @@ from worker.dedup import DetectionPersister
 from worker.extract import OllamaExtractor
 from worker.fingerprint import FingerprintAnnotator, FingerprintMatch
 from worker.janitor import ChunkJanitor
-from worker.keywords import find_keyword_matches, record_keyword_hits
+from shared.verticals import keyword_to_vertical_map, load_vertical_keywords
+from worker.advertiser_intel import extract_advertiser_intel, record_advertiser_opportunity
+from worker.keywords import KeywordMatch, find_keyword_matches, record_keyword_hits
 from worker.transcribe import Transcriber, TranscriptionResult, WhisperBackend
 
 logger = logging.getLogger("worker")
@@ -229,9 +231,30 @@ class ChunkConsumer:
             end_ts=row["end_ts"],
         )
 
+    def _resolve_audio_path(self, raw_path: str) -> Path:
+        """Resolve chunk paths written by Windows/MSYS or Linux containers.
+
+        Older ingestor builds wrote paths like ``data\\chunks\\station\\file.wav``.
+        Inside the Linux worker container, backslashes are literal characters, not
+        path separators, so ``Path(raw_path).is_file()`` falsely reports missing
+        audio. Prefer the current Linux path and fall back to legacy-normalized
+        forms so queued chunks survive image/config upgrades.
+        """
+        normalized = raw_path.replace("\\", "/")
+        candidates = [Path(normalized)]
+        if normalized.startswith("data/chunks/"):
+            candidates.append(Path("/app/chunks") / normalized.removeprefix("data/chunks/"))
+        elif not normalized.startswith("/"):
+            candidates.append(Path("/app") / normalized)
+
+        for candidate in candidates:
+            if candidate.is_file():
+                return candidate
+        return candidates[0]
+
     def _process_claimed(self, chunk: ClaimedChunk) -> bool:
         try:
-            audio_path = Path(chunk.path)
+            audio_path = self._resolve_audio_path(chunk.path)
             if not audio_path.is_file():
                 self._mark_dropped(chunk.id, f"missing audio file: {chunk.path}")
                 return True
@@ -348,6 +371,12 @@ class ChunkConsumer:
                             hit_ts=chunk.start_ts,
                             matches=matches,
                         )
+                        self._extract_advertiser_opportunities(
+                            conn,
+                            chunk=chunk,
+                            transcript=result.text,
+                            matches=matches,
+                        )
                 self._update_rtf_avg(conn, result.rtf)
                 set_asr_rtf_avg(result.rtf)
         finally:
@@ -383,6 +412,62 @@ class ChunkConsumer:
             "chunk dropped",
             extra={"chunk_id": chunk_id, "error": error},
         )
+
+    def _extract_advertiser_opportunities(
+        self,
+        conn: sqlite3.Connection,
+        *,
+        chunk: ClaimedChunk,
+        transcript: str,
+        matches: list[KeywordMatch],
+    ) -> None:
+        vertical_config = load_vertical_keywords()
+        kw_vertical = keyword_to_vertical_map(vertical_config)
+        extract_verticals = {
+            vid
+            for vid, vertical in vertical_config.verticals.items()
+            if vertical.extract_advertisers
+        }
+        if not extract_verticals:
+            return
+
+        by_vertical: dict[str, list[str]] = {}
+        for match in matches:
+            vertical_id = kw_vertical.get(match.keyword.lower())
+            if vertical_id in extract_verticals:
+                by_vertical.setdefault(vertical_id, []).append(match.keyword)
+
+        if not by_vertical:
+            return
+
+        detection = conn.execute(
+            """
+            SELECT company_name, phone_number, website, offer_summary, confidence
+            FROM detections
+            WHERE chunk_id = ? AND is_ad = 1
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (chunk.id,),
+        ).fetchone()
+
+        for vertical_id, keywords in by_vertical.items():
+            intel = extract_advertiser_intel(
+                transcript=transcript,
+                source_keywords=keywords,
+                detection_row=detection,
+            )
+            record_advertiser_opportunity(
+                conn,
+                vertical=vertical_id,
+                station_id=chunk.station_id,
+                chunk_id=chunk.id,
+                keyword_hit_id=None,
+                hit_ts=chunk.start_ts,
+                source_keywords=keywords,
+                audio_clip_path=chunk.path,
+                intel=intel,
+            )
 
     def _update_rtf_avg(self, conn: sqlite3.Connection, rtf: float) -> None:
         now = time.time()

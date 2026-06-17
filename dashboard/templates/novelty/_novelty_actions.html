@@ -1,0 +1,21 @@
+{% if reviewed_status not in ['noise', 'archived', 'known_pending'] %}
+<div class="review-actions">
+  <form method="post" action="/novelty/{{ novelty_result_id }}/mark-noise" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/novelty') }}">
+    <button type="submit" class="btn-review">Noise</button>
+  </form>
+  <form method="post" action="/novelty/{{ novelty_result_id }}/add-to-known" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/novelty/known-pending') }}">
+    <input type="hidden" name="term_type" value="{% if candidate_type == 'brand' %}brand{% else %}generic_keyword{% endif %}">
+    <button type="submit" class="btn-review">Known</button>
+  </form>
+  {% if opportunity_id %}
+  <form method="post" action="/opportunities/{{ opportunity_id }}/archive" style="display:inline;">
+    <input type="hidden" name="redirect" value="{{ redirect|default('/novelty') }}">
+    <button type="submit" class="btn-review">Archive</button>
+  </form>
+  {% endif %}
+</div>
+{% else %}
+<span class="badge muted">{{ reviewed_status }}</span>
+{% endif %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Verticals — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Vertical intelligence ({{ window_days }}d)</h2>
+
+{% if queue.drop_warning %}
+<div class="card" style="border-color: #f0c674; margin-bottom: 1rem;">
+  <strong>Queue drop warning</strong> — ratio {{ queue.drop_ratio }}× exceeds threshold {{ queue.threshold }}×
+  ({{ queue.dropped }} dropped / {{ queue.done }} done, {{ queue.pending }} pending).
+</div>
+{% endif %}
+
+<p style="color: var(--muted); font-size: 0.9rem;">
+  Tax relief is a first-class hot vertical. Insurance and timeshare exit are watchlist verticals.
+  Loan remains active with no-hit OK when other verticals produce signal.
+</p>
+
+{% if summaries %}
+<table>
+  <thead>
+    <tr>
+      <th>Vertical</th>
+      <th>Tier</th>
+      <th>Hits</th>
+      <th>Stations</th>
+      <th>Top keywords</th>
+      <th>Confidence</th>
+      <th>Report eligible</th>
+      <th>Latest</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for v in summaries %}
+    <tr>
+      <td><a class="row-link" href="/verticals/{{ v.vertical.replace('_', '-') }}">{{ v.label }}</a></td>
+      <td>{{ format_tier(v.tier, hit_count=v.vertical_hit_count, no_hit_ok=v.no_hit_ok)|safe }}</td>
+      <td>{{ v.vertical_hit_count }}</td>
+      <td>{{ v.station_count }}</td>
+      <td style="font-size: 0.85rem;">{{ v.source_keywords|join(", ") if v.source_keywords else "—" }}</td>
+      <td>{% if v.vertical_hit_count %}{{ "%.0f"|format(v.confidence * 100) }}%{% else %}—{% endif %}</td>
+      <td>{% if v.report_eligible %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}</td>
+      <td>{{ format_ts(v.latest_seen_at) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No vertical summaries available.</p>
+{% endif %}
+{% endblock %}

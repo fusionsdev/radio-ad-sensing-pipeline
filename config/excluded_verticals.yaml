@@ -1,0 +1,11 @@
+excluded_verticals:
+  - title_loan
+  - auto_title_loan
+  - payday_loan
+  - tax_relief
+  - timeshare_exit
+  - insurance
+  - mortgage
+  - business_loan
+  - crypto_lending
+  - student_loan_policy
