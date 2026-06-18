@@ -72,6 +72,7 @@ class InvestigationResult:
     detections: list[DetectionEvidence] = field(default_factory=list)
     trademark_keywords_created: int = 0
     trademark_keywords_existing: int = 0
+    trademark_keywords: tuple[tuple[str, str], ...] = DEFAULT_TRADEMARK_KEYWORDS
     evidence_path: Path | None = None
     alert_sent: bool = False
 
@@ -82,6 +83,85 @@ def normalize_advertiser_name(name: str) -> str:
     cleaned = re.sub(r"\.(com|net|org|io)$", "", cleaned)
     cleaned = re.sub(r"[^a-z0-9]+", "", cleaned)
     return cleaned.strip(".") or name.lower()
+
+
+def build_search_terms(
+    canonical_name: str,
+    *,
+    domain: str | None = None,
+    extra_terms: tuple[str, ...] = (),
+) -> tuple[str, ...]:
+    """Derive transcript/extraction search terms for any advertiser brand.
+
+    Replaces the old hard-coded ``billshappen`` terms so the investigator works
+    for any ``canonical_name``. Returns lowercased terms longest-first so LIKE
+    matching prefers the most specific form.
+    """
+    terms: list[str] = []
+    seen: set[str] = set()
+
+    def _add(value: str | None) -> None:
+        if not value:
+            return
+        cleaned = value.strip().lower()
+        if cleaned and cleaned not in seen:
+            seen.add(cleaned)
+            terms.append(cleaned)
+
+    _add(canonical_name)
+    _add(re.sub(r"^https?://", "", (domain or "")).strip("/"))
+    _add(normalize_advertiser_name(canonical_name))
+    for term in extra_terms:
+        _add(term)
+
+    return tuple(sorted((t for t in terms if t), key=len, reverse=True))
+
+
+def build_trademark_keywords(canonical_name: str) -> tuple[tuple[str, str], ...]:
+    """Generate brand/product/intent keyword variants for any advertiser brand."""
+    base = normalize_advertiser_name(canonical_name)
+    domainish = canonical_name.strip().lower()
+    keywords: list[tuple[str, str]] = [(base, "brand")]
+    if domainish and domainish != base:
+        keywords.append((domainish, "brand"))
+    keywords.extend(
+        [
+            (f"{base} loans", "product"),
+            (f"{base} personal loan", "product"),
+            (f"{base} reviews", "reviews"),
+            (f"{base} legit", "intent"),
+            (f"{base} complaints", "complaints"),
+            (f"{base} alternative", "alternative"),
+            (f"{base} phone number", "contact"),
+        ]
+    )
+    # De-dup while preserving order.
+    seen: set[str] = set()
+    unique: list[tuple[str, str]] = []
+    for keyword, variant in keywords:
+        if keyword not in seen:
+            seen.add(keyword)
+            unique.append((keyword, variant))
+    return tuple(unique)
+
+
+def build_trademark_aliases(
+    canonical_name: str,
+    *,
+    domain: str | None = None,
+) -> tuple[str, ...]:
+    """Aliases registered for the trademark entity, derived from the brand."""
+    aliases: list[str] = []
+    seen: set[str] = set()
+    for value in (canonical_name, domain):
+        if not value:
+            continue
+        cleaned = value.strip()
+        key = cleaned.lower()
+        if cleaned and key not in seen:
+            seen.add(key)
+            aliases.append(cleaned)
+    return tuple(aliases)
 
 
 def parse_market(display_name: str | None) -> str | None:
@@ -110,7 +190,10 @@ def parse_key_claims(raw: str | None) -> list[str]:
     return [str(parsed)]
 
 
-def _ad_segment_bounds(segments_json: str | None) -> tuple[float | None, float | None]:
+def _ad_segment_bounds(
+    segments_json: str | None,
+    search_terms: tuple[str, ...] = SEARCH_TERMS,
+) -> tuple[float | None, float | None]:
     if not segments_json:
         return None, None
     try:
@@ -121,7 +204,7 @@ def _ad_segment_bounds(segments_json: str | None) -> tuple[float | None, float |
     ends: list[float] = []
     for segment in segments:
         text = str(segment.get("text", "")).lower()
-        if any(term.replace(".", "") in text.replace(".", "") for term in SEARCH_TERMS):
+        if any(term.replace(".", "") in text.replace(".", "") for term in search_terms):
             starts.append(float(segment["start"]))
             ends.append(float(segment["end"]))
     if not starts:
@@ -133,9 +216,9 @@ def _ad_segment_bounds(segments_json: str | None) -> tuple[float | None, float |
     return round(start, 2), round(end, 2)
 
 
-def _billshappen_excerpt(transcript: str) -> str:
+def _brand_excerpt(transcript: str, search_terms: tuple[str, ...] = SEARCH_TERMS) -> str:
     lowered = transcript.lower()
-    for needle in ("billshappen.com", "bills happen", "billshappen"):
+    for needle in search_terms:
         idx = lowered.find(needle.replace(".", ""))
         if idx == -1:
             idx = lowered.find(needle)
@@ -146,8 +229,11 @@ def _billshappen_excerpt(transcript: str) -> str:
     return transcript
 
 
-def _extract_cta_from_transcript(transcript: str) -> str | None:
-    excerpt = _billshappen_excerpt(transcript)
+def _extract_cta_from_transcript(
+    transcript: str,
+    search_terms: tuple[str, ...] = SEARCH_TERMS,
+) -> str | None:
+    excerpt = _brand_excerpt(transcript, search_terms)
     cta = _extract_cta(excerpt)
     if cta:
         return cta.strip()
@@ -157,37 +243,42 @@ def _extract_cta_from_transcript(transcript: str) -> str | None:
     return None
 
 
-def _search_clause(alias: str = "t") -> str:
-    parts = [
-        f"LOWER(COALESCE({alias}.text, '')) LIKE ?",
-        f"LOWER(COALESCE({alias}.text, '')) LIKE ?",
-        f"LOWER(COALESCE({alias}.text, '')) LIKE ?",
+def _search_clause_and_params(
+    search_terms: tuple[str, ...],
+    *,
+    alias: str = "t",
+) -> tuple[str, tuple[str, ...]]:
+    """Build the WHERE clause and its params together to avoid positional drift.
+
+    Matches any search term in the transcript text, plus the most general term
+    (shortest, e.g. the bare brand) against the extraction's website/company/
+    offer columns.
+    """
+    terms = [t.lower() for t in search_terms if t]
+    if not terms:
+        terms = ["\x00never-matches"]
+    primary = min(terms, key=len)
+    text_likes = [f"LOWER(COALESCE({alias}.text, '')) LIKE ?" for _ in terms]
+    col_likes = [
         "LOWER(COALESCE(d.website, '')) LIKE ?",
         "LOWER(COALESCE(d.company_name, '')) LIKE ?",
         "LOWER(COALESCE(d.offer_summary, '')) LIKE ?",
     ]
-    return "(" + " OR ".join(parts) + ")"
-
-
-def _search_params() -> tuple[str, ...]:
-    return (
-        "%billshappen%",
-        "%bills happen%",
-        "%billshappen.com%",
-        "%billshappen%",
-        "%billshappen%",
-        "%billshappen%",
-    )
+    clause = "(" + " OR ".join(text_likes + col_likes) + ")"
+    params = tuple(f"%{t}%" for t in terms) + tuple(f"%{primary}%" for _ in col_likes)
+    return clause, params
 
 
 @retry_on_busy()
 def fetch_detection_evidence(
     conn: sqlite3.Connection,
     *,
+    search_terms: tuple[str, ...] = SEARCH_TERMS,
     station_names: tuple[str, ...] | None = None,
 ) -> list[DetectionEvidence]:
     """Pull detections whose transcript or extraction references the search terms."""
-    params: list[Any] = list(_search_params())
+    clause, clause_params = _search_clause_and_params(search_terms, alias="t")
+    params: list[Any] = list(clause_params)
     station_clause = ""
     if station_names:
         placeholders = ", ".join("?" for _ in station_names)
@@ -205,7 +296,7 @@ def fetch_detection_evidence(
         JOIN chunks c ON c.id = d.chunk_id
         JOIN stations s ON s.id = c.station_id
         LEFT JOIN transcripts t ON t.chunk_id = c.id
-        WHERE d.is_ad = 1 AND {_search_clause("t")} {station_clause}
+        WHERE d.is_ad = 1 AND {clause} {station_clause}
         ORDER BY c.start_ts
         """,
         tuple(params),
@@ -216,7 +307,7 @@ def fetch_detection_evidence(
         transcript = row["transcript"] or ""
         phone, _vanity = _extract_phone(transcript)
         website = row["website"] or _extract_domain(transcript)
-        clip_start, clip_end = _ad_segment_bounds(row["segments_json"])
+        clip_start, clip_end = _ad_segment_bounds(row["segments_json"], search_terms)
         display = row["display_name"] or row["station_name"]
         evidence.append(
             DetectionEvidence(
@@ -232,7 +323,7 @@ def fetch_detection_evidence(
                 audio_clip_end_sec=clip_end,
                 website=website,
                 phone_number=row["phone_number"] or phone,
-                cta=_extract_cta_from_transcript(transcript),
+                cta=_extract_cta_from_transcript(transcript, search_terms),
                 offer_summary=row["offer_summary"],
                 key_claims=parse_key_claims(row["key_claims"]),
                 confidence=float(row["confidence"]) if row["confidence"] is not None else None,
@@ -484,7 +575,7 @@ def render_evidence_markdown(
 ) -> str:
     ts = generated_at or datetime.now(tz=UTC)
     lines = [
-        f"# Billshappen.com — Radio Detection Evidence Pack",
+        f"# {result.canonical_name} — Radio Detection Evidence Pack",
         "",
         f"Generated: {ts.strftime('%Y-%m-%d %H:%M UTC')}",
         "",
@@ -549,7 +640,7 @@ def render_evidence_markdown(
             "| --- | --- |",
         ]
     )
-    for keyword, variant in DEFAULT_TRADEMARK_KEYWORDS:
+    for keyword, variant in result.trademark_keywords:
         lines.append(f"| `{keyword}` | {variant} |")
     lines.extend(
         [
@@ -576,21 +667,34 @@ def investigate_radio_advertiser(
     confidence: str = "high",
     status: str = "needs_review",
     station_names: tuple[str, ...] | None = None,
-    trademark_keywords: tuple[tuple[str, str], ...] = DEFAULT_TRADEMARK_KEYWORDS,
+    search_terms: tuple[str, ...] | None = None,
+    trademark_keywords: tuple[tuple[str, str], ...] | None = None,
     evidence_path: Path | None = None,
     send_alert: bool = True,
     dry_run: bool = False,
 ) -> InvestigationResult:
-    """Create/update advertiser + trademark records from live radio detections."""
+    """Create/update advertiser + trademark records from live radio detections.
+
+    ``search_terms`` and ``trademark_keywords`` default to brand-derived values
+    built from ``canonical_name``/``domain`` so the investigator generalizes to
+    any advertiser; pass explicit tuples to override.
+    """
+    resolved_search_terms = search_terms or build_search_terms(canonical_name, domain=domain)
+    resolved_keywords = (
+        trademark_keywords if trademark_keywords is not None else build_trademark_keywords(canonical_name)
+    )
+
     detections = []
     conn = get_connection(db_path)
     try:
-        detections = fetch_detection_evidence(conn, station_names=station_names)
+        detections = fetch_detection_evidence(
+            conn, search_terms=resolved_search_terms, station_names=station_names
+        )
     finally:
         conn.close()
 
     if not detections:
-        raise ValueError(f"No detections found for search terms: {SEARCH_TERMS}")
+        raise ValueError(f"No detections found for search terms: {resolved_search_terms}")
 
     resolved_domain = domain or next((d.website for d in detections if d.website), None)
     now_ts = time.time()
@@ -609,6 +713,7 @@ def investigate_radio_advertiser(
             advertiser_entity_id=0,
             trademark_entity_id=0,
             detections=detections,
+            trademark_keywords=resolved_keywords,
         )
 
     conn = get_connection(db_path)
@@ -624,7 +729,7 @@ def investigate_radio_advertiser(
                 review_status=status,
                 now_iso=now_iso,
             )
-            for alias in {canonical_name, "Bills Happen", "BillsHappen.com"}:
+            for alias in build_trademark_aliases(canonical_name, domain=resolved_domain):
                 _ensure_trademark_alias(
                     conn,
                     entity_id=trademark_entity_id,
@@ -636,7 +741,7 @@ def investigate_radio_advertiser(
                 conn,
                 entity_id=trademark_entity_id,
                 source_type=source_type,
-                keywords=trademark_keywords,
+                keywords=resolved_keywords,
                 confidence=float(avg_conf),
             )
             advertiser_entity_id = _upsert_advertiser_entity(
@@ -673,6 +778,7 @@ def investigate_radio_advertiser(
             detections=detections,
             trademark_keywords_created=kw_created,
             trademark_keywords_existing=kw_existing,
+            trademark_keywords=resolved_keywords,
             evidence_path=evidence_path,
         )
 

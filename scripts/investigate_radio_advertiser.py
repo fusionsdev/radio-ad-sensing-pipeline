@@ -14,7 +14,6 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from shared.db import migrate
 from worker.radio_hit_advertiser import (
-    DEFAULT_TRADEMARK_KEYWORDS,
     investigate_radio_advertiser,
     render_evidence_markdown,
 )
@@ -65,7 +64,6 @@ def main(argv: list[str] | None = None) -> int:
             confidence=args.confidence,
             status=args.status,
             station_names=station_names,
-            trademark_keywords=DEFAULT_TRADEMARK_KEYWORDS,
             evidence_path=evidence_path,
             send_alert=not args.no_alert and not args.dry_run,
             dry_run=args.dry_run,
