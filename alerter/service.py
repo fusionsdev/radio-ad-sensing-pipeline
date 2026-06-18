@@ -118,12 +118,16 @@ class AlerterService:
         client: TelegramBotApi | None = None,
         clock: Callable[[], float] = time.time,
         logger: Any | None = None,
+        archive_dir: str | Path | None = None,
     ) -> None:
         self.settings = settings or load_settings()
         self.db_path = Path(db_path or self.settings.db_path)
         self.telegram_settings = telegram_settings or load_telegram_settings()
         self.clock = clock
         self.log = logger or setup_logging("alerter")
+        # Audio uploads are contained to this dir to prevent exfiltrating
+        # arbitrary host files via a traversal value in the stored path.
+        self._archive_dir = Path(archive_dir).resolve() if archive_dir else (PROJECT_ROOT / "data" / "ad_archive").resolve()
         self._dry_run = not (
             self.telegram_settings.telegram_bot_token and self.telegram_settings.telegram_chat_id
         )
@@ -532,6 +536,10 @@ class AlerterService:
         return normalized[: TRANSCRIPT_EXCERPT_LIMIT - 3].rstrip() + "..."
 
     def _resolve_audio_path(self, stored_path: str | None) -> Path | None:
+        # Contain to the ad-archive dir before uploading to Telegram. The stored
+        # path originates from extracted/DB data; without this check a traversal
+        # value could exfiltrate an arbitrary host file to the chat. Mirrors the
+        # dashboard's resolve_audio_path containment.
         if not stored_path:
             return None
         path = Path(stored_path)
@@ -539,6 +547,14 @@ class AlerterService:
             path = (PROJECT_ROOT / path).resolve()
         else:
             path = path.resolve()
+        try:
+            path.relative_to(self._archive_dir)
+        except ValueError:
+            self.log.warning(
+                "refusing to send audio outside the archive dir",
+                extra={"stored_path": stored_path},
+            )
+            return None
         if path.is_file():
             return path
         return None
