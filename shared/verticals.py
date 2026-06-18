@@ -157,12 +157,10 @@ def classify_vertical_hits(
         if station is not None:
             bucket["stations"].add(station)
         bucket["keywords"].add(str(row["keyword"]))
-        kw_conf = mapping.get(keyword)
-        if kw_conf:
-            for entry in cfg.verticals[vertical_id].keywords:
-                if entry.phrase.lower() == keyword:
-                    bucket["confidences"].append(entry.confidence)
-                    break
+        for entry in cfg.verticals[vertical_id].keywords:
+            if entry.phrase.lower() == keyword:
+                bucket["confidences"].append(entry.confidence)
+                break
         hit_ts = row.get("hit_ts") or row.get("latest_seen_at")
         if hit_ts is not None:
             ts = float(hit_ts)

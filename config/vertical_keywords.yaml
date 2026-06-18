@@ -102,4 +102,42 @@ verticals:
       - phrase: reverse mortgage
         confidence: 0.85
       - phrase: personal loan
-        confidence: 0.55
+        confidence: 0.60
+      - phrase: personal loans
+        confidence: 0.90
+      - phrase: debt consolidation loan
+        confidence: 0.90
+      - phrase: refinance mortgage
+        confidence: 0.90
+      - phrase: mortgage refinance
+        confidence: 0.90
+      - phrase: heloc
+        confidence: 0.85
+      - phrase: hecm loan
+        confidence: 0.85
+      - phrase: auto loan
+        confidence: 0.85
+      - phrase: car loan
+        confidence: 0.85
+      - phrase: auto refinance
+        confidence: 0.80
+      - phrase: vehicle financing
+        confidence: 0.80
+      - phrase: student loan refinance
+        confidence: 0.85
+      - phrase: medical loan
+        confidence: 0.80
+      - phrase: home improvement loan
+        confidence: 0.80
+      - phrase: installment loan
+        confidence: 0.75
+      - phrase: emergency loan
+        confidence: 0.80
+      - phrase: same day loan
+        confidence: 0.75
+      - phrase: fast cash loan
+        confidence: 0.70
+      - phrase: bad credit loan
+        confidence: 0.70
+      - phrase: loan
+        confidence: 0.65

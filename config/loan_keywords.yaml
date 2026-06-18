@@ -1,3 +1,12 @@
+# ============================================================================
+# DEPRECATED / DEAD CONFIG — NOT loaded at runtime.
+# Superseded by config/vertical_keywords.yaml. See shared/config.py
+# load_loan_keywords(): the vertical config is loaded first whenever it exists,
+# so this file is never read by the live keyword scanner. Kept for reference
+# only (consumer-loan phrases were migrated into the `loan` vertical).
+# Do not edit expecting runtime effect — edit vertical_keywords.yaml instead.
+# ============================================================================
+#
 # Consumer Loan Keywords — Loans in USA campaign
 # Only consumer/personal loans; NO business funding, small business loans, merchant cash advance, etc.
 # Updated 2026-06-12 per operator request: consumer loans only
