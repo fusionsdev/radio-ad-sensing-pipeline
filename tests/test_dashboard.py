@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 
 import pytest
@@ -144,6 +145,22 @@ def test_dashboard_never_opens_writable_connection(
         assert response.status_code in {200, 404}
 
 
+def test_cfpb_read_path_does_not_migrate(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import shared.db as shared_db
+
+    db_path = tmp_path / "blank.db"
+    sqlite3.connect(db_path).close()
+
+    def fail_migrate(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise AssertionError("Dashboard read path must not migrate schema")
+
+    monkeypatch.setattr(shared_db, "migrate", fail_migrate)
+    client = TestClient(create_app(db_path=db_path))
+    assert client.get("/cfpb").status_code == 200
+
+
 def test_derive_station_status() -> None:
     now = 1_000_000.0
     down = 15 * 60
@@ -283,3 +300,35 @@ def test_cfpb_candidate_detail_and_status_update(empty_db: Path) -> None:
         follow_redirects=False,
     )
     assert response.status_code == 303
+
+
+def test_basic_auth_gates_routes_when_env_set(
+    seeded: tuple[Path, dict[str, int]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import base64
+
+    db_path, _ = seeded
+    monkeypatch.setenv("DASHBOARD_BASIC_AUTH_USERNAME", "ops")
+    monkeypatch.setenv("DASHBOARD_BASIC_AUTH_PASSWORD", "s3cret")
+    client = TestClient(create_app(db_path=db_path))
+
+    # /health stays open for liveness probes.
+    assert client.get("/health").status_code == 200
+    # Protected route rejects unauthenticated requests.
+    assert client.get("/").status_code == 401
+    # Wrong credentials are rejected.
+    bad = base64.b64encode(b"ops:wrong").decode()
+    assert client.get("/", headers={"Authorization": f"Basic {bad}"}).status_code == 401
+    # Correct credentials pass through.
+    good = base64.b64encode(b"ops:s3cret").decode()
+    assert client.get("/", headers={"Authorization": f"Basic {good}"}).status_code == 200
+
+
+def test_no_auth_required_when_env_unset(
+    seeded: tuple[Path, dict[str, int]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    db_path, _ = seeded
+    monkeypatch.delenv("DASHBOARD_BASIC_AUTH_USERNAME", raising=False)
+    monkeypatch.delenv("DASHBOARD_BASIC_AUTH_PASSWORD", raising=False)
+    client = TestClient(create_app(db_path=db_path))
+    assert client.get("/").status_code == 200
