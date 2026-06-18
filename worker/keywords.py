@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import logging
+import re
 import sqlite3
 from dataclasses import dataclass
 
 from shared.models import LoanKeywordEntry
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_MIN_RECORD_CONFIDENCE = 0.6
 
@@ -43,14 +47,25 @@ def find_keyword_matches(
 
     for entry in sorted(entries, key=lambda e: len(e.phrase), reverse=True):
         phrase = entry.phrase.strip()
-        if not phrase or entry.confidence < min_record_confidence:
+        if not phrase:
+            continue
+        if entry.confidence < min_record_confidence:
+            logger.debug(
+                "Skipping keyword %r: confidence %.2f < min_record_confidence %.2f",
+                phrase,
+                entry.confidence,
+                min_record_confidence,
+            )
             continue
         needle = phrase.lower()
         if needle in seen:
             continue
-        index = lowered.find(needle)
-        if index < 0:
+        # Word-boundary match so "loan" hits "a loan" but not "Sloan" or "loaned".
+        pattern = rf"(?<!\w){re.escape(needle)}(?!\w)"
+        match = re.search(pattern, lowered)
+        if match is None:
             continue
+        index = match.start()
         seen.add(needle)
         start = max(index - excerpt_radius, 0)
         end = min(index + len(needle) + excerpt_radius, len(transcript))
