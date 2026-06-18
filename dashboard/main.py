@@ -2,16 +2,19 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
+import os
+import secrets
 from datetime import UTC, datetime
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from dashboard import queries
 from shared.config import load_settings
-from shared.db import migrate
 from shared.metrics import configure_dashboard_metrics, start_metrics_server
 from shared.station_control import (
     StationControlCommand,
@@ -34,6 +37,39 @@ def create_app(db_path: Path | None = None) -> FastAPI:
     app = FastAPI(title="Radio Ad-Sensing Dashboard", docs_url=None, redoc_url=None)
     start_metrics_server(9104)
     configure_dashboard_metrics(resolved_db)
+
+    # The dashboard is strictly read-only and never migrates: schema ownership
+    # belongs to the writer processes (worker/ingestor run migrations at their
+    # own startup). This keeps reads off the schema-mutation path entirely.
+
+    # Optional HTTP Basic auth, opt-in via env. When unset the dashboard stays
+    # open (LAN-only default); when set it gates every route except /health,
+    # protecting the state-changing /ops endpoints from unauthenticated access.
+    auth_user = os.environ.get("DASHBOARD_BASIC_AUTH_USER")
+    auth_pass = os.environ.get("DASHBOARD_BASIC_AUTH_PASSWORD")
+    if auth_user and auth_pass:
+
+        @app.middleware("http")
+        async def _basic_auth(request: Request, call_next):  # type: ignore[no-untyped-def]
+            if request.url.path == "/health":
+                return await call_next(request)
+            header = request.headers.get("authorization", "")
+            authorized = False
+            if header.startswith("Basic "):
+                try:
+                    decoded = base64.b64decode(header[6:]).decode("utf-8")
+                except (binascii.Error, ValueError, UnicodeDecodeError):
+                    decoded = ""
+                user, _, pw = decoded.partition(":")
+                authorized = secrets.compare_digest(user, auth_user) and secrets.compare_digest(
+                    pw, auth_pass
+                )
+            if not authorized:
+                return Response(
+                    status_code=401,
+                    headers={"WWW-Authenticate": 'Basic realm="dashboard"'},
+                )
+            return await call_next(request)
 
     @app.get("/health")
     def health() -> JSONResponse:
@@ -244,7 +280,9 @@ def create_app(db_path: Path | None = None) -> FastAPI:
         if not queries.db_exists(resolved_db):
             return _no_database(request)
         if not queries.advertiser_entities_available(resolved_db):
-            migrate(resolved_db)
+            # Tables are created by writer processes; show the neutral page until
+            # a writer has migrated rather than mutating the schema from a read.
+            return _no_database(request)
         rows = queries.fetch_hit_advertisers(resolved_db)
         return TEMPLATES.TemplateResponse(
             request,
@@ -344,7 +382,7 @@ def create_app(db_path: Path | None = None) -> FastAPI:
         if not queries.db_exists(resolved_db):
             return _no_database(request)
         if not queries.watchdog_tables_available(resolved_db):
-            migrate(resolved_db)
+            return _no_database(request)
         overview = queries.fetch_watchdog_overview(resolved_db)
         return TEMPLATES.TemplateResponse(
             request,
@@ -365,7 +403,7 @@ def create_app(db_path: Path | None = None) -> FastAPI:
         if not station_exists(resolved_db, station_id):
             raise HTTPException(status_code=404, detail="Station not found")
         if not queries.control_commands_available(resolved_db):
-            migrate(resolved_db)
+            raise HTTPException(status_code=503, detail="Control commands unavailable")
         enqueue_station_command(
             resolved_db,
             station_id=station_id,

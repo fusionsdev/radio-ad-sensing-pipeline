@@ -283,3 +283,31 @@ def test_review_page_renders_tiers(seeded: tuple[Path, dict[str, int]]) -> None:
     assert "hard money" in response.text
     assert client.get("/review?tier=C").status_code == 200
     assert "no LLM ad" in client.get("/review?tier=C").text
+
+
+def test_basic_auth_gates_routes_when_env_set(
+    seeded: tuple[Path, dict[str, int]], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import base64
+
+    db_path, _ = seeded
+    monkeypatch.setenv("DASHBOARD_BASIC_AUTH_USER", "ops")
+    monkeypatch.setenv("DASHBOARD_BASIC_AUTH_PASSWORD", "s3cret")
+    client = TestClient(create_app(db_path=db_path))
+
+    # /health stays open for liveness probes.
+    assert client.get("/health").status_code == 200
+    # Protected route rejects unauthenticated requests.
+    assert client.get("/").status_code == 401
+    # Wrong credentials are rejected.
+    bad = base64.b64encode(b"ops:wrong").decode()
+    assert client.get("/", headers={"Authorization": f"Basic {bad}"}).status_code == 401
+    # Correct credentials pass through.
+    good = base64.b64encode(b"ops:s3cret").decode()
+    assert client.get("/", headers={"Authorization": f"Basic {good}"}).status_code == 200
+
+
+def test_no_auth_required_when_env_unset(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    assert client.get("/").status_code == 200
