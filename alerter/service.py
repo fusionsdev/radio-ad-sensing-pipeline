@@ -58,7 +58,13 @@ class StationDownAlert:
 
 
 class TelegramBotApi:
-    """Tiny HTTP wrapper around the Telegram Bot API."""
+    """Tiny HTTP wrapper around the Telegram Bot API.
+
+    Retries transient failures (HTTP 429/5xx, network/timeout) with bounded
+    backoff that honours Telegram's ``retry_after``, uses a longer timeout for
+    audio uploads, and redacts the bot token from any error it raises so the
+    secret never reaches logs via an exception's request URL.
+    """
 
     def __init__(
         self,
@@ -66,18 +72,81 @@ class TelegramBotApi:
         *,
         transport: httpx.BaseTransport | None = None,
         timeout: float = 10.0,
+        audio_timeout: float = 60.0,
+        max_retries: int = 3,
+        backoff_base: float = 0.5,
+        backoff_cap: float = 30.0,
+        sleep: Callable[[float], None] = time.sleep,
     ) -> None:
+        self._token = token
         self._client = httpx.Client(
             base_url=f"https://api.telegram.org/bot{token}",
             transport=transport,
             timeout=timeout,
         )
+        self._audio_timeout = audio_timeout
+        self._max_retries = max_retries
+        self._backoff_base = backoff_base
+        self._backoff_cap = backoff_cap
+        self._sleep = sleep
 
     def close(self) -> None:
         self._client.close()
 
+    def _redact(self, text: str) -> str:
+        return text.replace(self._token, "***") if self._token else text
+
+    @staticmethod
+    def _retry_after(response: httpx.Response) -> float | None:
+        try:
+            params = response.json().get("parameters", {})
+            if isinstance(params, dict) and "retry_after" in params:
+                return float(params["retry_after"])
+        except (ValueError, TypeError):
+            pass
+        header = response.headers.get("retry-after")
+        if header:
+            try:
+                return float(header)
+            except ValueError:
+                return None
+        return None
+
+    def _post_with_retry(self, path: str, **post_kwargs: Any) -> dict[str, Any]:
+        attempt = 0
+        while True:
+            try:
+                response = self._client.post(path, **post_kwargs)
+            except httpx.HTTPError as exc:
+                if attempt >= self._max_retries:
+                    raise RuntimeError(
+                        f"Telegram {path} request failed: {self._redact(str(exc))}"
+                    ) from None
+                self._sleep(min(self._backoff_base * (2**attempt), self._backoff_cap))
+                attempt += 1
+                continue
+
+            status = response.status_code
+            if status == 429 or status >= 500:
+                if attempt < self._max_retries:
+                    delay = self._retry_after(response) if status == 429 else None
+                    if delay is None:
+                        delay = min(self._backoff_base * (2**attempt), self._backoff_cap)
+                    self._sleep(delay)
+                    attempt += 1
+                    continue
+
+            try:
+                response.raise_for_status()
+            except httpx.HTTPStatusError:
+                raise RuntimeError(f"Telegram {path} failed: HTTP {status}") from None
+            payload = response.json()
+            if not payload.get("ok", False):
+                raise RuntimeError(f"Telegram {path} failed: {self._redact(repr(payload))}")
+            return payload
+
     def send_message(self, chat_id: str, text: str) -> None:
-        response = self._client.post(
+        self._post_with_retry(
             "sendMessage",
             json={
                 "chat_id": chat_id,
@@ -85,10 +154,6 @@ class TelegramBotApi:
                 "disable_web_page_preview": True,
             },
         )
-        response.raise_for_status()
-        payload = response.json()
-        if not payload.get("ok", False):
-            raise RuntimeError(f"Telegram sendMessage failed: {payload!r}")
 
     def send_audio(self, chat_id: str, audio_path: Path, *, caption: str | None = None) -> None:
         with audio_path.open("rb") as handle:
@@ -98,11 +163,12 @@ class TelegramBotApi:
             data: dict[str, str] = {"chat_id": chat_id}
             if caption:
                 data["caption"] = caption
-            response = self._client.post("sendAudio", data=data, files=files)
-        response.raise_for_status()
-        payload = response.json()
-        if not payload.get("ok", False):
-            raise RuntimeError(f"Telegram sendAudio failed: {payload!r}")
+            self._post_with_retry(
+                "sendAudio",
+                data=data,
+                files=files,
+                timeout=self._audio_timeout,
+            )
 
 
 class AlerterService:

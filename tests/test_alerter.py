@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import httpx
+import pytest
 
 from alerter.service import AlerterService
 from shared.config import TelegramSettings
@@ -455,3 +456,42 @@ def test_resolve_audio_path_rejects_paths_outside_archive(tmp_path: Path) -> Non
     assert service._resolve_audio_path(str(outside)) is None
     assert service._resolve_audio_path("../../secret.wav") is None
     assert service._resolve_audio_path(None) is None
+
+
+def test_telegram_retries_on_429_honoring_retry_after() -> None:
+    from alerter.service import TelegramBotApi
+
+    calls = {"n": 0}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return httpx.Response(429, json={"ok": False, "parameters": {"retry_after": 7}})
+        return httpx.Response(200, json={"ok": True, "result": {}})
+
+    sleeps: list[float] = []
+    api = TelegramBotApi(
+        "secret-token",
+        transport=httpx.MockTransport(handler),
+        sleep=sleeps.append,
+    )
+    api.send_message("chat", "hello")
+
+    assert calls["n"] == 2  # retried once after the 429
+    assert sleeps == [7.0]  # honoured Telegram's retry_after
+    api.close()
+
+
+def test_telegram_redacts_token_in_errors() -> None:
+    from alerter.service import TelegramBotApi
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"ok": False, "description": "bad"})
+
+    api = TelegramBotApi("secret-token", transport=httpx.MockTransport(handler))
+    try:
+        with pytest.raises(RuntimeError) as excinfo:
+            api.send_message("chat", "hello")
+        assert "secret-token" not in str(excinfo.value)
+    finally:
+        api.close()
