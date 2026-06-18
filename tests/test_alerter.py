@@ -148,7 +148,9 @@ def test_first_seen_alert_sends_message_and_audio_and_marks_alerted(
 ) -> None:
     db_path = tmp_path / "alerter.db"
     migrate(db_path)
-    archive = tmp_path / "archive.wav"
+    archive_dir = tmp_path / "ad_archive"
+    archive_dir.mkdir()
+    archive = archive_dir / "archive.wav"
     archive.write_bytes(b"fake-audio")
     now_ts = 1_700_000_000.0
 
@@ -178,6 +180,7 @@ def test_first_seen_alert_sends_message_and_audio_and_marks_alerted(
         ),
         transport=recorder.transport(),
         clock=lambda: now_ts,
+        archive_dir=archive_dir,
     )
 
     summary = service.poll_once()
@@ -431,3 +434,24 @@ def test_daily_digest_only_sends_once_per_day(tmp_path: Path) -> None:
     summary = service.poll_once()
     assert summary["digest"] == 0
     assert len(recorder.requests) == 1
+
+
+def test_resolve_audio_path_rejects_paths_outside_archive(tmp_path: Path) -> None:
+    # A traversal value in the stored path must not be uploaded to Telegram.
+    archive_dir = tmp_path / "ad_archive"
+    archive_dir.mkdir()
+    inside = archive_dir / "ok.wav"
+    inside.write_bytes(b"x")
+    outside = tmp_path / "secret.wav"
+    outside.write_bytes(b"secret")
+
+    service = AlerterService(
+        db_path=tmp_path / "alerter.db",
+        telegram_settings=TelegramSettings(),
+        archive_dir=archive_dir,
+    )
+
+    assert service._resolve_audio_path(str(inside)) == inside.resolve()
+    assert service._resolve_audio_path(str(outside)) is None
+    assert service._resolve_audio_path("../../secret.wav") is None
+    assert service._resolve_audio_path(None) is None

@@ -246,8 +246,12 @@ class DetectionPersister:
             weights.append(1.0)
 
         prior_summary = row["offer_summary"] or ""
-        if prior_summary and (extraction.offer_summary or transcript_text):
-            comparison = " ".join(part for part in [extraction.offer_summary, transcript_text] if part)
+        new_offer = extraction.offer_summary or ""
+        if prior_summary and (new_offer or transcript_text):
+            # Compare offer-to-offer; only fall back to the raw transcript when the
+            # new extraction has no offer summary. Concatenating the full transcript
+            # floods the token set and makes the offer score nearly meaningless.
+            comparison = new_offer or transcript_text
             scores.append(float(fuzz.token_set_ratio(prior_summary, comparison)))
             weights.append(1.0)
 
