@@ -113,6 +113,7 @@ class ChunkConsumer:
 
     def run(self, stop_event: Any | None = None) -> None:
         """Poll until stop_event is set."""
+        self._reclaim_orphaned_processing()
         while stop_event is None or not stop_event.is_set():
             processed = self.run_once()
             self._run_loops += 1
@@ -125,6 +126,35 @@ class ChunkConsumer:
                     time.sleep(self.poll_interval_sec)
             elif stop_event is not None and stop_event.is_set():
                 break
+
+    @retry_on_busy()
+    def _reclaim_orphaned_processing(self) -> int:
+        """Requeue chunks stuck in 'processing' from a previous crash.
+
+        A chunk is set to 'processing' before transcription, which runs outside
+        that transaction; a crash/OOM/restart mid-chunk leaves the row stuck
+        forever because the claim query only selects 'pending'. The pipeline runs
+        a single worker process, so at startup any 'processing' row is necessarily
+        an orphan and safe to requeue. Without this, every crash silently leaks a
+        chunk (and its audio is later swept), losing the detection permanently.
+        """
+        conn = get_connection(self.db_path)
+        try:
+            with transaction(conn):
+                cursor = conn.execute(
+                    """
+                    UPDATE chunks
+                    SET status = 'pending',
+                        error = 'requeued_orphaned_processing'
+                    WHERE status = 'processing'
+                    """
+                )
+                reclaimed = cursor.rowcount
+        finally:
+            conn.close()
+        if reclaimed:
+            logger.warning("reclaimed orphaned processing chunks", extra={"count": reclaimed})
+        return reclaimed
 
     @retry_on_busy()
     def run_once(self) -> bool:
