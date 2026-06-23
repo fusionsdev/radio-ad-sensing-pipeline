@@ -9,6 +9,7 @@ Local 24/7 radio ad-sensing pipeline
 - [DONE] #legacy_628c Legacy issue: fix(ingestor): skip reconnect_at_eof on HLS streams -> fix(ingestor): skip reconnect_at_eof on HLS streams (fixed)
 - [DONE] #legacy_5e81 Legacy issue: fix(keywords): expand loan coverage, word-boundary match, observability -> fix(keywords): expand loan coverage, word-boundary match, observability (fixed)
 - [DONE] #legacy_0859 Legacy issue: chore(wip): checkpoint working tree before code-review fixes -> chore(wip): checkpoint working tree before code-review fixes (fixed)
+- [OPEN] #0007 harvest dashboard test expects href=/radio-harvest self-link that current control panel no longer renders [tests/test_harvest_dashboard.py:255] (open)
 - [OPEN] #0006 consumer loan gate does not persist cash advance keyword when transcript contains loan intent [tests/test_consumer_personal_loan_gating.py:123] (open)
 - [OPEN] #0005 test_config expects asr_compute_type int8_float16 but repository settings load float16 [tests/test_config.py:34] (open)
 - [OPEN] #0004 audit_keyword_hits_verticals flags personal loan as polluted and deletes two rows instead of one [tests/test_audit_keyword_hits_verticals.py:58] (open)

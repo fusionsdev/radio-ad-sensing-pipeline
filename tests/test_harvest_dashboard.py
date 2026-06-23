@@ -251,8 +251,9 @@ def test_control_panel_renders_buttons(seeded: Path) -> None:
     assert "Probe Stations" in html
     assert "Start Overnight Harvest" in html
     assert "Stop Harvest" in html
-    # nav link present
-    assert 'href="/radio-harvest"' in html
+    # control-panel navigation links present
+    assert 'href="/radio-harvest/status"' in html
+    assert 'href="/radio-harvest/detections"' in html
 
 
 def test_start_button_disabled_when_running(seeded: Path, monkeypatch: pytest.MonkeyPatch) -> None:
