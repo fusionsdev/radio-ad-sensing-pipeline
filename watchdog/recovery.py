@@ -10,8 +10,10 @@ from pathlib import Path
 from shared.db import get_connection, retry_on_busy, transaction
 from shared.models import WatchdogSettings
 from shared.station_control import (
+    CommandStatus,
     StationControlCommand,
     enqueue_station_command,
+    has_active_command,
     has_pending_command,
     log_recovery_event,
 )
@@ -54,6 +56,14 @@ def _set_status_value(conn: sqlite3.Connection, key: str, value: str) -> None:
 
 def _restart_day_key(station_id: str) -> str:
     return f"watchdog:restart_day:{station_id}"
+
+
+def _restart_marker_key(station_id: str) -> str:
+    return f"watchdog:restart_attempt:{station_id}"
+
+
+def _outage_marker(snap: StationHealthSnapshot) -> str:
+    return f"{snap.last_chunk_ts or 0:.3f}"
 
 
 def _fetch_health_row(conn: sqlite3.Connection, station_id: str) -> sqlite3.Row | None:
@@ -103,6 +113,112 @@ def is_in_cooldown(db_path: str | Path, station_id: str, *, now_ts: float) -> bo
             return False
         cool_down_until = _parse_iso_ts(row["cool_down_until"])
         return cool_down_until is not None and now_ts < cool_down_until
+    finally:
+        conn.close()
+
+
+def _latest_chunk_ts(conn: sqlite3.Connection, station_id: str) -> float | None:
+    row = conn.execute(
+        """
+        SELECT MAX(c.end_ts) AS last_chunk_ts
+        FROM stations s
+        LEFT JOIN chunks c ON c.station_id = s.id
+        WHERE s.name = ?
+        """,
+        (station_id,),
+    ).fetchone()
+    if row is None or row["last_chunk_ts"] is None:
+        return None
+    return float(row["last_chunk_ts"])
+
+
+def _has_fresh_chunk(
+    db_path: str | Path,
+    station_id: str,
+    *,
+    settings: WatchdogSettings,
+    now_ts: float,
+) -> bool:
+    conn = get_connection(db_path, read_only=True)
+    try:
+        last_chunk_ts = _latest_chunk_ts(conn, station_id)
+    finally:
+        conn.close()
+    if last_chunk_ts is None:
+        return False
+    stale_after_seconds = settings.station_stale_after_minutes * 60
+    return max(now_ts - last_chunk_ts, 0.0) < stale_after_seconds
+
+
+def _latest_recovery_command_ts(
+    conn: sqlite3.Connection,
+    station_id: str,
+) -> float | None:
+    row = conn.execute(
+        """
+        SELECT created_at, processed_at
+        FROM station_control_commands
+        WHERE station_id = ?
+          AND command IN (?, ?)
+          AND status IN (?, ?, ?)
+        ORDER BY COALESCE(processed_at, created_at) DESC, id DESC
+        LIMIT 1
+        """,
+        (
+            station_id,
+            StationControlCommand.ENABLE.value,
+            StationControlCommand.RESTART.value,
+            CommandStatus.PENDING.value,
+            CommandStatus.PROCESSING.value,
+            CommandStatus.DONE.value,
+        ),
+    ).fetchone()
+    if row is None:
+        return None
+    return _parse_iso_ts(row["processed_at"]) or _parse_iso_ts(row["created_at"])
+
+
+def _is_in_manual_recovery_grace(
+    db_path: str | Path,
+    station_id: str,
+    *,
+    settings: WatchdogSettings,
+    now_ts: float,
+) -> bool:
+    grace_seconds = max(settings.manual_recovery_grace_minutes, 0) * 60
+    if grace_seconds <= 0:
+        return False
+    conn = get_connection(db_path, read_only=True)
+    try:
+        command_ts = _latest_recovery_command_ts(conn, station_id)
+    finally:
+        conn.close()
+    if command_ts is None:
+        return False
+    return 0 <= now_ts - command_ts < grace_seconds
+
+
+def _restart_already_attempted(
+    db_path: str | Path,
+    snap: StationHealthSnapshot,
+) -> bool:
+    conn = get_connection(db_path, read_only=True)
+    try:
+        marker = _get_status_value(conn, _restart_marker_key(snap.station_id))
+    finally:
+        conn.close()
+    return marker == _outage_marker(snap)
+
+
+@retry_on_busy()
+def _mark_restart_attempted(
+    db_path: str | Path,
+    snap: StationHealthSnapshot,
+) -> None:
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            _set_status_value(conn, _restart_marker_key(snap.station_id), _outage_marker(snap))
     finally:
         conn.close()
 
@@ -220,8 +336,21 @@ def auto_restart_stale_station(
         return None
     if not snap.enabled or not snap.is_stale:
         return None
+    if _has_fresh_chunk(db_path, snap.station_id, settings=settings, now_ts=now_ts):
+        return "fresh_skip"
+    if has_active_command(db_path, station_id=snap.station_id):
+        return "command_pending"
+    if _is_in_manual_recovery_grace(
+        db_path,
+        snap.station_id,
+        settings=settings,
+        now_ts=now_ts,
+    ):
+        return "manual_grace_skip"
     if is_in_cooldown(db_path, snap.station_id, now_ts=now_ts):
         return "cooldown_skip"
+    if _restart_already_attempted(db_path, snap):
+        return "restart_already_attempted"
 
     restart_count_today = _reset_daily_restart_count_if_needed(db_path, snap.station_id)
     consecutive = _increment_consecutive_failures(db_path, snap.station_id)
@@ -234,6 +363,7 @@ def auto_restart_stale_station(
             now_ts=now_ts,
             reason=f"consecutive stale episodes ({consecutive}) reached limit",
         )
+        _mark_restart_attempted(db_path, snap)
         return "disabled"
 
     if restart_count_today >= settings.max_station_failures_per_day:
@@ -244,6 +374,7 @@ def auto_restart_stale_station(
             now_ts=now_ts,
             reason=f"daily restart limit ({settings.max_station_failures_per_day}) reached",
         )
+        _mark_restart_attempted(db_path, snap)
         return "disabled"
 
     if has_pending_command(
@@ -261,6 +392,7 @@ def auto_restart_stale_station(
         reason=f"watchdog auto-restart attempt {attempt_number}/{settings.restart_attempts_before_disable}",
     )
     _mark_recovering(db_path, snap.station_id, restart_count_today=attempt_number)
+    _mark_restart_attempted(db_path, snap)
     log_recovery_event(
         db_path,
         station_id=snap.station_id,

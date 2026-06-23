@@ -37,8 +37,11 @@ If work changes **behavior**, **policy**, **station state**, **classifier logic*
 | Station lifecycle | `python tools/memory/station_logger.py CALLSIGN keep\|watch\|pause\|rotate_out --reasoning "…"` |
 | Architecture / ops policy | Edit `01_Current_Architecture.md` or `02_Operating_Policy.md` |
 | Session status | Update `project-memory/Latest_Status.md` |
+| Memory Dashboard deploy | After Memory API changes: rebuild Docker `radio-dashboard` — see `project-memory/Runbooks/Memory Dashboard.md` |
 
 Undocumented classifier, station-policy, or dashboard-routing changes **fail** `decision_harness`. Work is incomplete until harness passes.
+
+**Active dashboard UI:** `H:\DEV\github_sandbox\radiosense-aistudio` (`:5150/memory`). **Not** `pipeline/dashboard/` or `github_sandbox/radiosense`.
 
 **AI layer:** Hermes local + Ollama on-box — do not assume Gemini / Claude API / OpenAI unless explicitly configured.
 

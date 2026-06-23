@@ -177,6 +177,7 @@ class WatchdogSettings(BaseModel):
     backup_selection_strategy: str = "priority_then_vertical_then_market"
     cool_down_minutes_after_failure: int = 60
     max_station_failures_per_day: int = 5
+    manual_recovery_grace_minutes: int = 20
     queue_drop_ratio_warning: float = 2.0
     queue_drop_ratio_critical: float = 5.0
     auto_restart_on_stale: bool = True

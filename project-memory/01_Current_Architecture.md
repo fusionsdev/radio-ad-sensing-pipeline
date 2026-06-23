@@ -36,6 +36,19 @@ stations.yaml → ingestor (ffmpeg) → chunks/ + SQLite queue
 2. **Ops classifier** — `scripts/loan_classifier.py` (station rotation, Hermes `/pipeline-ops`)
 3. **LLM extraction** — Ollama JSON schema; `station`/`timestamp` injected from chunk metadata
 
+## Dashboard — two codebases
+
+| Layer | Location | Notes |
+|---|---|---|
+| **Backend API** | `radio-ad-sensing-pipeline` → Docker `radio-dashboard` `:8081` | FastAPI, SQLite read-only |
+| **Active UI** | `H:\DEV\github_sandbox\radiosense-aistudio` | React, `:5150` dev / `:4150` preview |
+| **Legacy UI** | `pipeline/dashboard/` templates | Do not add new operator UI here |
+| **Legacy React** | `github_sandbox/radiosense` | Superseded by aistudio |
+
+```txt
+radiosense-aistudio (:5150) ──proxy /api──► radio-dashboard (:8081) ──read──► SQLite + project-memory/
+```
+
 ## Dashboard JSON APIs (harness probes)
 
 | Endpoint | Purpose |
@@ -44,6 +57,14 @@ stations.yaml → ingestor (ffmpeg) → chunks/ + SQLite queue
 | `/api/stations?limit=100` | Station rows + ingest health |
 | `/api/detections?limit=50` | Recent detections |
 | `/api/harvest/status` | Harvest session + DB snapshot |
+| `/api/memory/health` | Memory OS vault health (Phase 1.75) |
+| `/api/memory/status` | Health + Latest_Status freshness |
+| `/api/memory/harness/latest` | Latest harness report JSON/MD |
+| `/api/memory/decisions` | Recent decision notes |
+| `/api/memory/incidents` | Recent incident notes |
+| `/api/memory/stations` | Station lifecycle memory files |
+
+Memory API requires `tools/` + `project-memory/` in dashboard image — see [[Runbooks/Memory Dashboard]].
 
 ## Memory OS (this vault)
 

@@ -51,7 +51,11 @@ def sync_station_health(
                     conn.execute(
                         """
                         UPDATE station_health
-                        SET consecutive_failures = 0
+                        SET consecutive_failures = 0,
+                            restart_count_today = 0,
+                            cool_down_until = NULL,
+                            last_error = NULL,
+                            disabled_at = NULL
                         WHERE station_id = ?
                         """,
                         (snap.station_id,),
@@ -62,6 +66,10 @@ def sync_station_health(
 
 def _alert_marker_key(station_id: str) -> str:
     return f"watchdog:stale_alert:{station_id}"
+
+
+def _restart_marker_key(station_id: str) -> str:
+    return f"watchdog:restart_attempt:{station_id}"
 
 
 def _get_status_value(conn: sqlite3.Connection, key: str) -> str | None:
@@ -122,12 +130,13 @@ def record_stale_detection(
 
 
 def clear_stale_alert_marker(db_path: str | Path, station_id: str) -> None:
-    """Clear dedup marker when station becomes healthy again."""
+    """Clear stale/recovery markers when station becomes healthy again."""
     marker = _alert_marker_key(station_id)
+    restart_marker = _restart_marker_key(station_id)
     conn = get_connection(db_path)
     try:
         with transaction(conn):
-            conn.execute("DELETE FROM status WHERE key = ?", (marker,))
+            conn.execute("DELETE FROM status WHERE key IN (?, ?)", (marker, restart_marker))
     finally:
         conn.close()
 

@@ -352,16 +352,20 @@ No test runner configured in aistudio; manual check at `http://localhost:5150/me
 
 Phase 1.75 complete when:
 
-* [ ] Memory tab exists in **radiosense-aistudio** at `/memory`
-* [ ] Memory API endpoints exist in pipeline repo
-* [ ] Memory Health visible in UI
-* [ ] Harness status visible
-* [ ] Recent decisions visible
-* [ ] Recent incidents visible
-* [ ] Station lifecycle history visible
-* [ ] `dashboard_harness` validates memory endpoints
-* [ ] No production DB writes
-* [ ] No classifier / station rotation / ingestor changes
+* [x] Memory tab exists in **radiosense-aistudio** at `/memory`
+* [x] Memory API endpoints exist in pipeline repo
+* [x] Memory Health visible in UI
+* [x] Harness status visible
+* [x] Recent decisions visible
+* [x] Recent incidents visible
+* [x] Station lifecycle history visible
+* [x] `dashboard_harness` validates memory endpoints
+* [x] No production DB writes
+* [x] No classifier / station rotation / ingestor changes
+
+## Shipped 2026-06-23
+
+**Docker follow-up:** `radio-dashboard` required image rebuild — old container returned 404 on `/api/memory/*`. Fixed via `dashboard/Dockerfile` + compose volume mounts. Documented in `project-memory/Runbooks/Memory Dashboard.md` and `project-memory/Incidents/2026-06-23-memory-api-404-docker.md`.
 
 ---
 

@@ -17,6 +17,10 @@ PROBES = [
     ("/api/memory/health", 200),
     ("/api/memory/status", 200),
     ("/api/memory/harness/latest", 200),
+    ("/api/memory/metrics", 200),
+    ("/api/memory/timeline", 200),
+    ("/api/memory/incidents/analytics", 200),
+    ("/api/memory/decisions/categories", 200),
 ]
 
 

@@ -9,7 +9,16 @@ from pathlib import Path
 from typing import Any
 
 from tools.harness.lib.common import REPORTS_DIR
-from tools.memory._common import DECISIONS_DIR, INCIDENTS_DIR, MEMORY_ROOT, STATIONS_DIR
+from tools.memory._common import DECISIONS_DIR, INCIDENTS_DIR, MEMORY_ROOT, RUNBOOKS_DIR, STATIONS_DIR
+from tools.memory.analytics import (
+    aggregate_categories,
+    classify_decision,
+    classify_incident,
+    count_harness_report_files,
+    count_station_history_entries,
+    count_vault_growth,
+    is_milestone,
+)
 from tools.memory.memory_report import FRESHNESS_DAYS, LATEST_STATUS, build_memory_health
 
 DATE_PREFIX_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
@@ -210,3 +219,115 @@ def fetch_station_memories(limit: int = 20) -> list[dict[str, Any]]:
             }
         )
     return rows
+
+
+def _all_decision_paths() -> list[Path]:
+    if not DECISIONS_DIR.exists():
+        return []
+    return list(DECISIONS_DIR.glob("*.md"))
+
+
+def _all_incident_paths() -> list[Path]:
+    if not INCIDENTS_DIR.exists():
+        return []
+    return list(INCIDENTS_DIR.glob("*.md"))
+
+
+def fetch_memory_metrics() -> dict[str, Any]:
+    if not MEMORY_ROOT.exists():
+        return {
+            "total_decisions": 0,
+            "total_incidents": 0,
+            "total_station_changes": 0,
+            "total_runbooks": 0,
+            "total_harness_runs": 0,
+            "memory_growth_7d": 0,
+            "vault_markdown_total": 0,
+            "degraded": True,
+        }
+    runbooks = len(list(RUNBOOKS_DIR.glob("*.md"))) if RUNBOOKS_DIR.exists() else 0
+    return {
+        "total_decisions": len(_all_decision_paths()),
+        "total_incidents": len(_all_incident_paths()),
+        "total_station_changes": count_station_history_entries(),
+        "total_runbooks": runbooks,
+        "total_harness_runs": max(count_harness_report_files(), 1 if (REPORTS_DIR / "latest.json").exists() else 0),
+        "memory_growth_7d": count_vault_growth(7),
+        "vault_markdown_total": len(
+            [p for p in MEMORY_ROOT.rglob("*.md") if ".obsidian" not in p.parts and ".smart-env" not in p.parts]
+        ),
+        "degraded": False,
+    }
+
+
+def fetch_memory_timeline(limit: int = 50) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+
+    for path in _all_decision_paths():
+        text = path.read_text(encoding="utf-8")
+        title = _title_from_markdown(text, path.stem)
+        context = _section_text(text, "Context")
+        decision = _section_text(text, "Decision")
+        summary = (decision or context or "").split("\n")[0][:200]
+        event_type = "milestone" if is_milestone(title, text) else "decision"
+        events.append(
+            {
+                "date": _date_from_filename(path),
+                "type": event_type,
+                "title": title,
+                "summary": summary or "(no summary)",
+                "path": str(path.relative_to(MEMORY_ROOT.parent)),
+                "sort_key": path.stat().st_mtime,
+            }
+        )
+
+    for path in _all_incident_paths():
+        text = path.read_text(encoding="utf-8")
+        title = _title_from_markdown(text, path.stem)
+        symptoms = _section_text(text, "Symptoms")
+        events.append(
+            {
+                "date": _date_from_filename(path),
+                "type": "incident",
+                "title": title,
+                "summary": (symptoms.split("\n")[0] if symptoms else "(no symptoms)")[:200],
+                "path": str(path.relative_to(MEMORY_ROOT.parent)),
+                "sort_key": path.stat().st_mtime,
+            }
+        )
+
+    if LATEST_STATUS.exists():
+        text = LATEST_STATUS.read_text(encoding="utf-8")
+        events.append(
+            {
+                "date": _date_from_filename(LATEST_STATUS),
+                "type": "milestone",
+                "title": "Latest Status updated",
+                "summary": "project-memory/Latest_Status.md",
+                "path": str(LATEST_STATUS.relative_to(MEMORY_ROOT.parent)),
+                "sort_key": LATEST_STATUS.stat().st_mtime,
+            }
+        )
+
+    events.sort(key=lambda e: e["sort_key"], reverse=True)
+    for e in events[:limit]:
+        e.pop("sort_key", None)
+    return events[:limit]
+
+
+def fetch_incident_analytics() -> dict[str, Any]:
+    items: list[tuple[str, str, str]] = []
+    for path in _all_incident_paths():
+        text = path.read_text(encoding="utf-8")
+        title = _title_from_markdown(text, path.stem)
+        items.append((title, text, str(path)))
+    return aggregate_categories(items, classify_incident)
+
+
+def fetch_decision_categories() -> dict[str, Any]:
+    items: list[tuple[str, str, str]] = []
+    for path in _all_decision_paths():
+        text = path.read_text(encoding="utf-8")
+        title = _title_from_markdown(text, path.stem)
+        items.append((title, text, str(path)))
+    return aggregate_categories(items, classify_decision)

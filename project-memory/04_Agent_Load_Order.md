@@ -27,6 +27,8 @@ PLAN.md                       ← when changing architecture (do not re-litigate
 | Pipeline ops | `.agents/skills/pipeline-ops/SKILL.md`, `docs/OPERATOR_WORKFLOW.md` |
 | Station rotation | `scripts/loan_classifier.py`, `config/stations.yaml` |
 | Dashboard API | `dashboard/routes/radiosense.py`, `dashboard/routes/harvest.py` |
+| Memory Dashboard UI | `H:\DEV\github_sandbox\radiosense-aistudio`, [[Runbooks/Memory Dashboard]] |
+| Memory API / vault | `dashboard/routes/memory.py`, `tools/memory/vault_reader.py`, [[Runbooks/Memory Dashboard]] |
 | Watchdog | `watchdog/station_watchdog.py`, `config/settings.yaml` |
 | Classifier / verticals | `config/consumer_personal_loan_taxonomy.yaml` |
 | Continuing WP | Latest `plan/handoff-*.md` |

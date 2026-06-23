@@ -85,20 +85,19 @@ def run_health_check(db_path: Path, *, settings: WatchdogSettings | None = None)
             continue
 
         new_episode = record_stale_detection(db_path, snap, now_ts=now_ts)
-        recovery_action = None
-        if new_episode:
-            recovery_action = auto_restart_stale_station(
-                db_path,
-                snap,
-                settings=settings,
-                now_ts=now_ts,
-            )
-            if recovery_action == "restart_queued":
-                restarts_queued += 1
-                increment_station_restarts()
-            elif recovery_action == "disabled":
-                stations_disabled += 1
+        recovery_action = auto_restart_stale_station(
+            db_path,
+            snap,
+            settings=settings,
+            now_ts=now_ts,
+        )
+        if recovery_action == "restart_queued":
+            restarts_queued += 1
+            increment_station_restarts()
+        elif recovery_action == "disabled":
+            stations_disabled += 1
 
+        if new_episode:
             if send_stale_station_alert(
                 snap,
                 active_count=counts["active"],

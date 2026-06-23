@@ -67,3 +67,43 @@ def test_memory_stations_returns_rows(memory_client: TestClient) -> None:
     assert response.status_code == 200
     body = response.json()
     assert isinstance(body["rows"], list)
+
+
+def test_memory_metrics_returns_200(memory_client: TestClient) -> None:
+    response = memory_client.get("/api/memory/metrics")
+    assert response.status_code == 200
+    body = response.json()
+    for key in (
+        "total_decisions",
+        "total_incidents",
+        "total_station_changes",
+        "total_runbooks",
+        "total_harness_runs",
+        "memory_growth_7d",
+    ):
+        assert key in body
+
+
+def test_memory_timeline_returns_rows(memory_client: TestClient) -> None:
+    response = memory_client.get("/api/memory/timeline?limit=20")
+    assert response.status_code == 200
+    body = response.json()
+    assert isinstance(body["rows"], list)
+    if body["rows"]:
+        assert {"date", "type", "title", "summary", "path"} <= set(body["rows"][0].keys())
+
+
+def test_memory_incident_analytics(memory_client: TestClient) -> None:
+    response = memory_client.get("/api/memory/incidents/analytics")
+    assert response.status_code == 200
+    body = response.json()
+    assert "categories" in body
+    assert "total" in body
+
+
+def test_memory_decision_categories(memory_client: TestClient) -> None:
+    response = memory_client.get("/api/memory/decisions/categories")
+    assert response.status_code == 200
+    body = response.json()
+    assert "categories" in body
+    assert body["total"] >= 0

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T00:53:20Z",
+  "timestamp": "2026-06-23T01:04:42Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -47,6 +47,26 @@
           },
           {
             "route": "/api/memory/harness/latest",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/metrics",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/timeline",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/incidents/analytics",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/decisions/categories",
             "status": 200,
             "ok": true
           }
@@ -118,8 +138,8 @@
             "passed": true,
             "broken": []
           },
-          "vault_markdown_count": 15,
-          "incidents_count": 0
+          "vault_markdown_count": 18,
+          "incidents_count": 1
         },
         "subchecks": {
           "core_files": "pass",
@@ -162,8 +182,8 @@
       "passed": true,
       "broken": []
     },
-    "vault_markdown_count": 15,
-    "incidents_count": 0
+    "vault_markdown_count": 18,
+    "incidents_count": 1
   },
   "failed_checks": [],
   "recommended_actions": []

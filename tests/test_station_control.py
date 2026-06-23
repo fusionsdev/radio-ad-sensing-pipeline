@@ -162,12 +162,24 @@ def test_process_disable_command_stops_ingestor(tmp_path: Path) -> None:
         row = conn.execute(
             "SELECT status FROM station_control_commands ORDER BY id DESC LIMIT 1"
         ).fetchone()
+        station_row = conn.execute(
+            "SELECT enabled FROM stations WHERE name = ?",
+            (station.name,),
+        ).fetchone()
+        health = conn.execute(
+            "SELECT health_state, enabled, last_error FROM station_health WHERE station_id = ?",
+            (station.name,),
+        ).fetchone()
         event = conn.execute(
             "SELECT event_type, action_taken FROM station_recovery_events ORDER BY id DESC LIMIT 1"
         ).fetchone()
     finally:
         conn.close()
     assert row["status"] == CommandStatus.DONE.value
+    assert station_row["enabled"] == 0
+    assert health["health_state"] == "failed"
+    assert health["enabled"] == 0
+    assert health["last_error"] == "unit test"
     assert event["event_type"] == "station_stopped"
     assert event["action_taken"] == "disable_station"
 

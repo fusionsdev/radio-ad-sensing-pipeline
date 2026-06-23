@@ -114,17 +114,45 @@ def has_pending_command(
     *,
     station_id: str,
     command: StationControlCommand | str,
+    statuses: tuple[CommandStatus | str, ...] = (
+        CommandStatus.PENDING,
+        CommandStatus.PROCESSING,
+    ),
 ) -> bool:
     command_value = command.value if isinstance(command, StationControlCommand) else str(command)
+    status_values = [
+        status.value if isinstance(status, CommandStatus) else str(status) for status in statuses
+    ]
+    if not status_values:
+        return False
+    placeholders = ", ".join("?" for _ in status_values)
+    conn = get_connection(db_path, read_only=True)
+    try:
+        row = conn.execute(
+            f"""
+            SELECT 1 FROM station_control_commands
+            WHERE station_id = ? AND command = ? AND status IN ({placeholders})
+            LIMIT 1
+            """,
+            (station_id, command_value, *status_values),
+        ).fetchone()
+        return row is not None
+    finally:
+        conn.close()
+
+
+def has_active_command(db_path: str | Path, *, station_id: str) -> bool:
+    """Return true when any command for a station is pending or processing."""
     conn = get_connection(db_path, read_only=True)
     try:
         row = conn.execute(
             """
             SELECT 1 FROM station_control_commands
-            WHERE station_id = ? AND command = ? AND status = ?
+            WHERE station_id = ?
+              AND status IN (?, ?)
             LIMIT 1
             """,
-            (station_id, command_value, CommandStatus.PENDING.value),
+            (station_id, CommandStatus.PENDING.value, CommandStatus.PROCESSING.value),
         ).fetchone()
         return row is not None
     finally:
