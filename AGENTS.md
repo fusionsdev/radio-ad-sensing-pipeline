@@ -2,13 +2,15 @@
 
 **Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
 
-## Mandatory agent operating rules
+## Mandatory agent policy
 
-- Before making any file, Git, branch, stash, PR, or Linear change, read `project-memory/workflows/git-safety-workflow.md`.
+- Before any file, Git, branch, stash, PR, or Linear action, read `project-memory/workflows/git-safety-workflow.md`.
+- For Linear / Oracle work, also read `project-memory/workflows/linear-oracle-agent-workflow.md`.
+- Treat that workflow as a hard gate, not a suggestion.
 - If any instruction in that workflow conflicts with normal agent behavior, the workflow wins.
 - This repo targets consumer personal loans only. Do not broaden scope to tax relief, insurance, debt settlement, car dealers, windows/home improvement, supplements, or generic bank ads unless explicitly requested.
 
-## Current state (2026-06-11)
+## Current state (2026-06-24)
 
 | Item | Status |
 |---|---|
@@ -112,6 +114,6 @@ Full command list: `README.md` § Codebase map. Plugin paths: `final-install-lis
 
 | วิธี | ตัวอย่าง |
 |---|---|
+| พิมพ์ `/` เลือก | `/git-safety`, `/git-safety-commit`, `/git-safety-pr`, `/linear-oracle`, `/linear-oracle-commit`, `/linear-oracle-pr`, `/status`, `/cfpb`, `/help`, `/handoff` → `.cursor/commands/` |
 | พูดตรงๆ | `วันนี้ pipeline ok ไหม` |
-| กด `/` เลือก | `/status`, `/cfpb`, `/help`, `/handoff` → `.cursor/commands/` |
 | ก๊อปวาง | `plan/cursor-copy-paste.md` |

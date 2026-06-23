@@ -1,4 +1,6 @@
-# Git Safety Workflow For RadioSense Agent
+# Mandatory Git Safety Workflow Policy
+
+This policy is mandatory for every agent session in `radio-ad-sensing-pipeline`.
 
 Use this workflow before any file, Git, branch, stash, PR, or Linear change in `radio-ad-sensing-pipeline`.
 
@@ -78,6 +80,8 @@ Do not mix:
 - dashboard + unrelated worker changes
 - memory restore + runtime fixes
 - tool/cache dirs + source changes
+
+If the work will edit docs, memory, or workflow policy, create a docs branch before making those edits when starting from `main`.
 
 ## Memory Files Policy
 

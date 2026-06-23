@@ -13,7 +13,6 @@
 
 - First real CFPB API collect run
 - Git commit/push (many untracked on `main`)
-- AGENTS.md test count still says 166 in one place — use 171
 
 ## Run next
 
