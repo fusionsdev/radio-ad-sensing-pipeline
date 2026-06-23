@@ -1,0 +1,16 @@
+action,callsign,state,market,format,stream_url,loan_ads,unique_loan,reason
+keep,ktrh-am-740,TX,Houston,Talk,http://stream.revma.ihrhls.com/zc2285,10,6,Proven loan station
+keep,klif-am-570,TX,Dallas,Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3,12,9,Proven loan station
+keep,wsb-am-750,GA,Atlanta,News/Talk,http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3,15,6,Proven loan station
+keep,wbap-am-820,TX,Dallas–Fort Worth,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3,13,8,Proven loan station
+add,klbj-am-590,TX,Austin,News/Talk,http://playerservices.streamtheworld.com/pls/KLBJAMAAC.pls,new,new,Austin market gap
+add,wlw-700,OH,Cincinnati,News/Talk,https://stream.revma.ihrhls.com/zc1713,new,new,New market: Ohio
+add,knth-1070,TX,Houston,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/KNTHAM.mp3,new,new,2nd Houston station
+add,ktsa-550,TX,San Antonio,News/Talk,http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart,new,new,Replace WOAI in San Antonio
+add,wfla-970,FL,Tampa,News/Talk,https://stream.revma.ihrhls.com/zc2823,new,new,Replace WGUL in Tampa
+add,kabc-am-790,CA,Los Angeles,Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/KABCAM.mp3,2,2,LA market
+pause,woai-am-1200,TX,San Antonio,Talk,http://stream.revma.ihrhls.com/zc2361,3,3,Replaced by KTSA
+pause,wwtn-fm-997,TN,Nashville,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3,2,1,Weak loan signal
+pause,whbo-1040,FL,Tampa,Talk,https://ice41.securenetsystems.net/WHBO,2,2,Replaced by WFLA
+pause,wibc-fm-931,IN,Indianapolis,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3,5,4,Borderline — freeing slot
+pause,wtam-am-1100,OH,Cleveland,Talk,http://stream.revma.ihrhls.com/zc1757,0,0,0 loan ads in 50 detections

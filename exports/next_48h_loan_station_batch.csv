@@ -1,0 +1,13 @@
+action,callsign,state,market,format,stream_url,reason,loan_ads,unique_loan
+keep,ktrh-am-740,TX,Houston,Talk,http://stream.revma.ihrhls.com/zc2285,"10 loan ads, 6 unique advertisers. Stream verified (iHeart).",10,6
+keep,klif-am-570,TX,Dallas,Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3,"12 loan ads, 9 unique advertisers. Stream verified (StreamTheWorld).",12,9
+keep,wsb-am-750,GA,Atlanta,News/Talk,http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3,"15 loan ads, 6 unique advertisers. Stream verified (StreamGuys).",15,6
+keep,wbap-am-820,TX,Dallas–Fort Worth,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3,"13 loan ads, 8 unique advertisers. Stream verified (StreamTheWorld).",13,8
+add,klbj-am-590,TX,Austin,News/Talk,http://playerservices.streamtheworld.com/pls/KLBJAMAAC.pls,Austin market gap. Stream had 403 on 2026-06-10. Needs re-test. Enabled=false.,new,new
+add,wgul-860,FL,Tampa,News/Talk,http://208.80.52.107/WGULAM_SC,Tampa has WHBO only. Stream had 403 on 2026-06-10. Needs re-test. Enabled=false.,new,new
+add,kabc-am-790,CA,Los Angeles,Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/KABCAM.mp3,"2 loan ads, 2 unique. Weak signal but LA is major market. Enable and re-test.",2,2
+pause,woai-am-1200,TX,San Antonio,Talk,http://stream.revma.ihrhls.com/zc2361,Rotated out. Only 3 loan ads — too weak for batch slot. Replace with KLBJ (Austin).,3,3
+pause,wwtn-fm-997,TN,Nashville,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3,Rotated out. Only 1 unique loan advertiser. Replace with WGUL (Tampa).,2,1
+pause,whbo-1040,FL,Tampa,Talk,https://ice41.securenetsystems.net/WHBO,Rotated out. Only 2 loan ads across 485 detections. Replace with KABC (LA).,2,2
+pause,wtam-am-1100,OH,Cleveland,Talk,http://stream.revma.ihrhls.com/zc1757,Confirmed rotate out. 0 loan ads in 50 detections.,0,0
+pause,wibc-fm-931,IN,Indianapolis,News/Talk,http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3,"Rotated out. 5 loan ads is borderline, freeing slot for new market test.",5,4

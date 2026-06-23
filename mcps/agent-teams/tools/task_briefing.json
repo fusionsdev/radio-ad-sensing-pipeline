@@ -1,0 +1,26 @@
+{
+  "name": "task_briefing",
+  "description": "Get formatted task briefing for a member",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "memberName": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName",
+      "memberName"
+    ]
+  }
+}

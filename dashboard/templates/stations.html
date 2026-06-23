@@ -4,7 +4,7 @@
 <h2 style="margin-top: 0; font-size: 1rem;">Station health</h2>
 {% if stations %}
 <table>
-  <thead><tr><th>Name</th><th>Status</th><th>Enabled</th><th>Last chunk</th><th>Age</th><th>Chunks / 24h</th><th>Gaps / 24h</th></tr></thead>
+  <thead><tr><th>Name</th><th>Status</th><th>Enabled</th><th>Last chunk</th><th>Age</th><th>Empty / stream down 30m</th><th>Backoff until</th><th>FFmpeg error sample</th><th>Chunks / 24h</th><th>Gaps / 24h</th></tr></thead>
   <tbody>
     {% for s in stations %}
     <tr>
@@ -13,6 +13,9 @@
       <td>{% if s.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge muted">off</span>{% endif %}</td>
       <td>{{ format_ts(s.last_chunk_ts) }}</td>
       <td>{{ format_age(s.age_seconds) }}</td>
+      <td>{{ s.empty_chunk_count_30m or 0 }} / {{ s.stream_down_count_30m or 0 }}</td>
+      <td>{{ format_ts(s.backoff_until) }}</td>
+      <td style="max-width: 28rem; white-space: pre-wrap;">{{ s.ffmpeg_error_sample or "—" }}</td>
       <td>{{ s.chunks_24h or 0 }}</td>
       <td>{% if s.gaps_24h %}<span class="badge warn">{{ s.gaps_24h }}</span>{% else %}0{% endif %}</td>
     </tr>

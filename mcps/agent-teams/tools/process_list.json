@@ -1,0 +1,21 @@
+{
+  "name": "process_list",
+  "description": "List registered background services for the team, such as dev servers, watchers, or databases. This does not show teammate-agent liveness.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

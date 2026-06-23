@@ -1,0 +1,10 @@
+{
+  "plugins": {
+    "thedotmack/claude-mem": {
+      "enabled": true
+    },
+    "parallel": {
+      "enabled": true
+    }
+  }
+}

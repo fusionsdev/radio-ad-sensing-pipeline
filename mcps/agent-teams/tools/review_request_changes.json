@@ -1,0 +1,35 @@
+{
+  "name": "review_request_changes",
+  "description": "Request changes on a task under review",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string"
+      },
+      "comment": {
+        "type": "string"
+      },
+      "leadSessionId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

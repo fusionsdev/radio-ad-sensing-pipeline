@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import time
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
@@ -216,6 +219,91 @@ def test_overview_shows_status_column(seeded: tuple[Path, dict[str, int]]) -> No
     assert response.status_code == 200
     assert "<th>Status</th>" in response.text
     assert 'class="badge' in response.text
+
+
+def test_stations_page_shows_ingestor_backoff_health_fields(
+    seeded: tuple[Path, dict[str, int]],
+) -> None:
+    db_path, _ = seeded
+    now = time.time()
+    backoff_until = now + 1800
+    conn = get_connection(db_path)
+    try:
+        conn.execute(
+            """
+            INSERT INTO station_health (
+                station_id, health_state, enabled, last_failure_at,
+                cool_down_until, last_error, updated_at
+            ) VALUES (?, 'backoff', 1, ?, ?, ?, ?)
+            ON CONFLICT(station_id) DO UPDATE SET
+                health_state = excluded.health_state,
+                enabled = excluded.enabled,
+                last_failure_at = excluded.last_failure_at,
+                cool_down_until = excluded.cool_down_until,
+                last_error = excluded.last_error,
+                updated_at = excluded.updated_at
+            """,
+            (
+                "news-talk",
+                datetime.fromtimestamp(now - 60, tz=UTC).isoformat(),
+                datetime.fromtimestamp(backoff_until, tz=UTC).isoformat(),
+                "aac decode failed",
+                datetime.fromtimestamp(now, tz=UTC).isoformat(),
+            ),
+        )
+        station_id = conn.execute(
+            "SELECT id FROM stations WHERE name = 'news-talk'"
+        ).fetchone()[0]
+        conn.execute(
+            "INSERT INTO gaps (station_id, start_ts, end_ts, reason) VALUES (?, ?, ?, ?)",
+            (station_id, now - 60, now - 30, "empty_chunk"),
+        )
+        conn.execute(
+            "INSERT INTO gaps (station_id, start_ts, end_ts, reason) VALUES (?, ?, ?, ?)",
+            (station_id, now - 120, now - 90, "stream_down"),
+        )
+        conn.execute(
+            """
+            INSERT INTO status (key, value, updated_at)
+            VALUES (?, ?, ?)
+            """,
+            (
+                "ingestor:station_health:news-talk",
+                json.dumps(
+                    {
+                        "status": "backoff",
+                        "last_success_at": None,
+                        "last_failure_at": now - 60,
+                        "consecutive_empty_chunks": 4,
+                        "consecutive_stream_down": 1,
+                        "backoff_until": backoff_until,
+                        "last_ffmpeg_error_sample": "aac decode failed",
+                        "url_hash": "abcdef123456",
+                    }
+                ),
+                now,
+            ),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    rows = queries.fetch_stations(db_path)
+    station = next(row for row in rows if row["name"] == "news-talk")
+    assert station["status"] == "backoff"
+    assert station["empty_chunk_count_30m"] == 1
+    assert station["stream_down_count_30m"] == 1
+    assert station["consecutive_empty_chunks"] == 4
+    assert station["consecutive_stream_down"] == 1
+    assert station["backoff_until"] == pytest.approx(backoff_until)
+    assert station["ffmpeg_error_sample"] == "aac decode failed"
+
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/stations")
+    assert response.status_code == 200
+    assert "Backoff" in response.text
+    assert "aac decode failed" in response.text
+    assert "<th>Empty / stream down 30m</th>" in response.text
 
 
 def test_ads_htmx_partial(seeded: tuple[Path, dict[str, int]]) -> None:

@@ -1,0 +1,38 @@
+{
+  "name": "review_approve",
+  "description": "Approve task review and move kanban state accordingly",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string"
+      },
+      "note": {
+        "type": "string"
+      },
+      "notifyOwner": {
+        "type": "boolean"
+      },
+      "leadSessionId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

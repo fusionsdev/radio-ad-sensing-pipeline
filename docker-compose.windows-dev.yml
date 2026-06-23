@@ -26,9 +26,3 @@ services:
       - alerter
       - dashboard
       - dcgm-exporter
-
-  worker:
-    deploy:
-      resources:
-        reservations:
-          devices: !override []

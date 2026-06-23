@@ -1,0 +1,32 @@
+{
+  "name": "team_stop",
+  "description": "Stop a running team via the desktop runtime",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "waitForStop": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

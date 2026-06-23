@@ -1,0 +1,26 @@
+{
+  "name": "kanban_clear",
+  "description": "Repair-clear a stale non-review kanban overlay. Use review_request_changes, review_approve, task_start, or task_set_status for lifecycle transitions.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

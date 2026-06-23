@@ -6,7 +6,7 @@ $RepoRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Set-Location $RepoRoot
 
 $QueryScript = Join-Path $RepoRoot "scripts\pipeline_status_query.py"
-Get-Content -Raw $QueryScript | docker exec -i radio-worker python -
+Get-Content -Raw $QueryScript | docker compose exec -T worker python -
 
 Write-Host ""
 Write-Host "=== Docker services ==="

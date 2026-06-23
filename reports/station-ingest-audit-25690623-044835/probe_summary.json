@@ -1,0 +1,279 @@
+{
+  "probe_ended_at": 1782165526.6434581,
+  "probe_seconds_target": 600,
+  "probe_started_at": 1782164916.2062135,
+  "settings": {
+    "chunk_len": 90,
+    "ingest_backoff_initial_sec": 2.0,
+    "ingest_backoff_max_sec": 60.0,
+    "ingest_immediate_retries": 7,
+    "ingest_immediate_retry_delay_sec": 2.0,
+    "overlap": 7
+  },
+  "silence_window_sec": 1.0,
+  "stations": [
+    {
+      "attempt_results": [],
+      "attempts": 19,
+      "audio_dir": "/app/data/station-ingest-audit-25690623-044835/klif-am-570/audio",
+      "audio_metrics": {
+        "audio_seconds": 1710.0,
+        "invalid_audio_file_names": [],
+        "invalid_audio_files": 0,
+        "rms_dbfs": -20.19,
+        "silence_ratio": 0.0292,
+        "valid_audio_files": 19
+      },
+      "chunk_creation_rate_per_min": 1.87,
+      "display_name": "KLIF 570 AM — Dallas, TX",
+      "elapsed_sec": 609.52,
+      "enabled": true,
+      "ffmpeg_error_counts": {
+        "decode_errors": 0,
+        "http_errors": 0,
+        "reconnects": 0,
+        "stream_errors": 0,
+        "timeout_errors": 0
+      },
+      "format": "mp3",
+      "live_db_counts": {
+        "chunks_created": 0,
+        "gap_empty_chunk": 1
+      },
+      "probe_ended_at": 1782165525.7227657,
+      "probe_minutes": 10.16,
+      "probe_started_at": 1782164916.2062135,
+      "station": "klif-am-570",
+      "station_id": 15,
+      "stderr_log": "/app/data/station-ingest-audit-25690623-044835/klif-am-570/logs/ffmpeg_capture.log",
+      "stderr_log_bytes": 107983,
+      "success_files": [
+        "1782164916208-a1.wav",
+        "1782164948099-a2.wav",
+        "1782164979646-a3.wav",
+        "1782165011137-a4.wav",
+        "1782165043132-a5.wav",
+        "1782165074978-a6.wav",
+        "1782165107469-a7.wav",
+        "1782165139964-a8.wav",
+        "1782165171758-a9.wav",
+        "1782165204608-a10.wav",
+        "1782165236851-a11.wav",
+        "1782165269150-a12.wav",
+        "1782165301399-a13.wav",
+        "1782165333953-a14.wav",
+        "1782165365747-a15.wav",
+        "1782165397890-a16.wav",
+        "1782165430382-a17.wav",
+        "1782165461924-a18.wav",
+        "1782165493565-a19.wav"
+      ],
+      "successful_chunks": 19,
+      "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3"
+    },
+    {
+      "attempt_results": [
+        {
+          "attempt": 8,
+          "output": "1782164956324-a8.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 8,
+          "output": "1782164956324-a8.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 16,
+          "output": "1782165001252-a16.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 16,
+          "output": "1782165001252-a16.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 24,
+          "output": "1782165052737-a24.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 24,
+          "output": "1782165052737-a24.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 32,
+          "output": "1782165109617-a32.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 32,
+          "output": "1782165109617-a32.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 40,
+          "output": "1782165187609-a40.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 40,
+          "output": "1782165187609-a40.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 48,
+          "output": "1782165290048-a48.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 48,
+          "output": "1782165290048-a48.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 56,
+          "output": "1782165391879-a56.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 56,
+          "output": "1782165391879-a56.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 64,
+          "output": "1782165494017-a64.wav",
+          "returncode": 0,
+          "success": false
+        },
+        {
+          "attempt": 64,
+          "output": "1782165494017-a64.wav",
+          "reason": "empty_chunk",
+          "returncode": 0,
+          "success": false
+        }
+      ],
+      "attempts": 64,
+      "audio_dir": "/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio",
+      "audio_metrics": {
+        "audio_seconds": 0.0,
+        "invalid_audio_file_names": [],
+        "invalid_audio_files": 0,
+        "rms_dbfs": null,
+        "silence_ratio": null,
+        "valid_audio_files": 0
+      },
+      "chunk_creation_rate_per_min": 0.0,
+      "display_name": "KTSA 550 AM — San Antonio, TX",
+      "elapsed_sec": 599.98,
+      "enabled": true,
+      "ffmpeg_error_counts": {
+        "decode_errors": 126,
+        "http_errors": 0,
+        "reconnects": 0,
+        "stream_errors": 0,
+        "timeout_errors": 0
+      },
+      "format": "aac",
+      "live_db_counts": {
+        "chunks_created": 0,
+        "gap_empty_chunk": 5
+      },
+      "probe_ended_at": 1782165516.1833863,
+      "probe_minutes": 10.0,
+      "probe_started_at": 1782164916.2062135,
+      "station": "ktsa-550",
+      "station_id": 70726,
+      "stderr_log": "/app/data/station-ingest-audit-25690623-044835/ktsa-550/logs/ffmpeg_capture.log",
+      "stderr_log_bytes": 99330,
+      "success_files": [],
+      "successful_chunks": 0,
+      "url": "http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart"
+    },
+    {
+      "attempt_results": [],
+      "attempts": 19,
+      "audio_dir": "/app/data/station-ingest-audit-25690623-044835/wbap-am-820/audio",
+      "audio_metrics": {
+        "audio_seconds": 1710.0,
+        "invalid_audio_file_names": [],
+        "invalid_audio_files": 0,
+        "rms_dbfs": -18.76,
+        "silence_ratio": 0.0269,
+        "valid_audio_files": 19
+      },
+      "chunk_creation_rate_per_min": 1.87,
+      "display_name": "WBAP 820 AM — Dallas–Fort Worth, TX",
+      "elapsed_sec": 610.33,
+      "enabled": true,
+      "ffmpeg_error_counts": {
+        "decode_errors": 0,
+        "http_errors": 0,
+        "reconnects": 0,
+        "stream_errors": 0,
+        "timeout_errors": 0
+      },
+      "format": "mp3",
+      "live_db_counts": {
+        "chunks_created": 2,
+        "gap_empty_chunk": 1
+      },
+      "probe_ended_at": 1782165526.532956,
+      "probe_minutes": 10.17,
+      "probe_started_at": 1782164916.2062135,
+      "station": "wbap-am-820",
+      "station_id": 1,
+      "stderr_log": "/app/data/station-ingest-audit-25690623-044835/wbap-am-820/logs/ffmpeg_capture.log",
+      "stderr_log_bytes": 106217,
+      "success_files": [
+        "1782164916208-a1.wav",
+        "1782164948401-a2.wav",
+        "1782164980845-a3.wav",
+        "1782165013388-a4.wav",
+        "1782165045087-a5.wav",
+        "1782165077632-a6.wav",
+        "1782165109423-a7.wav",
+        "1782165141218-a8.wav",
+        "1782165172409-a9.wav",
+        "1782165204907-a10.wav",
+        "1782165237402-a11.wav",
+        "1782165270404-a12.wav",
+        "1782165302954-a13.wav",
+        "1782165334454-a14.wav",
+        "1782165366549-a15.wav",
+        "1782165398342-a16.wav",
+        "1782165430132-a17.wav",
+        "1782165461573-a18.wav",
+        "1782165494117-a19.wav"
+      ],
+      "successful_chunks": 19,
+      "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3"
+    }
+  ],
+  "threshold_dbfs": -45.0
+}

@@ -1,0 +1,52 @@
+{
+  "name": "process_register",
+  "description": "Register a background service started by a teammate, such as a dev server, watcher, or database. This is not for teammate-agent liveness.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "pid": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      },
+      "label": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string"
+      },
+      "command": {
+        "type": "string",
+        "minLength": 1
+      },
+      "port": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65535
+      },
+      "url": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeProcessId": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName",
+      "pid",
+      "label"
+    ]
+  }
+}

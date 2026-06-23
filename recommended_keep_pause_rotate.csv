@@ -1,0 +1,4 @@
+rank,station,recommendation,probe_chunks_per_min,probe_success_chunks,probe_elapsed_sec,rms_dbfs,silence_ratio,decode_errors,http_errors,reconnects,live_db_chunks_created_10m,live_db_gap_empty_chunk_10m,notes
+1,wbap-am-820,keep,1.87,19,610.33,-18.76,2.69%,0,0,0,2,1,"Healthy direct probe: strong chunk yield, clean stderr, low silence ratio."
+2,klif-am-570,keep,1.87,19,609.52,-20.19,2.92%,0,0,0,0,1,"Healthy direct probe: strong chunk yield, clean stderr, low silence ratio."
+3,ktsa-550,pause,0.00,0,599.98,,,126,0,0,0,5,AAC decode corruption; zero valid chunks in 10m probe; pause now and rotate/replace the stream source.

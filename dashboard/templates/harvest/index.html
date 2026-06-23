@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Radio Harvest — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">Radio Harvest Control</h2>
+
+{% if warning %}
+<div class="card" style="margin-bottom: 1rem; border-left: 4px solid #d94a38; background: #fff5f3;">
+  <strong style="color: #b3261e;">⚠ DB warning:</strong>
+  <span style="font-size: 0.85rem;">{{ warning }}</span>
+  <div style="font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem;">
+    DB in use: <code>{{ status.db_path or "unknown" }}</code>
+  </div>
+</div>
+{% endif %}
+
+{% if flash %}
+<p class="badge {% if flash and (flash.startswith('Probe finished') or flash.startswith('started') or flash.startswith('stopped')) %}ok{% elif 'already' in flash %}warn{% elif flash %}err{% endif %}">
+  {{ flash }}
+</p>
+{% if flash_detail %}<pre style="white-space: pre-wrap; font-size: 0.78rem; color: var(--muted); margin: 0 0 1rem;">{{ flash_detail }}</pre>{% endif %}
+{% endif %}
+
+<div class="card" style="margin-bottom: 1rem;">
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+    <form method="post" action="/radio-harvest/probe" style="display:inline;">
+      <button class="btn-review" type="submit">Probe Stations</button>
+    </form>
+    <form method="post" action="/radio-harvest/start" style="display:inline;">
+      <button class="btn-review" type="submit" {% if running %}disabled title="A harvest session is already running"{% endif %}>Start Overnight Harvest</button>
+    </form>
+    <form method="post" action="/radio-harvest/stop" style="display:inline;"
+          onsubmit="return confirm('Stop the active overnight harvest?');">
+      <button class="btn-review" type="submit" {% if not running %}disabled title="No active harvest session"{% endif %}>Stop Harvest</button>
+    </form>
+    <a class="btn-review" href="/radio-harvest/status" style="text-decoration:none;">Status</a>
+    <a class="btn-review" href="/radio-harvest/detections" style="text-decoration:none;">View Detections</a>
+    <a class="btn-review" href="/radio-harvest/queue" style="text-decoration:none;">Queue Health</a>
+    <a class="btn-review" href="/radio-harvest/stations" style="text-decoration:none;">Station Config</a>
+  </div>
+  <p style="font-size: 0.78rem; color: var(--muted); margin: 0.75rem 0 0;">
+    Buttons wrap <code>scripts/harvest_control.py</code> behind a fixed command allowlist (no shell).
+    Start is blocked while a session is already running.
+  </p>
+</div>
+
+<h2 style="font-size: 1rem;">Current Status</h2>
+<div class="grid" style="margin-bottom: 1rem;">
+  <div class="card"><h2>Profile</h2><div class="value" style="font-size:1rem;">{{ status.profile or "—" }}</div></div>
+  <div class="card"><h2>Running</h2><div class="value">
+    {% if running %}<span class="badge ok">yes</span>{% else %}<span class="badge muted">no</span>{% endif %}
+  </div></div>
+  <div class="card"><h2>Active stations</h2><div class="value">{{ status.active_stations }}/{{ status.tested_stations }}</div></div>
+  <div class="card"><h2>Pending queue</h2><div class="value">{{ status.pending_queue }}</div></div>
+  <div class="card"><h2>Detections</h2><div class="value">{{ status.detections_total }}</div></div>
+  <div class="card"><h2>Dropped chunks</h2><div class="value">{{ status.chunks_dropped }}</div></div>
+  <div class="card"><h2>Last updated</h2><div class="value" style="font-size:1rem;">{{ fmt_when(status.last_updated) }}</div></div>
+</div>
+
+<h2 style="font-size: 1rem;">Station Health</h2>
+{% if per_station %}
+<table>
+  <thead><tr><th>Station</th><th>Market</th><th>Pending</th><th>Dropped</th><th>Done</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for s in per_station %}
+    <tr>
+      <td>{{ s.display_name }}</td>
+      <td>{{ s.market or "—" }}</td>
+      <td>{% if s.pending > 0 %}<span class="badge warn">{{ s.pending }}</span>{% else %}0{% endif %}</td>
+      <td>{% if s.dropped > 0 %}<span class="badge err">{{ s.dropped }}</span>{% else %}0{% endif %}</td>
+      <td>{{ s.done }}</td>
+      <td>{{ s.total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No station chunk activity yet.</p>
+{% endif %}
+
+{% if status.note %}
+<p style="font-size: 0.78rem; color: var(--muted); margin-top: 1rem;">{{ status.note }}</p>
+{% endif %}
+{% endblock %}

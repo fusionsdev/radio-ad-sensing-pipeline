@@ -1,0 +1,24 @@
+{
+  "name": "cross_team_list_targets",
+  "description": "List available teams that can receive cross-team messages.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "excludeTeam": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

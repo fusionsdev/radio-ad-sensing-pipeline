@@ -1,0 +1,25 @@
+{
+  "vaultPath": "H:/DEV/projects/radio-ad-sensing-pipeline/project-memory",
+  "server": "obsidian-mcp-server",
+  "repository": "https://github.com/cyanheads/obsidian-mcp-server",
+  "install": "npm install -g obsidian-mcp-server",
+  "cursor_mcp": {
+    "mcpServers": {
+      "obsidian": {
+        "command": "npx",
+        "args": ["-y", "obsidian-mcp-server"],
+        "env": {
+          "OBSIDIAN_VAULT_PATH": "H:/DEV/projects/radio-ad-sensing-pipeline/project-memory"
+        }
+      }
+    }
+  },
+  "obsidian_git": {
+    "repository": "https://github.com/Vinzent03/obsidian-git",
+    "note": "Install as Obsidian community plugin for vault auto-commit and GitHub sync"
+  },
+  "smart_connections": {
+    "repository": "https://github.com/brianpetro/obsidian-smart-connections",
+    "note": "Optional Obsidian plugin for semantic note discovery"
+  }
+}

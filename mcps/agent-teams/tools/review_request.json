@@ -1,0 +1,35 @@
+{
+  "name": "review_request",
+  "description": "Move a completed task into review and notify reviewer",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string"
+      },
+      "reviewer": {
+        "type": "string"
+      },
+      "leadSessionId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

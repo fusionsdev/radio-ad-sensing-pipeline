@@ -1,0 +1,40 @@
+{
+  "name": "task_unlink",
+  "description": "Remove task relationship link",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "targetId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "relationship": {
+        "type": "string",
+        "enum": [
+          "blocked-by",
+          "blocks",
+          "related"
+        ]
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId",
+      "targetId",
+      "relationship"
+    ]
+  }
+}

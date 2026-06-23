@@ -1,0 +1,52 @@
+{
+  "name": "task_attach_comment_file",
+  "description": "Attach a file to a task comment. Returns attachment metadata with filePath for future access via Read tool.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "commentId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "filePath": {
+        "type": "string",
+        "minLength": 1
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "copy",
+          "link"
+        ]
+      },
+      "filename": {
+        "type": "string"
+      },
+      "mimeType": {
+        "type": "string"
+      },
+      "noFallback": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId",
+      "commentId",
+      "filePath"
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+# Harvest profiles for the Safe Run Mode keyword harvester.
+# Loaded by scripts/harvest_control.py. The overnight profile uses a BROAD
+# money-problem detection net (not strict loan-only matching) so the pipeline
+# surfaces usable paid-search keyword candidates instead of staying quiet.
+
+profiles:
+  overnight_keyword_harvest:
+    description: >-
+      Broad money-problem + loan keyword harvest for overnight runs. Probes up
+      to max_stations streams, then exports brand/domain/money-problem keyword
+      candidates from the pipeline DB.
+
+    max_stations: 20
+    probe_duration_seconds: 6
+    probe_timeout_seconds: 20
+    export_top_default: 50
+
+    # Candidate types emitted to exports/overnight_keyword_candidates.*.
+    candidate_types:
+      - brand
+      - domain
+      - money_problem
+      - loan_product
+      - approval_funding
+
+    # Broad money-problem phrases (not loan-only). A transcript/ad matching any
+    # of these is a money_problem candidate even if the ad_category is noisy.
+    money_problem_phrases:
+      - need cash
+      - fast cash
+      - quick cash
+      - cash today
+      - emergency cash
+      - money fast
+      - pay bills
+      - behind on bills
+      - unexpected bills
+      - unexpected expenses
+      - short on cash
+      - bad credit
+      - poor credit
+      - less than perfect credit
+
+    loan_product_phrases:
+      - personal loan
+      - installment loan
+      - cash loan
+      - online loan
+      - emergency loan
+      - bad credit loan
+
+    approval_funding_phrases:
+      - same day funding
+      - next day funding
+      - get approved
+      - direct deposit
+      - apply online
+
+    # Brand / domain signal phrases -> produces brand & domain candidates.
+    brand_domain_phrases:
+      - dot com
+      - visit
+      - go to
+      - official website
+
+    # Verticals to reject outright. A candidate whose evidence contains any of
+    # these substrings (and no money-problem/loan signal) is skipped.
+    rejected_substrings:
+      - tax relief
+      - tax debt
+      - back taxes
+      - unfiled tax returns
+      - irs
+      - insurance
+      - medicare
+      - timeshare
+      - mortgage refinance
+      - cash-out refinance
+      - solar
+      - injury lawyer
+      - home warranty
+      - merchant cash advance
+      - working capital
+      - auto loan
+      - car loan
+      - student loan
+
+    # Debt-related language that is ambiguous: save for review instead of
+    # discarding. Used only when no clear money-problem/loan signal is present.
+    ambiguous_review_phrases:
+      - debt
+      - bills
+      - credit
+      - loan
+      - borrow

@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import multiprocessing
+import os
 import sqlite3
 import threading
+import time
 from pathlib import Path
 
 import pytest
@@ -104,6 +107,30 @@ class FakeFingerprintAnnotator:
     def annotate_chunk(self, chunk_id: int, audio_path: Path) -> FingerprintMatch | None:
         self.calls.append((chunk_id, audio_path))
         return self.match
+
+
+def _multiprocess_consume_worker(
+    db_path: str,
+    settings_kwargs: dict[str, object],
+    iterations: int,
+    result_queue: multiprocessing.Queue,
+) -> None:
+    try:
+        settings = PipelineSettings(**settings_kwargs)
+        transcriber = FakeTranscriber(wall_time_sec=0.01)
+        consumer = ChunkConsumer(
+            Path(db_path),
+            settings,
+            transcriber,
+            worker_id=f"test-worker-{os.getpid()}",
+        )
+        processed = 0
+        for _ in range(iterations):
+            if consumer.run_once():
+                processed += 1
+        result_queue.put(("ok", processed))
+    except BaseException as exc:  # pragma: no cover - surfaced in parent process
+        result_queue.put(("error", repr(exc)))
 
 
 def _seed_station(conn: sqlite3.Connection, name: str = "test-fm") -> int:
@@ -460,6 +487,212 @@ def test_atomic_claim_two_threads_never_duplicate(
         ).fetchone()["n"]
         assert done_count == 4
         assert transcript_count == 4
+    finally:
+        conn.close()
+
+
+def test_atomic_claim_multiple_processes_never_duplicate(
+    worker_db: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            for i in range(24):
+                audio = tmp_path / f"multi_process_{i}.wav"
+                audio.write_bytes(b"x")
+                _insert_chunk(
+                    conn,
+                    station_id=station_id,
+                    path=str(audio),
+                    start_ts=float(i * 100),
+                    end_ts=float(i * 100 + 90),
+                )
+    finally:
+        conn.close()
+
+    ctx = multiprocessing.get_context("spawn")
+    result_queue = ctx.Queue()
+    processes = [
+        ctx.Process(
+            target=_multiprocess_consume_worker,
+            args=(
+                str(worker_db),
+                settings.model_dump(),
+                12,
+                result_queue,
+            ),
+        )
+        for _ in range(4)
+    ]
+    for process in processes:
+        process.start()
+    for process in processes:
+        process.join(timeout=30)
+
+    for process in processes:
+        if process.is_alive():
+            process.terminate()
+            process.join(timeout=5)
+
+    results = [result_queue.get(timeout=5) for _ in processes]
+    errors = [payload for status, payload in results if status == "error"]
+    assert errors == []
+    assert sum(int(payload) for status, payload in results if status == "ok") >= 24
+
+    conn = get_connection(worker_db)
+    try:
+        done_count = conn.execute(
+            "SELECT COUNT(*) AS n FROM chunks WHERE status = 'done'"
+        ).fetchone()["n"]
+        transcript_count = conn.execute(
+            "SELECT COUNT(*) AS n FROM transcripts"
+        ).fetchone()["n"]
+        duplicate_count = conn.execute(
+            """
+            SELECT COUNT(*)
+            FROM (
+                SELECT chunk_id
+                FROM transcripts
+                GROUP BY chunk_id
+                HAVING COUNT(*) > 1
+            )
+            """
+        ).fetchone()[0]
+        worker_count = conn.execute(
+            """
+            SELECT COUNT(DISTINCT worker_id)
+            FROM chunks
+            WHERE status = 'done' AND worker_id IS NOT NULL
+            """
+        ).fetchone()[0]
+        assert done_count == 24
+        assert transcript_count == 24
+        assert duplicate_count == 0
+        assert worker_count >= 2
+    finally:
+        conn.close()
+
+
+def test_stale_processing_chunk_is_recovered_and_processed(
+    worker_db: Path,
+    tmp_path: Path,
+) -> None:
+    settings = PipelineSettings(queue_max_hours=2, chunk_len=90, processing_stale_after_minutes=60)
+    audio = tmp_path / "stale.wav"
+    audio.write_bytes(b"x")
+    old_processing_started_at = time.time() - (2 * 3600)
+
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            chunk_id = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path=str(audio),
+                start_ts=1000.0,
+                end_ts=1090.0,
+                status="processing",
+            )
+            conn.execute(
+                """
+                UPDATE chunks
+                SET processing_started_at = ?, worker_id = ?
+                WHERE id = ?
+                """,
+                (old_processing_started_at, "retired-worker", chunk_id),
+            )
+    finally:
+        conn.close()
+
+    consumer = ChunkConsumer(
+        worker_db,
+        settings,
+        FakeTranscriber(wall_time_sec=0.01),
+        worker_id="replacement-worker",
+    )
+
+    assert consumer.run_once() is True
+
+    conn = get_connection(worker_db)
+    try:
+        row = conn.execute(
+            "SELECT status, error, worker_id, processed_at FROM chunks WHERE id = ?",
+            (chunk_id,),
+        ).fetchone()
+        assert row["status"] == "done"
+        assert row["error"] is None
+        assert row["worker_id"] == "replacement-worker"
+        assert row["processed_at"] is not None
+        assert conn.execute(
+            "SELECT COUNT(*) FROM transcripts WHERE chunk_id = ?",
+            (chunk_id,),
+        ).fetchone()[0] == 1
+    finally:
+        conn.close()
+
+
+def test_duplicate_transcript_insert_is_idempotent_and_skips_downstream(
+    worker_db: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    audio = tmp_path / "duplicate.wav"
+    audio.write_bytes(b"x")
+
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            chunk_id = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path=str(audio),
+                start_ts=1000.0,
+                end_ts=1090.0,
+            )
+            conn.execute(
+                "INSERT INTO transcripts (chunk_id, text, asr_duration_ms) VALUES (?, ?, ?)",
+                (chunk_id, "already transcribed", 123),
+            )
+    finally:
+        conn.close()
+
+    extractor = FakeExtractor(AdExtraction(is_ad=True, company_name="Should Not Run", confidence=0.9))
+    persister = FakeDetectionPersister()
+    consumer = ChunkConsumer(
+        worker_db,
+        settings,
+        FakeTranscriber(text="duplicate completion", wall_time_sec=0.01),
+        extractor=extractor,
+        detection_persister=persister,
+        worker_id="duplicate-worker",
+    )
+
+    assert consumer.run_once() is True
+
+    conn = get_connection(worker_db)
+    try:
+        assert conn.execute(
+            "SELECT COUNT(*) FROM transcripts WHERE chunk_id = ?",
+            (chunk_id,),
+        ).fetchone()[0] == 1
+        transcript = conn.execute(
+            "SELECT text FROM transcripts WHERE chunk_id = ?",
+            (chunk_id,),
+        ).fetchone()
+        chunk = conn.execute(
+            "SELECT status, worker_id FROM chunks WHERE id = ?",
+            (chunk_id,),
+        ).fetchone()
+        assert transcript["text"] == "already transcribed"
+        assert chunk["status"] == "done"
+        assert chunk["worker_id"] == "duplicate-worker"
+        assert extractor.calls == []
+        assert persister.calls == []
     finally:
         conn.close()
 

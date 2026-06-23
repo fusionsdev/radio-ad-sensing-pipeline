@@ -1,0 +1,29 @@
+{
+  "name": "task_start",
+  "description": "Mark task as in progress",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "actor": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

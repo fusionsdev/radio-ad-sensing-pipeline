@@ -1,0 +1,74 @@
+# Known negatives — must NOT classify as loan (precision guard)
+cases:
+  - id: auto_toyota
+    company: Toyota
+    offer: financing available
+    text: ""
+    expect_loan: false
+
+  - id: tax_relief
+    company: ""
+    offer: Tax relief for IRS debt
+    text: ""
+    expect_loan: false
+
+  - id: insurance_ethos
+    company: Ethos
+    offer: life insurance quote
+    text: ""
+    expect_loan: false
+
+  - id: window_financing
+    company: ""
+    offer: Get windows financing today
+    text: ""
+    expect_loan: false
+
+  - id: supplement_viome
+    company: Viome
+    offer: health supplement
+    text: ""
+    expect_loan: false
+
+  - id: identity_protection
+    company: ""
+    offer: identity protection plan
+    text: ""
+    expect_loan: false
+
+  - id: car_financing
+    company: ""
+    offer: Auto loan dealership special
+    text: ""
+    expect_loan: false
+
+  - id: progressive_insurance
+    company: Progressive
+    offer: auto insurance
+    text: ""
+    expect_loan: false
+
+  # Known positives — must classify as loan
+  - id: personal_loan_positive
+    company: ""
+    offer: Apply for a personal loan today
+    text: ""
+    expect_loan: true
+
+  - id: billshappen_positive
+    company: BillsHappen.com
+    offer: personal loans available
+    text: ""
+    expect_loan: true
+
+  - id: cash_advance_positive
+    company: ""
+    offer: cash advance up to 5000
+    text: ""
+    expect_loan: true
+
+  - id: installment_positive
+    company: ""
+    offer: installment loan bad credit OK
+    text: ""
+    expect_loan: true

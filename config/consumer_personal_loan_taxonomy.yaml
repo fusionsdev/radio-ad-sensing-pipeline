@@ -1,0 +1,218 @@
+# Consumer personal loan vertical taxonomy — single source of truth for
+# target phrases, intent qualifiers, exclusions, and classifier rules.
+# Loaded by shared/consumer_personal_loan.py; scan phrases sync to vertical_keywords.
+
+target_vertical_keywords:
+  personal_loan:
+    - personal loan
+    - personal loans
+    - unsecured personal loan
+    - unsecured loan
+    - installment loan
+    - installment loans
+    - short term loan
+    - short-term loan
+    - emergency loan
+    - emergency loans
+    - cash loan
+    - cash loans
+    - online loan
+    - online loans
+    - fast loan
+    - fast loans
+    - quick loan
+    - quick loans
+    - same day loan
+    - same-day loan
+    - next day loan
+    - direct lender loan
+    - personal funding
+    - consumer loan
+    - consumer lending
+    - cash advance
+    - payday loan
+    - payday loans
+    - payday advance
+    - bad credit loan
+    - bad credit loans
+    - no credit check loan
+    - no credit check loans
+    - loan matching
+    - loan request
+    - loan application
+    - apply for a loan
+    - funding request
+    - funds as soon as
+    - money deposited
+    - checking account required
+
+intent_qualifiers:
+  high_intent:
+    - apply
+    - apply online
+    - get approved
+    - approval
+    - request
+    - submit
+    - prequalify
+    - pre-qualify
+    - check eligibility
+    - instant decision
+    - minutes
+    - today
+    - fast
+    - quick
+    - online
+    - direct deposit
+    - bank account
+    - checking account
+    - bad credit
+    - poor credit
+    - fair credit
+    - no credit check
+    - soft credit check
+    - fixed payments
+    - monthly payments
+    - repayment
+    - APR
+    - loan amount
+    - lender
+    - lenders
+    - lending partner
+    - matching service
+    - lender network
+    - as soon as
+    - next business day
+
+excluded_vertical_keywords:
+  tax:
+    - tax relief
+    - tax debt
+    - IRS
+    - back taxes
+    - unfiled tax returns
+    - tax resolution
+    - tax settlement
+    - tax lien
+    - wage garnishment
+    - offer in compromise
+    - stop collections
+    - levy
+    - tax attorney
+
+  insurance:
+    - life insurance
+    - term life insurance
+    - auto insurance
+    - car insurance
+    - health insurance
+    - medicare
+    - final expense
+    - burial insurance
+    - homeowners insurance
+    - insurance quote
+    - insurance policy
+    - premium
+    - deductible
+
+  business_loan:
+    - business loan
+    - business loans
+    - small business loan
+    - merchant cash advance
+    - MCA
+    - working capital
+    - business funding
+    - commercial loan
+    - equipment financing
+    - invoice factoring
+    - business line of credit
+    - SBA loan
+    - payroll funding
+    - business cash advance
+
+  consumer_credit:
+    - credit card cash advance
+    - card cash advance
+    - cash advance fee
+    - balance transfer
+
+  mortgage:
+    - mortgage
+    - home loan
+    - refinance
+    - refi
+    - HELOC
+    - home equity
+    - reverse mortgage
+    - FHA
+    - VA loan
+    - mortgage rates
+
+  auto:
+    - auto loan
+    - car loan
+    - vehicle financing
+    - auto refinance
+    - car title loan
+    - title loan
+
+  student:
+    - student loan
+    - student loans
+    - student debt
+    - student loan forgiveness
+    - FAFSA
+
+  debt_settlement:
+    - debt relief
+    - debt settlement
+    - debt consolidation
+    - credit card debt
+    - consolidate debt
+    - reduce your debt
+    - debt program
+    - debt free
+    - creditor
+    - collections
+
+  credit_repair:
+    - credit repair
+    - fix your credit
+    - repair your credit
+    - credit score repair
+    - remove negative items
+    - dispute credit report
+
+soft_exclude_keywords:
+  review_required:
+    - financing
+    - finance
+    - funding
+    - credit
+    - credit line
+    - line of credit
+    - relief
+    - assistance
+    - hardship
+    - funding available
+    - financing options
+    - credit assistance
+    - hardship assistance
+    - payment plan
+    - quote
+    - rates
+    - pre approval
+    - pre-approved
+
+weak_single_terms:
+  - loan
+  - loans
+  - cash
+  - credit
+  - funding
+  - finance
+  - financing
+  - relief
+  - debt
+  - money

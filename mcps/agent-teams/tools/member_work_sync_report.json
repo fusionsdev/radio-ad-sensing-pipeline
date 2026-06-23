@@ -1,0 +1,71 @@
+{
+  "name": "member_work_sync_report",
+  "description": "Report your validated work-sync state for the current agendaFingerprint. This never completes tasks. Use still_working while actively continuing, blocked only when the board has blocker evidence, and caught_up only when the status agenda is empty.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "memberName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string",
+        "minLength": 1
+      },
+      "state": {
+        "type": "string",
+        "enum": [
+          "still_working",
+          "blocked",
+          "caught_up"
+        ]
+      },
+      "agendaFingerprint": {
+        "type": "string",
+        "minLength": 1
+      },
+      "reportToken": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "note": {
+        "type": "string"
+      },
+      "leaseTtlMs": {
+        "type": "integer",
+        "minimum": 60000,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "teamName",
+      "state",
+      "agendaFingerprint",
+      "reportToken"
+    ]
+  }
+}

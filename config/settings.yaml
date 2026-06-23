@@ -18,8 +18,15 @@ ingest_immediate_retries: 7
 ingest_immediate_retry_delay_sec: 2
 ingest_backoff_initial_sec: 2
 ingest_backoff_max_sec: 60
+ingest_bad_stream_empty_threshold: 20
+ingest_bad_stream_window_minutes: 30
+ingest_bad_stream_attempt_threshold: 20
+ingest_bad_stream_pause_minutes: 45
+ffmpeg_error_sample_lines: 20
 # Delay each enabled station thread start by index × N seconds (reduces cold-start contention)
 ingest_startup_stagger_sec: 15
+# Requeue chunks left in processing by crashed/retired worker containers.
+processing_stale_after_minutes: 60
 # Minimum phrase confidence from loan_keywords.yaml to insert keyword_hits
 keyword_min_record_confidence: 0.6
 

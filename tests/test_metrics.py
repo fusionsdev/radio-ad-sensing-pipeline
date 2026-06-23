@@ -22,6 +22,10 @@ from shared.metrics import (
     SQLITE_WAL_CHECKPOINTED_FRAMES,
     SQLITE_WAL_LOG_FRAMES,
     STAGE_DURATION_SECONDS,
+    WORKER_CHUNKS_CLAIMED_TOTAL,
+    WORKER_CHUNKS_PROCESSED_TOTAL,
+    WORKER_DUPLICATE_TRANSCRIPT_TOTAL,
+    WORKER_STALE_PROCESSING_RECOVERED_TOTAL,
     increment_alerts_sent,
     increment_dedup_matches,
     increment_dedup_suppressed,
@@ -30,6 +34,10 @@ from shared.metrics import (
     increment_fingerprint_hits,
     increment_ingest_chunks,
     increment_ingest_errors,
+    increment_worker_chunks_claimed,
+    increment_worker_chunks_processed,
+    increment_worker_duplicate_transcript,
+    increment_worker_stale_processing_recovered,
     observe_asr_metrics,
     observe_llm_extraction_duration,
     observe_stage_duration,
@@ -114,6 +122,24 @@ def test_increment_alerts_sent_uses_labels() -> None:
     increment_alerts_sent("first_seen", "dry_run")
     after = ALERTS_SENT_TOTAL.labels(alert_type="first_seen", outcome="dry_run")._value.get()  # noqa: SLF001
     assert after == before + 1.0
+
+
+def test_worker_metrics_use_worker_id_label() -> None:
+    worker_id = "worker-test-1"
+    claimed_before = WORKER_CHUNKS_CLAIMED_TOTAL.labels(worker_id=worker_id)._value.get()  # noqa: SLF001
+    processed_before = WORKER_CHUNKS_PROCESSED_TOTAL.labels(worker_id=worker_id)._value.get()  # noqa: SLF001
+    stale_before = WORKER_STALE_PROCESSING_RECOVERED_TOTAL.labels(worker_id=worker_id)._value.get()  # noqa: SLF001
+    duplicate_before = WORKER_DUPLICATE_TRANSCRIPT_TOTAL.labels(worker_id=worker_id)._value.get()  # noqa: SLF001
+
+    increment_worker_chunks_claimed(worker_id)
+    increment_worker_chunks_processed(worker_id)
+    increment_worker_stale_processing_recovered(worker_id, 2)
+    increment_worker_duplicate_transcript(worker_id)
+
+    assert WORKER_CHUNKS_CLAIMED_TOTAL.labels(worker_id=worker_id)._value.get() == claimed_before + 1.0  # noqa: SLF001
+    assert WORKER_CHUNKS_PROCESSED_TOTAL.labels(worker_id=worker_id)._value.get() == processed_before + 1.0  # noqa: SLF001
+    assert WORKER_STALE_PROCESSING_RECOVERED_TOTAL.labels(worker_id=worker_id)._value.get() == stale_before + 2.0  # noqa: SLF001
+    assert WORKER_DUPLICATE_TRANSCRIPT_TOTAL.labels(worker_id=worker_id)._value.get() == duplicate_before + 1.0  # noqa: SLF001
 
 
 def test_refresh_chunks_by_status_sets_gauges(tmp_path: Path) -> None:

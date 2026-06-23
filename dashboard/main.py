@@ -39,6 +39,10 @@ def create_app(db_path: Path | None = None) -> FastAPI:
     def health() -> JSONResponse:
         return JSONResponse(queries.fetch_health(resolved_db))
 
+    @app.get("/api/health")
+    def api_health() -> JSONResponse:
+        return JSONResponse(queries.fetch_health(resolved_db))
+
     @app.get("/audio/{resource_id}")
     def audio(resource_id: int) -> FileResponse:
         if not queries.db_exists(resolved_db):
@@ -379,8 +383,22 @@ def create_app(db_path: Path | None = None) -> FastAPI:
 
     app.state.db_path = resolved_db
 
+    from dashboard.routes.harvest import create_harvest_router
+    from dashboard.routes.hermes import create_hermes_router
     from dashboard.routes.novelty import create_novelty_router
+    from dashboard.routes.radiosense import create_radiosense_router
+    from dashboard.routes.system import create_system_router
 
+    app.include_router(create_radiosense_router(resolved_db))
+    app.include_router(
+        create_harvest_router(
+            resolved_db,
+            format_ts=_format_ts,
+            no_database_handler=_no_database,
+        )
+    )
+    app.include_router(create_system_router(resolved_db))
+    app.include_router(create_hermes_router())
     app.include_router(
         create_novelty_router(
             resolved_db,
@@ -423,6 +441,10 @@ def _format_age(seconds: float | None) -> str:
 
 def _format_status(status: str) -> str:
     labels = {
+        "healthy": ("Healthy", "ok"),
+        "degraded": ("Degraded", "warn"),
+        "paused": ("Paused", "muted"),
+        "backoff": ("Backoff", "warn"),
         "live": ("Live", "ok"),
         "stale": ("Stale", "warn"),
         "down": ("Down", "err"),

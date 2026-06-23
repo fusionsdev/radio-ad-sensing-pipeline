@@ -45,6 +45,10 @@ class Chunk(BaseModel):
     status: ChunkStatus = ChunkStatus.PENDING
     error: str | None = None
     known_ad_id: int | None = None
+    processing_started_at: float | None = None
+    processing_heartbeat_at: float | None = None
+    processed_at: float | None = None
+    worker_id: str | None = None
 
 
 class Transcript(BaseModel):
@@ -202,6 +206,12 @@ class PipelineSettings(BaseModel):
     ingest_backoff_initial_sec: float = 1.0
     ingest_backoff_max_sec: float = 30.0
     ingest_startup_stagger_sec: float = 0.0
+    ingest_bad_stream_empty_threshold: int = 20
+    ingest_bad_stream_window_minutes: int = 30
+    ingest_bad_stream_attempt_threshold: int = 20
+    ingest_bad_stream_pause_minutes: float = 45.0
+    ffmpeg_error_sample_lines: int = 20
+    processing_stale_after_minutes: int = 60
     keyword_min_record_confidence: float = 0.6
     queue_drop_ratio_warn_threshold: float = 5.0
     watchdog: WatchdogSettings = Field(default_factory=WatchdogSettings)

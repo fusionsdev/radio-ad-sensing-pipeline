@@ -1,0 +1,90 @@
+{
+  "name": "runtime_deliver_message",
+  "description": "Low-level OpenCode runtime delivery journal tool. Use only when the runtime/app prompt explicitly provides runId, runtimeSessionId, idempotencyKey, and asks for runtime delivery. For normal visible replies, use message_send.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "idempotencyKey": {
+        "type": "string",
+        "minLength": 1
+      },
+      "runId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "fromMemberName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "runtimeSessionId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "to": {
+        "anyOf": [
+          {
+            "type": "string",
+            "const": "user"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "memberName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "teamName": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "memberName"
+            ]
+          }
+        ]
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1
+      },
+      "createdAt": {
+        "type": "string",
+        "minLength": 1
+      },
+      "summary": {
+        "type": "string"
+      },
+      "taskRefs": {
+        "type": "array",
+        "items": {}
+      }
+    },
+    "required": [
+      "teamName",
+      "idempotencyKey",
+      "runId",
+      "fromMemberName",
+      "runtimeSessionId",
+      "to",
+      "text"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Harvest Status — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/radio-harvest" style="color:var(--accent);text-decoration:none;">Radio Harvest</a> › Status</h2>
+
+<div class="grid" style="margin-bottom: 1rem;">
+  <div class="card"><h2>Profile</h2><div class="value" style="font-size:1rem;">{{ status.profile or "—" }}</div></div>
+  <div class="card"><h2>State</h2><div class="value" style="font-size:1rem;">{{ status.state or "—" }}</div></div>
+  <div class="card"><h2>Started</h2><div class="value" style="font-size:0.9rem;">{{ fmt_when(status.started_at) }}</div></div>
+  <div class="card"><h2>Stopped</h2><div class="value" style="font-size:0.9rem;">{{ fmt_when(status.stopped_at) }}</div></div>
+</div>
+
+<h2 style="font-size: 1rem;">Pipeline counts</h2>
+<table>
+  <tbody>
+    <tr><th>stations_active</th><td>{{ status.active_stations }}/{{ status.tested_stations }}</td></tr>
+    <tr><th>chunks_created</th><td>{{ status.chunks_created }}</td></tr>
+    <tr><th>chunks_processed</th><td>{{ status.chunks_processed }}</td></tr>
+    <tr><th>chunks_dropped</th><td>{{ status.chunks_dropped }}</td></tr>
+    <tr><th>pending_queue</th><td>{{ status.pending_queue }}</td></tr>
+    <tr><th>detections_total</th><td>{{ status.detections_total }}</td></tr>
+    <tr><th>loan_keyword_hits</th><td>{{ status.loan_keyword_hits }}</td></tr>
+    <tr><th>unique_advertisers</th><td>{{ status.unique_advertisers }}</td></tr>
+    <tr><th>last_updated</th><td>{{ fmt_when(status.last_updated) }}</td></tr>
+    <tr><th>db_path</th><td><code>{{ status.db_path or "—" }}</code></td></tr>
+  </tbody>
+</table>
+
+{% if status.export %}
+<h2 style="font-size: 1rem; margin-top:1rem;">Last export</h2>
+<table>
+  <tbody>
+    <tr><th>rows</th><td>{{ status.export.rows }}</td></tr>
+    <tr><th>at</th><td>{{ fmt_when(status.export.at) }}</td></tr>
+    <tr><th>csv</th><td>{{ status.export.csv }}</td></tr>
+  </tbody>
+</table>
+{% endif %}
+
+<p style="margin-top:1rem;"><a class="btn-review" href="/api/harvest/status" style="text-decoration:none;">Raw JSON</a></p>
+{% endblock %}

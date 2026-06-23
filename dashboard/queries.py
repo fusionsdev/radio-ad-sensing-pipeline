@@ -162,18 +162,165 @@ def derive_station_status(
     return "live"
 
 
-def _enrich_station_row(row: dict, *, now: float, down_threshold_seconds: float) -> dict:
+def _parse_iso_ts(value: object) -> float | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(str(value))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed.timestamp()
+
+
+def _load_ingestor_health(conn) -> dict[str, dict]:
+    health: dict[str, dict] = {}
+    try:
+        rows = conn.execute(
+            """
+            SELECT station_id, health_state, last_success_at, last_failure_at,
+                   consecutive_failures, cool_down_until, last_error
+            FROM station_health
+            """
+        ).fetchall()
+    except Exception:
+        rows = []
+    for row in rows:
+        health[str(row["station_id"])] = {
+            "status": row["health_state"],
+            "last_success_at": _parse_iso_ts(row["last_success_at"]),
+            "last_failure_at": _parse_iso_ts(row["last_failure_at"]),
+            "consecutive_failures": int(row["consecutive_failures"] or 0),
+            "backoff_until": _parse_iso_ts(row["cool_down_until"]),
+            "ffmpeg_error_sample": row["last_error"] or "",
+        }
+
+    try:
+        rows = conn.execute(
+            """
+            SELECT key, value
+            FROM status
+            WHERE key LIKE 'ingestor:station_health:%'
+            """
+        ).fetchall()
+    except Exception:
+        rows = []
+    prefix = "ingestor:station_health:"
+    for row in rows:
+        key = str(row["key"])
+        if not key.startswith(prefix):
+            continue
+        try:
+            payload = json.loads(row["value"])
+        except (TypeError, json.JSONDecodeError):
+            continue
+        station_name = key.removeprefix(prefix)
+        item = health.setdefault(station_name, {})
+        item.update(
+            {
+                "status": payload.get("status", item.get("status")),
+                "last_success_at": payload.get("last_success_at", item.get("last_success_at")),
+                "last_failure_at": payload.get("last_failure_at", item.get("last_failure_at")),
+                "consecutive_empty_chunks": int(
+                    payload.get("consecutive_empty_chunks") or 0
+                ),
+                "consecutive_stream_down": int(
+                    payload.get("consecutive_stream_down") or 0
+                ),
+                "attempts_since_success": int(payload.get("attempts_since_success") or 0),
+                "backoff_until": payload.get("backoff_until", item.get("backoff_until")),
+                "ffmpeg_error_sample": payload.get(
+                    "last_ffmpeg_error_sample",
+                    item.get("ffmpeg_error_sample", ""),
+                ),
+                "url_hash": payload.get("url_hash"),
+            }
+        )
+    return health
+
+
+def _load_gap_counts_30m(conn, *, now: float) -> dict[str, dict[str, int]]:
+    since = now - 30 * 60
+    rows = conn.execute(
+        """
+        SELECT s.name AS station_name, g.reason, COUNT(*) AS n
+        FROM gaps g
+        JOIN stations s ON s.id = g.station_id
+        WHERE g.start_ts >= ?
+          AND g.reason IN ('empty_chunk', 'stream_down')
+        GROUP BY s.name, g.reason
+        """,
+        (since,),
+    ).fetchall()
+    counts: dict[str, dict[str, int]] = {}
+    for row in rows:
+        station_counts = counts.setdefault(str(row["station_name"]), {})
+        station_counts[str(row["reason"])] = int(row["n"] or 0)
+    return counts
+
+
+def _derive_ingestor_status(
+    *,
+    enabled: bool,
+    legacy_status: str,
+    health: dict,
+    now: float,
+) -> str:
+    if not enabled:
+        return "paused"
+    health_status = str(health.get("status") or "")
+    backoff_until = health.get("backoff_until")
+    if isinstance(backoff_until, (int, float)) and backoff_until > now:
+        return "backoff"
+    if health_status == "backoff" and backoff_until is None:
+        return "backoff"
+    if health_status in {"degraded", "failed", "stale"}:
+        return "degraded"
+    if legacy_status in {"waiting", "stale", "down"}:
+        return "degraded"
+    return "healthy"
+
+
+def _enrich_station_row(
+    row: dict,
+    *,
+    now: float,
+    down_threshold_seconds: float,
+    ingestor_health: dict[str, dict] | None = None,
+    gap_counts_30m: dict[str, dict[str, int]] | None = None,
+) -> dict:
     last_ts = row.get("last_chunk_ts")
-    status = derive_station_status(
+    legacy_status = derive_station_status(
         enabled=bool(row["enabled"]),
         last_chunk_ts=float(last_ts) if last_ts is not None else None,
         now=now,
         down_threshold_seconds=down_threshold_seconds,
     )
     age_seconds = (now - last_ts) if last_ts is not None else None
+    station_name = str(row.get("name") or row.get("station_name") or "")
+    health = (ingestor_health or {}).get(station_name, {})
+    gaps = (gap_counts_30m or {}).get(station_name, {})
+    status = _derive_ingestor_status(
+        enabled=bool(row["enabled"]),
+        legacy_status=legacy_status,
+        health=health,
+        now=now,
+    )
     enriched = dict(row)
+    enriched["legacy_status"] = legacy_status
     enriched["status"] = status
     enriched["age_seconds"] = age_seconds
+    enriched["last_valid_chunk_age_seconds"] = age_seconds
+    enriched["empty_chunk_count_30m"] = int(gaps.get("empty_chunk") or 0)
+    enriched["stream_down_count_30m"] = int(gaps.get("stream_down") or 0)
+    enriched["last_success_at"] = health.get("last_success_at")
+    enriched["last_failure_at"] = health.get("last_failure_at")
+    enriched["consecutive_empty_chunks"] = int(health.get("consecutive_empty_chunks") or 0)
+    enriched["consecutive_stream_down"] = int(health.get("consecutive_stream_down") or 0)
+    enriched["backoff_until"] = health.get("backoff_until")
+    enriched["ffmpeg_error_sample"] = health.get("ffmpeg_error_sample") or ""
+    enriched["url_hash"] = health.get("url_hash")
     enriched["station_label"] = station_label(enriched)
     return enriched
 
@@ -258,6 +405,8 @@ def fetch_overview(db_path: Path) -> OverviewStats:
             ORDER BY s.name
             """
         ).fetchall()
+        ingestor_health = _load_ingestor_health(conn)
+        gap_counts_30m = _load_gap_counts_30m(conn, now=now)
         station_health = [
             _enrich_station_row(
                 {
@@ -269,6 +418,8 @@ def fetch_overview(db_path: Path) -> OverviewStats:
                 },
                 now=now,
                 down_threshold_seconds=down_threshold_seconds,
+                ingestor_health=ingestor_health,
+                gap_counts_30m=gap_counts_30m,
             )
             for row in rows
         ]
@@ -403,8 +554,16 @@ def fetch_stations(db_path: Path) -> list[dict]:
             """,
             (since_24h, since_24h),
         ).fetchall()
+        ingestor_health = _load_ingestor_health(conn)
+        gap_counts_30m = _load_gap_counts_30m(conn, now=now)
     return [
-        _enrich_station_row(dict(row), now=now, down_threshold_seconds=down_threshold_seconds)
+        _enrich_station_row(
+            dict(row),
+            now=now,
+            down_threshold_seconds=down_threshold_seconds,
+            ingestor_health=ingestor_health,
+            gap_counts_30m=gap_counts_30m,
+        )
         for row in rows
     ]
 

@@ -1,0 +1,29 @@
+{
+  "name": "team_get",
+  "description": "Get a team snapshot through the local Agent Teams control API",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

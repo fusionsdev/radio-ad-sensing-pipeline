@@ -114,7 +114,7 @@ def is_valid_chunk_duration(
 def _popen_with_process_group(command: list[str]) -> subprocess.Popen[bytes]:
     kwargs: dict[str, object] = {
         "stdout": subprocess.DEVNULL,
-        "stderr": subprocess.DEVNULL,
+        "stderr": subprocess.PIPE,
     }
     if sys.platform == "win32":
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
@@ -159,6 +159,14 @@ def _reap_process(proc: subprocess.Popen[bytes]) -> None:
             proc.wait(timeout=5)
 
 
+def _stderr_tail(stderr: bytes | None, *, max_lines: int) -> str:
+    if not stderr or max_lines <= 0:
+        return ""
+    text = stderr.decode("utf-8", errors="replace")
+    lines = [line.rstrip() for line in text.splitlines() if line.strip()]
+    return "\n".join(lines[-max_lines:])
+
+
 class FfmpegChunkRunner:
     """Subprocess-backed chunk recorder with timeout and graceful termination."""
 
@@ -166,6 +174,7 @@ class FfmpegChunkRunner:
         self.settings = settings or PipelineSettings()
         self._active: subprocess.Popen[bytes] | None = None
         self._lock = threading.Lock()
+        self.last_error_sample = ""
 
     def terminate_active(self) -> None:
         """Stop an in-flight ffmpeg chunk, if any."""
@@ -186,18 +195,29 @@ class FfmpegChunkRunner:
         timeout_sec = float(duration_sec) + TIMEOUT_MARGIN_SEC
         proc: subprocess.Popen[bytes] | None = None
         returncode = 1
+        stderr: bytes | None = None
+        self.last_error_sample = ""
         try:
             proc = _popen_with_process_group(command)
             with self._lock:
                 self._active = proc
             try:
-                proc.wait(timeout=timeout_sec)
+                _stdout, stderr = proc.communicate(timeout=timeout_sec)
             except subprocess.TimeoutExpired:
                 _kill_process_group(proc)
+                try:
+                    _stdout, stderr = proc.communicate(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    _stdout, stderr = proc.communicate(timeout=5)
                 returncode = 124
             else:
                 returncode = proc.returncode if proc.returncode is not None else 1
         finally:
+            self.last_error_sample = _stderr_tail(
+                stderr,
+                max_lines=int(self.settings.ffmpeg_error_sample_lines),
+            )
             with self._lock:
                 if self._active is proc:
                     self._active = None

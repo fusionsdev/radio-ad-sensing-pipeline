@@ -1,0 +1,60 @@
+{
+  "name": "task_create_from_message",
+  "description": "Create a task from a persisted user message. Resolves the message by exact messageId, builds sanitized provenance, and creates the task through the canonical path.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "messageId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "subject": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": {
+        "type": "string"
+      },
+      "owner": {
+        "type": "string"
+      },
+      "createdBy": {
+        "type": "string"
+      },
+      "blockedBy": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "related": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "prompt": {
+        "type": "string"
+      },
+      "startImmediately": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "teamName",
+      "messageId",
+      "subject"
+    ]
+  }
+}

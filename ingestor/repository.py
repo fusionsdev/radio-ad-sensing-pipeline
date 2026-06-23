@@ -2,11 +2,19 @@
 
 from __future__ import annotations
 
+import json
 import sqlite3
+from datetime import UTC, datetime
 from pathlib import Path
 
 from shared.db import get_connection, retry_on_busy, transaction
 from shared.models import ChunkStatus, StationConfig
+
+
+def _iso(ts: float | None) -> str | None:
+    if ts is None:
+        return None
+    return datetime.fromtimestamp(ts, tz=UTC).isoformat()
 
 
 def fetch_station_config(db_path: str | Path, station_name: str) -> StationConfig | None:
@@ -48,7 +56,12 @@ def is_station_enabled(db_path: str | Path, station_name: str) -> bool:
 
 
 @retry_on_busy()
-def upsert_station(db_path: str | Path, station: StationConfig) -> int:
+def upsert_station(
+    db_path: str | Path,
+    station: StationConfig,
+    *,
+    sync_enabled: bool = True,
+) -> int:
     """Insert or update a station row and return its id."""
     conn = get_connection(db_path)
     try:
@@ -60,7 +73,10 @@ def upsert_station(db_path: str | Path, station: StationConfig) -> int:
                 ON CONFLICT(name) DO UPDATE SET
                     url = excluded.url,
                     format = excluded.format,
-                    enabled = excluded.enabled,
+                    enabled = CASE
+                        WHEN ? THEN excluded.enabled
+                        ELSE stations.enabled
+                    END,
                     display_name = excluded.display_name
                 """,
                 (
@@ -69,6 +85,7 @@ def upsert_station(db_path: str | Path, station: StationConfig) -> int:
                     station.format,
                     1 if station.enabled else 0,
                     station.display_name,
+                    1 if sync_enabled else 0,
                 ),
             )
             row = conn.execute(
@@ -128,6 +145,99 @@ def log_gap(
                 (station_id, start_ts, end_ts, reason),
             )
             return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
+    finally:
+        conn.close()
+
+
+@retry_on_busy()
+def upsert_station_ingest_health(
+    db_path: str | Path,
+    *,
+    station: StationConfig,
+    status: str,
+    now_ts: float,
+    last_success_at: float | None,
+    last_failure_at: float | None,
+    consecutive_empty_chunks: int,
+    consecutive_stream_down: int,
+    attempts_since_success: int,
+    backoff_until: float | None,
+    last_ffmpeg_error_sample: str,
+    url_hash: str,
+    enabled: bool | None = None,
+) -> None:
+    """Persist ingestor-owned station health without requiring schema changes."""
+    updated_at = _iso(now_ts)
+    last_success_iso = _iso(last_success_at)
+    last_failure_iso = _iso(last_failure_at)
+    backoff_until_iso = _iso(backoff_until)
+    consecutive_failures = consecutive_empty_chunks + consecutive_stream_down
+    enabled_value = station.enabled if enabled is None else enabled
+    health_payload = {
+        "status": status,
+        "last_success_at": last_success_at,
+        "last_failure_at": last_failure_at,
+        "consecutive_empty_chunks": consecutive_empty_chunks,
+        "consecutive_stream_down": consecutive_stream_down,
+        "attempts_since_success": attempts_since_success,
+        "backoff_until": backoff_until,
+        "last_ffmpeg_error_sample": last_ffmpeg_error_sample,
+        "url_hash": url_hash,
+    }
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute(
+                """
+                INSERT INTO station_health (
+                    station_id, health_state, enabled, last_chunk_at,
+                    last_success_at, last_failure_at, consecutive_failures,
+                    cool_down_until, last_error, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(station_id) DO UPDATE SET
+                    health_state = excluded.health_state,
+                    enabled = excluded.enabled,
+                    last_chunk_at = COALESCE(excluded.last_chunk_at, station_health.last_chunk_at),
+                    last_success_at = COALESCE(
+                        excluded.last_success_at,
+                        station_health.last_success_at
+                    ),
+                    last_failure_at = COALESCE(
+                        excluded.last_failure_at,
+                        station_health.last_failure_at
+                    ),
+                    consecutive_failures = excluded.consecutive_failures,
+                    cool_down_until = excluded.cool_down_until,
+                    last_error = excluded.last_error,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    station.name,
+                    status,
+                    1 if enabled_value else 0,
+                    last_success_iso,
+                    last_success_iso,
+                    last_failure_iso,
+                    consecutive_failures,
+                    backoff_until_iso,
+                    last_ffmpeg_error_sample,
+                    updated_at,
+                ),
+            )
+            conn.execute(
+                """
+                INSERT INTO status (key, value, updated_at)
+                VALUES (?, ?, ?)
+                ON CONFLICT(key) DO UPDATE SET
+                    value = excluded.value,
+                    updated_at = excluded.updated_at
+                """,
+                (
+                    f"ingestor:station_health:{station.name}",
+                    json.dumps(health_payload, sort_keys=True),
+                    now_ts,
+                ),
+            )
     finally:
         conn.close()
 

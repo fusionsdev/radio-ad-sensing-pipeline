@@ -1,0 +1,18 @@
+{
+  "name": "search_astro_docs",
+  "description": "Search the official Astro framework docs",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "Search query"
+      }
+    },
+    "required": [
+      "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}

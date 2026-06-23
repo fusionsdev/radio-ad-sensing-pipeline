@@ -1,0 +1,36 @@
+{
+  "name": "task_add_comment",
+  "description": "Add task comment. from is required and must be your configured teammate name; user/system are reserved for app-owned writes.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "text": {
+        "type": "string",
+        "minLength": 1
+      },
+      "from": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId",
+      "text",
+      "from"
+    ]
+  }
+}

@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import sqlite3
+import socket
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,6 +19,10 @@ from shared.metrics import (
     increment_chunks_processed,
     increment_fingerprint_errors,
     increment_fingerprint_hits,
+    increment_worker_chunks_claimed,
+    increment_worker_chunks_processed,
+    increment_worker_duplicate_transcript,
+    increment_worker_stale_processing_recovered,
     observe_asr_metrics,
     observe_llm_extraction_duration,
     observe_stage_duration,
@@ -40,7 +46,12 @@ JANITOR_SWEEP_INTERVAL = 60
 
 CLAIM_SQL = """
 UPDATE chunks
-SET status = 'processing'
+SET status = 'processing',
+    processing_started_at = ?,
+    processing_heartbeat_at = ?,
+    processed_at = NULL,
+    worker_id = ?,
+    error = NULL
 WHERE id = (
     SELECT id FROM chunks
     WHERE status = 'pending'
@@ -49,6 +60,11 @@ WHERE id = (
 )
 RETURNING id, station_id, path, start_ts, end_ts
 """
+
+
+def default_worker_id() -> str:
+    """Return a stable-enough identifier for logs, metrics, and DB audit rows."""
+    return os.environ.get("WORKER_ID") or os.environ.get("HOSTNAME") or socket.gethostname()
 
 
 @dataclass(frozen=True)
@@ -99,6 +115,7 @@ class ChunkConsumer:
         janitor: ChunkJanitor | None = None,
         poll_interval_sec: float = 1.0,
         loan_keywords: list[LoanKeywordEntry] | list[str] | None = None,
+        worker_id: str | None = None,
     ) -> None:
         self.db_path = Path(db_path)
         self.settings = settings
@@ -109,6 +126,7 @@ class ChunkConsumer:
         self.janitor = janitor if janitor is not None else ChunkJanitor(db_path, settings)
         self.poll_interval_sec = poll_interval_sec
         self.loan_keywords = loan_keywords if loan_keywords is not None else load_loan_keywords()
+        self.worker_id = worker_id or default_worker_id()
         self._run_loops = 0
 
     def run(self, stop_event: Any | None = None) -> None:
@@ -132,6 +150,7 @@ class ChunkConsumer:
         conn = get_connection(self.db_path)
         try:
             with transaction(conn):
+                self._recover_stale_processing(conn)
                 self._enforce_drop_oldest(conn)
                 chunk = self._claim_chunk(conn)
                 if chunk is None:
@@ -140,6 +159,7 @@ class ChunkConsumer:
             processed = self._process_claimed(chunk)
             if processed:
                 increment_chunks_processed("worker")
+                increment_worker_chunks_processed(self.worker_id)
             return processed
         finally:
             conn.close()
@@ -177,10 +197,13 @@ class ChunkConsumer:
         conn.execute(
             f"""
             UPDATE chunks
-            SET status = 'dropped', error = 'dropped_backlog'
+            SET status = 'dropped',
+                error = 'dropped_backlog',
+                processed_at = ?,
+                worker_id = ?
             WHERE id IN ({placeholders})
             """,
-            drop_ids,
+            [time.time(), self.worker_id, *drop_ids],
         )
         increment_chunks_dropped(len(drop_ids))
         self._insert_backlog_gaps(conn, drop_rows)
@@ -189,8 +212,68 @@ class ChunkConsumer:
             extra={
                 "dropped_count": len(drop_ids),
                 "overflow_seconds": need_to_drop,
+                "worker_id": self.worker_id,
             },
         )
+
+    def _recover_stale_processing(self, conn: sqlite3.Connection) -> int:
+        timeout_seconds = max(float(self.settings.processing_stale_after_minutes) * 60.0, 0.0)
+        if timeout_seconds <= 0:
+            return 0
+
+        now = time.time()
+        cutoff = now - timeout_seconds
+        rows = conn.execute(
+            """
+            SELECT id, worker_id, processing_started_at, processing_heartbeat_at, end_ts
+            FROM chunks
+            WHERE status = 'processing'
+              AND (
+                    (processing_heartbeat_at IS NOT NULL AND processing_heartbeat_at < ?)
+                 OR (
+                        processing_heartbeat_at IS NULL
+                    AND processing_started_at IS NOT NULL
+                    AND processing_started_at < ?
+                    )
+                 OR (
+                        processing_heartbeat_at IS NULL
+                    AND processing_started_at IS NULL
+                    AND end_ts < ?
+                    )
+              )
+            ORDER BY start_ts
+            """,
+            (cutoff, cutoff, cutoff),
+        ).fetchall()
+        if not rows:
+            return 0
+
+        ids = [row["id"] for row in rows]
+        placeholders = ",".join("?" * len(ids))
+        conn.execute(
+            f"""
+            UPDATE chunks
+            SET status = 'pending',
+                error = 'stale_processing_recovered',
+                processing_started_at = NULL,
+                processing_heartbeat_at = NULL,
+                processed_at = NULL,
+                worker_id = NULL
+            WHERE id IN ({placeholders})
+            """,
+            ids,
+        )
+        increment_worker_stale_processing_recovered(self.worker_id, len(ids))
+        logger.warning(
+            "stale processing chunks recovered",
+            extra={
+                "worker_id": self.worker_id,
+                "recovered_count": len(ids),
+                "stale_after_minutes": self.settings.processing_stale_after_minutes,
+                "chunk_ids": ids[:20],
+            },
+        )
+        return len(ids)
 
     def _insert_backlog_gaps(
         self,
@@ -214,9 +297,11 @@ class ChunkConsumer:
                 )
 
     def _claim_chunk(self, conn: sqlite3.Connection) -> ClaimedChunk | None:
-        row = conn.execute(CLAIM_SQL).fetchone()
+        now = time.time()
+        row = conn.execute(CLAIM_SQL, (now, now, self.worker_id)).fetchone()
         if row is None:
             return None
+        increment_worker_chunks_claimed(self.worker_id)
         station_row = conn.execute(
             "SELECT name FROM stations WHERE id = ?",
             (row["station_id"],),
@@ -268,7 +353,7 @@ class ChunkConsumer:
                     increment_fingerprint_errors()
                     logger.exception(
                         "fingerprint annotation failed; continuing with ASR/LLM path",
-                        extra={"chunk_id": chunk.id, "path": chunk.path},
+                        extra={"chunk_id": chunk.id, "path": chunk.path, "worker_id": self.worker_id},
                     )
                 finally:
                     observe_stage_duration(
@@ -287,7 +372,7 @@ class ChunkConsumer:
             except Exception as exc:
                 logger.exception(
                     "transcription failed",
-                    extra={"chunk_id": chunk.id, "path": chunk.path},
+                    extra={"chunk_id": chunk.id, "path": chunk.path, "worker_id": self.worker_id},
                 )
                 self._mark_dropped(chunk.id, str(exc))
                 return True
@@ -295,7 +380,14 @@ class ChunkConsumer:
             observe_stage_duration("asr", result.wall_time_sec)
             observe_asr_metrics(chunk.station, result.wall_time_sec, result.rtf)
 
-            self._persist_success(chunk, result)
+            transcript_inserted = self._persist_success(chunk, result)
+            if not transcript_inserted:
+                increment_worker_duplicate_transcript(self.worker_id)
+                logger.warning(
+                    "duplicate transcript skipped",
+                    extra={"chunk_id": chunk.id, "worker_id": self.worker_id},
+                )
+                return True
             if (
                 known_ad_match is None
                 and self.extractor is not None
@@ -322,7 +414,7 @@ class ChunkConsumer:
                 except Exception as exc:
                     logger.exception(
                         "extraction/dedup failed",
-                        extra={"chunk_id": chunk.id, "path": chunk.path},
+                        extra={"chunk_id": chunk.id, "path": chunk.path, "worker_id": self.worker_id},
                     )
                     self._mark_dropped(chunk.id, f"extraction/dedup failed: {exc}")
             return True
@@ -331,8 +423,9 @@ class ChunkConsumer:
                 self.janitor.delete_after_processing(chunk.path)
 
     @retry_on_busy()
-    def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> None:
+    def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> bool:
         conn = get_connection(self.db_path)
+        inserted = False
         try:
             with transaction(conn):
                 segments_json = json.dumps(
@@ -341,9 +434,9 @@ class ChunkConsumer:
                         for s in result.segments
                     ]
                 )
-                conn.execute(
+                cursor = conn.execute(
                     """
-                    INSERT INTO transcripts (chunk_id, text, asr_duration_ms, segments_json)
+                    INSERT OR IGNORE INTO transcripts (chunk_id, text, asr_duration_ms, segments_json)
                     VALUES (?, ?, ?, ?)
                     """,
                     (
@@ -353,11 +446,19 @@ class ChunkConsumer:
                         segments_json,
                     ),
                 )
+                inserted = cursor.rowcount > 0
                 conn.execute(
-                    "UPDATE chunks SET status = 'done', error = NULL WHERE id = ?",
-                    (chunk.id,),
+                    """
+                    UPDATE chunks
+                    SET status = 'done',
+                        error = NULL,
+                        processed_at = ?,
+                        worker_id = ?
+                    WHERE id = ?
+                    """,
+                    (time.time(), self.worker_id, chunk.id),
                 )
-                if self.loan_keywords:
+                if inserted and self.loan_keywords:
                     matches = find_keyword_matches(
                         result.text,
                         self.loan_keywords,
@@ -389,8 +490,11 @@ class ChunkConsumer:
                 "rtf": result.rtf,
                 "asr_wall_time_sec": result.wall_time_sec,
                 "chunk_audio_duration_sec": result.audio_duration_sec,
+                "worker_id": self.worker_id,
+                "transcript_inserted": inserted,
             },
         )
+        return inserted
 
     @retry_on_busy()
     def _mark_dropped(self, chunk_id: int, error: str) -> None:
@@ -400,17 +504,20 @@ class ChunkConsumer:
                 conn.execute(
                     """
                     UPDATE chunks
-                    SET status = 'dropped', error = ?
+                    SET status = 'dropped',
+                        error = ?,
+                        processed_at = ?,
+                        worker_id = ?
                     WHERE id = ?
                     """,
-                    (error, chunk_id),
+                    (error, time.time(), self.worker_id, chunk_id),
                 )
         finally:
             conn.close()
         increment_chunks_dropped()
         logger.warning(
             "chunk dropped",
-            extra={"chunk_id": chunk_id, "error": error},
+            extra={"chunk_id": chunk_id, "error": error, "worker_id": self.worker_id},
         )
 
     def _extract_advertiser_opportunities(
@@ -537,6 +644,7 @@ def create_consumer(
     detection_persister: DetectionPersistenceBackend | None = None,
     fingerprint_annotator: FingerprintAnnotationBackend | None = None,
     poll_interval_sec: float = 1.0,
+    worker_id: str | None = None,
 ) -> ChunkConsumer:
     """Factory for production consumer with default ASR, extraction, dedup, and fingerprint backends."""
     backend = transcriber or Transcriber(settings)
@@ -551,4 +659,5 @@ def create_consumer(
         detection_persister=persister,
         fingerprint_annotator=annotator,
         poll_interval_sec=poll_interval_sec,
+        worker_id=worker_id,
     )

@@ -54,7 +54,6 @@ services:
       context: .
       dockerfile: worker/Dockerfile
     image: radio-ad-pipeline/worker:dev
-    container_name: radio-worker
     restart: unless-stopped
     depends_on:
       pipeline-migrate:

@@ -1,0 +1,62 @@
+{
+  "name": "task_list",
+  "description": "List compact active task inventory/search rows for a team. Deleted tasks are excluded. Use it to browse, filter, and drill into inventory, not as a primary working queue. Defaults to 50 rows and caps at 200 rows; use filters or a smaller limit to narrow results. Supports stable conjunctive filters for owner, active status, reviewState, review overlay column, and task relationships.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "owner": {
+        "type": "string",
+        "minLength": 1
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "in_progress",
+          "completed"
+        ]
+      },
+      "reviewState": {
+        "type": "string",
+        "enum": [
+          "none",
+          "review",
+          "needsFix",
+          "approved"
+        ]
+      },
+      "kanbanColumn": {
+        "type": "string",
+        "enum": [
+          "review",
+          "approved"
+        ]
+      },
+      "relatedTo": {
+        "type": "string",
+        "minLength": 1
+      },
+      "blockedBy": {
+        "type": "string",
+        "minLength": 1
+      },
+      "limit": {
+        "type": "integer",
+        "exclusiveMinimum": 0,
+        "maximum": 9007199254740991
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

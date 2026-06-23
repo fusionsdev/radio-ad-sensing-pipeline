@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Queue Health — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/radio-harvest" style="color:var(--accent);text-decoration:none;">Radio Harvest</a> › Queue Health</h2>
+
+{% set warn = health.drop_warning %}
+<div class="grid" style="margin-bottom: 1rem;">
+  <div class="card"><h2>Pending queue</h2><div class="value">{{ health.pending }}</div></div>
+  <div class="card"><h2>Processed (done)</h2><div class="value">{{ health.done }}</div></div>
+  <div class="card"><h2>Dropped</h2><div class="value">
+    {% if health.dropped > 0 %}<span class="badge err">{{ health.dropped }}</span>{% else %}{{ health.dropped }}{% endif %}
+  </div></div>
+  <div class="card"><h2>Drop ratio</h2><div class="value">{{ fmt_conf(health.drop_ratio) }}</div></div>
+  <div class="card"><h2>Oldest pending</h2><div class="value">{{ fmt_age(health.oldest_pending_age_seconds) }}</div></div>
+</div>
+
+{% if warn %}
+<p class="badge warn">Drop ratio exceeds threshold ({{ fmt_conf(health.threshold) }}) — chunks are being discarded faster than ASR can process them.</p>
+{% endif %}
+
+<table style="margin-bottom:1rem;">
+  <tbody>
+    <tr><th>average_processing_delay_seconds</th><td>{{ health.average_processing_delay_seconds if health.average_processing_delay_seconds is not none else "n/a (not tracked in DB)" }}</td></tr>
+    <tr><th>ffmpeg_errors (latest log)</th><td>{{ health.log_error_counts.ffmpeg }}</td></tr>
+    <tr><th>asr_errors (latest log)</th><td>{{ health.log_error_counts.asr }}</td></tr>
+    <tr><th>db_write_errors (latest log)</th><td>{{ health.log_error_counts.db }}</td></tr>
+  </tbody>
+</table>
+
+<h2 style="font-size: 1rem;">Per station</h2>
+{% if health.per_station %}
+<table>
+  <thead><tr><th>Station</th><th>Pending</th><th>Dropped</th><th>Done</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for s in health.per_station %}
+    <tr>
+      <td>{{ s.display_name }}</td>
+      <td>{% if s.pending > 0 %}<span class="badge warn">{{ s.pending }}</span>{% else %}0{% endif %}</td>
+      <td>{% if s.dropped > 0 %}<span class="badge err">{{ s.dropped }}</span>{% else %}0{% endif %}</td>
+      <td>{{ s.done }}</td>
+      <td>{{ s.total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No station chunk activity yet.</p>
+{% endif %}
+<p style="margin-top:1rem;"><a class="btn-review" href="/api/harvest/queue-health" style="text-decoration:none;">Raw JSON</a></p>
+{% endblock %}

@@ -71,14 +71,14 @@ stations:
     display_name: "KTRH 740 AM — Houston, TX"
     url: http://stream.revma.ihrhls.com/zc2285
     format: aac
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   # --- Texas (San Antonio) ---
   - name: woai-am-1200
     display_name: "WOAI 1200 AM — San Antonio, TX"
     url: http://stream.revma.ihrhls.com/zc2361
     format: aac
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   # --- Florida (Tampa & Miami) ---
   - name: wlrn-913
@@ -91,7 +91,7 @@ stations:
     display_name: "WHBO 1040 AM — Tampa, FL"
     url: https://ice41.securenetsystems.net/WHBO
     format: aac
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   - name: whbo-1040-legacy
     display_name: "WHBO 1040 AM (legacy URL) — Tampa, FL"
@@ -123,7 +123,7 @@ stations:
     display_name: "WSB 750 AM — Atlanta, GA"
     url: http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3
     format: mp3
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   # --- Michigan (Detroit) ---
   - name: wjr-am-760
@@ -150,18 +150,18 @@ stations:
     display_name: "WTAM 1100 AM — Cleveland, OH"
     url: http://stream.revma.ihrhls.com/zc1757
     format: aac
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   # --- Indiana (Indianapolis) ---
   - name: wibc-fm-931
     display_name: "WIBC 93.1 FM — Indianapolis, IN"
     url: http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3
     format: mp3
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)
 
   # --- Tennessee (Nashville) ---
   - name: wwtn-fm-997
     display_name: "WWTN 99.7 FM — Nashville, TN"
     url: http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3
     format: mp3
-    enabled: true
+    enabled: false  # Patch C temporary harvest pause (2026-06-23)

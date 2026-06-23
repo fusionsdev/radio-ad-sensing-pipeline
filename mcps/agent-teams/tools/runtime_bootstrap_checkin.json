@@ -1,0 +1,62 @@
+{
+  "name": "runtime_bootstrap_checkin",
+  "description": "Confirm that an OpenCode team member runtime reached the app MCP bootstrap boundary",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "runId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "memberName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "runtimeSessionId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "observedAt": {
+        "type": "string",
+        "minLength": 1
+      },
+      "diagnostics": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "metadata": {
+        "type": "object",
+        "propertyNames": {
+          "type": "string"
+        },
+        "additionalProperties": {}
+      }
+    },
+    "required": [
+      "teamName",
+      "runId",
+      "memberName",
+      "runtimeSessionId"
+    ]
+  }
+}

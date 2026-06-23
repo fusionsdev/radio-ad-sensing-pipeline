@@ -1,0 +1,459 @@
+candidate_text,normalized_text,candidate_type,source,vertical,hit_count,confidence,status,station,company_name,domain,phone,evidence,first_seen,last_seen
+wells fargo &,wells fargo &,brand,trademark_seed,,1,1.0,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+wells fargo & reviews,wells fargo & reviews,brand,trademark_seed,,1,1.0,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+wells fargo & complaints,wells fargo & complaints,brand,trademark_seed,,1,1.0,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+wells fargo & bbb,wells fargo & bbb,brand,trademark_seed,,1,1.0,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+wells fargo & phone number,wells fargo & phone number,brand,trademark_seed,,1,1.0,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+wells fargo & alternative,wells fargo & alternative,brand,trademark_seed,,1,1.0,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa,santander holdings usa,brand,trademark_seed,,1,1.0,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa reviews,santander holdings usa reviews,brand,trademark_seed,,1,1.0,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa complaints,santander holdings usa complaints,brand,trademark_seed,,1,1.0,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa bbb,santander holdings usa bbb,brand,trademark_seed,,1,1.0,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa phone number,santander holdings usa phone number,brand,trademark_seed,,1,1.0,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+santander holdings usa alternative,santander holdings usa alternative,brand,trademark_seed,,1,1.0,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase &,jpmorgan chase &,brand,trademark_seed,,1,1.0,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase & reviews,jpmorgan chase & reviews,brand,trademark_seed,,1,1.0,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase & complaints,jpmorgan chase & complaints,brand,trademark_seed,,1,1.0,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase & bbb,jpmorgan chase & bbb,brand,trademark_seed,,1,1.0,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase & phone number,jpmorgan chase & phone number,brand,trademark_seed,,1,1.0,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+jpmorgan chase & alternative,jpmorgan chase & alternative,brand,trademark_seed,,1,1.0,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets,robinhood markets,brand,trademark_seed,,1,0.99,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets reviews,robinhood markets reviews,brand,trademark_seed,,1,0.99,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets complaints,robinhood markets complaints,brand,trademark_seed,,1,0.99,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets bbb,robinhood markets bbb,brand,trademark_seed,,1,0.99,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets phone number,robinhood markets phone number,brand,trademark_seed,,1,0.99,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+robinhood markets alternative,robinhood markets alternative,brand,trademark_seed,,1,0.99,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal,paypal,brand,trademark_seed,,1,0.99,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal reviews,paypal reviews,brand,trademark_seed,,1,0.99,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal complaints,paypal complaints,brand,trademark_seed,,1,0.99,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal bbb,paypal bbb,brand,trademark_seed,,1,0.99,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal phone number,paypal phone number,brand,trademark_seed,,1,0.99,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+paypal alternative,paypal alternative,brand,trademark_seed,,1,0.99,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block,block,brand,trademark_seed,,1,0.99,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block reviews,block reviews,brand,trademark_seed,,1,0.99,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block complaints,block complaints,brand,trademark_seed,,1,0.99,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block bbb,block bbb,brand,trademark_seed,,1,0.99,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block phone number,block phone number,brand,trademark_seed,,1,0.99,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+block alternative,block alternative,brand,trademark_seed,,1,0.99,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase,coinbase,brand,trademark_seed,,1,0.99,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase reviews,coinbase reviews,brand,trademark_seed,,1,0.99,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase complaints,coinbase complaints,brand,trademark_seed,,1,0.99,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase bbb,coinbase bbb,brand,trademark_seed,,1,0.99,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase phone number,coinbase phone number,brand,trademark_seed,,1,0.99,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+coinbase alternative,coinbase alternative,brand,trademark_seed,,1,0.99,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance,credit acceptance,brand,trademark_seed,,1,0.97,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance reviews,credit acceptance reviews,brand,trademark_seed,,1,0.97,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance complaints,credit acceptance complaints,brand,trademark_seed,,1,0.97,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance bbb,credit acceptance bbb,brand,trademark_seed,,1,0.97,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance phone number,credit acceptance phone number,brand,trademark_seed,,1,0.97,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit acceptance alternative,credit acceptance alternative,brand,trademark_seed,,1,0.97,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system,i c system,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system reviews,i c system reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system complaints,i c system complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system bbb,i c system bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system phone number,i c system phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+i c system alternative,i c system alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners,shellpoint partners,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners reviews,shellpoint partners reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners complaints,shellpoint partners complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners bbb,shellpoint partners bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners phone number,shellpoint partners phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+shellpoint partners alternative,shellpoint partners alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper,mr cooper,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper reviews,mr cooper reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper complaints,mr cooper complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper bbb,mr cooper bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper phone number,mr cooper phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+mr cooper alternative,mr cooper alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage,rocket mortgage,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage reviews,rocket mortgage reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage complaints,rocket mortgage complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage bbb,rocket mortgage bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage phone number,rocket mortgage phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+rocket mortgage alternative,rocket mortgage alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage,freedom mortgage,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage reviews,freedom mortgage reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage complaints,freedom mortgage complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage bbb,freedom mortgage bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage phone number,freedom mortgage phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+freedom mortgage alternative,freedom mortgage alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing,select portfolio servicing,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing reviews,select portfolio servicing reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing complaints,select portfolio servicing complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing bbb,select portfolio servicing bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing phone number,select portfolio servicing phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+select portfolio servicing alternative,select portfolio servicing alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance,bridgecrest acceptance,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance reviews,bridgecrest acceptance reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance complaints,bridgecrest acceptance complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance bbb,bridgecrest acceptance bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance phone number,bridgecrest acceptance phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bridgecrest acceptance alternative,bridgecrest acceptance alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco,fc holdco,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco reviews,fc holdco reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco complaints,fc holdco complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco bbb,fc holdco bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco phone number,fc holdco phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fc holdco alternative,fc holdco alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance,onemain finance,brand,trademark_seed,,1,0.95,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance reviews,onemain finance reviews,brand,trademark_seed,,1,0.95,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance complaints,onemain finance complaints,brand,trademark_seed,,1,0.95,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance bbb,onemain finance bbb,brand,trademark_seed,,1,0.95,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance phone number,onemain finance phone number,brand,trademark_seed,,1,0.95,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+onemain finance alternative,onemain finance alternative,brand,trademark_seed,,1,0.95,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial,capital one financial,brand,trademark_seed,,1,0.94,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial reviews,capital one financial reviews,brand,trademark_seed,,1,0.94,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial complaints,capital one financial complaints,brand,trademark_seed,,1,0.94,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial bbb,capital one financial bbb,brand,trademark_seed,,1,0.94,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial phone number,capital one financial phone number,brand,trademark_seed,,1,0.94,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+capital one financial alternative,capital one financial alternative,brand,trademark_seed,,1,0.94,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial,ally financial,brand,trademark_seed,,1,0.94,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial reviews,ally financial reviews,brand,trademark_seed,,1,0.94,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial complaints,ally financial complaints,brand,trademark_seed,,1,0.94,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial bbb,ally financial bbb,brand,trademark_seed,,1,0.94,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial phone number,ally financial phone number,brand,trademark_seed,,1,0.94,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ally financial alternative,ally financial alternative,brand,trademark_seed,,1,0.94,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial,fifth third financial,brand,trademark_seed,,1,0.94,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial reviews,fifth third financial reviews,brand,trademark_seed,,1,0.94,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial complaints,fifth third financial complaints,brand,trademark_seed,,1,0.94,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial bbb,fifth third financial bbb,brand,trademark_seed,,1,0.94,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial phone number,fifth third financial phone number,brand,trademark_seed,,1,0.94,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+fifth third financial alternative,fifth third financial alternative,brand,trademark_seed,,1,0.94,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax,equifax,brand,trademark_seed,,1,0.938,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax reviews,equifax reviews,brand,trademark_seed,,1,0.938,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax complaints,equifax complaints,brand,trademark_seed,,1,0.938,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax bbb,equifax bbb,brand,trademark_seed,,1,0.938,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax phone number,equifax phone number,brand,trademark_seed,,1,0.938,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+equifax alternative,equifax alternative,brand,trademark_seed,,1,0.938,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital,encore capital,brand,trademark_seed,,1,0.93,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital reviews,encore capital reviews,brand,trademark_seed,,1,0.93,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital complaints,encore capital complaints,brand,trademark_seed,,1,0.93,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital bbb,encore capital bbb,brand,trademark_seed,,1,0.93,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital phone number,encore capital phone number,brand,trademark_seed,,1,0.93,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+encore capital alternative,encore capital alternative,brand,trademark_seed,,1,0.93,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1,clgf holdco 1,brand,trademark_seed,,1,0.93,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1 reviews,clgf holdco 1 reviews,brand,trademark_seed,,1,0.93,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1 complaints,clgf holdco 1 complaints,brand,trademark_seed,,1,0.93,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1 bbb,clgf holdco 1 bbb,brand,trademark_seed,,1,0.93,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1 phone number,clgf holdco 1 phone number,brand,trademark_seed,,1,0.93,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+clgf holdco 1 alternative,clgf holdco 1 alternative,brand,trademark_seed,,1,0.93,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate,transunion intermediate,brand,trademark_seed,,1,0.926,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate reviews,transunion intermediate reviews,brand,trademark_seed,,1,0.926,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate complaints,transunion intermediate complaints,brand,trademark_seed,,1,0.926,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate bbb,transunion intermediate bbb,brand,trademark_seed,,1,0.926,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate phone number,transunion intermediate phone number,brand,trademark_seed,,1,0.926,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transunion intermediate alternative,transunion intermediate alternative,brand,trademark_seed,,1,0.926,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp,u s bancorp,brand,trademark_seed,,1,0.9243,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp reviews,u s bancorp reviews,brand,trademark_seed,,1,0.9243,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp complaints,u s bancorp complaints,brand,trademark_seed,,1,0.9243,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp bbb,u s bancorp bbb,brand,trademark_seed,,1,0.9243,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp phone number,u s bancorp phone number,brand,trademark_seed,,1,0.9243,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+u s bancorp alternative,u s bancorp alternative,brand,trademark_seed,,1,0.9243,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp,new york community bancorp,brand,trademark_seed,,1,0.92,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp reviews,new york community bancorp reviews,brand,trademark_seed,,1,0.92,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp complaints,new york community bancorp complaints,brand,trademark_seed,,1,0.92,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp bbb,new york community bancorp bbb,brand,trademark_seed,,1,0.92,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp phone number,new york community bancorp phone number,brand,trademark_seed,,1,0.92,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+new york community bancorp alternative,new york community bancorp alternative,brand,trademark_seed,,1,0.92,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+Monetary Gold,monetary gold,brand,detection,business_funding,1,0.92,ready,klif-am-570,Monetary Gold,,8776694653,"complimentary gold and silver guide, no-pressure conversation",2026-06-11T03:09:01Z,2026-06-11T03:09:01Z
+apply online,apply online,approval_funding,detection,business_funding,1,0.92,ready,klif-am-570,Monetary Gold,,8776694653,of the nation. This is America at Night with McGraw Millhaven. The US Treasury quietly released its official financial report for 2025. It appears by its own nu...,2026-06-11T03:09:01Z,2026-06-11T03:09:01Z
+citibank n a,citibank n a,brand,trademark_seed,,1,0.914,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citibank n a reviews,citibank n a reviews,brand,trademark_seed,,1,0.914,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citibank n a complaints,citibank n a complaints,brand,trademark_seed,,1,0.914,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citibank n a bbb,citibank n a bbb,brand,trademark_seed,,1,0.914,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citibank n a phone number,citibank n a phone number,brand,trademark_seed,,1,0.914,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citibank n a alternative,citibank n a alternative,brand,trademark_seed,,1,0.914,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial,chime financial,brand,trademark_seed,,1,0.91,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial reviews,chime financial reviews,brand,trademark_seed,,1,0.91,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial complaints,chime financial complaints,brand,trademark_seed,,1,0.91,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial bbb,chime financial bbb,brand,trademark_seed,,1,0.91,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial phone number,chime financial phone number,brand,trademark_seed,,1,0.91,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+chime financial alternative,chime financial alternative,brand,trademark_seed,,1,0.91,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express,american express,brand,trademark_seed,,1,0.905,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express reviews,american express reviews,brand,trademark_seed,,1,0.905,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express complaints,american express complaints,brand,trademark_seed,,1,0.905,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express bbb,american express bbb,brand,trademark_seed,,1,0.905,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express phone number,american express phone number,brand,trademark_seed,,1,0.905,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american express alternative,american express alternative,brand,trademark_seed,,1,0.905,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies,sofi technologies,brand,trademark_seed,,1,0.905,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies reviews,sofi technologies reviews,brand,trademark_seed,,1,0.905,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies complaints,sofi technologies complaints,brand,trademark_seed,,1,0.905,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies bbb,sofi technologies bbb,brand,trademark_seed,,1,0.905,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies phone number,sofi technologies phone number,brand,trademark_seed,,1,0.905,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+sofi technologies alternative,sofi technologies alternative,brand,trademark_seed,,1,0.905,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america,hyundai capital america,brand,trademark_seed,,1,0.9,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america reviews,hyundai capital america reviews,brand,trademark_seed,,1,0.9,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america complaints,hyundai capital america complaints,brand,trademark_seed,,1,0.9,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america bbb,hyundai capital america bbb,brand,trademark_seed,,1,0.9,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america phone number,hyundai capital america phone number,brand,trademark_seed,,1,0.9,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+hyundai capital america alternative,hyundai capital america alternative,brand,trademark_seed,,1,0.9,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance,exeter finance,brand,trademark_seed,,1,0.9,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance reviews,exeter finance reviews,brand,trademark_seed,,1,0.9,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance complaints,exeter finance complaints,brand,trademark_seed,,1,0.9,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance bbb,exeter finance bbb,brand,trademark_seed,,1,0.9,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance phone number,exeter finance phone number,brand,trademark_seed,,1,0.9,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+exeter finance alternative,exeter finance alternative,brand,trademark_seed,,1,0.9,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl,cl,brand,trademark_seed,,1,0.88,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl reviews,cl reviews,brand,trademark_seed,,1,0.88,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl complaints,cl complaints,brand,trademark_seed,,1,0.88,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl bbb,cl bbb,brand,trademark_seed,,1,0.88,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl phone number,cl phone number,brand,trademark_seed,,1,0.88,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+cl alternative,cl alternative,brand,trademark_seed,,1,0.88,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates,portfolio recovery associates,brand,trademark_seed,,1,0.88,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates reviews,portfolio recovery associates reviews,brand,trademark_seed,,1,0.88,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates complaints,portfolio recovery associates complaints,brand,trademark_seed,,1,0.88,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates bbb,portfolio recovery associates bbb,brand,trademark_seed,,1,0.88,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates phone number,portfolio recovery associates phone number,brand,trademark_seed,,1,0.88,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+portfolio recovery associates alternative,portfolio recovery associates alternative,brand,trademark_seed,,1,0.88,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p,resurgent capital services l p,brand,trademark_seed,,1,0.87,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p reviews,resurgent capital services l p reviews,brand,trademark_seed,,1,0.87,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p complaints,resurgent capital services l p complaints,brand,trademark_seed,,1,0.87,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p bbb,resurgent capital services l p bbb,brand,trademark_seed,,1,0.87,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p phone number,resurgent capital services l p phone number,brand,trademark_seed,,1,0.87,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+resurgent capital services l p alternative,resurgent capital services l p alternative,brand,trademark_seed,,1,0.87,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems,transworld systems,brand,trademark_seed,,1,0.87,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems reviews,transworld systems reviews,brand,trademark_seed,,1,0.87,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems complaints,transworld systems complaints,brand,trademark_seed,,1,0.87,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems bbb,transworld systems bbb,brand,trademark_seed,,1,0.87,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems phone number,transworld systems phone number,brand,trademark_seed,,1,0.87,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transworld systems alternative,transworld systems alternative,brand,trademark_seed,,1,0.87,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing,roundpoint mortgage servicing,brand,trademark_seed,,1,0.86,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing reviews,roundpoint mortgage servicing reviews,brand,trademark_seed,,1,0.86,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing complaints,roundpoint mortgage servicing complaints,brand,trademark_seed,,1,0.86,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing bbb,roundpoint mortgage servicing bbb,brand,trademark_seed,,1,0.86,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing phone number,roundpoint mortgage servicing phone number,brand,trademark_seed,,1,0.86,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+roundpoint mortgage servicing alternative,roundpoint mortgage servicing alternative,brand,trademark_seed,,1,0.86,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions,experian information solutions,brand,trademark_seed,,1,0.85,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions reviews,experian information solutions reviews,brand,trademark_seed,,1,0.85,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions complaints,experian information solutions complaints,brand,trademark_seed,,1,0.85,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions bbb,experian information solutions bbb,brand,trademark_seed,,1,0.85,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions phone number,experian information solutions phone number,brand,trademark_seed,,1,0.85,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+experian information solutions alternative,experian information solutions alternative,brand,trademark_seed,,1,0.85,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial,bread financial,brand,trademark_seed,,1,0.85,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial reviews,bread financial reviews,brand,trademark_seed,,1,0.85,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial complaints,bread financial complaints,brand,trademark_seed,,1,0.85,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial bbb,bread financial bbb,brand,trademark_seed,,1,0.85,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial phone number,bread financial phone number,brand,trademark_seed,,1,0.85,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bread financial alternative,bread financial alternative,brand,trademark_seed,,1,0.85,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare,loancare,brand,trademark_seed,,1,0.85,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare reviews,loancare reviews,brand,trademark_seed,,1,0.85,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare complaints,loancare complaints,brand,trademark_seed,,1,0.85,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare bbb,loancare bbb,brand,trademark_seed,,1,0.85,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare phone number,loancare phone number,brand,trademark_seed,,1,0.85,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+loancare alternative,loancare alternative,brand,trademark_seed,,1,0.85,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services,westlake services,brand,trademark_seed,,1,0.85,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services reviews,westlake services reviews,brand,trademark_seed,,1,0.85,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services complaints,westlake services complaints,brand,trademark_seed,,1,0.85,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services bbb,westlake services bbb,brand,trademark_seed,,1,0.85,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services phone number,westlake services phone number,brand,trademark_seed,,1,0.85,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+westlake services alternative,westlake services alternative,brand,trademark_seed,,1,0.85,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance,american honda finance,brand,trademark_seed,,1,0.85,ready,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance reviews,american honda finance reviews,brand,trademark_seed,,1,0.85,ready,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance complaints,american honda finance complaints,brand,trademark_seed,,1,0.85,ready,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance bbb,american honda finance bbb,brand,trademark_seed,,1,0.85,ready,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance phone number,american honda finance phone number,brand,trademark_seed,,1,0.85,ready,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american honda finance alternative,american honda finance alternative,brand,trademark_seed,,1,0.85,ready,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union,navy federal credit union,brand,trademark_seed,,1,0.8443,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union reviews,navy federal credit union reviews,brand,trademark_seed,,1,0.8443,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union complaints,navy federal credit union complaints,brand,trademark_seed,,1,0.8443,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union bbb,navy federal credit union bbb,brand,trademark_seed,,1,0.8443,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union phone number,navy federal credit union phone number,brand,trademark_seed,,1,0.8443,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+navy federal credit union alternative,navy federal credit union alternative,brand,trademark_seed,,1,0.8443,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association,bank of america national association,brand,trademark_seed,,1,0.8443,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association reviews,bank of america national association reviews,brand,trademark_seed,,1,0.8443,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association complaints,bank of america national association complaints,brand,trademark_seed,,1,0.8443,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association bbb,bank of america national association bbb,brand,trademark_seed,,1,0.8443,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association phone number,bank of america national association phone number,brand,trademark_seed,,1,0.8443,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bank of america national association alternative,bank of america national association alternative,brand,trademark_seed,,1,0.8443,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding,td bank us holding,brand,trademark_seed,,1,0.8443,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding reviews,td bank us holding reviews,brand,trademark_seed,,1,0.8443,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding complaints,td bank us holding complaints,brand,trademark_seed,,1,0.8443,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding bbb,td bank us holding bbb,brand,trademark_seed,,1,0.8443,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding phone number,td bank us holding phone number,brand,trademark_seed,,1,0.8443,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+td bank us holding alternative,td bank us holding alternative,brand,trademark_seed,,1,0.8443,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank,discover bank,brand,trademark_seed,,1,0.84,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank reviews,discover bank reviews,brand,trademark_seed,,1,0.84,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank complaints,discover bank complaints,brand,trademark_seed,,1,0.84,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank bbb,discover bank bbb,brand,trademark_seed,,1,0.84,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank phone number,discover bank phone number,brand,trademark_seed,,1,0.84,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+discover bank alternative,discover bank alternative,brand,trademark_seed,,1,0.84,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association,united services automobile association,brand,trademark_seed,,1,0.84,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association reviews,united services automobile association reviews,brand,trademark_seed,,1,0.84,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association complaints,united services automobile association complaints,brand,trademark_seed,,1,0.84,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association bbb,united services automobile association bbb,brand,trademark_seed,,1,0.84,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association phone number,united services automobile association phone number,brand,trademark_seed,,1,0.84,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+united services automobile association alternative,united services automobile association alternative,brand,trademark_seed,,1,0.84,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial,truist financial,brand,trademark_seed,,1,0.84,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial reviews,truist financial reviews,brand,trademark_seed,,1,0.84,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial complaints,truist financial complaints,brand,trademark_seed,,1,0.84,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial bbb,truist financial bbb,brand,trademark_seed,,1,0.84,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial phone number,truist financial phone number,brand,trademark_seed,,1,0.84,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+truist financial alternative,truist financial alternative,brand,trademark_seed,,1,0.84,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial,ocwen financial,brand,trademark_seed,,1,0.84,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial reviews,ocwen financial reviews,brand,trademark_seed,,1,0.84,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial complaints,ocwen financial complaints,brand,trademark_seed,,1,0.84,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial bbb,ocwen financial bbb,brand,trademark_seed,,1,0.84,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial phone number,ocwen financial phone number,brand,trademark_seed,,1,0.84,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ocwen financial alternative,ocwen financial alternative,brand,trademark_seed,,1,0.84,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise,transferwise,brand,trademark_seed,,1,0.84,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise reviews,transferwise reviews,brand,trademark_seed,,1,0.84,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise complaints,transferwise complaints,brand,trademark_seed,,1,0.84,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise bbb,transferwise bbb,brand,trademark_seed,,1,0.84,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise phone number,transferwise phone number,brand,trademark_seed,,1,0.84,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+transferwise alternative,transferwise alternative,brand,trademark_seed,,1,0.84,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial,synchrony financial,brand,trademark_seed,,1,0.834,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial reviews,synchrony financial reviews,brand,trademark_seed,,1,0.834,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial complaints,synchrony financial complaints,brand,trademark_seed,,1,0.834,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial bbb,synchrony financial bbb,brand,trademark_seed,,1,0.834,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial phone number,synchrony financial phone number,brand,trademark_seed,,1,0.834,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+synchrony financial alternative,synchrony financial alternative,brand,trademark_seed,,1,0.834,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a,pnc bank n a,brand,trademark_seed,,1,0.834,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a reviews,pnc bank n a reviews,brand,trademark_seed,,1,0.834,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a complaints,pnc bank n a complaints,brand,trademark_seed,,1,0.834,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a bbb,pnc bank n a bbb,brand,trademark_seed,,1,0.834,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a phone number,pnc bank n a phone number,brand,trademark_seed,,1,0.834,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pnc bank n a alternative,pnc bank n a alternative,brand,trademark_seed,,1,0.834,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association,bmo bank national association,brand,trademark_seed,,1,0.834,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association reviews,bmo bank national association reviews,brand,trademark_seed,,1,0.834,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association complaints,bmo bank national association complaints,brand,trademark_seed,,1,0.834,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association bbb,bmo bank national association bbb,brand,trademark_seed,,1,0.834,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association phone number,bmo bank national association phone number,brand,trademark_seed,,1,0.834,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bmo bank national association alternative,bmo bank national association alternative,brand,trademark_seed,,1,0.834,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance,american credit acceptance,brand,trademark_seed,,1,0.83,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance reviews,american credit acceptance reviews,brand,trademark_seed,,1,0.83,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance complaints,american credit acceptance complaints,brand,trademark_seed,,1,0.83,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance bbb,american credit acceptance bbb,brand,trademark_seed,,1,0.83,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance phone number,american credit acceptance phone number,brand,trademark_seed,,1,0.83,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+american credit acceptance alternative,american credit acceptance alternative,brand,trademark_seed,,1,0.83,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services,early warning services,brand,trademark_seed,,1,0.83,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services reviews,early warning services reviews,brand,trademark_seed,,1,0.83,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services complaints,early warning services complaints,brand,trademark_seed,,1,0.83,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services bbb,early warning services bbb,brand,trademark_seed,,1,0.83,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services phone number,early warning services phone number,brand,trademark_seed,,1,0.83,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+early warning services alternative,early warning services alternative,brand,trademark_seed,,1,0.83,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems,national credit systems,brand,trademark_seed,,1,0.82,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems reviews,national credit systems reviews,brand,trademark_seed,,1,0.82,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems complaints,national credit systems complaints,brand,trademark_seed,,1,0.82,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems bbb,national credit systems bbb,brand,trademark_seed,,1,0.82,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems phone number,national credit systems phone number,brand,trademark_seed,,1,0.82,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+national credit systems alternative,national credit systems alternative,brand,trademark_seed,,1,0.82,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit,toyota motor credit,brand,trademark_seed,,1,0.82,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit reviews,toyota motor credit reviews,brand,trademark_seed,,1,0.82,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit complaints,toyota motor credit complaints,brand,trademark_seed,,1,0.82,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit bbb,toyota motor credit bbb,brand,trademark_seed,,1,0.82,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit phone number,toyota motor credit phone number,brand,trademark_seed,,1,0.82,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+toyota motor credit alternative,toyota motor credit alternative,brand,trademark_seed,,1,0.82,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa,goldman sachs bank usa,brand,trademark_seed,,1,0.81,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa reviews,goldman sachs bank usa reviews,brand,trademark_seed,,1,0.81,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa complaints,goldman sachs bank usa complaints,brand,trademark_seed,,1,0.81,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa bbb,goldman sachs bank usa bbb,brand,trademark_seed,,1,0.81,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa phone number,goldman sachs bank usa phone number,brand,trademark_seed,,1,0.81,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+goldman sachs bank usa alternative,goldman sachs bank usa alternative,brand,trademark_seed,,1,0.81,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene,selene,brand,trademark_seed,,1,0.81,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene reviews,selene reviews,brand,trademark_seed,,1,0.81,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene complaints,selene complaints,brand,trademark_seed,,1,0.81,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene bbb,selene bbb,brand,trademark_seed,,1,0.81,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene phone number,selene phone number,brand,trademark_seed,,1,0.81,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+selene alternative,selene alternative,brand,trademark_seed,,1,0.81,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial,general motors financial,brand,trademark_seed,,1,0.8,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial reviews,general motors financial reviews,brand,trademark_seed,,1,0.8,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial complaints,general motors financial complaints,brand,trademark_seed,,1,0.8,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial bbb,general motors financial bbb,brand,trademark_seed,,1,0.8,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial phone number,general motors financial phone number,brand,trademark_seed,,1,0.8,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+general motors financial alternative,general motors financial alternative,brand,trademark_seed,,1,0.8,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services,pennymac loan services,brand,trademark_seed,,1,0.79,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services reviews,pennymac loan services reviews,brand,trademark_seed,,1,0.79,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services complaints,pennymac loan services complaints,brand,trademark_seed,,1,0.79,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services bbb,pennymac loan services bbb,brand,trademark_seed,,1,0.79,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services phone number,pennymac loan services phone number,brand,trademark_seed,,1,0.79,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+pennymac loan services alternative,pennymac loan services alternative,brand,trademark_seed,,1,0.79,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax,foris dax,brand,trademark_seed,,1,0.79,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax reviews,foris dax reviews,brand,trademark_seed,,1,0.79,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax complaints,foris dax complaints,brand,trademark_seed,,1,0.79,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax bbb,foris dax bbb,brand,trademark_seed,,1,0.79,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax phone number,foris dax phone number,brand,trademark_seed,,1,0.79,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+foris dax alternative,foris dax alternative,brand,trademark_seed,,1,0.79,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial,citizens financial,brand,trademark_seed,,1,0.79,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial reviews,citizens financial reviews,brand,trademark_seed,,1,0.79,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial complaints,citizens financial complaints,brand,trademark_seed,,1,0.79,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial bbb,citizens financial bbb,brand,trademark_seed,,1,0.79,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial phone number,citizens financial phone number,brand,trademark_seed,,1,0.79,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+citizens financial alternative,citizens financial alternative,brand,trademark_seed,,1,0.79,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware,barclays bank delaware,brand,trademark_seed,,1,0.784,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware reviews,barclays bank delaware reviews,brand,trademark_seed,,1,0.784,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware complaints,barclays bank delaware complaints,brand,trademark_seed,,1,0.784,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware bbb,barclays bank delaware bbb,brand,trademark_seed,,1,0.784,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware phone number,barclays bank delaware phone number,brand,trademark_seed,,1,0.784,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+barclays bank delaware alternative,barclays bank delaware alternative,brand,trademark_seed,,1,0.784,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld,ld,brand,trademark_seed,,1,0.78,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld reviews,ld reviews,brand,trademark_seed,,1,0.78,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld complaints,ld complaints,brand,trademark_seed,,1,0.78,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld bbb,ld bbb,brand,trademark_seed,,1,0.78,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld phone number,ld phone number,brand,trademark_seed,,1,0.78,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+ld alternative,ld alternative,brand,trademark_seed,,1,0.78,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial,bsi financial,brand,trademark_seed,,1,0.77,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial reviews,bsi financial reviews,brand,trademark_seed,,1,0.77,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial complaints,bsi financial complaints,brand,trademark_seed,,1,0.77,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial bbb,bsi financial bbb,brand,trademark_seed,,1,0.77,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial phone number,bsi financial phone number,brand,trademark_seed,,1,0.77,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+bsi financial alternative,bsi financial alternative,brand,trademark_seed,,1,0.77,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services,carrington mortgage services,brand,trademark_seed,,1,0.77,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services reviews,carrington mortgage services reviews,brand,trademark_seed,,1,0.77,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services complaints,carrington mortgage services complaints,brand,trademark_seed,,1,0.77,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services bbb,carrington mortgage services bbb,brand,trademark_seed,,1,0.77,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services phone number,carrington mortgage services phone number,brand,trademark_seed,,1,0.77,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carrington mortgage services alternative,carrington mortgage services alternative,brand,trademark_seed,,1,0.77,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising,byrider franchising,brand,trademark_seed,,1,0.74,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising reviews,byrider franchising reviews,brand,trademark_seed,,1,0.74,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising complaints,byrider franchising complaints,brand,trademark_seed,,1,0.74,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising bbb,byrider franchising bbb,brand,trademark_seed,,1,0.74,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising phone number,byrider franchising phone number,brand,trademark_seed,,1,0.74,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+byrider franchising alternative,byrider franchising alternative,brand,trademark_seed,,1,0.74,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate,w&a intermediate,brand,trademark_seed,,1,0.74,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate reviews,w&a intermediate reviews,brand,trademark_seed,,1,0.74,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate complaints,w&a intermediate complaints,brand,trademark_seed,,1,0.74,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate bbb,w&a intermediate bbb,brand,trademark_seed,,1,0.74,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate phone number,w&a intermediate phone number,brand,trademark_seed,,1,0.74,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+w&a intermediate alternative,w&a intermediate alternative,brand,trademark_seed,,1,0.74,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the,huntington national bank the,brand,trademark_seed,,1,0.74,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the reviews,huntington national bank the reviews,brand,trademark_seed,,1,0.74,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the complaints,huntington national bank the complaints,brand,trademark_seed,,1,0.74,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the bbb,huntington national bank the bbb,brand,trademark_seed,,1,0.74,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the phone number,huntington national bank the phone number,brand,trademark_seed,,1,0.74,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+huntington national bank the alternative,huntington national bank the alternative,brand,trademark_seed,,1,0.74,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance,nissan motor acceptance,brand,trademark_seed,,1,0.73,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance reviews,nissan motor acceptance reviews,brand,trademark_seed,,1,0.73,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance complaints,nissan motor acceptance complaints,brand,trademark_seed,,1,0.73,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance bbb,nissan motor acceptance bbb,brand,trademark_seed,,1,0.73,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance phone number,nissan motor acceptance phone number,brand,trademark_seed,,1,0.73,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+nissan motor acceptance alternative,nissan motor acceptance alternative,brand,trademark_seed,,1,0.73,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax,carmax,brand,trademark_seed,,1,0.72,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax reviews,carmax reviews,brand,trademark_seed,,1,0.72,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax complaints,carmax complaints,brand,trademark_seed,,1,0.72,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax bbb,carmax bbb,brand,trademark_seed,,1,0.72,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax phone number,carmax phone number,brand,trademark_seed,,1,0.72,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carmax alternative,carmax alternative,brand,trademark_seed,,1,0.72,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana,carvana,brand,trademark_seed,,1,0.71,review,,,,,variant=brand; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana reviews,carvana reviews,brand,trademark_seed,,1,0.71,review,,,,,variant=reviews; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana complaints,carvana complaints,brand,trademark_seed,,1,0.71,review,,,,,variant=complaints; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana bbb,carvana bbb,brand,trademark_seed,,1,0.71,review,,,,,variant=bbb; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana phone number,carvana phone number,brand,trademark_seed,,1,0.71,review,,,,,variant=phone_number; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+carvana alternative,carvana alternative,brand,trademark_seed,,1,0.71,review,,,,,variant=alternative; src=cfpb_complaint,2026-06-11T00:20:04Z,2026-06-11T00:20:04Z
+credit,credit,money_problem,detection,privacy_protection,5,0.4,review,"wbap-am-820,woai-am-1200",,,,"part one yesterday. Part two is today, Sheriff David Clark, we talked specifically about the mindset of a Carmelo Anthony in a case like this in America in 2026... | at the mindset of a Carmelo Anthony in a case like this in America in 2026. Meantime, I'm going to tell you about Incogny, incogny.com slash pags. You go there,... | tournament has arrived and you can trade it through the finals on Kalshi. England is currently trading at 11% to win it all, meaning $100 trade pays out 826 if ... | I want to do a show for you, Jesse Kelly, not for me. I don't want to go to parties. I want to watch a documentary this afternoon. I don't want to go home, go t... | interest rates as low as 3.99 get that car you love and that cruise you deserve go to my ncu.com for complete details neighborhood credit union some restriction...",2026-06-11T01:24:43Z,2026-06-18T21:23:51Z
+bills,bills,money_problem,detection,business_funding,3,0.4,review,"woai-am-1200,whbo-1040",,,,"An amendment-based case but argued federal laws shielding the firearms industry should overrule the New York law and that such laws could bring crushing liabili... | To be there in the memorial reflecting pool. You're sick. What's the matter with you? You're listening to Florida's Voice with Drew Steel. Looking for a trusted... | of Alabama Republican Senator and candidate for governor, Tommy Tuberville. It comes less than a week after a similar suit filed by former candidate for governo...",2026-06-18T20:04:13Z,2026-06-18T21:01:06Z
+loan,loan,money_problem,detection+keyword_hit,identity_protection,3,0.4,review,klif-am-570,,,,"process. And it just goes on from there. You're running in Texas and this is where they're putting their hope. That's why this year I am arguing and I think, we... | [confidence=0.65] ...r this scam. You get a text on your phone about a loan you never applied for. The messages might say tha...",2026-06-18T20:21:20Z,2026-06-18T20:22:43Z
+Incogni,incogni,brand,detection,privacy_protection,1,0.4,review,wbap-am-820,Incogni,incogni.com,,stop data brokers from selling personal information,2026-06-11T01:24:43Z,2026-06-11T01:24:43Z
+incogni.com,incogni.com,domain,detection,privacy_protection,1,0.4,review,wbap-am-820,Incogni,incogni.com,,"part one yesterday. Part two is today, Sheriff David Clark, we talked specifically about the mindset of a Carmelo Anthony in a case like this in America in 2026...",2026-06-11T01:24:43Z,2026-06-11T01:24:43Z
+Incogny,incogny,brand,detection,privacy_protection,1,0.4,review,wbap-am-820,Incogny,incogny.com,,stop data brokers from selling personal information,2026-06-11T04:24:13Z,2026-06-11T04:24:13Z
+incogny.com,incogny.com,domain,detection,privacy_protection,1,0.4,review,wbap-am-820,Incogny,incogny.com,,"at the mindset of a Carmelo Anthony in a case like this in America in 2026. Meantime, I'm going to tell you about Incogny, incogny.com slash pags. You go there,...",2026-06-11T04:24:13Z,2026-06-11T04:24:13Z
+Ledger,ledger,brand,detection,business_funding,1,0.4,review,woai-am-1200,Ledger,,,An amendment-based case but argued federal laws shielding the firearms industry should overrule the New York law and that such laws could bring crushing liabili...,2026-06-18T20:04:13Z,2026-06-18T20:04:13Z
+lifelock,lifelock,brand,detection,identity_protection,1,0.4,review,klif-am-570,lifelock,lifelock.com,,identity theft protection and restoration,2026-06-18T20:22:43Z,2026-06-18T20:22:43Z
+lifelock.com,lifelock.com,domain,detection,identity_protection,1,0.4,review,klif-am-570,lifelock,lifelock.com,,"process. And it just goes on from there. You're running in Texas and this is where they're putting their hope. That's why this year I am arguing and I think, we...",2026-06-18T20:22:43Z,2026-06-18T20:22:43Z
+kalshi.com,kalshi.com,domain,detection,business_funding,1,0.4,review,woai-am-1200,,kalshi.com,,"tournament has arrived and you can trade it through the finals on Kalshi. England is currently trading at 11% to win it all, meaning $100 trade pays out 826 if ...",2026-06-18T20:24:31Z,2026-06-18T20:24:31Z
+goodtrash.com,goodtrash.com,domain,detection,business_funding,1,0.4,review,woai-am-1200,,goodtrash.com,,"I want to do a show for you, Jesse Kelly, not for me. I don't want to go to parties. I want to watch a documentary this afternoon. I don't want to go home, go t...",2026-06-18T20:49:02Z,2026-06-18T20:49:02Z
+"Do Guys Guns, Get a Box","do guys guns, get a box",brand,detection,business_funding,1,0.4,review,whbo-1040,"Do Guys Guns, Get a Box","dguysguns.com, getabox.com",,gun shop services and TV subscription service,2026-06-18T20:49:55Z,2026-06-18T20:49:55Z
+"dguysguns.com, getabox.com","dguysguns.com, getabox.com",domain,detection,business_funding,1,0.4,review,whbo-1040,"Do Guys Guns, Get a Box","dguysguns.com, getabox.com",,To be there in the memorial reflecting pool. You're sick. What's the matter with you? You're listening to Florida's Voice with Drew Steel. Looking for a trusted...,2026-06-18T20:49:55Z,2026-06-18T20:49:55Z
+StrongTell,strongtell,brand,detection,business_funding,1,0.4,review,whbo-1040,StrongTell,,,cut phone bills in half,2026-06-18T21:01:06Z,2026-06-18T21:01:06Z
+Neighborhood Credit Union,neighborhood credit union,brand,detection,auto_finance,1,0.4,review,wbap-am-820,Neighborhood Credit Union,ncu.com,,low interest rates for car and cruise financing,2026-06-18T21:23:51Z,2026-06-18T21:23:51Z
+ncu.com,ncu.com,domain,detection,auto_finance,1,0.4,review,wbap-am-820,Neighborhood Credit Union,ncu.com,,interest rates as low as 3.99 get that car you love and that cruise you deserve go to my ncu.com for complete details neighborhood credit union some restriction...,2026-06-18T21:23:51Z,2026-06-18T21:23:51Z
+debt relief,debt relief,money_problem,keyword_hit,,1,0.35,review,wwtn-fm-997,,,,[confidence=0.70] ...e good news uh you know with all of that negative debt relief and negative debt news learned some good news tod...,2026-06-18T21:08:46Z,2026-06-18T21:08:46Z

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Detections — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/radio-harvest" style="color:var(--accent);text-decoration:none;">Radio Harvest</a> › Recent Detections</h2>
+{% if rows %}
+<table>
+  <thead><tr><th>Time</th><th>Station</th><th>Market</th><th>Advertiser</th><th>Category / keyword</th><th>Confidence</th><th>Transcript snippet</th><th>Chunk</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for r in rows %}
+    <tr>
+      <td>{{ format_ts(r.start_ts) }}</td>
+      <td>{{ r.station_display }}</td>
+      <td>{{ r.market or "—" }}</td>
+      <td>{{ r.company_name or "—" }}</td>
+      <td>{{ r.ad_category or "—" }}{% if r.keywords %}<br><span style="color:var(--muted);font-size:0.78rem;">{{ r.keywords }}</span>{% endif %}</td>
+      <td>{{ fmt_conf(r.confidence) }}</td>
+      <td style="max-width: 320px; font-size: 0.82rem; color: var(--muted);">{{ r.transcript_snippet or "—" }}</td>
+      <td style="font-size: 0.78rem; color: var(--muted);">{{ r.chunk_path or "—" }}</td>
+      <td>{{ r.chunk_status or "—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="pager">Showing latest {{ rows|length }} detection(s). <a href="/api/harvest/detections?limit={{ limit }}" style="color:var(--accent);">Raw JSON</a></p>
+{% else %}
+<p class="empty">No ad detections yet.</p>
+{% endif %}
+{% endblock %}

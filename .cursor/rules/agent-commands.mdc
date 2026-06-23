@@ -16,18 +16,20 @@ alwaysApply: true
 | ลำดับ | Agent ทำ | คำสั่ง / action |
 |---|---|---|
 | 1 | อ่าน session memory | Read `AGENTS.md` + `plan/handoff-*.md` ล่าสุดถ้ามีงานต่อ |
-| 2 | ถาม architecture / หาไฟล์ | ใช้ skill **`understand-chat`** กับ `.understand-anything/knowledge-graph.json` — **อย่า bulk-read ทั้ง repo** |
-| 3 | Graph stale? | ถ้ามี `.understand-anything/.graph-stale` หรือ hook บอก stale → ทำตาม `C:\Users\Barbara\.understand-anything\repo\understand-anything-plugin\hooks\auto-update-prompt.md` หรือรัน skill **`understand`** (incremental) |
+| 2 | โหลด project memory (Memory OS) | Read `project-memory/00`–`04` (Overview, Architecture, Policy, Forbidden, Load Order) |
+| 3 | ถาม architecture / หาไฟล์ | ใช้ skill **`understand-chat`** กับ `.understand-anything/knowledge-graph.json` — **อย่า bulk-read ทั้ง repo** |
+| 4 | Graph stale? | ถ้ามี `.understand-anything/.graph-stale` หรือ hook บอก stale → ทำตาม `C:\Users\Barbara\.understand-anything\repo\understand-anything-plugin\hooks\auto-update-prompt.md` หรือรัน skill **`understand`** (incremental) |
 
 ---
 
 ## 2. ก่อนปิดงาน / ก่อนบอกว่า "เสร็จ"
 
-รันทั้งคู่ — ไม่ผ่าน = อย่าบอกเสร็จ:
+รันทั้งสาม — ไม่ผ่าน = อย่าบอกเสร็จ:
 
 ```powershell
 cd h:\DEV\projects\radio-ad-sensing-pipeline
 .venv\Scripts\pytest -q
+.venv\Scripts\python tools/harness/run_all.py
 .venv\Scripts\python -c "from shared.db import migrate; migrate('data/test.db')"
 ```
 

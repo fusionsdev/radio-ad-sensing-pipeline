@@ -1,0 +1,20 @@
+{
+  "name": "headroom_retrieve",
+  "description": "Retrieve original uncompressed content by hash. Use this when you need full details from previously compressed content. The hash comes from headroom_compress results or from compression markers like [N items compressed... hash=abc123].",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "hash": {
+        "type": "string",
+        "description": "Hash key from compression (e.g., 'abc123' from hash=abc123)"
+      },
+      "query": {
+        "type": "string",
+        "description": "Optional search query to filter results. If provided, returns only items matching the query."
+      }
+    },
+    "required": [
+      "hash"
+    ]
+  }
+}

@@ -19,6 +19,8 @@ WORKDIR /app
 # Install Python deps first for layer caching
 COPY pyproject.toml README.md ./
 COPY shared/ ./shared/
+COPY alerter/ ./alerter/
+COPY worker/ ./worker/
 COPY dashboard/ ./dashboard/
 COPY config/ ./config/
 

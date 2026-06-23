@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Station Config — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;"><a href="/radio-harvest" style="color:var(--accent);text-decoration:none;">Radio Harvest</a> › Station Config</h2>
+<p class="badge muted">Enabled: {{ enabled_count }} / {{ total_count }} configured</p>
+{% if stations %}
+<table>
+  <thead><tr><th>station_id</th><th>display_name</th><th>market</th><th>state/vertical</th><th>stream_url</th><th>format</th><th>enabled</th></tr></thead>
+  <tbody>
+    {% for s in stations %}
+    <tr>
+      <td>{{ s.station_id }}</td>
+      <td>{{ s.display_name }}</td>
+      <td>{{ s.market or "—" }}</td>
+      <td>{{ s.state or "—" }}</td>
+      <td style="font-size:0.78rem;color:var(--muted);max-width:320px;word-break:break-all;">{{ s.stream_url }}</td>
+      <td>{{ s.format or "—" }}</td>
+      <td>{% if s.enabled %}<span class="badge ok">on</span>{% else %}<span class="badge muted">off</span>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No stations configured.</p>
+{% endif %}
+<p style="margin-top:1rem;font-size:0.82rem;color:var(--muted);">
+  To scale beyond the current station count, add more enabled station entries in <code>config/stations.yaml</code>.
+</p>
+<p><a class="btn-review" href="/api/harvest/stations" style="text-decoration:none;">Raw JSON</a></p>
+{% endblock %}

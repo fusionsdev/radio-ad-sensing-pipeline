@@ -36,8 +36,10 @@ def derive_slot_recommendation(
     )
     if not enabled:
         return "bench"
-    if status in {"down", "stale"}:
+    if status in {"down", "stale", "degraded", "backoff"}:
         return "fix"
+    if status == "paused":
+        return "bench"
     if chunks_7d >= min_chunks_for_swap and effective_hits == 0:
         return "swap"
     if chunks_7d >= min_chunks_for_swap and yield_pct < 0.3 and effective_hits < 2:

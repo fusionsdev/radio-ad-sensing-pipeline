@@ -8,6 +8,7 @@ import sys
 import threading
 import time
 import wave
+import json
 from pathlib import Path
 
 import pytest
@@ -67,12 +68,14 @@ class FakeRunner:
         wav_duration_sec: float | None = None,
         capture_elapsed_sec: float = 0.0,
         clock: FakeClock | None = None,
+        error_sample: str = "",
     ) -> None:
         self.returncode = returncode
         self.write_file = write_file
         self.wav_duration_sec = wav_duration_sec
         self.capture_elapsed_sec = capture_elapsed_sec
         self.clock = clock
+        self.last_error_sample = error_sample
         self.calls: list[tuple[StationConfig, Path, float]] = []
 
     def record_chunk(
@@ -261,6 +264,49 @@ def test_partial_wav_logs_empty_chunk_gap_and_does_not_enqueue(tmp_path: Path) -
     assert sum(clock.sleeps) == pytest.approx(4)
 
 
+def test_runtime_gap_does_not_reenable_db_disabled_station(tmp_path: Path) -> None:
+    db_path = tmp_path / "pipeline.db"
+    migrate(db_path)
+    conn = _conn(db_path)
+    try:
+        conn.execute(
+            """
+            INSERT INTO stations (name, url, format, enabled, display_name)
+            VALUES (?, ?, ?, 0, ?)
+            """,
+            ("Paused AM", "https://example.com/paused", "mp3", "Paused AM"),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    station = StationConfig(name="Paused AM", url="https://example.com/paused", enabled=True)
+    settings = PipelineSettings(chunk_len=90, overlap=7, ingest_immediate_retries=0)
+    runner = FakeRunner(returncode=0, wav_duration_sec=30.0)
+    clock = FakeClock(start=3_500.0)
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=tmp_path / "chunks",
+        runner=runner,
+        clock=clock,
+        backoff=BackoffPolicy(initial_seconds=1, max_seconds=8),
+    )
+
+    assert ingestor.run_once() is False
+
+    conn = _conn(db_path)
+    try:
+        row = conn.execute(
+            "SELECT enabled FROM stations WHERE name = ?",
+            ("Paused AM",),
+        ).fetchone()
+    finally:
+        conn.close()
+    assert row["enabled"] == 0
+
+
 def test_failed_ffmpeg_logs_stream_down_gap_and_exponential_backoff(tmp_path: Path) -> None:
     db_path = tmp_path / "pipeline.db"
     migrate(db_path)
@@ -338,6 +384,42 @@ def test_ffmpeg_runner_terminate_active_stops_in_flight_process(
     assert not thread.is_alive()
     assert result
     assert result[0] != 0
+
+
+def test_ffmpeg_runner_stores_bounded_error_sample(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    station = StationConfig(name="Bad AAC", url="https://example.com/bad.aac")
+    settings = PipelineSettings(chunk_len=1, ffmpeg_error_sample_lines=3)
+    runner = FfmpegChunkRunner(settings)
+
+    def fake_popen_with_process_group(_command: list[str]) -> subprocess.Popen[bytes]:
+        script = (
+            "import sys\n"
+            "for i in range(25):\n"
+            "    print(f'ffmpeg-error-{i}', file=sys.stderr)\n"
+            "sys.exit(1)\n"
+        )
+        return subprocess.Popen(  # noqa: S603
+            [sys.executable, "-c", script],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+        )
+
+    monkeypatch.setattr(
+        "ingestor.ffmpeg._popen_with_process_group",
+        fake_popen_with_process_group,
+    )
+
+    returncode = runner.record_chunk(station, tmp_path / "chunk.wav", duration_sec=1.0)
+
+    assert returncode == 1
+    assert runner.last_error_sample.splitlines() == [
+        "ffmpeg-error-22",
+        "ffmpeg-error-23",
+        "ffmpeg-error-24",
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -503,6 +585,130 @@ def test_backoff_uses_settings_defaults(tmp_path: Path) -> None:
     assert sum(backoff_sleeps) == pytest.approx(3), (
         f"expected backoff sleep total 3 from settings, got {sum(backoff_sleeps)}"
     )
+
+
+def test_bad_stream_guard_pauses_and_persists_health_after_attempt_threshold(
+    tmp_path: Path,
+) -> None:
+    db_path = tmp_path / "pipeline.db"
+    migrate(db_path)
+    station = StationConfig(name="Guard AM", url="https://example.com/bad-aac", enabled=True)
+    settings = PipelineSettings(
+        chunk_len=90,
+        overlap=7,
+        ingest_immediate_retries=1,
+        ingest_immediate_retry_delay_sec=0.0,
+        ingest_bad_stream_attempt_threshold=2,
+        ingest_bad_stream_empty_threshold=99,
+        ingest_bad_stream_pause_minutes=0.05,
+    )
+    runner = FakeRunner(
+        returncode=0,
+        wav_duration_sec=30.0,
+        error_sample="aac decode failed\ninvalid data",
+    )
+    clock = FakeClock(start=10_000.0)
+
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=tmp_path / "chunks",
+        runner=runner,
+        clock=clock,
+        backoff=BackoffPolicy(initial_seconds=1, max_seconds=60),
+    )
+
+    assert ingestor.run_once() is False
+
+    conn = _conn(db_path)
+    try:
+        health = conn.execute(
+            """
+            SELECT health_state, enabled, last_failure_at, cool_down_until, last_error
+            FROM station_health
+            WHERE station_id = ?
+            """,
+            ("Guard AM",),
+        ).fetchone()
+        status = conn.execute(
+            "SELECT value FROM status WHERE key = ?",
+            ("ingestor:station_health:Guard AM",),
+        ).fetchone()
+    finally:
+        conn.close()
+
+    assert health is not None
+    assert health["health_state"] == "backoff"
+    assert health["enabled"] == 1
+    assert health["last_failure_at"]
+    assert health["cool_down_until"]
+    assert "invalid data" in health["last_error"]
+    assert status is not None
+    payload = json.loads(status["value"])
+    assert payload["status"] == "backoff"
+    assert payload["consecutive_empty_chunks"] == 1
+    assert payload["consecutive_stream_down"] == 0
+    assert payload["attempts_since_success"] == 2
+    assert payload["backoff_until"] > 10_000.0
+    assert sum(clock.sleeps) == pytest.approx(3.0)
+
+
+def test_bad_stream_success_clears_backoff_state(tmp_path: Path) -> None:
+    db_path = tmp_path / "pipeline.db"
+    migrate(db_path)
+    station = StationConfig(name="Recover AM", url="https://example.com/recover", enabled=True)
+    settings = PipelineSettings(
+        chunk_len=3,
+        overlap=1,
+        ingest_immediate_retries=0,
+        ingest_immediate_retry_delay_sec=0.0,
+        ingest_bad_stream_attempt_threshold=1,
+        ingest_bad_stream_pause_minutes=0.01,
+    )
+    runner = SequencedFakeRunner([1, 0])
+    clock = FakeClock(start=20_000.0)
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=tmp_path / "chunks",
+        runner=runner,
+        clock=clock,
+        backoff=BackoffPolicy(initial_seconds=1, max_seconds=60),
+    )
+
+    assert ingestor.run_once() is False
+    assert ingestor.run_once() is True
+
+    conn = _conn(db_path)
+    try:
+        health = conn.execute(
+            """
+            SELECT health_state, last_success_at, cool_down_until, consecutive_failures
+            FROM station_health
+            WHERE station_id = ?
+            """,
+            ("Recover AM",),
+        ).fetchone()
+        status = conn.execute(
+            "SELECT value FROM status WHERE key = ?",
+            ("ingestor:station_health:Recover AM",),
+        ).fetchone()
+    finally:
+        conn.close()
+
+    assert health is not None
+    assert health["health_state"] == "healthy"
+    assert health["last_success_at"]
+    assert health["cool_down_until"] is None
+    assert health["consecutive_failures"] == 0
+    assert status is not None
+    payload = json.loads(status["value"])
+    assert payload["status"] == "healthy"
+    assert payload["consecutive_empty_chunks"] == 0
+    assert payload["consecutive_stream_down"] == 0
+    assert payload["backoff_until"] is None
 
 
 def test_create_station_ingestors_skips_disabled_stations(tmp_path: Path) -> None:

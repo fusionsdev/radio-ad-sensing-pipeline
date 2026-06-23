@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-06-22T23:35:40Z",
+  "status": "pass",
+  "overnight_readiness": "ready",
+  "harnesses": {
+    "classifier": {
+      "passed": true,
+      "metrics": {
+        "precision": 1.0,
+        "cases_total": 12,
+        "cases_passed": 12
+      }
+    },
+    "dashboard": {
+      "passed": true,
+      "metrics": {
+        "probes": [
+          {
+            "route": "/api/health",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/stations?limit=100",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/detections?limit=50",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/harvest/status",
+            "status": 200,
+            "ok": true
+          }
+        ]
+      }
+    },
+    "self_healing": {
+      "passed": true,
+      "metrics": {
+        "execute_self_heal": false,
+        "unhealthy_count": 0,
+        "exited_count": 0,
+        "unhealthy_services": [],
+        "exited_services": []
+      }
+    },
+    "station": {
+      "passed": true,
+      "metrics": {
+        "enabled_count": 2,
+        "enabled_stations": [
+          "klif-am-570",
+          "wbap-am-820"
+        ]
+      }
+    },
+    "hermes": {
+      "passed": true,
+      "metrics": {
+        "memory_files": 5
+      }
+    }
+  },
+  "failed_checks": [],
+  "recommended_actions": []
+}

@@ -2,6 +2,32 @@
 
 **Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
 
+## Memory OS (mandatory workflow)
+
+**Before coding** — load project memory (Obsidian vault in-repo):
+
+```txt
+project-memory/00_Project_Overview.md
+project-memory/01_Current_Architecture.md
+project-memory/02_Operating_Policy.md
+project-memory/03_Forbidden_Assumptions.md
+project-memory/04_Agent_Load_Order.md
+```
+
+Optional MCP: `config/obsidian-mcp.json` → obsidian-mcp-server searches `project-memory/`.
+
+**After coding** — verify (no production DB writes in harness):
+
+```bash
+python tools/harness/run_all.py
+```
+
+Optional self-heal (explicit restart only): `python tools/harness/run_all.py --execute-self-heal`
+
+**Completion report** must include: files changed, tests run, harness result (`tools/harness/reports/latest.md`), remaining risks, memory files updated.
+
+**AI layer:** Hermes local + Ollama on-box — do not assume Gemini / Claude API / OpenAI unless explicitly configured.
+
 ## Current state (2026-06-10)
 
 | Item | Status |
@@ -95,10 +121,10 @@ Agent runs automatically — **do not ask user to type commands**. Full runbook:
 
 | เมื่อ | Agent ทำ |
 |---|---|
-| เริ่ม session | `AGENTS.md` + `understand-chat` สำหรับ architecture |
-| ก่อนปิดงาน | `.venv\Scripts\pytest` + migrate `data/test.db` |
+| เริ่ม session | `AGENTS.md` + **project-memory/** (5 mandatory files) + `understand-chat` สำหรับ architecture |
+| ก่อนปิดงาน | `.venv\Scripts\pytest` + `python tools/harness/run_all.py` + migrate `data/test.db` |
 | หลัง commit โครงสร้างใหญ่ | `/understand` |
-| pipeline ops | `.\scripts\pipeline-status.ps1` + docker exec queries |
+| pipeline ops | `.\scripts\pipeline-loan-ops.ps1` + docker exec queries |
 
 Optional: `/caveman`, `headroom proxy`
 
@@ -106,6 +132,8 @@ Bootstrap: `final-install-list.md` · `docs/agent-tooling.md`
 
 ## Session checklist for agent
 
-- [ ] Read this file + relevant `plan/handoff-*.md` if starting new work
+- [ ] Read this file + **project-memory/** (5 mandatory files) + relevant `plan/handoff-*.md`
 - [ ] Run `pytest` before claiming done
+- [ ] Run `python tools/harness/run_all.py` before claiming done
 - [ ] Update `plan/` report or handoff when closing a phase
+- [ ] Update `project-memory/` when architecture or ops policy changes

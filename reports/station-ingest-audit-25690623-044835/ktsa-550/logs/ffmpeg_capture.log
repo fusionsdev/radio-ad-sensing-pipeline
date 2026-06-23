@@ -1,0 +1,1543 @@
+=== STATION ktsa-550 START 1782164916.208 UTC 2026-06-22T21:48:36Z ===
+=== ATTEMPT 1 group_attempt=1 start=1782164916.208 output=1782164916207-a1.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164916207-a1.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     221KiB time=00:00:07.10 bitrate= 254.4kbits/s speed=14.2x    size=     256KiB time=00:00:14.99 bitrate= 139.8kbits/s speed=  15x    size=     512KiB time=00:00:17.73 bitrate= 236.4kbits/s speed=11.8x    [aac @ 0x6525a0028380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x6525a0039080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6525a003d180] [dec:aac @ 0x6525a004e080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x6525a0037440] video:0KiB audio:554KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013740%
+size=     554KiB time=00:00:17.74 bitrate= 256.0kbits/s speed=9.37x    
+=== ATTEMPT 1 FAIL rc=0 size=567760 duration=17.7400625 ===
+=== ATTEMPT 2 group_attempt=2 start=1782164922.082 output=1782164922081-a2.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164922081-a2.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:09.19 bitrate= 228.1kbits/s speed=18.4x    size=     512KiB time=00:00:19.87 bitrate= 211.0kbits/s speed=19.9x    size=     512KiB time=00:00:19.87 bitrate= 211.0kbits/s speed=13.2x    [out#0/wav @ 0x5fd2a22c2440] video:0KiB audio:621KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.012263%
+size=     621KiB time=00:00:19.87 bitrate= 256.0kbits/s speed=10.5x    
+=== ATTEMPT 2 FAIL rc=0 size=636120 duration=19.8763125 ===
+=== ATTEMPT 3 group_attempt=3 start=1782164928.206 output=1782164928206-a3.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164928206-a3.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     205KiB time=00:00:06.59 bitrate= 254.3kbits/s speed=13.2x    size=     256KiB time=00:00:12.53 bitrate= 167.3kbits/s speed=12.5x    [aac @ 0x6273c25f9380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x6273c260a080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6273c260e180] [dec:aac @ 0x6273c261f080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x6273c2608440] video:0KiB audio:392KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019440%
+size=     392KiB time=00:00:12.53 bitrate= 256.0kbits/s speed=11.6x    
+=== ATTEMPT 3 FAIL rc=0 size=401320 duration=12.5388125 ===
+=== ATTEMPT 4 group_attempt=4 start=1782164933.629 output=1782164933628-a4.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164933628-a4.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     224KiB time=00:00:07.19 bitrate= 254.4kbits/s speed=14.4x    size=     256KiB time=00:00:15.09 bitrate= 139.0kbits/s speed=15.1x    size=     512KiB time=00:00:17.73 bitrate= 236.4kbits/s speed=11.8x    [aac @ 0x600a5df8f380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x600a5dfa0080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x600a5dfa4180] [dec:aac @ 0x600a5dfb5080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x600a5df9e440] video:0KiB audio:554KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013740%
+size=     554KiB time=00:00:17.74 bitrate= 256.0kbits/s speed=9.52x    
+=== ATTEMPT 4 FAIL rc=0 size=567760 duration=17.7400625 ===
+=== ATTEMPT 5 group_attempt=5 start=1782164939.553 output=1782164939552-a5.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164939552-a5.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     210KiB time=00:00:06.77 bitrate= 254.3kbits/s speed=13.6x    size=     256KiB time=00:00:14.85 bitrate= 141.1kbits/s speed=14.9x    size=     512KiB time=00:00:17.69 bitrate= 237.1kbits/s speed=11.8x    [aac @ 0x5d5967744380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5d5967755080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5d5967759180] [dec:aac @ 0x5d596776a080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5d5967753440] video:0KiB audio:553KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013776%
+size=     553KiB time=00:00:17.69 bitrate= 256.0kbits/s speed=9.27x    
+=== ATTEMPT 5 FAIL rc=0 size=566274 duration=17.693625 ===
+=== ATTEMPT 6 group_attempt=6 start=1782164945.427 output=1782164945427-a6.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164945427-a6.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     210KiB time=00:00:06.77 bitrate= 254.3kbits/s speed=13.6x    size=     256KiB time=00:00:12.16 bitrate= 172.4kbits/s speed=12.2x    [aac @ 0x60e32dd38380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x60e32dd49080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x60e32dd4d180] [dec:aac @ 0x60e32dd5e080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x60e32dd47440] video:0KiB audio:380KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020033%
+size=     380KiB time=00:00:12.16 bitrate= 256.1kbits/s speed=11.3x    
+=== ATTEMPT 6 FAIL rc=0 size=389430 duration=12.16725 ===
+=== ATTEMPT 7 group_attempt=7 start=1782164950.802 output=1782164950801-a7.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164950801-a7.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     113KiB time=00:00:03.66 bitrate= 252.9kbits/s speed=7.33x    size=     184KiB time=00:00:05.94 bitrate= 254.1kbits/s speed=5.94x    size=     256KiB time=00:00:14.30 bitrate= 146.6kbits/s speed=9.53x    [aac @ 0x5c24927b8380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5c24927c9080] Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5c24927cd180] [dec:aac @ 0x5c24927de080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5c24927c7440] video:0KiB audio:447KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.017041%
+size=     447KiB time=00:00:14.30 bitrate= 256.0kbits/s speed=7.53x    
+=== ATTEMPT 7 FAIL rc=0 size=457790 duration=14.3035 ===
+=== ATTEMPT 8 group_attempt=8 start=1782164956.325 output=1782164956324-a8.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164956324-a8.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.28 bitrate= 185.9kbits/s speed=22.6x    [aac @ 0x655146fef380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x655147000080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x655147004180] [dec:aac @ 0x655147015080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x655146ffe440] video:0KiB audio:353KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.021600%
+size=     353KiB time=00:00:11.28 bitrate= 256.1kbits/s speed=13.6x    
+=== ATTEMPT 8 FAIL rc=0 size=361196 duration=11.2849375 ===
+=== BACKOFF 4.0s ===
+=== ATTEMPT 9 group_attempt=1 start=1782164963.595 output=1782164963595-a9.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164963595-a9.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     177KiB time=00:00:05.71 bitrate= 254.0kbits/s speed=11.4x    size=     256KiB time=00:00:09.33 bitrate= 224.7kbits/s speed=9.33x    size=     256KiB time=00:00:16.34 bitrate= 128.3kbits/s speed=10.9x    [aac @ 0x654d43fb3380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x654d43fc4080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x654d43fc8180] [dec:aac @ 0x654d43fd9080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x654d43fc2440] video:0KiB audio:511KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.014911%
+size=     511KiB time=00:00:16.34 bitrate= 256.0kbits/s speed=8.75x    
+=== ATTEMPT 9 FAIL rc=0 size=523178 duration=16.346875 ===
+=== ATTEMPT 10 group_attempt=2 start=1782164969.418 output=1782164969418-a10.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164969418-a10.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     208KiB time=00:00:06.68 bitrate= 254.3kbits/s speed=13.4x    size=     256KiB time=00:00:11.88 bitrate= 176.4kbits/s speed=11.9x    [aac @ 0x5a85980c6380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5a85980d7080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5a85980db180] [dec:aac @ 0x5a85980ec080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5a85980d5440] video:0KiB audio:372KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020503%
+size=     372KiB time=00:00:11.88 bitrate= 256.1kbits/s speed=11.2x    
+=== ATTEMPT 10 FAIL rc=0 size=380514 duration=11.888625 ===
+=== ATTEMPT 11 group_attempt=3 start=1782164974.741 output=1782164974741-a11.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164974741-a11.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     208KiB time=00:00:06.68 bitrate= 254.3kbits/s speed=13.4x    size=     256KiB time=00:00:12.02 bitrate= 174.4kbits/s speed=  12x    [aac @ 0x5b81accc9380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5b81accda080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5b81accde180] [dec:aac @ 0x5b81accef080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5b81accd8440] video:0KiB audio:376KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020265%
+size=     376KiB time=00:00:12.02 bitrate= 256.1kbits/s speed=11.3x    
+=== ATTEMPT 11 FAIL rc=0 size=384972 duration=12.0279375 ===
+=== ATTEMPT 12 group_attempt=4 start=1782164980.114 output=1782164980114-a12.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164980114-a12.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     186KiB time=00:00:05.98 bitrate= 254.1kbits/s speed=  12x    size=     256KiB time=00:00:11.28 bitrate= 185.9kbits/s speed=11.3x    [aac @ 0x64dc2636d380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x64dc2637e080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x64dc26382180] [dec:aac @ 0x64dc26393080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x64dc2637c440] video:0KiB audio:353KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.021600%
+size=     353KiB time=00:00:11.28 bitrate= 256.1kbits/s speed=10.6x    
+=== ATTEMPT 12 FAIL rc=0 size=361196 duration=11.2849375 ===
+=== ATTEMPT 13 group_attempt=5 start=1782164985.438 output=1782164985437-a13.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164985437-a13.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     210KiB time=00:00:06.77 bitrate= 254.3kbits/s speed=13.6x    size=     256KiB time=00:00:12.07 bitrate= 173.7kbits/s speed=12.1x    [aac @ 0x5ea321ff4380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5ea322005080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5ea322009180] [dec:aac @ 0x5ea32201a080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5ea322003440] video:0KiB audio:377KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020187%
+size=     377KiB time=00:00:12.07 bitrate= 256.1kbits/s speed=11.4x    
+=== ATTEMPT 13 FAIL rc=0 size=386458 duration=12.074375 ===
+=== ATTEMPT 14 group_attempt=6 start=1782164990.809 output=1782164990809-a14.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164990809-a14.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.56 bitrate= 181.4kbits/s speed=23.1x    [aac @ 0x60022ecc9380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x60022ecda080] TYPE_FIL: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x60022ecde180] [dec:aac @ 0x60022ecef080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x60022ecd8440] video:0KiB audio:361KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.021079%
+size=     361KiB time=00:00:11.56 bitrate= 256.1kbits/s speed=14.2x    
+=== ATTEMPT 14 FAIL rc=0 size=370112 duration=11.5635625 ===
+=== ATTEMPT 15 group_attempt=7 start=1782164996.132 output=1782164996131-a15.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782164996131-a15.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:09.98 bitrate= 210.1kbits/s speed=  20x    [aac @ 0x653f0b6d0380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x653f0b6e1080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x653f0b6e5180] [dec:aac @ 0x653f0b6f6080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x653f0b6df440] video:0KiB audio:312KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.024413%
+size=     312KiB time=00:00:09.98 bitrate= 256.1kbits/s speed=12.1x    
+=== ATTEMPT 15 FAIL rc=0 size=319584 duration=9.9845625 ===
+=== ATTEMPT 16 group_attempt=8 start=1782165001.253 output=1782165001252-a16.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165001252-a16.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      76KiB time=00:00:02.46 bitrate= 251.4kbits/s speed=4.92x    size=      76KiB time=00:00:02.46 bitrate= 251.4kbits/s speed=2.46x    size=     256KiB time=00:00:09.42 bitrate= 222.5kbits/s speed=6.28x    size=     256KiB time=00:00:13.09 bitrate= 160.1kbits/s speed=6.55x    [aac @ 0x58f9c856c380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x58f9c857d080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x58f9c8581180] [dec:aac @ 0x58f9c8592080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x58f9c857b440] video:0KiB audio:409KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.018612%
+size=     409KiB time=00:00:13.09 bitrate= 256.0kbits/s speed= 6.3x    
+=== ATTEMPT 16 FAIL rc=0 size=419152 duration=13.0960625 ===
+=== BACKOFF 8.0s ===
+=== ATTEMPT 17 group_attempt=1 start=1782165012.725 output=1782165012725-a17.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165012725-a17.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     109KiB time=00:00:03.52 bitrate= 252.8kbits/s speed=7.06x    size=     161KiB time=00:00:05.20 bitrate= 253.8kbits/s speed= 5.2x    size=     256KiB time=00:00:14.11 bitrate= 148.6kbits/s speed=9.41x    [aac @ 0x5e77917e5380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5e77917f6080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5e77917fa180] [dec:aac @ 0x5e779180b080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5e77917f4440] video:0KiB audio:441KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.017265%
+size=     441KiB time=00:00:14.11 bitrate= 256.0kbits/s speed=7.49x    
+=== ATTEMPT 17 FAIL rc=0 size=451846 duration=14.11775 ===
+=== ATTEMPT 18 group_attempt=2 start=1782165018.297 output=1782165018296-a18.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165018296-a18.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     237KiB time=00:00:07.61 bitrate= 254.5kbits/s speed=15.2x    size=     256KiB time=00:00:15.64 bitrate= 134.0kbits/s speed=15.6x    size=     512KiB time=00:00:18.29 bitrate= 229.2kbits/s speed=12.2x    [aac @ 0x5a7c17eb1380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5a7c17ec2080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5a7c17ec6180] [dec:aac @ 0x5a7c17ed7080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5a7c17ec0440] video:0KiB audio:572KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013322%
+size=     572KiB time=00:00:18.29 bitrate= 256.0kbits/s speed=9.63x    
+=== ATTEMPT 18 FAIL rc=0 size=585592 duration=18.2973125 ===
+=== ATTEMPT 19 group_attempt=3 start=1782165024.272 output=1782165024272-a19.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165024272-a19.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     238KiB time=00:00:07.66 bitrate= 254.5kbits/s speed=15.3x    size=     256KiB time=00:00:15.64 bitrate= 134.0kbits/s speed=15.6x    size=     512KiB time=00:00:18.38 bitrate= 228.1kbits/s speed=12.3x    [aac @ 0x5dd24c1e1380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5dd24c1f2080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5dd24c1f6180] [dec:aac @ 0x5dd24c207080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5dd24c1f0440] video:0KiB audio:575KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013254%
+size=     575KiB time=00:00:18.39 bitrate= 256.0kbits/s speed=9.74x    
+=== ATTEMPT 19 FAIL rc=0 size=588564 duration=18.3901875 ===
+=== ATTEMPT 20 group_attempt=4 start=1782165030.246 output=1782165030246-a20.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165030246-a20.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     216KiB time=00:00:06.96 bitrate= 254.4kbits/s speed=13.9x    size=     256KiB time=00:00:12.21 bitrate= 171.7kbits/s speed=12.2x    [aac @ 0x5ca1bdabd380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5ca1bdace080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5ca1bdad2180] [dec:aac @ 0x5ca1bdae3080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5ca1bdacc440] video:0KiB audio:382KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019957%
+size=     382KiB time=00:00:12.21 bitrate= 256.1kbits/s speed=11.5x    
+=== ATTEMPT 20 FAIL rc=0 size=390916 duration=12.2136875 ===
+=== ATTEMPT 21 group_attempt=5 start=1782165035.619 output=1782165035619-a21.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165035619-a21.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     210KiB time=00:00:06.77 bitrate= 254.3kbits/s speed=13.6x    size=     256KiB time=00:00:14.85 bitrate= 141.1kbits/s speed=14.9x    size=     512KiB time=00:00:17.55 bitrate= 238.9kbits/s speed=11.7x    [aac @ 0x5e2bf325b380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5e2bf326c080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5e2bf3270180] [dec:aac @ 0x5e2bf3281080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5e2bf326a440] video:0KiB audio:549KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013885%
+size=     549KiB time=00:00:17.55 bitrate= 256.0kbits/s speed=9.31x    
+=== ATTEMPT 21 FAIL rc=0 size=561816 duration=17.5543125 ===
+=== ATTEMPT 22 group_attempt=6 start=1782165041.543 output=1782165041543-a22.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165041543-a22.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     193KiB time=00:00:06.22 bitrate= 254.2kbits/s speed=12.4x    size=     256KiB time=00:00:09.93 bitrate= 211.0kbits/s speed=9.93x    size=     512KiB time=00:00:16.99 bitrate= 246.8kbits/s speed=11.3x    [aac @ 0x57e355c56380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x57e355c67080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x57e355c6b180] [dec:aac @ 0x57e355c7c080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x57e355c65440] video:0KiB audio:531KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.014341%
+size=     531KiB time=00:00:16.99 bitrate= 256.0kbits/s speed=8.95x    
+=== ATTEMPT 22 FAIL rc=0 size=543982 duration=16.997 ===
+=== ATTEMPT 23 group_attempt=7 start=1782165047.366 output=1782165047366-a23.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165047366-a23.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     244KiB time=00:00:07.84 bitrate= 254.6kbits/s speed=15.7x    size=     256KiB time=00:00:12.58 bitrate= 166.6kbits/s speed=12.6x    [aac @ 0x601502006380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x601502017080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x60150201b180] [dec:aac @ 0x60150202c080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x601502015440] video:0KiB audio:393KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019368%
+size=     393KiB time=00:00:12.58 bitrate= 256.0kbits/s speed=11.9x    
+=== ATTEMPT 23 FAIL rc=0 size=402806 duration=12.58525 ===
+=== ATTEMPT 24 group_attempt=8 start=1782165052.737 output=1782165052737-a24.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165052737-a24.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     209KiB time=00:00:06.73 bitrate= 254.3kbits/s speed=13.5x    size=     256KiB time=00:00:11.98 bitrate= 175.0kbits/s speed=  12x    [aac @ 0x5a2109168380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5a2109179080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5a210917d180] [dec:aac @ 0x5a210918e080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5a2109177440] video:0KiB audio:374KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020344%
+size=     374KiB time=00:00:11.98 bitrate= 256.1kbits/s speed=11.2x    
+=== ATTEMPT 24 FAIL rc=0 size=383486 duration=11.9815 ===
+=== BACKOFF 16.0s ===
+=== ATTEMPT 25 group_attempt=1 start=1782165072.060 output=1782165072060-a25.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165072060-a25.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     203KiB time=00:00:06.54 bitrate= 254.3kbits/s speed=13.1x    size=     256KiB time=00:00:11.74 bitrate= 178.5kbits/s speed=11.7x    [aac @ 0x613958a98380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x613958aa9080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x613958aad180] [dec:aac @ 0x613958abe080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x613958aa7440] video:0KiB audio:367KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020746%
+size=     367KiB time=00:00:11.74 bitrate= 256.1kbits/s speed=  11x    
+=== ATTEMPT 25 FAIL rc=0 size=376056 duration=11.7493125 ===
+=== ATTEMPT 26 group_attempt=2 start=1782165077.382 output=1782165077381-a26.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165077381-a26.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     232KiB time=00:00:07.47 bitrate= 254.5kbits/s speed=14.9x    size=     256KiB time=00:00:12.35 bitrate= 169.8kbits/s speed=12.3x    [aac @ 0x63fe497f8380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x63fe49809080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x63fe4980d180] [dec:aac @ 0x63fe4981e080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x63fe49807440] video:0KiB audio:386KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019732%
+size=     386KiB time=00:00:12.35 bitrate= 256.1kbits/s speed=11.6x    
+=== ATTEMPT 26 FAIL rc=0 size=395374 duration=12.353 ===
+=== ATTEMPT 27 group_attempt=3 start=1782165082.753 output=1782165082752-a27.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165082752-a27.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.70 bitrate= 179.2kbits/s speed=23.4x    [aac @ 0x653eea1b1380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x653eea1c2080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x653eea1c6180] [dec:aac @ 0x653eea1d7080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x653eea1c0440] video:0KiB audio:366KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020828%
+size=     366KiB time=00:00:11.70 bitrate= 256.1kbits/s speed=14.4x    
+=== ATTEMPT 27 FAIL rc=0 size=374570 duration=11.702875 ===
+=== ATTEMPT 28 group_attempt=4 start=1782165088.126 output=1782165088125-a28.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165088125-a28.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      96KiB time=00:00:03.11 bitrate= 252.4kbits/s speed=6.22x    size=     163KiB time=00:00:05.24 bitrate= 253.9kbits/s speed=5.25x    size=     256KiB time=00:00:13.79 bitrate= 152.1kbits/s speed=9.19x    [aac @ 0x5be6bee0e380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5be6bee1f080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5be6bee23180] [dec:aac @ 0x5be6bee34080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5be6bee1d440] video:0KiB audio:431KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.017672%
+size=     431KiB time=00:00:13.79 bitrate= 256.0kbits/s speed=7.37x    
+=== ATTEMPT 28 FAIL rc=0 size=441444 duration=13.7926875 ===
+=== ATTEMPT 29 group_attempt=5 start=1782165093.648 output=1782165093648-a29.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165093648-a29.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.16 bitrate= 206.2kbits/s speed=20.3x    [aac @ 0x58bd6fc1e380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x58bd6fc44100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x58bd6fc332c0] [dec:aac @ 0x58bd6fc2f7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x58bd6fc2d500] video:0KiB audio:318KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.023967%
+size=     318KiB time=00:00:10.17 bitrate= 256.1kbits/s speed=12.5x    
+=== ATTEMPT 29 FAIL rc=0 size=325530 duration=10.170375 ===
+=== ATTEMPT 30 group_attempt=6 start=1782165098.822 output=1782165098821-a30.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165098821-a30.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      84KiB time=00:00:02.73 bitrate= 251.9kbits/s speed=5.48x    size=      84KiB time=00:00:02.73 bitrate= 251.9kbits/s speed=2.74x    size=     256KiB time=00:00:10.21 bitrate= 205.3kbits/s speed=6.81x    size=     256KiB time=00:00:13.32 bitrate= 157.4kbits/s speed=6.66x    [aac @ 0x64491602d380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x644916053100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6449160422c0] [dec:aac @ 0x64491603e7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x64491603c500] video:0KiB audio:417KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.018288%
+size=     417KiB time=00:00:13.32 bitrate= 256.0kbits/s speed=6.36x    
+=== ATTEMPT 30 FAIL rc=0 size=426582 duration=13.32825 ===
+=== ATTEMPT 31 group_attempt=7 start=1782165104.296 output=1782165104295-a31.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165104295-a31.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     206KiB time=00:00:06.63 bitrate= 254.3kbits/s speed=13.3x    size=     256KiB time=00:00:11.88 bitrate= 176.4kbits/s speed=11.9x    [aac @ 0x5a7761ce4380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5a7761d0a100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5a7761cf92c0] [dec:aac @ 0x5a7761cf57c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5a7761cf3500] video:0KiB audio:372KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020503%
+size=     372KiB time=00:00:11.88 bitrate= 256.1kbits/s speed=11.2x    
+=== ATTEMPT 31 FAIL rc=0 size=380514 duration=11.888625 ===
+=== ATTEMPT 32 group_attempt=8 start=1782165109.617 output=1782165109617-a32.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165109617-a32.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     235KiB time=00:00:07.56 bitrate= 254.5kbits/s speed=15.1x    size=     256KiB time=00:00:12.39 bitrate= 169.1kbits/s speed=12.4x    [aac @ 0x5e05acaf4380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5e05acb1a100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5e05acb092c0] [dec:aac @ 0x5e05acb057c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5e05acb03500] video:0KiB audio:387KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019658%
+size=     388KiB time=00:00:12.39 bitrate= 256.1kbits/s speed=11.7x    
+=== ATTEMPT 32 FAIL rc=0 size=396860 duration=12.3994375 ===
+=== BACKOFF 32.0s ===
+=== ATTEMPT 33 group_attempt=1 start=1782165144.988 output=1782165144988-a33.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165144988-a33.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     142KiB time=00:00:04.59 bitrate= 253.5kbits/s speed=9.19x    size=     222KiB time=00:00:07.15 bitrate= 254.4kbits/s speed=7.15x    size=     256KiB time=00:00:15.37 bitrate= 136.4kbits/s speed=10.2x    [aac @ 0x623b1c3c7380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x623b1c3ed100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x623b1c3dc2c0] [dec:aac @ 0x623b1c3d87c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x623b1c3d6500] video:0KiB audio:480KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.015857%
+size=     480KiB time=00:00:15.37 bitrate= 256.0kbits/s speed=8.11x    
+=== ATTEMPT 33 FAIL rc=0 size=491970 duration=15.371625 ===
+=== ATTEMPT 34 group_attempt=2 start=1782165150.712 output=1782165150711-a34.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165150711-a34.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     240KiB time=00:00:07.70 bitrate= 254.5kbits/s speed=15.4x    size=     256KiB time=00:00:15.78 bitrate= 132.8kbits/s speed=15.8x    size=     512KiB time=00:00:18.34 bitrate= 228.7kbits/s speed=12.2x    [aac @ 0x5fad415a7380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5fad415cd100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5fad415bc2c0] [dec:aac @ 0x5fad415b87c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5fad415b6500] video:0KiB audio:573KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013288%
+size=     573KiB time=00:00:18.34 bitrate= 256.0kbits/s speed=9.73x    
+=== ATTEMPT 34 FAIL rc=0 size=587078 duration=18.34375 ===
+=== ATTEMPT 35 group_attempt=3 start=1782165156.686 output=1782165156685-a35.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165156685-a35.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.28 bitrate= 185.9kbits/s speed=22.6x    size=     256KiB time=00:00:11.70 bitrate= 179.2kbits/s speed=11.7x    [aac @ 0x566f98a77380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x566f98a9d100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x566f98a8c2c0] [dec:aac @ 0x566f98a887c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x566f98a86500] video:0KiB audio:366KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020828%
+size=     366KiB time=00:00:11.70 bitrate= 256.1kbits/s speed=  11x    
+=== ATTEMPT 35 FAIL rc=0 size=374570 duration=11.702875 ===
+=== ATTEMPT 36 group_attempt=4 start=1782165162.109 output=1782165162109-a36.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165162109-a36.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     155KiB time=00:00:05.01 bitrate= 253.8kbits/s speed=  10x    size=     256KiB time=00:00:14.85 bitrate= 141.1kbits/s speed=14.9x    [aac @ 0x570bcc5fe380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x570bcc624100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x570bcc6132c0] [dec:aac @ 0x570bcc60f7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x570bcc60d500] video:0KiB audio:464KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.016402%
+size=     464KiB time=00:00:14.86 bitrate= 256.0kbits/s speed=11.7x    
+=== ATTEMPT 36 FAIL rc=0 size=475624 duration=14.8608125 ===
+=== ATTEMPT 37 group_attempt=5 start=1782165169.085 output=1782165169085-a37.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165169085-a37.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     247KiB time=00:00:07.94 bitrate= 254.6kbits/s speed=15.9x    size=     256KiB time=00:00:15.88 bitrate= 132.1kbits/s speed=15.9x    size=     512KiB time=00:00:18.57 bitrate= 225.8kbits/s speed=12.4x    [aac @ 0x59a6247cf380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x59a6247f5100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x59a6247e42c0] [dec:aac @ 0x59a6247e07c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x59a6247de500] video:0KiB audio:580KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013122%
+size=     581KiB time=00:00:18.57 bitrate= 256.0kbits/s speed=10.2x    
+=== ATTEMPT 37 FAIL rc=0 size=594510 duration=18.576 ===
+=== ATTEMPT 38 group_attempt=6 start=1782165175.461 output=1782165175460-a38.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165175460-a38.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     255KiB time=00:00:08.21 bitrate= 254.6kbits/s speed=16.4x    size=     256KiB time=00:00:16.29 bitrate= 128.7kbits/s speed=16.3x    size=     512KiB time=00:00:19.03 bitrate= 220.3kbits/s speed=12.7x    [aac @ 0x64fb201d8380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x64fb201fe100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x64fb201ed2c0] [dec:aac @ 0x64fb201e97c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x64fb201e7500] video:0KiB audio:595KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.012802%
+size=     595KiB time=00:00:19.04 bitrate= 256.0kbits/s speed=  10x    
+=== ATTEMPT 38 FAIL rc=0 size=609370 duration=19.040375 ===
+=== ATTEMPT 39 group_attempt=7 start=1782165181.836 output=1782165181836-a39.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165181836-a39.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     145KiB time=00:00:04.68 bitrate= 253.6kbits/s speed=9.38x    size=     240KiB time=00:00:07.70 bitrate= 254.5kbits/s speed=7.71x    size=     256KiB time=00:00:15.32 bitrate= 136.9kbits/s speed=10.2x    [aac @ 0x610426ead380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x610426ed3100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x610426ec22c0] [dec:aac @ 0x610426ebe7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x610426ebc500] video:0KiB audio:479KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.015905%
+size=     479KiB time=00:00:15.32 bitrate= 256.0kbits/s speed=8.12x    
+=== ATTEMPT 39 FAIL rc=0 size=490484 duration=15.3251875 ===
+=== ATTEMPT 40 group_attempt=8 start=1782165187.610 output=1782165187609-a40.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165187609-a40.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     224KiB time=00:00:07.19 bitrate= 254.4kbits/s speed=14.4x    size=     512KiB time=00:00:19.22 bitrate= 218.2kbits/s speed=19.2x    size=     512KiB time=00:00:19.55 bitrate= 214.5kbits/s speed=  13x    [aac @ 0x580b4da33380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x580b4da59100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x580b4da482c0] [dec:aac @ 0x580b4da447c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x580b4da42500] video:0KiB audio:611KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.012467%
+size=     611KiB time=00:00:19.55 bitrate= 256.0kbits/s speed=10.7x    
+=== ATTEMPT 40 FAIL rc=0 size=625716 duration=19.5511875 ===
+=== BACKOFF 60.0s ===
+=== ATTEMPT 41 group_attempt=1 start=1782165252.038 output=1782165252037-a41.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165252037-a41.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.95 bitrate= 191.4kbits/s speed=21.9x    [aac @ 0x570cdc5b0380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x570cdc5d6100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x570cdc5c52c0] [dec:aac @ 0x570cdc5c17c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x570cdc5bf500] video:0KiB audio:342KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.022240%
+size=     343KiB time=00:00:10.95 bitrate= 256.1kbits/s speed=13.5x    
+=== ATTEMPT 41 FAIL rc=0 size=350792 duration=10.9598125 ===
+=== ATTEMPT 42 group_attempt=2 start=1782165257.314 output=1782165257313-a42.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165257313-a42.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     186KiB time=00:00:05.98 bitrate= 254.1kbits/s speed=  12x    size=     256KiB time=00:00:11.33 bitrate= 185.1kbits/s speed=11.3x    [aac @ 0x5896bc516380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5896bc53c100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5896bc52b2c0] [dec:aac @ 0x5896bc5277c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5896bc525500] video:0KiB audio:354KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.021511%
+size=     354KiB time=00:00:11.33 bitrate= 256.1kbits/s speed=10.7x    
+=== ATTEMPT 42 FAIL rc=0 size=362682 duration=11.331375 ===
+=== ATTEMPT 43 group_attempt=3 start=1782165262.584 output=1782165262583-a43.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165262583-a43.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.88 bitrate= 176.4kbits/s speed=23.8x    [aac @ 0x5b251fed7380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5b251fefd100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5b251feec2c0] [dec:aac @ 0x5b251fee87c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5b251fee6500] video:0KiB audio:372KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020503%
+size=     372KiB time=00:00:11.88 bitrate= 256.1kbits/s speed=14.6x    
+=== ATTEMPT 43 FAIL rc=0 size=380514 duration=11.888625 ===
+=== ATTEMPT 44 group_attempt=4 start=1782165268.208 output=1782165268207-a44.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165268207-a44.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     202KiB time=00:00:06.50 bitrate= 254.3kbits/s speed=  13x    size=     256KiB time=00:00:11.88 bitrate= 176.4kbits/s speed=11.9x    [aac @ 0x5e5987e91380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5e5987eb7100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5e5987ea62c0] [dec:aac @ 0x5e5987ea27c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5e5987ea0500] video:0KiB audio:372KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020503%
+size=     372KiB time=00:00:11.88 bitrate= 256.1kbits/s speed=11.3x    
+=== ATTEMPT 44 FAIL rc=0 size=380514 duration=11.888625 ===
+=== ATTEMPT 45 group_attempt=5 start=1782165273.531 output=1782165273531-a45.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165273531-a45.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     208KiB time=00:00:06.68 bitrate= 254.3kbits/s speed=13.4x    size=     256KiB time=00:00:11.98 bitrate= 175.0kbits/s speed=  12x    [aac @ 0x5df98dc35380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5df98dc5b100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5df98dc4a2c0] [dec:aac @ 0x5df98dc467c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5df98dc44500] video:0KiB audio:374KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020344%
+size=     374KiB time=00:00:11.98 bitrate= 256.1kbits/s speed=11.1x    
+=== ATTEMPT 45 FAIL rc=0 size=383486 duration=11.9815 ===
+=== ATTEMPT 46 group_attempt=6 start=1782165278.903 output=1782165278903-a46.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165278903-a46.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.77 bitrate= 194.7kbits/s speed=21.5x    [aac @ 0x58c698569380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x58c69858f100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x58c69857e2c0] [dec:aac @ 0x58c69857a7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x58c698578500] video:0KiB audio:337KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.022624%
+size=     337KiB time=00:00:10.77 bitrate= 256.1kbits/s speed=13.5x    
+=== ATTEMPT 46 FAIL rc=0 size=344848 duration=10.7740625 ===
+=== ATTEMPT 47 group_attempt=7 start=1782165284.125 output=1782165284125-a47.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165284125-a47.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     231KiB time=00:00:07.42 bitrate= 254.5kbits/s speed=14.9x    size=     256KiB time=00:00:11.84 bitrate= 177.1kbits/s speed=11.8x    size=     512KiB time=00:00:18.11 bitrate= 231.6kbits/s speed=12.1x    [aac @ 0x5759badcb380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5759badf1100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5759bade02c0] [dec:aac @ 0x5759baddc7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5759badda500] video:0KiB audio:566KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013458%
+size=     566KiB time=00:00:18.11 bitrate= 256.0kbits/s speed=9.56x    
+=== ATTEMPT 47 FAIL rc=0 size=579648 duration=18.1115625 ===
+=== ATTEMPT 48 group_attempt=8 start=1782165290.048 output=1782165290048-a48.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165290048-a48.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     210KiB time=00:00:06.77 bitrate= 254.3kbits/s speed=13.6x    size=     256KiB time=00:00:11.88 bitrate= 176.4kbits/s speed=11.9x    [aac @ 0x5718c9e6e380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5718c9e94100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5718c9e832c0] [dec:aac @ 0x5718c9e7f7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5718c9e7d500] video:0KiB audio:372KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020503%
+size=     372KiB time=00:00:11.88 bitrate= 256.1kbits/s speed=11.2x    
+=== ATTEMPT 48 FAIL rc=0 size=380514 duration=11.888625 ===
+=== BACKOFF 60.0s ===
+=== ATTEMPT 49 group_attempt=1 start=1782165353.370 output=1782165353370-a49.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165353370-a49.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     238KiB time=00:00:07.66 bitrate= 254.5kbits/s speed=15.3x    size=     256KiB time=00:00:15.55 bitrate= 134.8kbits/s speed=15.6x    size=     512KiB time=00:00:18.29 bitrate= 229.2kbits/s speed=12.2x    [aac @ 0x65211e1bf380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x65211e1e5100] TYPE_FIL: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x65211e1d42c0] [dec:aac @ 0x65211e1d07c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x65211e1ce500] video:0KiB audio:572KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.013322%
+size=     572KiB time=00:00:18.29 bitrate= 256.0kbits/s speed=9.67x    
+=== ATTEMPT 49 FAIL rc=0 size=585592 duration=18.2973125 ===
+=== ATTEMPT 50 group_attempt=2 start=1782165359.295 output=1782165359294-a50.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165359294-a50.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:11.28 bitrate= 185.9kbits/s speed=22.6x    size=     256KiB time=00:00:12.67 bitrate= 165.4kbits/s speed=12.7x    [aac @ 0x6017e6c2c380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x6017e6c52100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6017e6c412c0] [dec:aac @ 0x6017e6c3d7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x6017e6c3b500] video:0KiB audio:396KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019226%
+size=     396KiB time=00:00:12.67 bitrate= 256.0kbits/s speed=11.9x    
+=== ATTEMPT 50 FAIL rc=0 size=405778 duration=12.678125 ===
+=== ATTEMPT 51 group_attempt=3 start=1782165364.668 output=1782165364667-a51.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165364667-a51.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.30 bitrate= 203.4kbits/s speed=20.6x    [aac @ 0x6009161ab380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x6009161d1100] TYPE_FIL: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6009161c02c0] [dec:aac @ 0x6009161bc7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x6009161ba500] video:0KiB audio:322KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.023643%
+size=     322KiB time=00:00:10.30 bitrate= 256.1kbits/s speed=12.8x    
+=== ATTEMPT 51 FAIL rc=0 size=329988 duration=10.3096875 ===
+=== ATTEMPT 52 group_attempt=4 start=1782165369.840 output=1782165369840-a52.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165369840-a52.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      97KiB time=00:00:03.15 bitrate= 252.4kbits/s speed=6.31x    size=     165KiB time=00:00:05.33 bitrate= 253.9kbits/s speed=5.34x    size=     256KiB time=00:00:13.88 bitrate= 151.0kbits/s speed=9.25x    [aac @ 0x61459e5bd380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x61459e5e3100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x61459e5d22c0] [dec:aac @ 0x61459e5ce7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x61459e5cc500] video:0KiB audio:434KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.017554%
+size=     434KiB time=00:00:13.88 bitrate= 256.0kbits/s speed=7.32x    
+=== ATTEMPT 52 FAIL rc=0 size=444416 duration=13.8855625 ===
+=== ATTEMPT 53 group_attempt=5 start=1782165375.313 output=1782165375312-a53.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165375312-a53.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:12.11 bitrate= 173.0kbits/s speed=24.2x    size=     256KiB time=00:00:12.11 bitrate= 173.0kbits/s speed=12.1x    [aac @ 0x577149655380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x57714967b100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x57714966a2c0] [dec:aac @ 0x5771496667c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x577149664500] video:0KiB audio:379KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020110%
+size=     379KiB time=00:00:12.12 bitrate= 256.1kbits/s speed=11.4x    
+=== ATTEMPT 53 FAIL rc=0 size=387944 duration=12.1208125 ===
+=== ATTEMPT 54 group_attempt=6 start=1782165380.634 output=1782165380634-a54.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165380634-a54.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      71KiB time=00:00:02.32 bitrate= 251.1kbits/s speed=4.64x    size=     138KiB time=00:00:04.45 bitrate= 253.5kbits/s speed=4.46x    size=     256KiB time=00:00:08.82 bitrate= 237.7kbits/s speed=5.88x    size=     256KiB time=00:00:12.90 bitrate= 162.5kbits/s speed=6.45x    [aac @ 0x6376a0e6b380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x6376a0e91100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x6376a0e802c0] [dec:aac @ 0x6376a0e7c7c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x6376a0e7a500] video:0KiB audio:403KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.018880%
+size=     404KiB time=00:00:12.91 bitrate= 256.0kbits/s speed=6.28x    
+=== ATTEMPT 54 FAIL rc=0 size=413208 duration=12.9103125 ===
+=== ATTEMPT 55 group_attempt=7 start=1782165386.056 output=1782165386056-a55.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165386056-a55.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     176KiB time=00:00:05.66 bitrate= 254.0kbits/s speed=11.3x    size=     256KiB time=00:00:09.28 bitrate= 225.8kbits/s speed=9.29x    size=     512KiB time=00:00:16.48 bitrate= 254.4kbits/s speed=  11x    [aac @ 0x60c691b78380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x60c691b9e100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x60c691b8d2c0] [dec:aac @ 0x60c691b897c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x60c691b87500] video:0KiB audio:515KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.014785%
+size=     515KiB time=00:00:16.48 bitrate= 256.0kbits/s speed=8.75x    
+=== ATTEMPT 55 FAIL rc=0 size=527636 duration=16.4861875 ===
+=== ATTEMPT 56 group_attempt=8 start=1782165391.880 output=1782165391879-a56.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165391879-a56.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     199KiB time=00:00:06.40 bitrate= 254.2kbits/s speed=12.8x    size=     256KiB time=00:00:14.30 bitrate= 146.6kbits/s speed=14.3x    size=     512KiB time=00:00:17.04 bitrate= 246.1kbits/s speed=11.4x    [aac @ 0x5d38e266f380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5d38e2695100] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5d38e26842c0] [dec:aac @ 0x5d38e26807c0] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5d38e267e500] video:0KiB audio:533KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.014302%
+size=     533KiB time=00:00:17.04 bitrate= 256.0kbits/s speed=9.06x    
+=== ATTEMPT 56 FAIL rc=0 size=545468 duration=17.0434375 ===
+=== BACKOFF 60.0s ===
+=== ATTEMPT 57 group_attempt=1 start=1782165455.702 output=1782165455701-a57.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165455701-a57.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.03 bitrate= 209.1kbits/s speed=20.1x    [aac @ 0x5e4aa8bbc380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5e4aa8bcd080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5e4aa8bd1180] [dec:aac @ 0x5e4aa8be2080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5e4aa8bcb440] video:0KiB audio:313KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.024300%
+size=     314KiB time=00:00:10.03 bitrate= 256.1kbits/s speed=12.3x    
+=== ATTEMPT 57 FAIL rc=0 size=321070 duration=10.031 ===
+=== ATTEMPT 58 group_attempt=2 start=1782165460.924 output=1782165460924-a58.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165460924-a58.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     147KiB time=00:00:04.73 bitrate= 253.6kbits/s speed=9.47x    size=     225KiB time=00:00:07.24 bitrate= 254.4kbits/s speed=7.24x    size=     256KiB time=00:00:15.37 bitrate= 136.4kbits/s speed=10.2x    [aac @ 0x5b437e5f3380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5b437e604080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5b437e608180] [dec:aac @ 0x5b437e619080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5b437e602440] video:0KiB audio:480KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.015857%
+size=     480KiB time=00:00:15.37 bitrate= 256.0kbits/s speed=8.18x    
+=== ATTEMPT 58 FAIL rc=0 size=491970 duration=15.371625 ===
+=== ATTEMPT 59 group_attempt=3 start=1782165466.600 output=1782165466600-a59.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165466600-a59.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=      93KiB time=00:00:03.01 bitrate= 252.3kbits/s speed=6.01x    size=      93KiB time=00:00:03.01 bitrate= 252.3kbits/s speed=3.01x    size=     256KiB time=00:00:10.44 bitrate= 200.7kbits/s speed=6.96x    size=     256KiB time=00:00:13.65 bitrate= 153.6kbits/s speed=6.82x    [aac @ 0x568bc6627380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x568bc6638080] TYPE_FIL: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x568bc663c180] [dec:aac @ 0x568bc664d080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x568bc6636440] video:0KiB audio:427KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.017853%
+size=     427KiB time=00:00:13.65 bitrate= 256.0kbits/s speed=6.43x    
+=== ATTEMPT 59 FAIL rc=0 size=436986 duration=13.653375 ===
+=== ATTEMPT 60 group_attempt=4 start=1782165472.121 output=1782165472121-a60.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165472121-a60.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.86 bitrate= 193.0kbits/s speed=21.7x    [aac @ 0x62bdde204380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x62bdde215080] TYPE_FIL: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x62bdde219180] [dec:aac @ 0x62bdde22a080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x62bdde213440] video:0KiB audio:340KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.022430%
+size=     340KiB time=00:00:10.86 bitrate= 256.1kbits/s speed=13.6x    
+=== ATTEMPT 60 FAIL rc=0 size=347820 duration=10.8669375 ===
+=== ATTEMPT 61 group_attempt=5 start=1782165477.344 output=1782165477343-a61.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165477343-a61.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:10.03 bitrate= 209.1kbits/s speed=20.1x    [aac @ 0x5f1df1d9d380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5f1df1dae080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5f1df1db2180] [dec:aac @ 0x5f1df1dc3080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5f1df1dac440] video:0KiB audio:313KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.024300%
+size=     314KiB time=00:00:10.03 bitrate= 256.1kbits/s speed=12.5x    
+=== ATTEMPT 61 FAIL rc=0 size=321070 duration=10.031 ===
+=== ATTEMPT 62 group_attempt=6 start=1782165482.521 output=1782165482521-a62.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165482521-a62.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:09.10 bitrate= 230.4kbits/s speed=18.2x    size=     512KiB time=00:00:19.50 bitrate= 215.1kbits/s speed=19.5x    size=     512KiB time=00:00:19.82 bitrate= 211.5kbits/s speed=13.2x    [aac @ 0x5c9b751da380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5c9b751eb080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5c9b751ef180] [dec:aac @ 0x5c9b75200080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5c9b751e9440] video:0KiB audio:620KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.012292%
+size=     620KiB time=00:00:19.82 bitrate= 256.0kbits/s speed=10.5x    
+=== ATTEMPT 62 FAIL rc=0 size=634634 duration=19.829875 ===
+=== ATTEMPT 63 group_attempt=7 start=1782165488.646 output=1782165488646-a63.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165488646-a63.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     256KiB time=00:00:12.25 bitrate= 171.1kbits/s speed=24.5x    size=     256KiB time=00:00:12.25 bitrate= 171.1kbits/s speed=12.3x    [aac @ 0x5a522499d380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5a52249ae080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5a52249b2180] [dec:aac @ 0x5a52249c3080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5a52249ac440] video:0KiB audio:383KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.019882%
+size=     383KiB time=00:00:12.26 bitrate= 256.1kbits/s speed=11.5x    
+=== ATTEMPT 63 FAIL rc=0 size=392402 duration=12.260125 ===
+=== ATTEMPT 64 group_attempt=8 start=1782165494.018 output=1782165494017-a64.wav ===
+Input #0, aac, from 'http://live.amperwave.net/direct/alphacorporate-ktsaamaac-imc3?source=iheart':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+  Duration: N/A, bitrate: 65 kb/s
+  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 65 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (aac (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/app/data/station-ingest-audit-25690623-044835/ktsa-550/audio/1782165494017-a64.wav':
+  Metadata:
+    icy-br          : 64
+    icy-name        : News/Talk 550
+    ISFT            : Lavf61.7.102
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 16000 Hz, mono, s16, 256 kb/s
+      Metadata:
+        encoder         : Lavc61.19.101 pcm_s16le
+size=     196KiB time=00:00:06.31 bitrate= 254.2kbits/s speed=12.6x    size=     256KiB time=00:00:11.60 bitrate= 180.6kbits/s speed=11.6x    [aac @ 0x5c55e78b0380] Packet corrupt (stream = 0, dts = NOPTS).
+[aac @ 0x5c55e78c1080] decode_band_types: Input buffer exhausted before END element found
+[aist#0:0/aac @ 0x5c55e78c5180] [dec:aac @ 0x5c55e78d6080] Error submitting packet to decoder: Invalid data found when processing input
+[out#0/wav @ 0x5c55e78bf440] video:0KiB audio:363KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.020995%
+size=     363KiB time=00:00:11.61 bitrate= 256.1kbits/s speed=10.9x    
+=== ATTEMPT 64 FAIL rc=0 size=371598 duration=11.61 ===
+=== BACKOFF 18.8s ===
+=== STATION ktsa-550 END 1782165516.183 ===

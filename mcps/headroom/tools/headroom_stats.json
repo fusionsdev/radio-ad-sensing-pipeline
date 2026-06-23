@@ -1,0 +1,8 @@
+{
+  "name": "headroom_stats",
+  "description": "Show compression statistics for this session: total compressions, tokens saved, estimated cost savings, and recent compression events.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {}
+  }
+}

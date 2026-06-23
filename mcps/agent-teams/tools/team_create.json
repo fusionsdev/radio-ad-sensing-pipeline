@@ -1,0 +1,161 @@
+{
+  "name": "team_create",
+  "description": "Create a draft team configuration through the local Agent Teams control API. This does not launch the team.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "controlUrl": {
+        "type": "string"
+      },
+      "waitTimeoutMs": {
+        "type": "integer",
+        "minimum": 1000,
+        "maximum": 600000
+      },
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "displayName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": {
+        "type": "string"
+      },
+      "color": {
+        "type": "string",
+        "minLength": 1
+      },
+      "members": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "role": {
+              "type": "string"
+            },
+            "workflow": {
+              "type": "string"
+            },
+            "isolation": {
+              "type": "string",
+              "const": "worktree"
+            },
+            "providerId": {
+              "type": "string",
+              "enum": [
+                "anthropic",
+                "codex",
+                "gemini",
+                "opencode"
+              ]
+            },
+            "providerBackendId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "model": {
+              "type": "string",
+              "minLength": 1
+            },
+            "effort": {
+              "type": "string",
+              "enum": [
+                "none",
+                "minimal",
+                "low",
+                "medium",
+                "high",
+                "xhigh",
+                "max"
+              ]
+            },
+            "fastMode": {
+              "type": "string",
+              "enum": [
+                "inherit",
+                "on",
+                "off"
+              ]
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      },
+      "cwd": {
+        "type": "string",
+        "minLength": 1
+      },
+      "prompt": {
+        "type": "string",
+        "minLength": 1
+      },
+      "providerId": {
+        "type": "string",
+        "enum": [
+          "anthropic",
+          "codex",
+          "gemini",
+          "opencode"
+        ]
+      },
+      "providerBackendId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "model": {
+        "type": "string",
+        "minLength": 1
+      },
+      "effort": {
+        "type": "string",
+        "enum": [
+          "none",
+          "minimal",
+          "low",
+          "medium",
+          "high",
+          "xhigh",
+          "max"
+        ]
+      },
+      "fastMode": {
+        "type": "string",
+        "enum": [
+          "inherit",
+          "on",
+          "off"
+        ]
+      },
+      "limitContext": {
+        "type": "boolean"
+      },
+      "skipPermissions": {
+        "type": "boolean"
+      },
+      "worktree": {
+        "type": "string",
+        "minLength": 1
+      },
+      "extraCliArgs": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

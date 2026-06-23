@@ -1,0 +1,109 @@
+{
+  "last_command": "probe",
+  "profile": "overnight_keyword_harvest",
+  "export": {
+    "rows": 458,
+    "csv": "H:\\DEV\\projects\\radio-ad-sensing-pipeline\\exports\\overnight_keyword_candidates.csv",
+    "jsonl": "H:\\DEV\\projects\\radio-ad-sensing-pipeline\\exports\\overnight_keyword_candidates.jsonl",
+    "at": "2026-06-19T02:31:38Z"
+  },
+  "last_updated": "2026-06-20T00:39:56Z",
+  "host": "FUSION-CORE",
+  "probe": {
+    "tested": 9,
+    "ok": 9,
+    "at": "2026-06-20T00:39:56Z",
+    "results": [
+      {
+        "station": "klif-am-570",
+        "display_name": "KLIF 570 AM — Dallas, TX",
+        "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/KLIFAM.mp3",
+        "format": "mp3",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:27Z"
+      },
+      {
+        "station": "wbap-am-820",
+        "display_name": "WBAP 820 AM — Dallas–Fort Worth, TX",
+        "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/WBAPAM.mp3",
+        "format": "mp3",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:29Z"
+      },
+      {
+        "station": "ktrh-am-740",
+        "display_name": "KTRH 740 AM — Houston, TX",
+        "url": "http://stream.revma.ihrhls.com/zc2285",
+        "format": "aac",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:32Z"
+      },
+      {
+        "station": "woai-am-1200",
+        "display_name": "WOAI 1200 AM — San Antonio, TX",
+        "url": "http://stream.revma.ihrhls.com/zc2361",
+        "format": "aac",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:34Z"
+      },
+      {
+        "station": "whbo-1040",
+        "display_name": "WHBO 1040 AM — Tampa, FL",
+        "url": "https://ice41.securenetsystems.net/WHBO",
+        "format": "aac",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:37Z"
+      },
+      {
+        "station": "wsb-am-750",
+        "display_name": "WSB 750 AM — Atlanta, GA",
+        "url": "http://oom-cmg.streamguys1.com/atl750/atl750-sgplayer-mp3",
+        "format": "mp3",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:40Z"
+      },
+      {
+        "station": "wtam-am-1100",
+        "display_name": "WTAM 1100 AM — Cleveland, OH",
+        "url": "http://stream.revma.ihrhls.com/zc1757",
+        "format": "aac",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:45Z"
+      },
+      {
+        "station": "wibc-fm-931",
+        "display_name": "WIBC 93.1 FM — Indianapolis, IN",
+        "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/WIBCFM.mp3",
+        "format": "mp3",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:47Z"
+      },
+      {
+        "station": "wwtn-fm-997",
+        "display_name": "WWTN 99.7 FM — Nashville, TN",
+        "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/WWTNFM.mp3",
+        "format": "mp3",
+        "ok": true,
+        "duration_tested_seconds": 6,
+        "error": "",
+        "tested_at": "2026-06-20T00:39:49Z"
+      }
+    ]
+  }
+}

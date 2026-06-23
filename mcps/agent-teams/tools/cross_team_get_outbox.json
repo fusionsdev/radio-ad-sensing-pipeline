@@ -1,0 +1,21 @@
+{
+  "name": "cross_team_get_outbox",
+  "description": "Get sent cross-team messages for the current team.",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName"
+    ]
+  }
+}

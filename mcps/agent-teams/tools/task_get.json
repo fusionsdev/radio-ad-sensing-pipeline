@@ -1,0 +1,26 @@
+{
+  "name": "task_get",
+  "description": "Get a task by id. Response includes:\n- sourceMessage.attachments: from original user message (filePath = absolute path to file on disk, use Read tool to view)\n- attachments: files attached to the task (filePath = absolute path, use Read tool to view)\n- comments[].attachments: files on comments (filePath = absolute path, use Read tool to view)",
+  "inputSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "teamName": {
+        "type": "string",
+        "minLength": 1
+      },
+      "claudeDir": {
+        "type": "string",
+        "minLength": 1
+      },
+      "taskId": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "teamName",
+      "taskId"
+    ]
+  }
+}

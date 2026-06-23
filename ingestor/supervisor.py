@@ -3,15 +3,23 @@
 from __future__ import annotations
 
 import logging
+import hashlib
 import re
 import threading
 import time
-from dataclasses import dataclass
+from collections import deque
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Protocol
 
 from ingestor.ffmpeg import ChunkRunner, FfmpegChunkRunner, is_valid_chunk_duration
-from ingestor.repository import enqueue_chunk, is_station_enabled, log_gap, upsert_station
+from ingestor.repository import (
+    enqueue_chunk,
+    is_station_enabled,
+    log_gap,
+    upsert_station,
+    upsert_station_ingest_health,
+)
 from shared.metrics import (
     increment_chunks_processed,
     increment_ingest_chunks,
@@ -55,6 +63,80 @@ class BackoffPolicy:
         self.current_seconds = None
 
 
+@dataclass
+class StationIngestHealth:
+    """In-memory circuit-breaker state for one station stream."""
+
+    empty_chunk_threshold: int
+    window_seconds: float
+    attempt_threshold: int
+    pause_seconds: float
+    last_success_at: float | None = None
+    last_failure_at: float | None = None
+    consecutive_empty_chunks: int = 0
+    consecutive_stream_down: int = 0
+    attempts_since_success: int = 0
+    backoff_until: float | None = None
+    last_ffmpeg_error_sample: str = ""
+    empty_chunk_failures: deque[float] = field(default_factory=deque)
+
+    def record_success(self, success_ts: float) -> None:
+        self.last_success_at = success_ts
+        self.consecutive_empty_chunks = 0
+        self.consecutive_stream_down = 0
+        self.attempts_since_success = 0
+        self.backoff_until = None
+        self.last_ffmpeg_error_sample = ""
+        self.empty_chunk_failures.clear()
+
+    def record_failure(
+        self,
+        *,
+        reason: str,
+        failure_ts: float,
+        attempt_count: int,
+        ffmpeg_error_sample: str,
+    ) -> None:
+        self.last_failure_at = failure_ts
+        self.attempts_since_success += max(attempt_count, 0)
+        if reason == "empty_chunk":
+            self.consecutive_empty_chunks += 1
+            self.consecutive_stream_down = 0
+            self.empty_chunk_failures.append(failure_ts)
+        elif reason == "stream_down":
+            self.consecutive_stream_down += 1
+            self.consecutive_empty_chunks = 0
+        else:
+            self.consecutive_empty_chunks = 0
+            self.consecutive_stream_down = 0
+        if ffmpeg_error_sample:
+            self.last_ffmpeg_error_sample = ffmpeg_error_sample
+        self._prune_empty_chunk_failures(failure_ts)
+
+    def mark_backoff(self, until_ts: float) -> None:
+        self.backoff_until = until_ts
+
+    def clear_backoff(self) -> None:
+        self.backoff_until = None
+
+    def should_pause_for_bad_stream(self, now_ts: float) -> bool:
+        self._prune_empty_chunk_failures(now_ts)
+        empty_chunk_trigger = (
+            self.empty_chunk_threshold > 0
+            and len(self.empty_chunk_failures) >= self.empty_chunk_threshold
+        )
+        attempt_trigger = (
+            self.attempt_threshold > 0
+            and self.attempts_since_success >= self.attempt_threshold
+        )
+        return empty_chunk_trigger or attempt_trigger
+
+    def _prune_empty_chunk_failures(self, now_ts: float) -> None:
+        cutoff = now_ts - max(self.window_seconds, 0.0)
+        while self.empty_chunk_failures and self.empty_chunk_failures[0] < cutoff:
+            self.empty_chunk_failures.popleft()
+
+
 class StationIngestor:
     """Record chunks for one station and enqueue successful outputs."""
 
@@ -76,6 +158,13 @@ class StationIngestor:
         self.runner = runner or FfmpegChunkRunner(settings)
         self.clock = clock or SystemClock()
         self.backoff = backoff or BackoffPolicy()
+        self.url_hash = hashlib.sha256(station.url.encode("utf-8")).hexdigest()[:12]
+        self.health = StationIngestHealth(
+            empty_chunk_threshold=int(settings.ingest_bad_stream_empty_threshold),
+            window_seconds=float(settings.ingest_bad_stream_window_minutes) * 60.0,
+            attempt_threshold=int(settings.ingest_bad_stream_attempt_threshold),
+            pause_seconds=float(settings.ingest_bad_stream_pause_minutes) * 60.0,
+        )
         self.restart_event = threading.Event()
         self.stop_event = threading.Event()
 
@@ -95,7 +184,39 @@ class StationIngestor:
 
     def _apply_restart(self) -> None:
         self.backoff.reset()
+        self.health.clear_backoff()
+        self._persist_health("degraded", now_ts=self.clock.time())
         self.restart_event.clear()
+
+    def _persist_health(
+        self,
+        status: str,
+        *,
+        now_ts: float,
+        enabled: bool | None = None,
+    ) -> None:
+        try:
+            upsert_station_ingest_health(
+                self.db_path,
+                station=self.station,
+                status=status,
+                now_ts=now_ts,
+                last_success_at=self.health.last_success_at,
+                last_failure_at=self.health.last_failure_at,
+                consecutive_empty_chunks=self.health.consecutive_empty_chunks,
+                consecutive_stream_down=self.health.consecutive_stream_down,
+                attempts_since_success=self.health.attempts_since_success,
+                backoff_until=self.health.backoff_until,
+                last_ffmpeg_error_sample=self.health.last_ffmpeg_error_sample,
+                url_hash=self.url_hash,
+                enabled=enabled,
+            )
+        except Exception:
+            logger.warning(
+                "station health update failed",
+                extra={"station": self.station.name, "status": status},
+                exc_info=True,
+            )
 
     def _sleep_interruptible(self, seconds: float, stop_event: threading.Event | None = None) -> None:
         if seconds <= 0:
@@ -191,6 +312,8 @@ class StationIngestor:
             if not is_station_enabled(self.db_path, self.station.name):
                 if output_path.exists():
                     output_path.unlink(missing_ok=True)
+                self.health.clear_backoff()
+                self._persist_health("paused", now_ts=self.clock.time(), enabled=False)
                 logger.info(
                     "chunk discarded for disabled station",
                     extra={"station": self.station.name},
@@ -205,6 +328,8 @@ class StationIngestor:
                 end_ts=expected_end_ts,
             )
             self.backoff.reset()
+            self.health.record_success(expected_end_ts)
+            self._persist_health("healthy", now_ts=max(self.clock.time(), expected_end_ts))
             set_station_last_chunk_timestamp(self.station.name, expected_end_ts)
             increment_chunks_processed("ingestor")
             increment_ingest_chunks(self.station.name)
@@ -225,7 +350,7 @@ class StationIngestor:
 
         # All attempts exhausted — log ONE gap, then enter exponential backoff
         reason = "stream_down" if last_returncode != 0 else "empty_chunk"
-        station_id = upsert_station(self.db_path, self.station)
+        station_id = upsert_station(self.db_path, self.station, sync_enabled=False)
         log_gap(
             self.db_path,
             station_id=station_id,
@@ -236,14 +361,34 @@ class StationIngestor:
         increment_ingest_errors(self.station.name, reason)
         if output_path.exists():
             output_path.unlink(missing_ok=True)
-        delay = self.backoff.next_delay()
+        ffmpeg_error_sample = str(getattr(self.runner, "last_error_sample", "") or "")
+        failure_ts = self.clock.time()
+        self.health.record_failure(
+            reason=reason,
+            failure_ts=failure_ts,
+            attempt_count=max_attempts,
+            ffmpeg_error_sample=ffmpeg_error_sample,
+        )
+        short_delay = self.backoff.next_delay()
+        should_pause = self.health.should_pause_for_bad_stream(failure_ts)
+        delay = max(self.health.pause_seconds, short_delay) if should_pause else short_delay
+        self.health.mark_backoff(failure_ts + delay)
+        health_status = "backoff" if should_pause else "degraded"
+        self._persist_health(health_status, now_ts=failure_ts)
         logger.warning(
             "station ingest failed",
             extra={
                 "station": self.station.name,
+                "url_hash": self.url_hash,
                 "returncode": last_returncode,
                 "reason": reason,
                 "backoff_seconds": delay,
+                "health_status": health_status,
+                "backoff_until": self.health.backoff_until,
+                "consecutive_empty_chunks": self.health.consecutive_empty_chunks,
+                "consecutive_stream_down": self.health.consecutive_stream_down,
+                "attempts_since_success": self.health.attempts_since_success,
+                "ffmpeg_error_sample": ffmpeg_error_sample,
                 "attempts": max_attempts,
             },
         )

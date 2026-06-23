@@ -1,0 +1,115 @@
+entity,vertical,keyword_type,keyword,match_type,notes
+Tax Relief Advocates,tax_relief,brand_exact,tax relief advocates,exact,High CTR for branded queries
+Tax Relief Advocates,tax_relief,brand_phrase,tax relief advocates,phrase,Capture brand + modifier queries
+Tax Relief Advocates,tax_relief,brand_exact,tra tax relief,exact,High CTR for branded queries
+Tax Relief Advocates,tax_relief,brand_phrase,tra tax relief,phrase,Capture brand + modifier queries
+Tax Relief Advocates,tax_relief,brand_exact,tra.com,exact,High CTR for branded queries
+Tax Relief Advocates,tax_relief,brand_phrase,tra.com,phrase,Capture brand + modifier queries
+Tax Relief Advocates,tax_relief,generic_phrase,tax debt relief,phrase,Intent-driven generic traffic
+Tax Relief Advocates,tax_relief,generic_broad,tax debt relief,broad,Explore new query patterns
+Tax Relief Advocates,tax_relief,generic_phrase,irs tax help,phrase,Intent-driven generic traffic
+Tax Relief Advocates,tax_relief,generic_broad,irs tax help,broad,Explore new query patterns
+Tax Relief Advocates,tax_relief,generic_phrase,reduce tax debt,phrase,Intent-driven generic traffic
+Tax Relief Advocates,tax_relief,generic_broad,reduce tax debt,broad,Explore new query patterns
+Tax Relief Advocates,tax_relief,generic_phrase,tax settlement,phrase,Intent-driven generic traffic
+Tax Relief Advocates,tax_relief,generic_broad,tax settlement,broad,Explore new query patterns
+Tax Relief Advocates,tax_relief,generic_phrase,offer in compromise,phrase,Intent-driven generic traffic
+Tax Relief Advocates,tax_relief,generic_broad,offer in compromise,broad,Explore new query patterns
+Tax Relief Advocates,tax_relief,problem_phrase,irs wage garnishment help,phrase,High-intent problem-aware queries
+Tax Relief Advocates,tax_relief,problem_phrase,stop irs levy,phrase,High-intent problem-aware queries
+Tax Relief Advocates,tax_relief,problem_phrase,irs tax lien help,phrase,High-intent problem-aware queries
+Tax Relief Advocates,tax_relief,problem_phrase,tax debt forgiveness,phrase,High-intent problem-aware queries
+Tax Relief Advocates,tax_relief,negative,free tax filing,negative,Exclude cost-comparison or free-seekers
+Tax Relief Advocates,tax_relief,negative,tax refund,negative,Exclude cost-comparison or free-seekers
+Tax Relief Advocates,tax_relief,negative,where's my refund,negative,Exclude cost-comparison or free-seekers
+Tax Relief Advocates,tax_relief,negative,irs phone number,negative,Exclude cost-comparison or free-seekers
+Tax Relief Advocates,tax_relief,negative,how to file taxes,negative,Exclude cost-comparison or free-seekers
+Optima Tax Relief,tax_relief,brand_exact,optima tax relief,exact,High CTR for branded queries
+Optima Tax Relief,tax_relief,brand_phrase,optima tax relief,phrase,Capture brand + modifier queries
+Optima Tax Relief,tax_relief,brand_exact,optima tax,exact,High CTR for branded queries
+Optima Tax Relief,tax_relief,brand_phrase,optima tax,phrase,Capture brand + modifier queries
+Optima Tax Relief,tax_relief,brand_exact,optimataxrelief,exact,High CTR for branded queries
+Optima Tax Relief,tax_relief,brand_phrase,optimataxrelief,phrase,Capture brand + modifier queries
+Optima Tax Relief,tax_relief,generic_phrase,tax relief,phrase,Intent-driven generic traffic
+Optima Tax Relief,tax_relief,generic_broad,tax relief,broad,Explore new query patterns
+Optima Tax Relief,tax_relief,generic_phrase,tax resolution,phrase,Intent-driven generic traffic
+Optima Tax Relief,tax_relief,generic_broad,tax resolution,broad,Explore new query patterns
+Optima Tax Relief,tax_relief,generic_phrase,irs tax settlement,phrase,Intent-driven generic traffic
+Optima Tax Relief,tax_relief,generic_broad,irs tax settlement,broad,Explore new query patterns
+Optima Tax Relief,tax_relief,generic_phrase,tax attorney near me,phrase,Intent-driven generic traffic
+Optima Tax Relief,tax_relief,generic_broad,tax attorney near me,broad,Explore new query patterns
+Optima Tax Relief,tax_relief,generic_phrase,help with irs debt,phrase,Intent-driven generic traffic
+Optima Tax Relief,tax_relief,generic_broad,help with irs debt,broad,Explore new query patterns
+Optima Tax Relief,tax_relief,problem_phrase,i owe the irs money,phrase,High-intent problem-aware queries
+Optima Tax Relief,tax_relief,problem_phrase,can't pay irs taxes,phrase,High-intent problem-aware queries
+Optima Tax Relief,tax_relief,problem_phrase,irs payment plan,phrase,High-intent problem-aware queries
+Optima Tax Relief,tax_relief,problem_phrase,tax levy help,phrase,High-intent problem-aware queries
+Optima Tax Relief,tax_relief,negative,free tax filing,negative,Exclude cost-comparison or free-seekers
+Optima Tax Relief,tax_relief,negative,tax refund,negative,Exclude cost-comparison or free-seekers
+Optima Tax Relief,tax_relief,negative,where's my refund,negative,Exclude cost-comparison or free-seekers
+Optima Tax Relief,tax_relief,negative,irs phone number,negative,Exclude cost-comparison or free-seekers
+Optima Tax Relief,tax_relief,negative,how to file taxes,negative,Exclude cost-comparison or free-seekers
+Ethos,insurance,brand_exact,ethos life insurance,exact,High CTR for branded queries
+Ethos,insurance,brand_phrase,ethos life insurance,phrase,Capture brand + modifier queries
+Ethos,insurance,brand_exact,ethos,exact,High CTR for branded queries
+Ethos,insurance,brand_phrase,ethos,phrase,Capture brand + modifier queries
+Ethos,insurance,brand_exact,ethos insurance quote,exact,High CTR for branded queries
+Ethos,insurance,brand_phrase,ethos insurance quote,phrase,Capture brand + modifier queries
+Ethos,insurance,generic_phrase,term life insurance quote,phrase,Intent-driven generic traffic
+Ethos,insurance,generic_broad,term life insurance quote,broad,Explore new query patterns
+Ethos,insurance,generic_phrase,life insurance no medical exam,phrase,Intent-driven generic traffic
+Ethos,insurance,generic_broad,life insurance no medical exam,broad,Explore new query patterns
+Ethos,insurance,generic_phrase,affordable life insurance,phrase,Intent-driven generic traffic
+Ethos,insurance,generic_broad,affordable life insurance,broad,Explore new query patterns
+Ethos,insurance,generic_phrase,life insurance online,phrase,Intent-driven generic traffic
+Ethos,insurance,generic_broad,life insurance online,broad,Explore new query patterns
+Ethos,insurance,problem_phrase,life insurance for parents,phrase,High-intent problem-aware queries
+Ethos,insurance,problem_phrase,need life insurance fast,phrase,High-intent problem-aware queries
+Ethos,insurance,problem_phrase,best term life insurance rates,phrase,High-intent problem-aware queries
+Ethos,insurance,negative,car insurance quote,negative,Exclude cost-comparison or free-seekers
+Ethos,insurance,negative,auto insurance,negative,Exclude cost-comparison or free-seekers
+Ethos,insurance,negative,homeowners insurance,negative,Exclude cost-comparison or free-seekers
+Ethos,insurance,negative,free insurance,negative,Exclude cost-comparison or free-seekers
+Ethos,insurance,negative,insurance agent near me,negative,Exclude cost-comparison or free-seekers
+Coast One Tax Group,tax_relief,brand_exact,coast one tax group,exact,High CTR for branded queries
+Coast One Tax Group,tax_relief,brand_phrase,coast one tax group,phrase,Capture brand + modifier queries
+Coast One Tax Group,tax_relief,brand_exact,coast one tax,exact,High CTR for branded queries
+Coast One Tax Group,tax_relief,brand_phrase,coast one tax,phrase,Capture brand + modifier queries
+Coast One Tax Group,tax_relief,generic_phrase,irs tax relief,phrase,Intent-driven generic traffic
+Coast One Tax Group,tax_relief,generic_broad,irs tax relief,broad,Explore new query patterns
+Coast One Tax Group,tax_relief,generic_phrase,tax resolution company,phrase,Intent-driven generic traffic
+Coast One Tax Group,tax_relief,generic_broad,tax resolution company,broad,Explore new query patterns
+Coast One Tax Group,tax_relief,generic_phrase,offer in compromise help,phrase,Intent-driven generic traffic
+Coast One Tax Group,tax_relief,generic_broad,offer in compromise help,broad,Explore new query patterns
+Coast One Tax Group,tax_relief,generic_phrase,irs tax attorney,phrase,Intent-driven generic traffic
+Coast One Tax Group,tax_relief,generic_broad,irs tax attorney,broad,Explore new query patterns
+Coast One Tax Group,tax_relief,problem_phrase,tax debt over 10000,phrase,High-intent problem-aware queries
+Coast One Tax Group,tax_relief,problem_phrase,irs collections help,phrase,High-intent problem-aware queries
+Coast One Tax Group,tax_relief,problem_phrase,tax problem resolution,phrase,High-intent problem-aware queries
+Coast One Tax Group,tax_relief,negative,free tax filing,negative,Exclude cost-comparison or free-seekers
+Coast One Tax Group,tax_relief,negative,tax refund,negative,Exclude cost-comparison or free-seekers
+Coast One Tax Group,tax_relief,negative,where's my refund,negative,Exclude cost-comparison or free-seekers
+Coast One Tax Group,tax_relief,negative,irs phone number,negative,Exclude cost-comparison or free-seekers
+Coast One Tax Group,tax_relief,negative,how to file taxes,negative,Exclude cost-comparison or free-seekers
+LifeLock,identity_protection,brand_exact,lifelock,exact,High CTR for branded queries
+LifeLock,identity_protection,brand_phrase,lifelock,phrase,Capture brand + modifier queries
+LifeLock,identity_protection,brand_exact,lifelock identity theft,exact,High CTR for branded queries
+LifeLock,identity_protection,brand_phrase,lifelock identity theft,phrase,Capture brand + modifier queries
+LifeLock,identity_protection,brand_exact,lifelock login,exact,High CTR for branded queries
+LifeLock,identity_protection,brand_phrase,lifelock login,phrase,Capture brand + modifier queries
+LifeLock,identity_protection,generic_phrase,identity theft protection,phrase,Intent-driven generic traffic
+LifeLock,identity_protection,generic_broad,identity theft protection,broad,Explore new query patterns
+LifeLock,identity_protection,generic_phrase,credit monitoring service,phrase,Intent-driven generic traffic
+LifeLock,identity_protection,generic_broad,credit monitoring service,broad,Explore new query patterns
+LifeLock,identity_protection,generic_phrase,identity fraud alert,phrase,Intent-driven generic traffic
+LifeLock,identity_protection,generic_broad,identity fraud alert,broad,Explore new query patterns
+LifeLock,identity_protection,generic_phrase,dark web monitoring,phrase,Intent-driven generic traffic
+LifeLock,identity_protection,generic_broad,dark web monitoring,broad,Explore new query patterns
+LifeLock,identity_protection,problem_phrase,someone stole my identity,phrase,High-intent problem-aware queries
+LifeLock,identity_protection,problem_phrase,protect my identity,phrase,High-intent problem-aware queries
+LifeLock,identity_protection,problem_phrase,credit freeze,phrase,High-intent problem-aware queries
+LifeLock,identity_protection,problem_phrase,social security number monitoring,phrase,High-intent problem-aware queries
+LifeLock,identity_protection,negative,free credit score,negative,Exclude cost-comparison or free-seekers
+LifeLock,identity_protection,negative,credit karma,negative,Exclude cost-comparison or free-seekers
+LifeLock,identity_protection,negative,annual credit report,negative,Exclude cost-comparison or free-seekers
+LifeLock,identity_protection,negative,free identity theft protection,negative,Exclude cost-comparison or free-seekers

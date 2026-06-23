@@ -1,0 +1,11 @@
+station,market,total_ads,loan_ads,unique_loan_advertisers,loan_signal_rate,decision,reason,action_timeline
+wsb-am-750,"Atlanta, GA",589,15,6,2.5%,keep,"6 unique loan advertisers, 15 loan detections",Continue monitoring. Reassess weekly.
+wbap-am-820,"Dallas–Fort Worth, TX",514,13,8,2.5%,keep,"8 unique loan advertisers, 13 loan detections",Continue monitoring. Reassess weekly.
+klif-am-570,"Dallas, TX",470,12,9,2.6%,keep,"9 unique loan advertisers, 12 loan detections",Continue monitoring. Reassess weekly.
+ktrh-am-740,"Houston, TX",432,10,6,2.3%,keep,"6 unique loan advertisers, 10 loan detections",Continue monitoring. Reassess weekly.
+wibc-fm-931,"Indianapolis, IN",445,5,4,1.1%,keep,"4 unique loan advertisers, 5 loan detections",Continue monitoring. Reassess weekly.
+woai-am-1200,"San Antonio, TX",571,3,3,0.5%,keep,"3 unique loan advertisers, 3 loan detections",Continue monitoring. Reassess weekly.
+kabc-am-790,"Los Angeles, CA",380,2,2,0.5%,keep,"2 unique loan advertisers, 2 loan detections",Continue monitoring. Reassess weekly.
+whbo-1040,"Tampa, FL",485,2,2,0.4%,keep,"2 unique loan advertisers, 2 loan detections",Continue monitoring. Reassess weekly.
+wwtn-fm-997,"Nashville, TN",161,2,1,1.2%,watch,Only 1 loan advertiser. Monitor for 24-48h.,Reassess in 24-48h. Rotate out if no second loan advertiser.
+wtam-am-1100,"Cleveland, OH",50,0,0,0.0%,rotate_out,0 loan ads after 50 total detections. Low loan signal.,Rotate out now. Replace with loan-higher-potential station.

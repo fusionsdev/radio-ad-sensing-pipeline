@@ -40,6 +40,31 @@ CHUNKS_DROPPED_TOTAL = Counter(
     "pipeline_chunks_dropped_total",
     "Chunks dropped while handling pipeline work.",
 )
+WORKER_CHUNKS_CLAIMED_TOTAL = Counter(
+    "pipeline_worker_chunks_claimed_total",
+    "Chunks claimed by a worker process.",
+    ["worker_id"],
+)
+WORKER_CHUNKS_PROCESSED_TOTAL = Counter(
+    "pipeline_worker_chunks_processed_total",
+    "Chunks processed by a worker process.",
+    ["worker_id"],
+)
+WORKER_STALE_PROCESSING_RECOVERED_TOTAL = Counter(
+    "pipeline_worker_stale_processing_recovered_total",
+    "Stale processing chunks recovered by a worker process.",
+    ["worker_id"],
+)
+WORKER_DUPLICATE_TRANSCRIPT_TOTAL = Counter(
+    "pipeline_worker_duplicate_transcript_total",
+    "Transcript insert attempts skipped because chunk_id already had a transcript.",
+    ["worker_id"],
+)
+WORKER_LAST_PROCESSED_TIMESTAMP_SECONDS = Gauge(
+    "pipeline_worker_last_processed_timestamp_seconds",
+    "Unix timestamp of the last chunk processed by a worker process.",
+    ["worker_id"],
+)
 CHUNK_FILES_DELETED_TOTAL = Counter(
     "pipeline_chunk_files_deleted_total",
     "Transient chunk WAV files deleted by the janitor.",
@@ -208,6 +233,23 @@ def increment_chunks_processed(service: str, amount: float = 1.0) -> None:
 
 def increment_chunks_dropped(amount: float = 1.0) -> None:
     CHUNKS_DROPPED_TOTAL.inc(amount)
+
+
+def increment_worker_chunks_claimed(worker_id: str, amount: float = 1.0) -> None:
+    WORKER_CHUNKS_CLAIMED_TOTAL.labels(worker_id=worker_id).inc(amount)
+
+
+def increment_worker_chunks_processed(worker_id: str, amount: float = 1.0) -> None:
+    WORKER_CHUNKS_PROCESSED_TOTAL.labels(worker_id=worker_id).inc(amount)
+    WORKER_LAST_PROCESSED_TIMESTAMP_SECONDS.labels(worker_id=worker_id).set(time.time())
+
+
+def increment_worker_stale_processing_recovered(worker_id: str, amount: float = 1.0) -> None:
+    WORKER_STALE_PROCESSING_RECOVERED_TOTAL.labels(worker_id=worker_id).inc(amount)
+
+
+def increment_worker_duplicate_transcript(worker_id: str, amount: float = 1.0) -> None:
+    WORKER_DUPLICATE_TRANSCRIPT_TOTAL.labels(worker_id=worker_id).inc(amount)
 
 
 def increment_chunk_files_deleted(amount: float = 1.0) -> None:

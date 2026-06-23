@@ -1,0 +1,16 @@
+{
+  "name": "headroom_compress",
+  "description": "Compress content to save context window space. Use this on large tool outputs, file contents, search results, or any content you want to shrink before reasoning over it. The original is stored and can be retrieved later via mcp__headroom__headroom_retrieve. Returns compressed text + a hash for retrieval.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "content": {
+        "type": "string",
+        "description": "The content to compress. Can be any text: file contents, JSON, search results, logs, code, etc."
+      }
+    },
+    "required": [
+      "content"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+cases:
+  - id: keep_two_advertisers
+    unique_loan_advertisers: 2
+    total_ads: 10
+    irrelevant_ads: 8
+    expected_decision: keep
+
+  - id: watch_one_advertiser
+    unique_loan_advertisers: 1
+    total_ads: 5
+    irrelevant_ads: 4
+    expected_decision: watch
+
+  - id: rotate_zero_loan
+    unique_loan_advertisers: 0
+    total_ads: 12
+    irrelevant_ads: 12
+    expected_decision: rotate_out
+
+  - id: rotate_empty_signal
+    unique_loan_advertisers: 0
+    total_ads: 0
+    irrelevant_ads: 0
+    expected_decision: rotate_out
+
+  - id: classifier_true_loan
+    company: ""
+    offer: personal loan apply online
+    text: ""
+    expect_loan: true
+
+  - id: classifier_excluded_auto
+    company: Honda
+    offer: dealer financing
+    text: ""
+    expect_loan: false
