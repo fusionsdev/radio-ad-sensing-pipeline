@@ -116,7 +116,7 @@ class AdExtractionWithMetadata(AdExtraction):
 
 
 class StationPoolMeta(BaseModel):
-    replacement_eligible: bool = True
+    replacement_eligible: bool = False
     priority: int = 100
     market: str | None = None
     vertical: str | None = None
@@ -168,6 +168,10 @@ class VerticalKeywordsFile(BaseModel):
 
 class WatchdogSettings(BaseModel):
     enabled: bool = True
+    fixed_harvest_mode: bool = False
+    fixed_harvest_station_ids: list[str] = Field(default_factory=list)
+    fixed_harvest_auto_restart_enabled: bool = False
+    auto_promotion_enabled: bool = False
     target_active_stations: int = 10
     station_stale_after_minutes: int = 6
     restart_attempts_before_disable: int = 3

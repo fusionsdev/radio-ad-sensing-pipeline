@@ -12,6 +12,21 @@ argument-hint: "[status|queue|stations|keywords|logs worker|logs ingestor]"
 
 Operator skill for **Hermes gateway (Telegram)** and CLI. Read `AGENTS.md` and `PLAN.md` for architecture; this skill is the **runbook**.
 
+## Memory OS preload (startup)
+
+On `/pipeline-ops` invocation, load before any ops query:
+
+```txt
+AGENTS.md
+project-memory/00_Project_Overview.md
+project-memory/01_Current_Architecture.md
+project-memory/02_Operating_Policy.md
+project-memory/03_Forbidden_Assumptions.md
+project-memory/04_Agent_Load_Order.md
+```
+
+Contract: `config/agent-memory-contract.md` · Obsidian MCP: `config/obsidian-mcp.json`
+
 ## Project root
 
 ```

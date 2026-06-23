@@ -11,9 +11,9 @@ from shared.models import StationConfig, WatchdogSettings
 
 
 def pool_meta_for_station(station: StationConfig) -> dict[str, object]:
-    """Derive pool metadata from YAML, with sensible defaults for disabled backups."""
+    """Derive pool metadata from YAML. Replacement eligibility is explicit opt-in."""
     meta = station.pool or None
-    replacement_eligible = meta.replacement_eligible if meta is not None else (not station.enabled)
+    replacement_eligible = meta.replacement_eligible if meta is not None else False
     return {
         "replacement_eligible": replacement_eligible,
         "priority": meta.priority if meta is not None else 100,
@@ -25,7 +25,12 @@ def pool_meta_for_station(station: StationConfig) -> dict[str, object]:
 
 
 @retry_on_busy()
-def sync_station_pool(db_path: str | Path, stations: list[StationConfig]) -> int:
+def sync_station_pool(
+    db_path: str | Path,
+    stations: list[StationConfig],
+    *,
+    settings: WatchdogSettings | None = None,
+) -> int:
     """Upsert pool rows from stations.yaml. Returns number of rows written."""
     now_iso = datetime.now(tz=UTC).isoformat()
     conn = get_connection(db_path)
@@ -34,14 +39,19 @@ def sync_station_pool(db_path: str | Path, stations: list[StationConfig]) -> int
         with transaction(conn):
             for station in stations:
                 meta = pool_meta_for_station(station)
+                replacement_update = (
+                    "station_pool.replacement_eligible"
+                    if settings is not None and settings.fixed_harvest_mode
+                    else "excluded.replacement_eligible"
+                )
                 conn.execute(
-                    """
+                    f"""
                     INSERT INTO station_pool (
                         station_id, replacement_eligible, priority, market, vertical,
                         needs_stream_resolution, stream_validation_status, updated_at
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(station_id) DO UPDATE SET
-                        replacement_eligible = excluded.replacement_eligible,
+                        replacement_eligible = {replacement_update},
                         priority = excluded.priority,
                         market = excluded.market,
                         vertical = excluded.vertical,

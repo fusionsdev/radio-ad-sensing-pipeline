@@ -1,0 +1,42 @@
+---
+description: RadioSense agent rules for safe AI coding
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# RadioSense Cursor Agent Rules
+
+Read `AGENTS.md` before changing code.
+
+Do not modify live ingestion, scheduler, worker count, classifier logic, or DB schema unless the user explicitly asks.
+
+For classifier changes:
+
+- add/update tests
+- include before/after detection deltas
+- document accepted and rejected phrases
+- update `project-memory/classifier-notes.md`
+
+For station changes:
+
+- document keep/pause/rotate/probe reasoning
+- update `project-memory/station-ops.md`
+
+For incidents:
+
+- update `project-memory/incidents.md` (and `Incidents/` vault note via `incident_logger.py` when appropriate)
+- append mistake/root-cause/prevention to `LESSONS_LEARNED.md`
+
+Load order: `project-memory/04_Agent_Load_Order.md` + five mandatory vault files.
+
+Final response must include:
+
+```md
+## Summary
+## Files Changed
+## Commands Run
+## Test Results
+## Memory Updated
+## Risks / Follow-ups
+```

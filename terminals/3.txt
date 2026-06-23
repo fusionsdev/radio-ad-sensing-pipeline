@@ -3,7 +3,7 @@ pid: 47072
 cwd: "H:\DEV\projects\radio-ad-sensing-pipeline"
 command: "cd \"H:\\DEV\\projects\\radio-ad-sensing-pipeline\" && .venv\\Scripts\\pytest -q --tb=no"
 started_at: 2026-06-23T00:29:17.144Z
-running_for_ms: 354988   
+running_for_ms: 13079981 
 ---
 ........F.F.F......F.F........F......................................... [ 16%]
 ..........................F............................................. [ 32%]

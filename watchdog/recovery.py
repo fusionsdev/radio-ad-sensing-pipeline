@@ -77,6 +77,10 @@ def _fetch_health_row(conn: sqlite3.Connection, station_id: str) -> sqlite3.Row 
     ).fetchone()
 
 
+def _fixed_harvest_observe_only(settings: WatchdogSettings) -> bool:
+    return settings.fixed_harvest_mode and not settings.fixed_harvest_auto_restart_enabled
+
+
 @retry_on_busy()
 def _reset_daily_restart_count_if_needed(
     db_path: str | Path,
@@ -210,6 +214,27 @@ def _restart_already_attempted(
     return marker == _outage_marker(snap)
 
 
+def _manual_attention_reason_if_budget_exhausted(
+    db_path: str | Path,
+    station_id: str,
+    *,
+    settings: WatchdogSettings,
+) -> str | None:
+    restart_count_today = _reset_daily_restart_count_if_needed(db_path, station_id)
+    conn = get_connection(db_path, read_only=True)
+    try:
+        row = _fetch_health_row(conn, station_id)
+        consecutive = int(row["consecutive_failures"] or 0) if row is not None else 0
+    finally:
+        conn.close()
+
+    if consecutive >= settings.restart_attempts_before_disable:
+        return f"consecutive stale episodes ({consecutive}) reached limit"
+    if restart_count_today >= settings.max_station_failures_per_day:
+        return f"daily restart limit ({settings.max_station_failures_per_day}) reached"
+    return None
+
+
 @retry_on_busy()
 def _mark_restart_attempted(
     db_path: str | Path,
@@ -284,6 +309,44 @@ def disable_stale_station(
 
 
 @retry_on_busy()
+def mark_manual_attention_needed(
+    db_path: str | Path,
+    snap: StationHealthSnapshot,
+    *,
+    reason: str,
+) -> None:
+    now_iso = datetime.now(tz=UTC).isoformat()
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            row = _fetch_health_row(conn, snap.station_id)
+            old_state = row["health_state"] if row is not None else "stale"
+            conn.execute(
+                """
+                INSERT INTO station_health (
+                    station_id, health_state, enabled, last_error, updated_at
+                ) VALUES (?, 'manual_attention', 1, ?, ?)
+                ON CONFLICT(station_id) DO UPDATE SET
+                    health_state = 'manual_attention',
+                    enabled = 1,
+                    last_error = excluded.last_error,
+                    updated_at = excluded.updated_at
+                """,
+                (snap.station_id, reason, now_iso),
+            )
+            conn.execute(
+                """
+                INSERT INTO station_recovery_events (
+                    station_id, event_type, old_state, new_state, reason, action_taken
+                ) VALUES (?, 'manual_attention_needed', ?, 'manual_attention', ?, 'observe_only')
+                """,
+                (snap.station_id, old_state, reason),
+            )
+    finally:
+        conn.close()
+
+
+@retry_on_busy()
 def _increment_consecutive_failures(db_path: str | Path, station_id: str) -> int:
     conn = get_connection(db_path)
     try:
@@ -351,11 +414,31 @@ def auto_restart_stale_station(
         return "cooldown_skip"
     if _restart_already_attempted(db_path, snap):
         return "restart_already_attempted"
+    if _fixed_harvest_observe_only(settings):
+        reason = _manual_attention_reason_if_budget_exhausted(
+            db_path,
+            snap.station_id,
+            settings=settings,
+        )
+        if reason is not None:
+            mark_manual_attention_needed(db_path, snap, reason=reason)
+            _mark_restart_attempted(db_path, snap)
+            return "manual_attention"
+        _mark_restart_attempted(db_path, snap)
+        return "fixed_harvest_observe_only"
 
     restart_count_today = _reset_daily_restart_count_if_needed(db_path, snap.station_id)
     consecutive = _increment_consecutive_failures(db_path, snap.station_id)
 
     if consecutive >= settings.restart_attempts_before_disable:
+        if settings.fixed_harvest_mode:
+            mark_manual_attention_needed(
+                db_path,
+                snap,
+                reason=f"consecutive stale episodes ({consecutive}) reached limit",
+            )
+            _mark_restart_attempted(db_path, snap)
+            return "manual_attention"
         disable_stale_station(
             db_path,
             snap,
@@ -367,6 +450,14 @@ def auto_restart_stale_station(
         return "disabled"
 
     if restart_count_today >= settings.max_station_failures_per_day:
+        if settings.fixed_harvest_mode:
+            mark_manual_attention_needed(
+                db_path,
+                snap,
+                reason=f"daily restart limit ({settings.max_station_failures_per_day}) reached",
+            )
+            _mark_restart_attempted(db_path, snap)
+            return "manual_attention"
         disable_stale_station(
             db_path,
             snap,

@@ -1,6 +1,107 @@
-# Agent Memory — Radio Ad-Sensing Pipeline
+# AGENTS.md — RadioSense Agent Operating Rules
 
 **Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
+
+**Canonical contract for all agents** (Cursor, Codex, Claude Code, Grok, Hermes). Agent-specific shims point here — see `config/agent-memory-contract.md`.
+
+## Mission
+
+RadioSense detects US radio ads relevant to **consumer personal loans**.
+
+The project goal is high-signal detection of real consumer personal loan advertisements from live radio streams, transcripts, classifier output, and dashboard reports.
+
+## Hard Constraints
+
+- Do not modify live stream ingestion logic unless explicitly requested.
+- Do not change worker count, scheduler behavior, station runtime behavior, or DB schema unless explicitly requested.
+- Do not reset, delete, or overwrite production DB files.
+- Do not change classifier rules casually; classifier changes require tests and before/after deltas.
+- Do not treat tax relief, insurance, identity protection, debt settlement, car dealers, windows, or supplements as consumer personal loan ads.
+- Do not mark a task complete without running relevant tests or explaining why tests could not be run.
+- Do not hide failures. Record failed assumptions in `LESSONS_LEARNED.md`.
+- See also `project-memory/03_Forbidden_Assumptions.md` for additional forbidden assumptions.
+
+## Required Workflow
+
+1. Inspect before changing (`git status`, affected files, container vs source when debugging dashboard).
+2. Identify affected files and whether the task touches runtime, classifier, stations, or docs only.
+3. Make the smallest safe change.
+4. Run focused tests (`.venv\Scripts\pytest -q`; `python tools/harness/run_all.py` when behavior/policy may have changed).
+5. Report changed files, commands run, test results, and remaining risks.
+6. Update memory files when decisions, incidents, or lessons occur.
+
+## Definition of Done
+
+A task is done only when:
+
+- The requested behavior is implemented or clearly documented.
+- Relevant tests pass, or test limitations are stated.
+- No unrelated runtime behavior was changed.
+- `LESSONS_LEARNED.md` is updated if anything went wrong.
+- Project memory is updated if the task changes architecture, operations, classifier logic, station policy, or dashboard behavior.
+
+## Memory Rules
+
+Use these layers (additive — do not delete Obsidian vault notes):
+
+| Layer | Files |
+|---|---|
+| Agent mistakes / gotchas | `LESSONS_LEARNED.md` (repo root) |
+| Quick-reference memory | `project-memory/decisions.md`, `incidents.md`, `station-ops.md`, `classifier-notes.md`, `architecture.md`, `agent-rules.md` |
+| Obsidian vault (canonical depth) | `project-memory/00_Project_Overview.md` … `04_Agent_Load_Order.md`, `Decisions/`, `Incidents/`, `Runbooks/`, `Stations/` |
+| Structured loggers | `python tools/memory/decision_logger.py`, `incident_logger.py`, `station_logger.py` |
+| Manual task fallback | `TASKS.md` (when Task Master AI unavailable) |
+| Ops runbook | `RUNBOOK.md` |
+
+## Report Format
+
+Every final response must include:
+
+```md
+## Summary
+## Files Changed
+## Commands Run
+## Test Results
+## Memory Updated
+## Risks / Follow-ups
+```
+
+Also include harness result (`tools/harness/reports/latest.md`) when `tools/harness/run_all.py` was run.
+
+## Current Consumer Loan Target
+
+Target category: **consumer personal loan only**.
+
+Keep examples:
+
+- personal loan
+- installment loan
+- emergency cash loan
+- borrow money
+- fast cash loan
+- loan approval
+- loan payment offer from a real personal-loan advertiser
+
+Reject examples:
+
+- tax relief
+- back taxes
+- insurance
+- identity protection
+- credit repair unless directly tied to personal loan offer
+- debt relief / debt settlement unless clearly a personal-loan advertiser
+- car dealer financing
+- windows/home improvement financing
+- supplements
+- generic bank ads without loan intent
+
+| Agent | Shim |
+|---|---|
+| Cursor | `.cursor/rules/radiosense-memory.mdc` |
+| Codex | `CODEX.md` |
+| Claude Code | `CLAUDE.md` |
+| Grok | `GROK.md` |
+| Hermes | `.hermes.md` |
 
 ## Memory OS (mandatory workflow)
 
@@ -131,6 +232,30 @@ Full command list: `README.md` § Codebase map. Plugin paths: `final-install-lis
 - Skill: `/pipeline-ops` → `.agents/skills/pipeline-ops/SKILL.md`
 - Live status: `.\scripts\pipeline-status.ps1` (query DB via `docker exec radio-worker`)
 - **Do not** read `data/pipeline.db` from Windows host during Docker ingest (stale bind-mount)
+
+## Oracle external review (ChatGPT second opinion)
+
+Use Oracle (`@steipete/oracle`) for complex/risky reviews — **not** for simple fixes. Codex/Cursor remains implementer; Oracle is advisory only.
+
+| Item | Location |
+|---|---|
+| **Workflow (commands, module templates)** | `project-memory/workflows/oracle-review-workflow.md` |
+| **Skill** | `~/.agents/skills/oracle/SKILL.md` |
+| **MCP** | `oracle` in Codex + Cursor |
+| **Global config** | `~/.oracle/config.json` → project root URL (new chat per consult) |
+
+**When to consult Oracle:** watchdog/worker/ingestor/classifier/dashboard changes, live-pipeline risk, large diff review, architecture tradeoffs, confusing failures.
+
+**Default command (short):**
+
+```powershell
+cd H:\DEV\projects\radio-ad-sensing-pipeline
+oracle -p "Review …" --file "watchdog/**/*.py" --file "!**/__pycache__/**"
+```
+
+**Same-session follow-up only:** `oracle --followup <session-id> -p "…" --file "…"`
+
+**Do not use API mode** unless user explicitly approves cost. Full-flag troubleshooting commands are in the workflow doc.
 
 ## Every session (required)
 

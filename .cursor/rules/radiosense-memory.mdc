@@ -1,0 +1,30 @@
+---
+description: RadioSense Memory OS — canonical agent contract (Cursor)
+alwaysApply: true
+---
+
+# RadioSense Memory OS (Cursor)
+
+**Source of truth:** `AGENTS.md` — do not duplicate full policy here.
+
+## Session start
+
+1. Read `AGENTS.md`
+2. Load `project-memory/04_Agent_Load_Order.md` and the five mandatory vault files it lists
+3. Use Obsidian MCP when available (`config/obsidian-mcp.json`)
+
+## Scope guardrails
+
+Do **not** edit classifier, station rotation, or ingestor unless the task explicitly requires it.
+
+## After coding
+
+1. Run `python tools/harness/run_all.py`
+2. Update `project-memory/` (decision/incident/station loggers or architecture docs) if behavior changed
+
+## Pointers
+
+- Full contract: `config/agent-memory-contract.md`
+- Load order: `project-memory/04_Agent_Load_Order.md`
+- Hermes ops: `.hermes.md` + `.agents/skills/pipeline-ops/SKILL.md`
+- Oracle review: `project-memory/workflows/oracle-review-workflow.md`

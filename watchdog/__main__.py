@@ -23,7 +23,7 @@ def main() -> None:
     settings = load_settings()
     db_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(settings.db_path or DEFAULT_DB_PATH)
     migrate(db_path)
-    sync_station_pool(db_path, load_stations())
+    sync_station_pool(db_path, load_stations(), settings=settings.watchdog)
 
     if not settings.watchdog.enabled:
         logging.getLogger(__name__).info("watchdog disabled in config")

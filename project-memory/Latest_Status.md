@@ -5,7 +5,10 @@
 ## Pipeline
 
 - All work packages shipped; Opus review gate closed
-- Enabled stations: `kfi-am-640`, `wbap-am-820` per `config/stations.yaml`
+- Conservative harvest enabled stations: `klif-am-570`, `wbap-am-820` per `config/stations.yaml`
+- Patch E implemented/tested locally: watchdog fixed-harvest mode blocks auto-promotion, preserves pool safety locks on sync, and records `manual_attention` instead of disabling fixed-harvest stations at recovery limits
+- Patch E controlled watchdog audit stopped at T+15: no promote/disable drift, but watchdog still queued `restart_station` for stale `klif-am-570`
+- Patch E.1 watchdog-only audit passed T+30: no `promote_station`, no `disable_station`, no `restart_station`, no station drift, pool locks remained `0`; watchdog is running healthy in observe-only fixed-harvest mode
 - Docker full stack on Win GPU host — `radio-dashboard` on `127.0.0.1:8081`
 
 ## Memory OS
@@ -14,6 +17,7 @@
 - Phase 1.5: decision/incident/station loggers + memory harness — shipped
 - Phase 1.75: Memory API + **radiosense-aistudio** `/memory` tab — shipped
 - Phase 1.8: Memory metrics, timeline, incident/decision analytics — shipped
+- Multi-agent contract: Cursor, Codex, Claude Code, Grok, Hermes shims → `AGENTS.md` — shipped
 - Phase 2: zvec semantic index — deferred (`tools/memory/zvec_hooks.py` hooks only)
 
 ## Active dashboard

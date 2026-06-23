@@ -1,5 +1,18 @@
 {
   "vaultPath": "H:/DEV/projects/radio-ad-sensing-pipeline/project-memory",
+  "agentMemoryContract": {
+    "canonical": "AGENTS.md",
+    "loadOrder": "project-memory/04_Agent_Load_Order.md",
+    "contractDoc": "config/agent-memory-contract.md",
+    "agents": {
+      "cursor": ".cursor/rules/radiosense-memory.mdc",
+      "codex": "CODEX.md",
+      "claude": "CLAUDE.md",
+      "grok": "GROK.md",
+      "hermes": ".hermes.md"
+    },
+    "harness": "python tools/harness/run_all.py"
+  },
   "server": "obsidian-mcp-server",
   "repository": "https://github.com/cyanheads/obsidian-mcp-server",
   "install": "npm install -g obsidian-mcp-server",

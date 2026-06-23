@@ -146,6 +146,64 @@ def test_auto_restart_queues_command_on_new_stale_episode(
     assert "restart_attempted" in event_types
 
 
+def test_fixed_harvest_observe_only_blocks_restart_command(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    db_path = tmp_path / "test.db"
+    migrate(db_path)
+    now = time.time()
+    _seed_stale_station(db_path, now=now, name="klif-am-570")
+
+    monkeypatch.setattr("watchdog.station_watchdog.send_stale_station_alert", lambda *a, **k: False)
+
+    settings = WatchdogSettings(
+        fixed_harvest_mode=True,
+        fixed_harvest_station_ids=["klif-am-570", "wbap-am-820"],
+        fixed_harvest_auto_restart_enabled=False,
+        station_stale_after_minutes=6,
+        auto_restart_on_stale=True,
+    )
+    summary = run_health_check(db_path, settings=settings)
+    assert summary["restarts_queued"] == 0
+    assert summary["stations_disabled"] == 0
+    assert fetch_pending_commands(db_path) == []
+
+    conn = get_connection(db_path)
+    try:
+        station = conn.execute(
+            "SELECT enabled FROM stations WHERE name = 'klif-am-570'"
+        ).fetchone()
+        health = conn.execute(
+            """
+            SELECT health_state, enabled
+            FROM station_health
+            WHERE station_id = 'klif-am-570'
+            """
+        ).fetchone()
+        events = conn.execute(
+            """
+            SELECT event_type, action_taken
+            FROM station_recovery_events
+            WHERE station_id = 'klif-am-570'
+            ORDER BY id
+            """
+        ).fetchall()
+        command_count = conn.execute(
+            "SELECT COUNT(*) AS n FROM station_control_commands"
+        ).fetchone()["n"]
+    finally:
+        conn.close()
+
+    assert station["enabled"] == 1
+    assert health["health_state"] == "stale"
+    assert health["enabled"] == 1
+    assert command_count == 0
+    assert [(row["event_type"], row["action_taken"]) for row in events] == [
+        ("stale_detected", "observe_only")
+    ]
+
+
 def test_auto_restart_disables_after_consecutive_limit(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -195,6 +253,82 @@ def test_auto_restart_disables_after_consecutive_limit(
     assert station["enabled"] == 0
     assert health["health_state"] == "failed"
     assert health["enabled"] == 0
+
+
+def test_fixed_harvest_records_manual_attention_instead_of_disable(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    db_path = tmp_path / "test.db"
+    migrate(db_path)
+    now = time.time()
+    _seed_stale_station(db_path, now=now, name="klif-am-570")
+
+    conn = get_connection(db_path)
+    try:
+        conn.execute(
+            """
+            INSERT INTO station_health (
+                station_id, health_state, enabled, restart_count_today
+            ) VALUES ('klif-am-570', 'stale', 1, 5)
+            """
+        )
+        conn.execute(
+            """
+            INSERT INTO status (key, value, updated_at)
+            VALUES ('watchdog:restart_day:klif-am-570', ?, ?)
+            """,
+            (datetime.now(tz=UTC).date().isoformat(), now),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    monkeypatch.setattr("watchdog.station_watchdog.send_stale_station_alert", lambda *a, **k: False)
+
+    settings = WatchdogSettings(
+        fixed_harvest_mode=True,
+        fixed_harvest_station_ids=["klif-am-570", "wbap-am-820"],
+        station_stale_after_minutes=6,
+        auto_restart_on_stale=True,
+        restart_attempts_before_disable=10,
+        max_station_failures_per_day=5,
+    )
+    summary = run_health_check(db_path, settings=settings)
+    assert summary["stations_disabled"] == 0
+    assert summary["restarts_queued"] == 0
+    assert fetch_pending_commands(db_path) == []
+
+    conn = get_connection(db_path)
+    try:
+        station = conn.execute(
+            "SELECT enabled FROM stations WHERE name = 'klif-am-570'"
+        ).fetchone()
+        health = conn.execute(
+            """
+            SELECT health_state, enabled, last_error
+            FROM station_health
+            WHERE station_id = 'klif-am-570'
+            """
+        ).fetchone()
+        event = conn.execute(
+            """
+            SELECT event_type, new_state, action_taken
+            FROM station_recovery_events
+            ORDER BY id DESC
+            LIMIT 1
+            """
+        ).fetchone()
+    finally:
+        conn.close()
+
+    assert station["enabled"] == 1
+    assert health["health_state"] == "manual_attention"
+    assert health["enabled"] == 1
+    assert health["last_error"] == "daily restart limit (5) reached"
+    assert event["event_type"] == "manual_attention_needed"
+    assert event["new_state"] == "manual_attention"
+    assert event["action_taken"] == "observe_only"
 
 
 def test_auto_restart_skips_during_cooldown(
@@ -564,6 +698,10 @@ def test_healthy_station_is_not_restarted_while_peer_recovers(
 def test_watchdog_settings_load_from_yaml() -> None:
     settings = load_settings()
     assert settings.watchdog.enabled is True
+    assert settings.watchdog.fixed_harvest_mode is True
+    assert settings.watchdog.fixed_harvest_station_ids == ["klif-am-570", "wbap-am-820"]
+    assert settings.watchdog.fixed_harvest_auto_restart_enabled is False
+    assert settings.watchdog.auto_promotion_enabled is False
     assert settings.watchdog.target_active_stations == 10
     assert settings.watchdog.station_stale_after_minutes == 6
     assert settings.watchdog.auto_restart_on_stale is True

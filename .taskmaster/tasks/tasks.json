@@ -1,0 +1,108 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "1",
+        "title": "RS-MEM-001 Add AGENTS.md and repo agent rules",
+        "description": "Merge AGENTS.md operating rules with existing Memory OS. No runtime changes.",
+        "status": "done",
+        "priority": "high",
+        "dependencies": [],
+        "details": "Mission, Hard Constraints, Required Workflow, Definition of Done, Memory Rules, Report Format, Consumer Loan Target merged into AGENTS.md.",
+        "testStrategy": "Verify AGENTS.md exists and references LESSONS_LEARNED.md and project-memory.",
+        "subtasks": []
+      },
+      {
+        "id": "2",
+        "title": "RS-MEM-002 Add project-memory baseline files",
+        "description": "Create flat scaffold files that bridge the Obsidian vault without deleting existing notes.",
+        "status": "done",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "details": "Added README.md, decisions.md, architecture.md, station-ops.md, classifier-notes.md, incidents.md, agent-rules.md, daily-status-template.md.",
+        "testStrategy": "find project-memory -maxdepth 1 -type f lists scaffold files.",
+        "subtasks": []
+      },
+      {
+        "id": "3",
+        "title": "RS-MEM-003 Add LESSONS_LEARNED.md with known lessons",
+        "description": "Record dashboard stale container, classifier false positives, and station health lessons.",
+        "status": "done",
+        "priority": "high",
+        "dependencies": [
+          "1"
+        ],
+        "details": "Three dated entries with context, root cause, fix, prevention.",
+        "testStrategy": "test -f LESSONS_LEARNED.md",
+        "subtasks": []
+      },
+      {
+        "id": "4",
+        "title": "RS-MEM-004 Add Cursor/Claude compatibility files",
+        "description": "Add radiosense-agent-rules.mdc and update CLAUDE.md shim.",
+        "status": "done",
+        "priority": "medium",
+        "dependencies": [
+          "1"
+        ],
+        "details": "Cursor rule + CLAUDE.md point to AGENTS.md final report format.",
+        "testStrategy": "Test-Path .cursor/rules/radiosense-agent-rules.mdc",
+        "subtasks": []
+      },
+      {
+        "id": "5",
+        "title": "RS-MEM-005 Validate no runtime behavior changed",
+        "description": "Confirm docs-only scaffold; no ingestor/worker/classifier/DB changes.",
+        "status": "done",
+        "priority": "high",
+        "dependencies": [
+          "2",
+          "3",
+          "4"
+        ],
+        "details": "File existence checks only; no docker restart or pipeline jobs.",
+        "testStrategy": "git diff excludes runtime modules except docs/config/memory.",
+        "subtasks": []
+      },
+      {
+        "id": "6",
+        "title": "RS-TM-001 Initialize and configure Task Master AI",
+        "description": "Init .taskmaster/, configure Ollama models, import RS-MEM tasks, document workflow.",
+        "status": "done",
+        "priority": "medium",
+        "dependencies": [
+          "5"
+        ],
+        "details": "Use task-master init -y --no-git. Set Ollama qwen3:8b. Manual tasks.json import. Fix MCP config.",
+        "testStrategy": "task-master list shows tasks; task-master next returns RS-TM-001 or next pending.",
+        "subtasks": [],
+        "updatedAt": "2026-06-23T04:22:43.931Z"
+      },
+      {
+        "id": "7",
+        "title": "RS-PMEM-001 Evaluate and initialize projectmem",
+        "description": "Evaluate projectmem compatibility; do not duplicate project-memory vault.",
+        "status": "done",
+        "priority": "medium",
+        "dependencies": [
+          "5"
+        ],
+        "details": "See project-memory/projectmem-evaluation.md. Blocked until user picks agent host.",
+        "testStrategy": "Evaluation doc exists with status and recommendation.",
+        "subtasks": [],
+        "updatedAt": "2026-06-23T04:42:25.277Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "lastModified": "2026-06-23T04:42:25.277Z",
+      "taskCount": 7,
+      "completedCount": 7,
+      "tags": [
+        "master"
+      ]
+    }
+  }
+}

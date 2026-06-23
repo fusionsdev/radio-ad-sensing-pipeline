@@ -1,0 +1,7 @@
+---
+pid: 60700
+cwd: "H:\DEV\projects\radio-ad-sensing-pipeline"
+command: "ollama list 2>&1"
+started_at: 2026-06-23T04:20:07.432Z
+running_for_ms: 11009986 
+---

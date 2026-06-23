@@ -1,0 +1,29 @@
+{
+  "mcpServers": {
+    "task-master-ai": {
+      "command": "npx",
+      "args": ["-y", "task-master-ai"],
+      "timeout": 300,
+      "env": {
+        "TASK_MASTER_TOOLS": "core",
+        "OLLAMA_BASE_URL": "http://localhost:11434/api"
+      }
+    },
+    "obsidian": {
+      "command": "npx",
+      "args": ["-y", "obsidian-mcp-server"],
+      "env": {
+        "OBSIDIAN_VAULT_PATH": "H:/DEV/projects/radio-ad-sensing-pipeline/project-memory"
+      }
+    },
+    "projectmem": {
+      "command": "H:/DEV/projects/radio-ad-sensing-pipeline/.venv/Scripts/python.exe",
+      "args": [
+        "-m",
+        "projectmem.mcp_server",
+        "--root",
+        "H:/DEV/projects/radio-ad-sensing-pipeline"
+      ]
+    }
+  }
+}

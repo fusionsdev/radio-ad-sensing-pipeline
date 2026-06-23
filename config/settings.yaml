@@ -32,6 +32,12 @@ keyword_min_record_confidence: 0.6
 
 watchdog:
   enabled: true
+  fixed_harvest_mode: true
+  fixed_harvest_station_ids:
+    - klif-am-570
+    - wbap-am-820
+  fixed_harvest_auto_restart_enabled: false
+  auto_promotion_enabled: false
   target_active_stations: 10
   station_stale_after_minutes: 6
   restart_attempts_before_disable: 3

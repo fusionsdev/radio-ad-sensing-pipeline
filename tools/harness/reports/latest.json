@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T01:04:42Z",
+  "timestamp": "2026-06-23T06:10:09Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -138,8 +138,8 @@
             "passed": true,
             "broken": []
           },
-          "vault_markdown_count": 18,
-          "incidents_count": 1
+          "vault_markdown_count": 35,
+          "incidents_count": 3
         },
         "subchecks": {
           "core_files": "pass",
@@ -182,8 +182,8 @@
       "passed": true,
       "broken": []
     },
-    "vault_markdown_count": 18,
-    "incidents_count": 1
+    "vault_markdown_count": 35,
+    "incidents_count": 3
   },
   "failed_checks": [],
   "recommended_actions": []

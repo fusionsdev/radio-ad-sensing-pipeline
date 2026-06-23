@@ -1,0 +1,31 @@
+CODE REVIEW: Watchdog fixed_harvest_mode observe-only safety analysis.
+
+Read ALL attached files thoroughly before answering. These are the exact source files from the RadioSense pipeline.
+
+PROJECT: Python 3.11+, SQLite WAL, Docker on Win GPU. Tests: .venv/Scripts/pytest -q with tmp_path fixtures.
+
+CONFIG: In shared/models.py, WatchdogSettings has:
+- fixed_harvest_mode: bool = False
+- fixed_harvest_auto_restart_enabled: bool = False
+- auto_restart_on_stale: bool = True
+- restart_attempts_before_disable: int = 3
+- max_station_failures_per_day: int = 5
+
+SCENARIO: fixed_harvest_mode=True AND fixed_harvest_auto_restart_enabled=False.
+The watchdog should be OBSERVE-ONLY — detect staleness, log events, escalate to manual_attention when budget exhausted. It MUST NOT enqueue restart_station, disable_station, or promote_backup.
+
+YOUR TASK — read every attached file and answer:
+
+1. In auto_restart_stale_station() in recovery.py, trace all code paths. The _fixed_harvest_observe_only() function (line 80-81) returns True when fixed_harvest_mode=True AND NOT fixed_harvest_auto_restart_enabled. At line 417, this guard is checked. When True, it runs budget check then returns 'fixed_harvest_observe_only' or 'manual_attention'. The question: can control flow EVER reach the restart/disable logic (lines 430-496) when _fixed_harvest_observe_only() returns True?
+
+2. In promotion.py line 159, maybe_promote_backup() checks fixed_harvest_mode early. Is this guard sufficient to prevent ALL promotion code paths?
+
+3. In pool.py lines 42-45, sync_station_pool() locks replacement_eligible when fixed_harvest_mode=True. Is this correct?
+
+4. In repository.py line 118, record_stale_detection() hardcodes action_taken='observe_only' for ALL stale events. Is this misleading?
+
+5. In notify.py, _format_recovery_action() doesn't handle 'fixed_harvest_observe_only' or 'manual_attention'. What happens?
+
+6. What edge cases and test scenarios are missing from the test suite?
+
+Output findings with severity (CRITICAL/HIGH/MEDIUM/LOW), exact file:line references, and suggested fixes.
