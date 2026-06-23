@@ -22,6 +22,7 @@ Local 24/7 radio ad-sensing pipeline
 ## Decisions
 - Add /api/live/events?once=true as a bounded SSE probe while preserving infinite streaming as the default behavior [dashboard/routes/radiosense.py]
 - Live keyword scanning includes cash advance so consumer-loan cash-advance ads can persist after classifier intent gating; merchant/credit-card cash advance remain rejected by classifier exclusions [config/vertical_keywords.yaml]
+- Add NVIDIA Parakeet/Riva as an offline audit-only batch transcription tool using NVIDIA_API_KEY env, JSONL output, resume, and no live pipeline mutations. [scripts/audit/parakeet_batch_transcribe.py]
 
 ## Notes
 - chore(docs): move handoff plans to .devin/plans

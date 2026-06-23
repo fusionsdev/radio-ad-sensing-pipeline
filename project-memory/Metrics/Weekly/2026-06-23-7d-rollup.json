@@ -1,17 +1,17 @@
 {
   "period": "7d",
-  "collected_at": "2026-06-23T14:47:13Z",
+  "collected_at": "2026-06-23T14:59:46Z",
   "snapshot_count": 1,
   "memory": {
-    "total_decisions": 11,
+    "total_decisions": 12,
     "total_incidents": 3,
     "total_station_changes": 0,
     "total_runbooks": 5,
-    "total_memory_files": 39
+    "total_memory_files": 40
   },
   "growth": {
-    "vault_growth_period": 40,
-    "new_decisions_period": 11,
+    "vault_growth_period": 41,
+    "new_decisions_period": 12,
     "new_incidents_period": 3
   },
   "harness": {
