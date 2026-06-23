@@ -3,6 +3,6 @@ pid: 66048
 cwd: "H:\DEV\projects\radio-ad-sensing-pipeline"
 command: "cd \"H:\\DEV\\projects\\radio-ad-sensing-pipeline\" && .venv\\Scripts\\pytest tests/test_radiosense_api.py tests/test_harvest_dashboard.py::test_json_status -q --tb=line 2>&1"
 started_at: 2026-06-22T23:43:13.088Z
-running_for_ms: 2004987  
+running_for_ms: 3839989  
 ---
 .....
