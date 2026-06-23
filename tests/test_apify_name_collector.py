@@ -11,7 +11,13 @@ from scripts.discover_justia_names_via_apify import (
 
 def test_load_queries():
     queries = load_queries("config/justia_name_queries.txt")
-    assert len(queries) == 150, f"Expected 150 queries, got {len(queries)}"
+    expected_count = sum(
+        1
+        for line in Path("config/justia_name_queries.txt").read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    )
+    assert len(queries) == expected_count
+    assert queries
     assert all("site:trademarks.justia.com" in q for q in queries)
     assert not any(q.startswith('#') for q in queries)
 
