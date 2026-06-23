@@ -2,6 +2,12 @@
 
 **Read this first in every session.** Single source for "where we are" so nothing gets lost between chats.
 
+## Mandatory agent operating rules
+
+- Before making any file, Git, branch, stash, PR, or Linear change, read `project-memory/workflows/git-safety-workflow.md`.
+- If any instruction in that workflow conflicts with normal agent behavior, the workflow wins.
+- This repo targets consumer personal loans only. Do not broaden scope to tax relief, insurance, debt settlement, car dealers, windows/home improvement, supplements, or generic bank ads unless explicitly requested.
+
 ## Current state (2026-06-11)
 
 | Item | Status |

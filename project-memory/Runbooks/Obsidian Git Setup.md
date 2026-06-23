@@ -28,6 +28,21 @@ Vault: `project-memory/` inside `radio-ad-sensing-pipeline` git repo.
 | Auto push interval | 20 min |
 | Pull on startup | on |
 
+Settings file: `.obsidian/plugins/obsidian-git/data.json` (restored if UI settings disappear).
+
+## Settings disappeared?
+
+1. Confirm plugin enabled: **Settings → Community plugins → Git** (obsidian-git)
+2. **Restart Obsidian** (required after path changes)
+3. **Settings → Git** — re-check:
+   - **Custom base path:** `..`
+   - **Custom Git directory path:** *(empty)*
+   - **Git executable path:** `C:\Program Files\Git\cmd\git.exe` *(device-local — not in `data.json`)*
+4. Command palette → `Obsidian Git: Open source control view` — should show branch `main`
+5. Test: `Obsidian Git: Commit-and-sync`
+
+If **“git not found”**: set executable path above, restart Obsidian.
+
 ## Related
 
 - [[02_Operating_Policy]]

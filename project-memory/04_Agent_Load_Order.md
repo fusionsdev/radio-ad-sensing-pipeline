@@ -7,6 +7,8 @@ Canonical contract: `AGENTS.md` · Shim index: `config/agent-memory-contract.md`
 ## Mandatory (always)
 
 ```txt
+AGENTS.md                     ← canonical source of truth (all agents)
+project-memory/workflows/git-safety-workflow.md ← Git / branch / stash / PR safety
 project-memory/00_Project_Overview.md
 project-memory/01_Current_Architecture.md
 project-memory/02_Operating_Policy.md
@@ -55,6 +57,7 @@ workflows/oracle-review-workflow.md
 | Watchdog | `watchdog/station_watchdog.py`, `config/settings.yaml` |
 | Classifier / verticals | `config/consumer_personal_loan_taxonomy.yaml` |
 | Continuing WP | Latest `plan/handoff-*.md` |
+| Git safety / repo state | `project-memory/workflows/git-safety-workflow.md` |
 | Oracle external review | `project-memory/workflows/oracle-review-workflow.md`, `~/.agents/skills/oracle/SKILL.md` |
 
 ## Obsidian enrichment (optional)
