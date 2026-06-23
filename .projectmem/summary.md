@@ -25,7 +25,6 @@ Local 24/7 radio ad-sensing pipeline
 - Add NVIDIA Parakeet/Riva as an offline audit-only batch transcription tool using NVIDIA_API_KEY env, JSONL output, resume, and no live pipeline mutations. [scripts/audit/parakeet_batch_transcribe.py]
 
 ## Notes
-- vault backup: 2026-06-23 07:17:43
 - vault backup: 2026-06-23 07:18:52
 - vault backup: 2026-06-23 07:28:11
 - vault backup: 2026-06-23 07:38:15
@@ -35,6 +34,7 @@ Local 24/7 radio ad-sensing pipeline
 - vault backup: 2026-06-23 08:18:24
 - Oracle review review-patch-e-1-follow: station expansion should remain blocked after 0/50 true-loan audit; cash advance persistence is conditionally safe; follow-up needed to clean/filter legacy vertical pollution in candidate/audit exports [plan/patch-e1-test-quality-audit-20260623.md]
 - Oracle review parakeet-audit-review flagged follow-ups: remove key suffix logging, sanitize JSONL errors, gate endpoint overrides, reject live audio paths, add size/time controls and stronger tests. [scripts/audit/parakeet_batch_transcribe.py]
+- Merge: chore(memory): restore project memory vault (#3)
 
 ## Key files
 - `.agents/skills/caveman/SKILL.md`
