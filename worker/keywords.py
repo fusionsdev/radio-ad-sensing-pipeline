@@ -2,12 +2,32 @@
 
 from __future__ import annotations
 
+import logging
+import re
 import sqlite3
 from dataclasses import dataclass
+from functools import lru_cache
 
 from shared.models import LoanKeywordEntry
 
+logger = logging.getLogger(__name__)
+
 DEFAULT_MIN_RECORD_CONFIDENCE = 0.6
+
+
+@lru_cache(maxsize=1024)
+def _phrase_pattern(needle: str) -> re.Pattern[str]:
+    """Compile a word-boundary, whitespace-tolerant matcher for *needle*.
+
+    Uses lookarounds instead of ``\\b`` so phrases bounded by non-word characters
+    (e.g. ``cash-out refinance``) still anchor correctly, and collapses internal
+    whitespace so ASR spacing variance does not cause misses. Word boundaries stop
+    substring false positives such as ``loan`` matching inside ``balloon`` or
+    ``heloc`` inside a larger token.
+    """
+    tokens = [re.escape(token) for token in needle.split()]
+    body = r"\s+".join(tokens) if tokens else re.escape(needle)
+    return re.compile(rf"(?<!\w){body}(?!\w)", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -43,17 +63,27 @@ def find_keyword_matches(
 
     for entry in sorted(entries, key=lambda e: len(e.phrase), reverse=True):
         phrase = entry.phrase.strip()
-        if not phrase or entry.confidence < min_record_confidence:
+        if not phrase:
+            continue
+        if entry.confidence < min_record_confidence:
+            logger.debug(
+                "Skipping keyword %r: confidence %.2f < min_record_confidence %.2f",
+                phrase,
+                entry.confidence,
+                min_record_confidence,
+            )
             continue
         needle = phrase.lower()
         if needle in seen:
             continue
-        index = lowered.find(needle)
-        if index < 0:
+        found = _phrase_pattern(needle).search(lowered)
+        if found is None:
             continue
         seen.add(needle)
+        index = found.start()
+        match_end = found.end()
         start = max(index - excerpt_radius, 0)
-        end = min(index + len(needle) + excerpt_radius, len(transcript))
+        end = min(match_end + excerpt_radius, len(transcript))
         excerpt_body = transcript[start:end].strip()
         if start > 0:
             excerpt_body = f"...{excerpt_body}"

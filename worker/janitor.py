@@ -123,17 +123,33 @@ class ChunkJanitor:
         return removed
 
     def sweep_orphans(self) -> int:
-        """Delete chunk files under chunks_dir with no matching DB row."""
+        """Delete chunk files under chunks_dir with no matching DB row.
+
+        Skips files modified within a safety window so an in-flight chunk — one
+        ffmpeg is still writing, or the worker just resolved under a different
+        path spelling (Windows/Linux) than the raw value stored in the DB — is
+        never deleted out from under an active recording/processing step.
+        """
         if not self.chunks_dir.is_dir():
             return 0
 
         known_paths = self._known_chunk_paths()
+        recent_window = float(self.settings.chunk_len) + 120.0
+        now = self._now()
         removed = 0
         for file_path in self.chunks_dir.rglob("*.wav"):
             resolved = file_path.resolve()
             if self._is_protected_path(resolved):
                 continue
-            if str(resolved) not in known_paths and delete_chunk_file(resolved):
+            if str(resolved) in known_paths:
+                continue
+            try:
+                age = now - resolved.stat().st_mtime
+            except OSError:
+                continue
+            if age < recent_window:
+                continue
+            if delete_chunk_file(resolved):
                 removed += 1
         return removed
 

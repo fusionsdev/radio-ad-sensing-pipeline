@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import sqlite3
 import time
 from pathlib import Path
@@ -161,11 +162,33 @@ def test_sweep_orphans_removes_untracked_files(
     orphan = chunks_dir / "orphan" / "999.wav"
     orphan.parent.mkdir(parents=True)
     orphan.write_bytes(b"RIFF")
+    # A real orphan is left over from a previous run; age it past the safety
+    # window so the in-flight guard does not skip it.
+    old = time.time() - (settings.chunk_len + 600)
+    os.utime(orphan, (old, old))
 
     janitor = ChunkJanitor(db_path, settings, chunks_dir=chunks_dir)
     removed = janitor.sweep_orphans()
     assert removed == 1
     assert not orphan.exists()
+
+
+def test_sweep_orphans_keeps_recent_in_flight_files(
+    db_path: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    # A just-written WAV may be an in-flight recording whose DB path spelling
+    # differs (Windows/Linux); the sweep must not delete it out from under the
+    # active recording/processing step.
+    chunks_dir = tmp_path / "chunks"
+    recent = chunks_dir / "station" / "123.wav"
+    recent.parent.mkdir(parents=True)
+    recent.write_bytes(b"RIFF")
+
+    janitor = ChunkJanitor(db_path, settings, chunks_dir=chunks_dir)
+    assert janitor.sweep_orphans() == 0
+    assert recent.exists()
 
 
 def test_janitor_never_deletes_ad_archive_files(

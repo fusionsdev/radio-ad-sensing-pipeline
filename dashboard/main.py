@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
+import os
+import secrets
 from datetime import UTC, datetime
 from pathlib import Path
 
-from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi import FastAPI, Form, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
@@ -28,6 +32,33 @@ def create_app(db_path: Path | None = None) -> FastAPI:
     app = FastAPI(title="Radio Ad-Sensing Dashboard", docs_url=None, redoc_url=None)
     start_metrics_server(9104)
     configure_dashboard_metrics(resolved_db)
+
+    # The dashboard is read-only; schema ownership belongs to writer processes.
+    auth_user = os.environ.get("DASHBOARD_BASIC_AUTH_USERNAME")
+    auth_pass = os.environ.get("DASHBOARD_BASIC_AUTH_PASSWORD")
+    if auth_user and auth_pass:
+
+        @app.middleware("http")
+        async def _basic_auth(request: Request, call_next):  # type: ignore[no-untyped-def]
+            if request.url.path == "/health":
+                return await call_next(request)
+            header = request.headers.get("authorization", "")
+            authorized = False
+            if header.startswith("Basic "):
+                try:
+                    decoded = base64.b64decode(header[6:]).decode("utf-8")
+                except (binascii.Error, ValueError, UnicodeDecodeError):
+                    decoded = ""
+                user, _, password = decoded.partition(":")
+                authorized = secrets.compare_digest(
+                    user, auth_user
+                ) and secrets.compare_digest(password, auth_pass)
+            if not authorized:
+                return Response(
+                    status_code=401,
+                    headers={"WWW-Authenticate": 'Basic realm="dashboard"'},
+                )
+            return await call_next(request)
 
     @app.get("/health")
     def health() -> JSONResponse:

@@ -626,3 +626,50 @@ def test_extraction_failure_marks_chunk_dropped_but_keeps_transcript(
         assert transcript["text"] == "some transcript"
     finally:
         conn.close()
+
+
+def test_reclaim_orphaned_processing_requeues_stuck_chunks(
+    worker_db: Path,
+    settings: PipelineSettings,
+) -> None:
+    # A crash mid-chunk leaves rows stuck in 'processing'; the claim query only
+    # selects 'pending', so without reclaim they leak forever. At startup (single
+    # worker) any 'processing' row is an orphan and must return to 'pending'.
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            stuck = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path="data/chunks/test-fm/1.wav",
+                start_ts=1.0,
+                end_ts=91.0,
+                status="processing",
+            )
+            done = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path="data/chunks/test-fm/2.wav",
+                start_ts=91.0,
+                end_ts=181.0,
+                status="done",
+            )
+    finally:
+        conn.close()
+
+    transcriber = FakeTranscriber()
+    consumer = ChunkConsumer(worker_db, settings, transcriber)
+    reclaimed = consumer._reclaim_orphaned_processing()
+
+    assert reclaimed == 1
+    conn = get_connection(worker_db)
+    try:
+        rows = {
+            row["id"]: row["status"]
+            for row in conn.execute("SELECT id, status FROM chunks").fetchall()
+        }
+    finally:
+        conn.close()
+    assert rows[stuck] == "pending"
+    assert rows[done] == "done"

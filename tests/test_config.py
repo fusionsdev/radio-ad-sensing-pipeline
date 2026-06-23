@@ -88,8 +88,11 @@ stations:
 def test_load_loan_keywords_from_repo_config() -> None:
     keywords = load_loan_keywords()
     phrases = {entry.phrase for entry in keywords}
-    assert "business funding" in phrases
-    assert "tax debt relief" in phrases
+    assert "personal loan" in phrases
+    assert "installment loan" in phrases
+    assert "business funding" not in phrases
+    assert "tax debt relief" not in phrases
+    assert "life insurance" not in phrases
     assert all(0.0 <= entry.confidence <= 1.0 for entry in keywords)
 
 

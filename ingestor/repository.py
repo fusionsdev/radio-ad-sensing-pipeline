@@ -9,6 +9,44 @@ from shared.db import get_connection, retry_on_busy, transaction
 from shared.models import ChunkStatus, StationConfig
 
 
+def fetch_station_config(db_path: str | Path, station_name: str) -> StationConfig | None:
+    conn = get_connection(db_path, read_only=True)
+    try:
+        row = conn.execute(
+            """
+            SELECT name, url, format, enabled, display_name
+            FROM stations
+            WHERE name = ?
+            """,
+            (station_name,),
+        ).fetchone()
+        if row is None:
+            return None
+        return StationConfig(
+            name=str(row["name"]),
+            url=str(row["url"]),
+            format=row["format"],
+            enabled=bool(row["enabled"]),
+            display_name=row["display_name"],
+        )
+    finally:
+        conn.close()
+
+
+def is_station_enabled(db_path: str | Path, station_name: str) -> bool:
+    conn = get_connection(db_path, read_only=True)
+    try:
+        row = conn.execute(
+            "SELECT enabled FROM stations WHERE name = ?",
+            (station_name,),
+        ).fetchone()
+        if row is None:
+            return True
+        return bool(row["enabled"])
+    finally:
+        conn.close()
+
+
 @retry_on_busy()
 def upsert_station(db_path: str | Path, station: StationConfig) -> int:
     """Insert or update a station row and return its id."""

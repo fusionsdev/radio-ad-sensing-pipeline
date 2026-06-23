@@ -10,8 +10,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Protocol
 
-from ingestor.ffmpeg import ChunkRunner, FfmpegChunkRunner, is_valid_chunk_duration
-from ingestor.repository import enqueue_chunk, log_gap, upsert_station
+from ingestor.ffmpeg import (
+    ChunkRunner,
+    FfmpegChunkRunner,
+    get_wav_duration_seconds,
+    is_valid_chunk_duration,
+)
+from ingestor.repository import enqueue_chunk, is_station_enabled, log_gap, upsert_station
 from shared.metrics import (
     increment_chunks_processed,
     increment_ingest_chunks,
@@ -108,6 +113,10 @@ class StationIngestor:
 
         last_returncode: int = -1
         succeeded = False
+        # Time the winning attempt actually began recording. With immediate
+        # retries the loop-entry start_ts can predate the captured audio by
+        # several attempts, so the enqueued window must track the real attempt.
+        chunk_start_ts = start_ts
 
         for attempt in range(max_attempts):
             if attempt > 0:
@@ -126,6 +135,7 @@ class StationIngestor:
                     "attempt": attempt + 1,
                 },
             )
+            attempt_start_ts = self.clock.time()
             last_returncode = self.runner.record_chunk(
                 self.station,
                 output_path,
@@ -138,19 +148,35 @@ class StationIngestor:
 
             if last_returncode == 0 and duration_ok:
                 succeeded = True
+                chunk_start_ts = attempt_start_ts
                 break
 
         if succeeded:
+            # Derive the chunk window from the actual recorded duration rather
+            # than the configured length so downstream airing-window dedup and
+            # gap accounting use real timestamps.
+            actual_duration = get_wav_duration_seconds(output_path)
+            chunk_end_ts = chunk_start_ts + (
+                actual_duration if actual_duration is not None else float(self.settings.chunk_len)
+            )
+            if not is_station_enabled(self.db_path, self.station.name):
+                if output_path.exists():
+                    output_path.unlink(missing_ok=True)
+                logger.info(
+                    "chunk discarded for disabled station",
+                    extra={"station": self.station.name},
+                )
+                return False
             station_id = upsert_station(self.db_path, self.station)
             enqueue_chunk(
                 self.db_path,
                 station_id=station_id,
                 path=str(output_path),
-                start_ts=start_ts,
-                end_ts=expected_end_ts,
+                start_ts=chunk_start_ts,
+                end_ts=chunk_end_ts,
             )
             self.backoff.reset()
-            set_station_last_chunk_timestamp(self.station.name, expected_end_ts)
+            set_station_last_chunk_timestamp(self.station.name, chunk_end_ts)
             increment_chunks_processed("ingestor")
             increment_ingest_chunks(self.station.name)
             self._sleep_until_next_stride(start_ts)
@@ -159,20 +185,24 @@ class StationIngestor:
                 extra={
                     "station": self.station.name,
                     "path": str(output_path),
-                    "start_ts": start_ts,
-                    "end_ts": expected_end_ts,
+                    "start_ts": chunk_start_ts,
+                    "end_ts": chunk_end_ts,
                 },
             )
             return True
 
-        # All attempts exhausted — log ONE gap, then enter exponential backoff
+        # All attempts exhausted — log ONE gap, then enter exponential backoff.
+        # Span at least the intended chunk window, but extend to the real
+        # give-up time so immediate retries that burn minutes are not
+        # under-reported as a single chunk-length of dead air.
         reason = "stream_down" if last_returncode != 0 else "empty_chunk"
+        gap_end_ts = max(expected_end_ts, self.clock.time())
         station_id = upsert_station(self.db_path, self.station)
         log_gap(
             self.db_path,
             station_id=station_id,
             start_ts=start_ts,
-            end_ts=expected_end_ts,
+            end_ts=gap_end_ts,
             reason=reason,
         )
         increment_ingest_errors(self.station.name, reason)

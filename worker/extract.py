@@ -179,15 +179,20 @@ def _parse_digits_and_vanity(raw: str) -> str | None:
 
 
 def normalize_phone_number(raw: str | None) -> str | None:
-    """Normalize digit, spelled-out, and vanity phone strings to digits only."""
+    """Normalize digit, spelled-out, and vanity phone strings to digits only.
+
+    Literal digits / vanity letters take precedence over spelled-out parsing so a
+    real number like ``800-555-1212`` is never overridden by stray number-words
+    in surrounding prose (``one``/``oh``/``o``), which could otherwise fabricate a
+    bogus phone and cause two unrelated ads to merge on phone equality.
+    """
     if not raw:
         return None
-    spelled = _parse_spelled_phone(raw)
-    if spelled:
-        return spelled
-    if not _has_explicit_digits_or_vanity(raw):
-        return None
-    return _parse_digits_and_vanity(raw)
+    if _has_explicit_digits_or_vanity(raw):
+        digits = _parse_digits_and_vanity(raw)
+        if digits:
+            return digits
+    return _parse_spelled_phone(raw)
 
 
 def _load_response_json(raw_response: Any) -> dict[str, Any]:

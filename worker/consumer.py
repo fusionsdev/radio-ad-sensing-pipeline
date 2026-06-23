@@ -111,6 +111,7 @@ class ChunkConsumer:
 
     def run(self, stop_event: Any | None = None) -> None:
         """Poll until stop_event is set."""
+        self._reclaim_orphaned_processing()
         while stop_event is None or not stop_event.is_set():
             processed = self.run_once()
             self._run_loops += 1
@@ -123,6 +124,35 @@ class ChunkConsumer:
                     time.sleep(self.poll_interval_sec)
             elif stop_event is not None and stop_event.is_set():
                 break
+
+    @retry_on_busy()
+    def _reclaim_orphaned_processing(self) -> int:
+        """Requeue chunks stuck in 'processing' from a previous crash.
+
+        A chunk is set to 'processing' before transcription, which runs outside
+        that transaction; a crash/OOM/restart mid-chunk leaves the row stuck
+        forever because the claim query only selects 'pending'. The pipeline runs
+        a single worker process, so at startup any 'processing' row is necessarily
+        an orphan and safe to requeue. Without this, every crash silently leaks a
+        chunk (and its audio is later swept), losing the detection permanently.
+        """
+        conn = get_connection(self.db_path)
+        try:
+            with transaction(conn):
+                cursor = conn.execute(
+                    """
+                    UPDATE chunks
+                    SET status = 'pending',
+                        error = 'requeued_orphaned_processing'
+                    WHERE status = 'processing'
+                    """
+                )
+                reclaimed = cursor.rowcount
+        finally:
+            conn.close()
+        if reclaimed:
+            logger.warning("reclaimed orphaned processing chunks", extra={"count": reclaimed})
+        return reclaimed
 
     @retry_on_busy()
     def run_once(self) -> bool:
@@ -230,6 +260,10 @@ class ChunkConsumer:
         )
 
     def _process_claimed(self, chunk: ClaimedChunk) -> bool:
+        # Only delete the source WAV once the chunk is genuinely done. Deleting on
+        # transcription/extraction failure makes the lost ad unrecoverable, so keep
+        # the audio on any failure path and let retention/reprocessing handle it.
+        delete_path: Path | None = None
         try:
             audio_path = Path(chunk.path)
             if not audio_path.is_file():
@@ -273,6 +307,7 @@ class ChunkConsumer:
             observe_asr_metrics(chunk.station, result.wall_time_sec, result.rtf)
 
             self._persist_success(chunk, result)
+            extraction_ok = True
             if (
                 known_ad_match is None
                 and self.extractor is not None
@@ -302,10 +337,14 @@ class ChunkConsumer:
                         extra={"chunk_id": chunk.id, "path": chunk.path},
                     )
                     self._mark_dropped(chunk.id, f"extraction/dedup failed: {exc}")
+                    extraction_ok = False
+            if extraction_ok:
+                # Chunk is fully processed (status='done'); safe to reclaim disk.
+                delete_path = audio_path
             return True
         finally:
-            if self.janitor is not None:
-                self.janitor.delete_after_processing(chunk.path)
+            if self.janitor is not None and delete_path is not None:
+                self.janitor.delete_after_processing(delete_path)
 
     @retry_on_busy()
     def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> None:
