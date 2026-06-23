@@ -1,0 +1,45 @@
+{
+  "collected_at": "2026-06-23T14:47:13Z",
+  "date": "2026-06-23",
+  "memory_health": "PASS",
+  "memory_growth": {
+    "decisions": 11,
+    "incidents": 3,
+    "stations": 0,
+    "runbooks": 5,
+    "memory_files": 39
+  },
+  "growth_7d": {
+    "decisions": 11,
+    "incidents": 3,
+    "station_updates": 0,
+    "vault_files": 40
+  },
+  "growth_30d": {
+    "vault_files": 40
+  },
+  "harness_statistics": {
+    "runs": 1,
+    "passes": 1,
+    "failures": 0,
+    "pass_rate_pct": 100.0,
+    "last_status": "pass",
+    "last_timestamp": "2026-06-23T14:41:12Z"
+  },
+  "headroom_statistics": {
+    "reachable": false,
+    "healthy": false,
+    "status": "warning",
+    "enabled_sessions": 0,
+    "recent_runs": 1
+  },
+  "agent_sessions": {
+    "codex": 3,
+    "cursor": 3,
+    "claude": 3,
+    "grok": 3,
+    "hermes": 4,
+    "source": "best_effort_markers"
+  },
+  "degraded": false
+}

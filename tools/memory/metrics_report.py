@@ -6,11 +6,12 @@ import json
 from pathlib import Path
 from typing import Any
 
+from datetime import UTC, datetime
+
 from tools.memory.metrics_collector import (
     METRICS_ROOT,
     collect_snapshot,
     ensure_metrics_dirs,
-    latest_metrics_age_days,
     write_daily_snapshot,
 )
 
@@ -131,6 +132,13 @@ def generate_report(*, write_daily: bool = True) -> dict[str, Any]:
     return payload
 
 
+def latest_metrics_age_days() -> float | None:
+    if not LATEST_JSON.exists():
+        return None
+    mtime = datetime.fromtimestamp(LATEST_JSON.stat().st_mtime, tz=UTC)
+    return (datetime.now(tz=UTC) - mtime).total_seconds() / 86400
+
+
 def metrics_freshness_status() -> dict[str, Any]:
     age = latest_metrics_age_days()
     if age is None:
@@ -142,6 +150,17 @@ def metrics_freshness_status() -> dict[str, Any]:
         "detail": f"age={age:.1f}d (threshold {FRESHNESS_DAYS}d)",
         "age_days": round(age, 2),
     }
+
+
+def main() -> int:
+    payload = generate_report(write_daily=True)
+    print(f"Metrics report: {LATEST_JSON}")
+    print(f"Memory health: {payload.get('memory_health')}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
 
 
 def format_observability_section(metrics: dict[str, Any]) -> list[str]:

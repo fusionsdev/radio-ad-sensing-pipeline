@@ -1,0 +1,24 @@
+{
+  "period": "30d",
+  "collected_at": "2026-06-23T14:47:13Z",
+  "snapshot_count": 1,
+  "memory": {
+    "total_decisions": 11,
+    "total_incidents": 3,
+    "total_station_changes": 0,
+    "total_runbooks": 5,
+    "total_memory_files": 39
+  },
+  "growth": {
+    "vault_growth_period": 40,
+    "new_decisions_period": 11,
+    "new_incidents_period": 3
+  },
+  "harness": {
+    "runs": 1,
+    "pass_rate_pct": 100.0
+  },
+  "headroom": {
+    "reachable_runs": 0
+  }
+}

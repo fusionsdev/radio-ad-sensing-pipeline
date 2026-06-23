@@ -1,0 +1,42 @@
+{
+  "date": "2026-06-23",
+  "collected_at": "2026-06-23T14:47:13Z",
+  "memory_health": "pass",
+  "memory": {
+    "total_decisions": 11,
+    "total_incidents": 3,
+    "total_station_changes": 0,
+    "total_runbooks": 5,
+    "total_memory_files": 39
+  },
+  "growth": {
+    "new_decisions_7d": 11,
+    "new_incidents_7d": 3,
+    "new_station_updates_7d": 0,
+    "vault_growth_7d": 40,
+    "vault_growth_30d": 40
+  },
+  "agents": {
+    "codex_sessions": 3,
+    "cursor_sessions": 3,
+    "claude_sessions": 3,
+    "grok_sessions": 3,
+    "hermes_sessions": 4,
+    "source": "best_effort_markers"
+  },
+  "harness": {
+    "harness_runs": 1,
+    "harness_passes": 1,
+    "harness_failures": 0,
+    "pass_rate_pct": 100.0,
+    "last_status": "pass",
+    "last_timestamp": "2026-06-23T14:41:12Z"
+  },
+  "headroom": {
+    "proxy_reachable": false,
+    "proxy_healthy": false,
+    "headroom_status": "warning",
+    "enabled_sessions": 0,
+    "recent_runs": 1
+  }
+}

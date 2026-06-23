@@ -281,7 +281,7 @@ def write_daily_snapshot(snapshot: MetricsSnapshot | None = None) -> Path:
     snap = snapshot or collect_snapshot()
     path = DAILY_DIR / f"{snap.date}-metrics.json"
     path.write_text(json.dumps(snap.to_dict(), indent=2) + "\n", encoding="utf-8")
-    _rollup_period( WEEKLY_DIR, 7)
+    _rollup_period(WEEKLY_DIR, 7)
     _rollup_period(MONTHLY_DIR, 30)
     return path
 
@@ -336,9 +336,3 @@ def _rollup_period(target_dir: Path, days: int) -> None:
     out.write_text(json.dumps(rollup, indent=2) + "\n", encoding="utf-8")
 
 
-def latest_metrics_age_days() -> float | None:
-    path = METRICS_ROOT / "Latest.json"
-    if not path.exists():
-        return None
-    mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=UTC)
-    return (datetime.now(tz=UTC) - mtime).total_seconds() / 86400

@@ -69,6 +69,19 @@ def test_memory_stations_returns_rows(memory_client: TestClient) -> None:
     assert isinstance(body["rows"], list)
 
 
+def test_memory_analytics_returns_200(memory_client: TestClient) -> None:
+    response = memory_client.get("/api/memory/analytics")
+    assert response.status_code == 200
+    body = response.json()
+    for key in (
+        "memory_growth",
+        "growth_7d",
+        "harness_statistics",
+        "headroom_statistics",
+    ):
+        assert key in body
+
+
 def test_memory_metrics_returns_200(memory_client: TestClient) -> None:
     response = memory_client.get("/api/memory/metrics")
     assert response.status_code == 200

@@ -11,6 +11,7 @@ from tools.memory.vault_reader import (
     fetch_harness_latest,
     fetch_incident_analytics,
     fetch_incidents,
+    fetch_memory_analytics,
     fetch_memory_health,
     fetch_memory_metrics,
     fetch_memory_status,
@@ -55,6 +56,10 @@ def create_memory_router() -> APIRouter:
     @router.get("/api/memory/metrics")
     def api_memory_metrics() -> JSONResponse:
         return JSONResponse(fetch_memory_metrics())
+
+    @router.get("/api/memory/analytics")
+    def api_memory_analytics() -> JSONResponse:
+        return JSONResponse(fetch_memory_analytics())
 
     @router.get("/api/memory/timeline")
     def api_memory_timeline(

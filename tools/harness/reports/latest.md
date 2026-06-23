@@ -1,6 +1,6 @@
 # Harness Report
 
-**Timestamp:** 2026-06-23T14:41:12Z
+**Timestamp:** 2026-06-23T14:47:13Z
 **Status:** pass
 **Overnight readiness:** ready
 
@@ -31,6 +31,12 @@
 **Agent Files:** PASS
 **Config:** PASS
 
+## Observability Status
+
+**Observability:** PASS
+**Metrics Freshness:** PASS
+**Analytics Report:** PASS
+
 ## Harness summary
 - **classifier**: pass
 - **dashboard**: pass
@@ -40,3 +46,4 @@
 - **decision**: pass
 - **memory**: pass
 - **headroom**: pass
+- **observability**: pass

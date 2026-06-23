@@ -20,6 +20,7 @@ from tools.memory.analytics import (
     is_milestone,
 )
 from tools.memory.memory_report import FRESHNESS_DAYS, LATEST_STATUS, build_memory_health
+from tools.memory.metrics_report import LATEST_JSON, generate_report
 
 DATE_PREFIX_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
 HISTORY_LINE_RE = re.compile(
@@ -331,3 +332,26 @@ def fetch_decision_categories() -> dict[str, Any]:
         title = _title_from_markdown(text, path.stem)
         items.append((title, text, str(path)))
     return aggregate_categories(items, classify_decision)
+
+
+def fetch_memory_analytics() -> dict[str, Any]:
+    """Return Memory Analytics payload for dashboard (Phase 1.95)."""
+    if LATEST_JSON.exists():
+        try:
+            return json.loads(LATEST_JSON.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            pass
+    try:
+        return generate_report(write_daily=True)
+    except OSError:
+        return {
+            "degraded": True,
+            "memory_health": "UNKNOWN",
+            "detail": "No metrics available yet",
+            "memory_growth": {},
+            "growth_7d": {},
+            "growth_30d": {},
+            "harness_statistics": {},
+            "headroom_statistics": {},
+            "agent_sessions": {},
+        }
