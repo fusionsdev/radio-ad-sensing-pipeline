@@ -35,10 +35,14 @@
             "id": "5c085e8150adba35",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Decisions/2026-06-23-patch-e-watchdog-fixed-harvest-safety-gate.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2026-06-23-patch-e-watchdog-fixed-harvest-safety-gate"
             }
           }
         ],
