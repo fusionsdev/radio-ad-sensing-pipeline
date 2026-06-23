@@ -184,6 +184,49 @@ def test_process_disable_command_stops_ingestor(tmp_path: Path) -> None:
     assert event["action_taken"] == "disable_station"
 
 
+def test_process_disable_command_updates_db_when_station_not_running(tmp_path: Path) -> None:
+    db_path = tmp_path / "test.db"
+    migrate(db_path)
+    conn = get_connection(db_path)
+    try:
+        conn.execute(
+            "INSERT INTO stations (name, url, enabled) VALUES ('klif-am-570', 'http://x', 1)"
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    enqueue_station_command(
+        db_path,
+        station_id="klif-am-570",
+        command=StationControlCommand.DISABLE,
+        reason="daily restart limit (5) reached",
+    )
+
+    handled = process_pending_commands(db_path, {})
+    assert handled == 1
+
+    conn = get_connection(db_path)
+    try:
+        command = conn.execute(
+            "SELECT status FROM station_control_commands ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+        station = conn.execute(
+            "SELECT enabled FROM stations WHERE name = 'klif-am-570'"
+        ).fetchone()
+        health = conn.execute(
+            "SELECT health_state, enabled, last_error FROM station_health WHERE station_id = 'klif-am-570'"
+        ).fetchone()
+    finally:
+        conn.close()
+
+    assert command["status"] == CommandStatus.DONE.value
+    assert station["enabled"] == 0
+    assert health["health_state"] == "failed"
+    assert health["enabled"] == 0
+    assert health["last_error"] == "daily restart limit (5) reached"
+
+
 def test_process_promote_command_starts_ingestor(tmp_path: Path) -> None:
     db_path = tmp_path / "test.db"
     migrate(db_path)

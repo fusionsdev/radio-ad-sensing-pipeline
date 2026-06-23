@@ -37,12 +37,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Runbooks/Hermes Pipeline Ops.md",
+                "file": "Incidents/2026-06-23-memory-api-404-docker.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Hermes Pipeline Ops"
+              "title": "2026-06-23-memory-api-404-docker"
             }
           }
         ],
@@ -119,7 +119,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Runbooks/Hermes Pipeline Ops.md",
+                "file": "Incidents/2026-06-23-memory-api-404-docker.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,7 +129,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Hermes Pipeline Ops"
+              "title": "Backlinks for 2026-06-23-memory-api-404-docker"
             }
           },
           {
@@ -222,19 +222,19 @@
       "smart-connections:Smart Connections: Open random connection": false
     }
   },
-  "active": "f33168a956b7a318",
+  "active": "5c085e8150adba35",
   "lastOpenFiles": [
-    "Decisions/2026-06-23-memory-os-phase-1-8.md",
-    "Incidents/2026-06-23-memory-api-404-docker.md",
-    "Runbooks/Memory Dashboard.md",
     "Decisions/2026-06-23-memory-dashboard-phase-1-75.md",
-    "Latest_Status.md",
-    "Decisions/Memory OS Phase 1.5.md",
+    "Runbooks/Smart Connections Setup.md",
+    "Runbooks/Pipeline Status.md",
     "Runbooks/Obsidian Git Setup.md",
     "Runbooks/Hermes Pipeline Ops.md",
-    "Runbooks/Pipeline Status.md",
+    "Incidents/2026-06-23-memory-api-404-docker.md",
+    "Decisions/2026-06-23-memory-os-phase-1-8.md",
+    "Decisions/Memory OS Phase 1.5.md",
+    "Runbooks/Memory Dashboard.md",
+    "Latest_Status.md",
     "Glossary.md",
-    "Runbooks/Smart Connections Setup.md",
     "Untitled.base",
     "Decisions/Memory OS Phase 1.md",
     "Untitled 1.base",

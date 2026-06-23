@@ -88,7 +88,7 @@ def _reset_daily_restart_count_if_needed(
         with transaction(conn):
             marker = _get_status_value(conn, _restart_day_key(station_id))
             row = _fetch_health_row(conn, station_id)
-            count = int(row["restart_count_today"]) if row is not None else 0
+            count = int(row["restart_count_today"] or 0) if row is not None else 0
             if marker != today:
                 count = 0
                 conn.execute(
@@ -289,7 +289,7 @@ def _increment_consecutive_failures(db_path: str | Path, station_id: str) -> int
     try:
         with transaction(conn):
             row = _fetch_health_row(conn, station_id)
-            current = int(row["consecutive_failures"]) if row is not None else 0
+            current = int(row["consecutive_failures"] or 0) if row is not None else 0
             new_value = current + 1
             conn.execute(
                 """

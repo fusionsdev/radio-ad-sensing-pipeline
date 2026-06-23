@@ -9,7 +9,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
 
-from ingestor.repository import fetch_station_config
+from ingestor.repository import fetch_station_config, mark_station_disabled, mark_station_recovering
 from ingestor.supervisor import StationIngestor, spawn_station_ingestor
 from shared.models import PipelineSettings
 from shared.station_control import (
@@ -105,6 +105,7 @@ def process_pending_commands(
                 threads=context.threads,
                 stop_event=context.stop_event,
             )
+            mark_station_recovering(db_path, station_id)
             mark_command_status(db_path, command_id, CommandStatus.DONE)
             log_recovery_event(
                 db_path,
@@ -118,6 +119,33 @@ def process_pending_commands(
             logger.info(
                 "station ingest started",
                 extra={"station": station_id, "command": command_name, "command_id": command_id},
+            )
+            handled += 1
+            continue
+
+        if command_name == StationControlCommand.DISABLE.value:
+            ingestor = ingestors.get(station_id)
+            if ingestor is not None:
+                ingestor.request_stop()
+                ingestors.pop(station_id, None)
+            mark_station_disabled(
+                db_path,
+                station_id,
+                reason=command.get("reason") or "station disabled",
+            )
+            mark_command_status(db_path, command_id, CommandStatus.DONE)
+            log_recovery_event(
+                db_path,
+                station_id=station_id,
+                event_type="station_stopped",
+                old_state=None,
+                new_state="failed",
+                reason=command.get("reason") or "station disabled",
+                action_taken="disable_station",
+            )
+            logger.info(
+                "station ingest stopped",
+                extra={"station": station_id, "command_id": command_id},
             )
             handled += 1
             continue
@@ -139,6 +167,7 @@ def process_pending_commands(
         if command_name == StationControlCommand.RESTART.value:
             ingestor.request_restart()
             ingestor._apply_restart()
+            mark_station_recovering(db_path, station_id)
             mark_command_status(db_path, command_id, CommandStatus.DONE)
             log_recovery_event(
                 db_path,
@@ -155,25 +184,6 @@ def process_pending_commands(
             )
             handled += 1
             continue
-
-        if command_name == StationControlCommand.DISABLE.value:
-            ingestor.request_stop()
-            ingestors.pop(station_id, None)
-            mark_command_status(db_path, command_id, CommandStatus.DONE)
-            log_recovery_event(
-                db_path,
-                station_id=station_id,
-                event_type="station_stopped",
-                old_state=None,
-                new_state="failed",
-                reason=command.get("reason") or "station disabled",
-                action_taken="disable_station",
-            )
-            logger.info(
-                "station ingest stopped",
-                extra={"station": station_id, "command_id": command_id},
-            )
-            handled += 1
     return handled
 
 

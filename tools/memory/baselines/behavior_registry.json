@@ -17,8 +17,8 @@
       ]
     },
     "dashboard_routing": {
-      "fingerprint": "56d9cb8b3079a647da35ccd9f875a14926bf9139840628e3dbe1988f6e5ea830",
-      "recorded_at": "2026-06-23T01:04:33Z",
+      "fingerprint": "793840e440e230a5d91bc2f1e613b0adcfc947bc8a0f0fae3d3f9035ec8c4b7b",
+      "recorded_at": "2026-06-23T01:11:35Z",
       "files": [
         "dashboard/main.py",
         "dashboard/routes/radiosense.py",
@@ -30,5 +30,5 @@
       ]
     }
   },
-  "updated_at": "2026-06-23T01:04:42Z"
+  "updated_at": "2026-06-23T01:11:35Z"
 }

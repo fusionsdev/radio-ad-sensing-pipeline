@@ -56,6 +56,69 @@ def is_station_enabled(db_path: str | Path, station_name: str) -> bool:
 
 
 @retry_on_busy()
+def mark_station_recovering(
+    db_path: str | Path,
+    station_name: str,
+) -> None:
+    """Mark a runtime-started station as recovering until it produces a valid chunk."""
+    now_iso = datetime.now(tz=UTC).isoformat()
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute(
+                """
+                INSERT INTO station_health (
+                    station_id, health_state, enabled, consecutive_failures,
+                    cool_down_until, last_error, updated_at
+                ) VALUES (?, 'recovering', 1, 0, NULL, NULL, ?)
+                ON CONFLICT(station_id) DO UPDATE SET
+                    health_state = 'recovering',
+                    enabled = 1,
+                    consecutive_failures = 0,
+                    cool_down_until = NULL,
+                    last_error = NULL,
+                    updated_at = excluded.updated_at
+                """,
+                (station_name, now_iso),
+            )
+    finally:
+        conn.close()
+
+
+@retry_on_busy()
+def mark_station_disabled(
+    db_path: str | Path,
+    station_name: str,
+    *,
+    reason: str,
+) -> None:
+    """Persist a real station disable so runtime state and DB state do not diverge."""
+    now_iso = datetime.now(tz=UTC).isoformat()
+    conn = get_connection(db_path)
+    try:
+        with transaction(conn):
+            conn.execute("UPDATE stations SET enabled = 0 WHERE name = ?", (station_name,))
+            conn.execute(
+                """
+                INSERT INTO station_health (
+                    station_id, health_state, enabled, last_failure_at,
+                    disabled_at, last_error, updated_at
+                ) VALUES (?, 'failed', 0, ?, ?, ?, ?)
+                ON CONFLICT(station_id) DO UPDATE SET
+                    health_state = 'failed',
+                    enabled = 0,
+                    last_failure_at = excluded.last_failure_at,
+                    disabled_at = excluded.disabled_at,
+                    last_error = excluded.last_error,
+                    updated_at = excluded.updated_at
+                """,
+                (station_name, now_iso, now_iso, reason, now_iso),
+            )
+    finally:
+        conn.close()
+
+
+@retry_on_busy()
 def upsert_station(
     db_path: str | Path,
     station: StationConfig,
@@ -173,6 +236,7 @@ def upsert_station_ingest_health(
     backoff_until_iso = _iso(backoff_until)
     consecutive_failures = consecutive_empty_chunks + consecutive_stream_down
     enabled_value = station.enabled if enabled is None else enabled
+    last_error = None if status == "healthy" else last_ffmpeg_error_sample
     health_payload = {
         "status": status,
         "last_success_at": last_success_at,
@@ -192,8 +256,8 @@ def upsert_station_ingest_health(
                 INSERT INTO station_health (
                     station_id, health_state, enabled, last_chunk_at,
                     last_success_at, last_failure_at, consecutive_failures,
-                    cool_down_until, last_error, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    restart_count_today, cool_down_until, last_error, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(station_id) DO UPDATE SET
                     health_state = excluded.health_state,
                     enabled = excluded.enabled,
@@ -207,8 +271,16 @@ def upsert_station_ingest_health(
                         station_health.last_failure_at
                     ),
                     consecutive_failures = excluded.consecutive_failures,
+                    restart_count_today = CASE
+                        WHEN excluded.health_state = 'healthy' THEN 0
+                        ELSE station_health.restart_count_today
+                    END,
                     cool_down_until = excluded.cool_down_until,
                     last_error = excluded.last_error,
+                    disabled_at = CASE
+                        WHEN excluded.health_state = 'healthy' THEN NULL
+                        ELSE station_health.disabled_at
+                    END,
                     updated_at = excluded.updated_at
                 """,
                 (
@@ -219,8 +291,9 @@ def upsert_station_ingest_health(
                     last_success_iso,
                     last_failure_iso,
                     consecutive_failures,
+                    0,
                     backoff_until_iso,
-                    last_ffmpeg_error_sample,
+                    last_error,
                     updated_at,
                 ),
             )
