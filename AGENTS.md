@@ -109,3 +109,14 @@ Full command list: `README.md` § Codebase map. Plugin paths: `final-install-lis
 | พูดตรงๆ | `วันนี้ pipeline ok ไหม` |
 | กด `/` เลือก | `/status`, `/cfpb`, `/help`, `/handoff` → `.cursor/commands/` |
 | ก๊อปวาง | `plan/cursor-copy-paste.md` |
+
+## Cursor Cloud specific instructions
+
+The cloud VM is **Linux + CPU-only** (no NVIDIA GPU). The startup update script creates `.venv` and runs `pip install -e ".[dev,dashboard,worker]"`. `ffmpeg` is preinstalled.
+
+- **Use the venv directly:** `.venv/bin/python ...` / `.venv/bin/pytest`. The README's `.venv\Scripts\activate` path is Windows-only; on Linux it's `.venv/bin/activate`.
+- **DB first:** dashboard/services read SQLite at `data/pipeline.db` (gitignored). Create/upgrade it with `python -c "from shared.db import migrate; migrate('data/pipeline.db')"` before running anything that reads data.
+- **Dashboard (the runnable service here):** `.venv/bin/python -m dashboard` → http://127.0.0.1:8080 (also exposes `/metrics` on :9104). It binds to `127.0.0.1` by default; set `DASHBOARD_HOST=0.0.0.0` to reach it from outside the VM.
+- **`worker` and `ingestor` cannot run end-to-end here:** `worker` needs a GPU + a running Ollama (Qwen2.5-7B) + faster-whisper model download; `ingestor` needs `ffmpeg` plus reachable live stream URLs in `config/stations.yaml` (disabled by default). Exercise core worker logic (dedup, phone-norm, persistence) via `pytest` instead — it's all CPU-only.
+- **`alerter`** runs in safe dry-run mode without `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID`.
+- **Known pre-existing test failure on `main`:** `tests/test_config.py::test_load_loan_keywords_from_repo_config` fails because `config/loan_keywords*.yaml` no longer contains `business funding`/`tax debt relief` (keyword v2 drift). This is unrelated to environment setup; **171 other tests pass**.
