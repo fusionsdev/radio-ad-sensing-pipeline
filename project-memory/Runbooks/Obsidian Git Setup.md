@@ -17,7 +17,7 @@ Vault: `project-memory/` inside `radio-ad-sensing-pipeline` git repo.
    - **Custom Git directory path:** *(empty — default `.git`)*
    - **Git executable path:** `C:\Program Files\Git\cmd\git.exe` (if “git not found”)
 5. **Restart Obsidian** after changing git path settings
-5. Command palette → `Obsidian Git: Commit-and-sync` (test once)
+6. Command palette → `Obsidian Git: Commit-and-sync` (test once)
 
 ## Auto backup (preconfigured)
 
