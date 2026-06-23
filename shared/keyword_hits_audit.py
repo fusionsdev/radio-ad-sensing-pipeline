@@ -129,15 +129,15 @@ def _audit_flags(
     if lowered in excluded_phrases:
         flags.append("taxonomy_excluded")
 
+    if lowered in target_phrases and not flags:
+        return ()
+
     if vertical and vertical != "consumer_personal_loan":
         flags.append(f"legacy_vertical:{vertical}")
 
     if lowered not in target_phrases and "legacy_polluted_keyword" not in flags:
         if not flags:
             flags.append("non_target_keyword")
-
-    if lowered in target_phrases and not flags:
-        return ()
 
     if lowered in target_phrases and flags:
         # Target phrase stored from polluted transcript context — still flag.

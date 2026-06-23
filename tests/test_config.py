@@ -31,7 +31,7 @@ def test_load_settings_from_repo_config() -> None:
     assert settings.retention_hours == 48
     assert settings.dedup_window_days == 7
     assert settings.asr_model == "medium.en"
-    assert settings.asr_compute_type == "int8_float16"
+    assert settings.asr_compute_type == "float16"
     assert settings.dashboard_host == "127.0.0.1"
     assert settings.dashboard_port == 8080
     assert settings.chunks_dir == "data/chunks"

@@ -99,6 +99,8 @@ verticals:
         confidence: 0.65
       - phrase: merchant cash advance
         confidence: 0.80
+      - phrase: cash advance
+        confidence: 0.65
       - phrase: reverse mortgage
         confidence: 0.85
       - phrase: personal loan
