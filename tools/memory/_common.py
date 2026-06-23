@@ -34,6 +34,7 @@ BEHAVIOR_COMPONENTS: dict[str, list[str]] = {
         "dashboard/routes/system.py",
         "dashboard/routes/hermes.py",
         "dashboard/routes/novelty.py",
+        "dashboard/routes/memory.py",
     ],
 }
 

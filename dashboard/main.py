@@ -385,10 +385,12 @@ def create_app(db_path: Path | None = None) -> FastAPI:
 
     from dashboard.routes.harvest import create_harvest_router
     from dashboard.routes.hermes import create_hermes_router
+    from dashboard.routes.memory import create_memory_router
     from dashboard.routes.novelty import create_novelty_router
     from dashboard.routes.radiosense import create_radiosense_router
     from dashboard.routes.system import create_system_router
 
+    app.include_router(create_memory_router())
     app.include_router(create_radiosense_router(resolved_db))
     app.include_router(
         create_harvest_router(

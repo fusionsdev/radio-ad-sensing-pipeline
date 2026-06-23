@@ -22,6 +22,8 @@ COPY shared/ ./shared/
 COPY alerter/ ./alerter/
 COPY worker/ ./worker/
 COPY dashboard/ ./dashboard/
+COPY tools/ ./tools/
+COPY project-memory/ ./project-memory/
 COPY config/ ./config/
 
 # FastAPI + uvicorn + jinja2 from the dashboard extras

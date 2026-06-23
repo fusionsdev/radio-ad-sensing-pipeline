@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T00:29:02Z",
+  "timestamp": "2026-06-23T00:53:20Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -32,6 +32,21 @@
           },
           {
             "route": "/api/harvest/status",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/health",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/status",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "route": "/api/memory/harness/latest",
             "status": 200,
             "ok": true
           }
@@ -103,7 +118,7 @@
             "passed": true,
             "broken": []
           },
-          "vault_markdown_count": 14,
+          "vault_markdown_count": 15,
           "incidents_count": 0
         },
         "subchecks": {
@@ -147,7 +162,7 @@
       "passed": true,
       "broken": []
     },
-    "vault_markdown_count": 14,
+    "vault_markdown_count": 15,
     "incidents_count": 0
   },
   "failed_checks": [],

@@ -12,6 +12,7 @@
 
 - Phase 1: Obsidian vault + harness + MCP hooks — shipped
 - Phase 1.5: decision/incident/station loggers + memory harness — shipped
+- Phase 1.75: Memory API + radiosense-aistudio `/memory` tab — shipped
 - Phase 2: zvec semantic index — deferred (`tools/memory/zvec_hooks.py` hooks only)
 
 ## Harness

@@ -14,6 +14,9 @@ PROBES = [
     ("/api/stations?limit=100", 200),
     ("/api/detections?limit=50", 200),
     ("/api/harvest/status", 200),
+    ("/api/memory/health", 200),
+    ("/api/memory/status", 200),
+    ("/api/memory/harness/latest", 200),
 ]
 
 

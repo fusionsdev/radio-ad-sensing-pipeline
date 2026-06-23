@@ -198,6 +198,9 @@ services:
     volumes:
       - ./data:/app/data
       - ./config:/app/config:ro
+      # Live Memory OS vault + parsers (read-only; API is visibility-only)
+      - ./project-memory:/app/project-memory:ro
+      - ./tools:/app/tools:ro
     expose:
       - "9104"
     environment:
