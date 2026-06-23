@@ -161,13 +161,15 @@ def create_radiosense_router(db_path: Path) -> APIRouter:
         return JSONResponse(metrics_api.fetch_grafana_links())
 
     @router.get("/api/live/events")
-    async def api_live_events(request: Request) -> StreamingResponse:
+    async def api_live_events(request: Request, once: bool = False) -> StreamingResponse:
         async def event_stream():
             while True:
                 if await request.is_disconnected():
                     break
                 payload = radiosense_api.build_live_event(db_path)
                 yield f"data: {json.dumps(payload, default=str)}\n\n"
+                if once:
+                    break
                 await asyncio.sleep(3)
 
         return StreamingResponse(

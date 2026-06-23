@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T07:36:35Z",
+  "timestamp": "2026-06-23T14:31:55Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -127,8 +127,8 @@
           "freshness": {
             "passed": true,
             "status": "pass",
-            "detail": "age=0.1d (threshold 7d)",
-            "age_days": 0.06
+            "detail": "age=0.3d (threshold 7d)",
+            "age_days": 0.35
           },
           "empty_sections": {
             "passed": true,
@@ -171,8 +171,8 @@
     "freshness": {
       "passed": true,
       "status": "pass",
-      "detail": "age=0.1d (threshold 7d)",
-      "age_days": 0.06
+      "detail": "age=0.3d (threshold 7d)",
+      "age_days": 0.35
     },
     "empty_sections": {
       "passed": true,

@@ -9,16 +9,19 @@ Local 24/7 radio ad-sensing pipeline
 - [DONE] #legacy_628c Legacy issue: fix(ingestor): skip reconnect_at_eof on HLS streams -> fix(ingestor): skip reconnect_at_eof on HLS streams (fixed)
 - [DONE] #legacy_5e81 Legacy issue: fix(keywords): expand loan coverage, word-boundary match, observability -> fix(keywords): expand loan coverage, word-boundary match, observability (fixed)
 - [DONE] #legacy_0859 Legacy issue: chore(wip): checkpoint working tree before code-review fixes -> chore(wip): checkpoint working tree before code-review fixes (fixed)
-- [OPEN] #0007 harvest dashboard test expects href=/radio-harvest self-link that current control panel no longer renders [tests/test_harvest_dashboard.py:255] (open)
-- [OPEN] #0006 consumer loan gate does not persist cash advance keyword when transcript contains loan intent [tests/test_consumer_personal_loan_gating.py:123] (open)
-- [OPEN] #0005 test_config expects asr_compute_type int8_float16 but repository settings load float16 [tests/test_config.py:34] (open)
-- [OPEN] #0004 audit_keyword_hits_verticals flags personal loan as polluted and deletes two rows instead of one [tests/test_audit_keyword_hits_verticals.py:58] (open)
-- [OPEN] #0003 extract_slug_name parses Justia numeric path segment instead of mark slug filename [scripts/discover_justia_names_via_apify.py:39] (open)
-- [OPEN] #0002 extract_serial_from_url fails to parse Justia trademark URLs with serial in filename [scripts/discover_justia_names_via_apify.py:28] (open)
-- [OPEN] #0001 test_apify_name_collector.py::test_load_queries expects 150 Apify queries but current fixture loads 1200 [tests/test_apify_name_collector.py:14] (open)
+- [DONE] #0009 USPTO verification tests fail on Justia filename serial parsing and case-sensitive dry-run assertion [tests/test_uspto_verification.py:29] -> USPTO verifier serial parser matches Justia filename serials and dry-run assertion is case-insensitive; tests pass [scripts/verify_apify_candidates_uspto.py] (fixed)
+- [DONE] #0008 test_live_events_sse hangs because TestClient waits on infinite /api/live/events stream teardown [tests/test_radiosense_api.py:67] -> live events SSE supports once=true for bounded test/probe response; API tests and full pytest pass [dashboard/routes/radiosense.py] (fixed)
+- [DONE] #0007 harvest dashboard test expects href=/radio-harvest self-link that current control panel no longer renders [tests/test_harvest_dashboard.py:255] -> harvest dashboard test now asserts current control-panel links; focused and full pytest pass [tests/test_harvest_dashboard.py] (fixed)
+- [DONE] #0006 consumer loan gate does not persist cash advance keyword when transcript contains loan intent [tests/test_consumer_personal_loan_gating.py:123] -> live scan config includes cash advance target phrase; gating/classifier/keyword tests and full pytest pass [config/vertical_keywords.yaml] (fixed)
+- [DONE] #0005 test_config expects asr_compute_type int8_float16 but repository settings load float16 [tests/test_config.py:34] -> config test now matches committed float16 ASR compute_type; focused and full pytest pass [tests/test_config.py] (fixed)
+- [DONE] #0004 audit_keyword_hits_verticals flags personal loan as polluted and deletes two rows instead of one [tests/test_audit_keyword_hits_verticals.py:58] -> keyword_hits audit now treats exact consumer-loan taxonomy targets as clean despite legacy loan vertical mapping; tests pass [shared/keyword_hits_audit.py] (fixed)
+- [DONE] #0003 extract_slug_name parses Justia numeric path segment instead of mark slug filename [scripts/discover_justia_names_via_apify.py:39] -> Justia collector slug parser now extracts final filename slug; focused and full pytest pass [scripts/discover_justia_names_via_apify.py] (fixed)
+- [DONE] #0002 extract_serial_from_url fails to parse Justia trademark URLs with serial in filename [scripts/discover_justia_names_via_apify.py:28] -> Justia collector serial parser now extracts filename serials; focused and full pytest pass [scripts/discover_justia_names_via_apify.py] (fixed)
+- [DONE] #0001 test_apify_name_collector.py::test_load_queries expects 150 Apify queries but current fixture loads 1200 [tests/test_apify_name_collector.py:14] -> test_load_queries now derives expected count from config; focused and full pytest pass [tests/test_apify_name_collector.py] (fixed)
 
 ## Decisions
-- No decisions logged yet.
+- Add /api/live/events?once=true as a bounded SSE probe while preserving infinite streaming as the default behavior [dashboard/routes/radiosense.py]
+- Live keyword scanning includes cash advance so consumer-loan cash-advance ads can persist after classifier intent gating; merchant/credit-card cash advance remain rejected by classifier exclusions [config/vertical_keywords.yaml]
 
 ## Notes
 - feat(keywords): v2 phrase dictionary, scorecard, and review inbox

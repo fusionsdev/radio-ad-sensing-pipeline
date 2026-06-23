@@ -33,7 +33,7 @@ def test_extract_serial_from_url():
 def test_query_uspto_tsdr_dry_run():
     data = query_uspto_tSDR("87236459", dry_run=True)
     assert data["word_mark"] == "LOAN COMMAND"
-    assert "credit and loan services" in data["goods_services"]
+    assert "credit and loan services" in data["goods_services"].lower()
 
 
 def test_is_loan_only():

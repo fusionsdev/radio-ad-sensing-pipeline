@@ -68,8 +68,8 @@ def test_export_download_rejects_traversal(seeded: Path) -> None:
 
 def test_live_events_sse(seeded: Path) -> None:
     client = TestClient(create_app(db_path=seeded))
-    with client.stream("GET", "/api/live/events") as response:
-        assert response.status_code == 200
-        chunk = next(response.iter_text())
-        assert chunk.startswith("data: ")
-        assert "health" in chunk
+    response = client.get("/api/live/events?once=true")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    assert response.text.startswith("data: ")
+    assert "health" in response.text

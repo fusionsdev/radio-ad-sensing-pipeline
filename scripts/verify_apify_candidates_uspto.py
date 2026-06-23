@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -33,10 +34,12 @@ def extract_serial_from_url(url: str) -> str | None:
     """Extract serial number from Justia URL if not in CSV."""
     if not url or "justia.com" not in url:
         return None
-    parts = url.split("/")
-    for part in parts:
-        if len(part) == 8 and part.isdigit():
-            return part
+    match = re.search(r"-(\d{7,8})(?:\.html)?(?:[?#]|$)", url)
+    if match:
+        return match.group(1)
+    match = re.search(r"/(\d{7,8})(?:[/?#]|$)", url)
+    if match:
+        return match.group(1)
     return None
 
 def query_uspto_tSDR(serial: str, dry_run: bool = False) -> dict:
