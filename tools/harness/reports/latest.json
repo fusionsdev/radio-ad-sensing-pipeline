@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T06:10:09Z",
+  "timestamp": "2026-06-23T07:36:35Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -127,8 +127,8 @@
           "freshness": {
             "passed": true,
             "status": "pass",
-            "detail": "age=0.0d (threshold 7d)",
-            "age_days": 0.0
+            "detail": "age=0.1d (threshold 7d)",
+            "age_days": 0.06
           },
           "empty_sections": {
             "passed": true,
@@ -138,7 +138,7 @@
             "passed": true,
             "broken": []
           },
-          "vault_markdown_count": 35,
+          "vault_markdown_count": 36,
           "incidents_count": 3
         },
         "subchecks": {
@@ -171,8 +171,8 @@
     "freshness": {
       "passed": true,
       "status": "pass",
-      "detail": "age=0.0d (threshold 7d)",
-      "age_days": 0.0
+      "detail": "age=0.1d (threshold 7d)",
+      "age_days": 0.06
     },
     "empty_sections": {
       "passed": true,
@@ -182,7 +182,7 @@
       "passed": true,
       "broken": []
     },
-    "vault_markdown_count": 35,
+    "vault_markdown_count": 36,
     "incidents_count": 3
   },
   "failed_checks": [],
