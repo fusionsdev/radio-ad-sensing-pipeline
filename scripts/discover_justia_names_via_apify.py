@@ -34,9 +34,12 @@ def normalize_name(name: str) -> str:
 
 
 def extract_serial_from_url(url: str) -> str:
-    match = re.search(r'/(\d{3,}/\d{5,}|\d{7,8})', url or '')
+    match = re.search(r'-(\d{7,8})(?:\.html)?(?:[?#]|$)', url or '')
     if match:
-        return match.group(1).replace('/', '')
+        return match.group(1)
+    match = re.search(r'/(\d{7,8})(?:[/?#]|$)', url or '')
+    if match:
+        return match.group(1)
     return ""
 
 
