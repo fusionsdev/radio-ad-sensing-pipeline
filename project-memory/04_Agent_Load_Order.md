@@ -31,12 +31,14 @@ PLAN.md                       ← when changing architecture (do not re-litigate
 | Classifier / verticals | `config/consumer_personal_loan_taxonomy.yaml` |
 | Continuing WP | Latest `plan/handoff-*.md` |
 
-## MCP access (optional enrichment)
+## Obsidian enrichment (optional)
 
-When Obsidian MCP is configured (`config/obsidian-mcp.json`):
+| Tool | Use |
+|---|---|
+| **Smart Connections** | Semantic lookup + related notes while editing memory |
+| **obsidian-mcp-server** | Agent search/read vault via MCP (`config/obsidian-mcp.json`) |
 
-- Search vault for runbooks, incidents, decisions
-- Prefer vault runbooks over re-deriving ops steps from code
+Prefer vault runbooks over re-deriving ops steps from code.
 
 Vault path: `project-memory/` (this directory).
 

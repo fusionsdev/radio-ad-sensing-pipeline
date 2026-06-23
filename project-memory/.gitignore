@@ -1,0 +1,11 @@
+# Smart Connections / Smart Environment local index (regenerated on device)
+.smart-env/
+.smart_connections/
+
+# Obsidian workspace cache (optional — safe to ignore)
+.trash/
+
+
+
+# Ignore Smart Environment folder
+.smart-env
