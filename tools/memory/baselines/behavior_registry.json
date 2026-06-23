@@ -1,0 +1,33 @@
+{
+  "components": {
+    "classifier": {
+      "fingerprint": "fb3784dcd72bd4337b879517bcb83591672775c4f3aa8ecb83b1fe14f14089ba",
+      "recorded_at": "2026-06-23T00:28:18Z",
+      "files": [
+        "scripts/loan_classifier.py"
+      ]
+    },
+    "station_policy": {
+      "fingerprint": "0229a1f03175a185ca54bc447bd232f05e327704c11e204fac876370c600db7f",
+      "recorded_at": "2026-06-23T00:28:18Z",
+      "files": [
+        "scripts/station_rotation.py",
+        "config/stations.yaml",
+        "tools/harness/cases/station_rotation_cases.yaml"
+      ]
+    },
+    "dashboard_routing": {
+      "fingerprint": "be0757eb7d2fa039ddf9a4e13c391927b53c46d4bd84890a95cfb7964ac0d728",
+      "recorded_at": "2026-06-23T00:28:18Z",
+      "files": [
+        "dashboard/main.py",
+        "dashboard/routes/radiosense.py",
+        "dashboard/routes/harvest.py",
+        "dashboard/routes/system.py",
+        "dashboard/routes/hermes.py",
+        "dashboard/routes/novelty.py"
+      ]
+    }
+  },
+  "updated_at": "2026-06-23T00:29:33Z"
+}

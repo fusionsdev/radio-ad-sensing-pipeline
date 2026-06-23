@@ -3,5 +3,5 @@ pid: 67308
 cwd: "H:\DEV\projects\radio-ad-sensing-pipeline"
 command: "cd \"H:\\DEV\\projects\\radio-ad-sensing-pipeline\" && .venv\\Scripts\\pytest tests/test_harness.py tests/test_radiosense_api.py tests/test_harvest_dashboard.py::test_json_status -q --tb=line 2>&1 | Select-Object -Last 15"
 started_at: 2026-06-22T23:35:45.885Z
-running_for_ms: 2394989  
+running_for_ms: 3624994  
 ---

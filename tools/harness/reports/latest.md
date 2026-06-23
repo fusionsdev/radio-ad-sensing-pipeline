@@ -1,8 +1,19 @@
 # Harness Report
 
-**Timestamp:** 2026-06-22T23:35:40Z
+**Timestamp:** 2026-06-23T00:29:02Z
 **Status:** pass
 **Overnight readiness:** ready
+
+## Memory Health
+
+**Memory Health:** PASS
+
+- **Core Files:** PASS
+- **Runbooks:** PASS
+- **Stations:** PASS
+- **Decisions:** PASS
+- **Freshness:** PASS
+- **Links:** PASS
 
 ## Harness summary
 - **classifier**: pass
@@ -10,3 +21,5 @@
 - **self_healing**: pass
 - **station**: pass
 - **hermes**: pass
+- **decision**: pass
+- **memory**: pass

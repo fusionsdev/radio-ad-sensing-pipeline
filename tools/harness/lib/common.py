@@ -67,11 +67,18 @@ def build_report(results: list[HarnessResult]) -> dict[str, Any]:
         for r in results
     )
     actions = [c.recommended_action for c in failed if c.recommended_action]
+
+    memory_result = next((r for r in results if r.harness == "memory"), None)
+    memory_health: dict[str, Any] = {}
+    if memory_result and "memory_health" in memory_result.metrics:
+        memory_health = memory_result.metrics["memory_health"]
+
     return {
         "timestamp": utc_now_iso(),
         "status": "pass" if all_passed else "fail",
         "overnight_readiness": "ready" if overnight_ready else "not_ready",
         "harnesses": {r.harness: {"passed": r.passed, "metrics": r.metrics} for r in results},
+        "memory_health": memory_health,
         "failed_checks": [
             {"harness": r.harness, "check": c.name, "detail": c.detail}
             for r in results
@@ -104,6 +111,11 @@ def write_reports(report: dict[str, Any]) -> None:
         for action in report["recommended_actions"]:
             lines.append(f"- {action}")
         lines.append("")
+    memory_health = report.get("memory_health") or {}
+    if memory_health:
+        from tools.memory.memory_report import format_memory_health_section  # noqa: PLC0415
+
+        lines.extend(format_memory_health_section(memory_health))
     lines.append("## Harness summary")
     for name, info in report["harnesses"].items():
         status = "pass" if info["passed"] else "fail"

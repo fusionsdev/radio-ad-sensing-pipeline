@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-22T23:35:40Z",
+  "timestamp": "2026-06-23T00:29:02Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -63,7 +63,92 @@
       "metrics": {
         "memory_files": 5
       }
+    },
+    "decision": {
+      "passed": true,
+      "metrics": {
+        "changed_components": [],
+        "change_count": 0
+      }
+    },
+    "memory": {
+      "passed": true,
+      "metrics": {
+        "memory_health": {
+          "passed": true,
+          "status": "pass",
+          "subchecks": {
+            "core_files": "pass",
+            "runbooks": "pass",
+            "stations": "pass",
+            "decisions": "pass",
+            "freshness": "pass",
+            "links": "pass"
+          },
+          "core_files": {
+            "passed": true,
+            "missing": []
+          },
+          "freshness": {
+            "passed": true,
+            "status": "pass",
+            "detail": "age=0.0d (threshold 7d)",
+            "age_days": 0.0
+          },
+          "empty_sections": {
+            "passed": true,
+            "issues": []
+          },
+          "broken_links": {
+            "passed": true,
+            "broken": []
+          },
+          "vault_markdown_count": 14,
+          "incidents_count": 0
+        },
+        "subchecks": {
+          "core_files": "pass",
+          "runbooks": "pass",
+          "stations": "pass",
+          "decisions": "pass",
+          "freshness": "pass",
+          "links": "pass"
+        },
+        "freshness_warning": false
+      }
     }
+  },
+  "memory_health": {
+    "passed": true,
+    "status": "pass",
+    "subchecks": {
+      "core_files": "pass",
+      "runbooks": "pass",
+      "stations": "pass",
+      "decisions": "pass",
+      "freshness": "pass",
+      "links": "pass"
+    },
+    "core_files": {
+      "passed": true,
+      "missing": []
+    },
+    "freshness": {
+      "passed": true,
+      "status": "pass",
+      "detail": "age=0.0d (threshold 7d)",
+      "age_days": 0.0
+    },
+    "empty_sections": {
+      "passed": true,
+      "issues": []
+    },
+    "broken_links": {
+      "passed": true,
+      "broken": []
+    },
+    "vault_markdown_count": 14,
+    "incidents_count": 0
   },
   "failed_checks": [],
   "recommended_actions": []

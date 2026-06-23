@@ -26,6 +26,20 @@ Optional self-heal (explicit restart only): `python tools/harness/run_all.py --e
 
 **Completion report** must include: files changed, tests run, harness result (`tools/harness/reports/latest.md`), remaining risks, memory files updated.
 
+### Required memory updates
+
+If work changes **behavior**, **policy**, **station state**, **classifier logic**, or **architecture**, a corresponding project-memory file **must** be created or updated before the task is complete:
+
+| Change type | Action |
+|---|---|
+| Behavioral / policy | `python tools/memory/decision_logger.py "title" --context "…" --decision "…" --related-files <paths>` |
+| Operational failure | `python tools/memory/incident_logger.py "title" --symptoms "…"` |
+| Station lifecycle | `python tools/memory/station_logger.py CALLSIGN keep\|watch\|pause\|rotate_out --reasoning "…"` |
+| Architecture / ops policy | Edit `01_Current_Architecture.md` or `02_Operating_Policy.md` |
+| Session status | Update `project-memory/Latest_Status.md` |
+
+Undocumented classifier, station-policy, or dashboard-routing changes **fail** `decision_harness`. Work is incomplete until harness passes.
+
 **AI layer:** Hermes local + Ollama on-box — do not assume Gemini / Claude API / OpenAI unless explicitly configured.
 
 ## Current state (2026-06-10)

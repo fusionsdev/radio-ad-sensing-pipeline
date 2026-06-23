@@ -222,8 +222,10 @@
       "smart-connections:Smart Connections: Open random connection": false
     }
   },
-  "active": "5c085e8150adba35",
+  "active": "f33168a956b7a318",
   "lastOpenFiles": [
+    "Latest_Status.md",
+    "Decisions/Memory OS Phase 1.5.md",
     "Runbooks/Obsidian Git Setup.md",
     "Runbooks/Hermes Pipeline Ops.md",
     "Runbooks/Pipeline Status.md",
