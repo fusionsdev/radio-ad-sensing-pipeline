@@ -56,7 +56,7 @@ def extract_mark_from_title(title: str) -> str:
 def extract_slug_name(url: str) -> str:
     if not url:
         return ""
-    match = re.search(r'/([a-zA-Z0-9-]+?)-?\d', url)
+    match = re.search(r'/([^/]+?)(?:-\d{7,8})?\.html(?:[?#]|$)', url)
     if match:
         slug = match.group(1).replace('-', ' ')
         return slug.upper().strip()

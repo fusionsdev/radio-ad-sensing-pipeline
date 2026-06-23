@@ -9,6 +9,7 @@ Local 24/7 radio ad-sensing pipeline
 - [DONE] #legacy_628c Legacy issue: fix(ingestor): skip reconnect_at_eof on HLS streams -> fix(ingestor): skip reconnect_at_eof on HLS streams (fixed)
 - [DONE] #legacy_5e81 Legacy issue: fix(keywords): expand loan coverage, word-boundary match, observability -> fix(keywords): expand loan coverage, word-boundary match, observability (fixed)
 - [DONE] #legacy_0859 Legacy issue: chore(wip): checkpoint working tree before code-review fixes -> chore(wip): checkpoint working tree before code-review fixes (fixed)
+- [OPEN] #0003 extract_slug_name parses Justia numeric path segment instead of mark slug filename [scripts/discover_justia_names_via_apify.py:39] (open)
 - [OPEN] #0002 extract_serial_from_url fails to parse Justia trademark URLs with serial in filename [scripts/discover_justia_names_via_apify.py:28] (open)
 - [OPEN] #0001 test_apify_name_collector.py::test_load_queries expects 150 Apify queries but current fixture loads 1200 [tests/test_apify_name_collector.py:14] (open)
 
