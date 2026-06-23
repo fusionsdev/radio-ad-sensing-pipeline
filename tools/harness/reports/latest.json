@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-23T14:31:55Z",
+  "timestamp": "2026-06-23T14:41:12Z",
   "status": "pass",
   "overnight_readiness": "ready",
   "harnesses": {
@@ -127,8 +127,8 @@
           "freshness": {
             "passed": true,
             "status": "pass",
-            "detail": "age=0.3d (threshold 7d)",
-            "age_days": 0.35
+            "detail": "age=0.0d (threshold 7d)",
+            "age_days": 0.0
           },
           "empty_sections": {
             "passed": true,
@@ -138,7 +138,7 @@
             "passed": true,
             "broken": []
           },
-          "vault_markdown_count": 36,
+          "vault_markdown_count": 38,
           "incidents_count": 3
         },
         "subchecks": {
@@ -150,6 +150,18 @@
           "links": "pass"
         },
         "freshness_warning": false
+      }
+    },
+    "headroom": {
+      "passed": true,
+      "metrics": {
+        "headroom_status": "warning",
+        "proxy_reachable": false,
+        "proxy_healthy": false,
+        "config_ok": true,
+        "agent_files_ok": true,
+        "proxy_url": "http://127.0.0.1:8787",
+        "load_order_file": "project-memory\\04_Agent_Load_Order.md"
       }
     }
   },
@@ -171,8 +183,8 @@
     "freshness": {
       "passed": true,
       "status": "pass",
-      "detail": "age=0.3d (threshold 7d)",
-      "age_days": 0.35
+      "detail": "age=0.0d (threshold 7d)",
+      "age_days": 0.0
     },
     "empty_sections": {
       "passed": true,
@@ -182,9 +194,32 @@
       "passed": true,
       "broken": []
     },
-    "vault_markdown_count": 36,
+    "vault_markdown_count": 38,
     "incidents_count": 3
   },
-  "failed_checks": [],
-  "recommended_actions": []
+  "headroom_status": {
+    "headroom_status": "warning",
+    "proxy_reachable": false,
+    "proxy_healthy": false,
+    "config_ok": true,
+    "agent_files_ok": true,
+    "proxy_url": "http://127.0.0.1:8787",
+    "load_order_file": "project-memory\\04_Agent_Load_Order.md"
+  },
+  "failed_checks": [
+    {
+      "harness": "headroom",
+      "check": "proxy_port",
+      "detail": "127.0.0.1:8787 not reachable (optional)"
+    },
+    {
+      "harness": "headroom",
+      "check": "proxy_health",
+      "detail": "port unreachable"
+    }
+  ],
+  "recommended_actions": [
+    "Start local proxy: headroom proxy --memory --code-graph",
+    "Ensure headroom proxy responds on GET /health"
+  ]
 }

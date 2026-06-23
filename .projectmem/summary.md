@@ -24,7 +24,6 @@ Local 24/7 radio ad-sensing pipeline
 - Live keyword scanning includes cash advance so consumer-loan cash-advance ads can persist after classifier intent gating; merchant/credit-card cash advance remain rejected by classifier exclusions [config/vertical_keywords.yaml]
 
 ## Notes
-- feat(keywords): v2 phrase dictionary, scorecard, and review inbox
 - chore(docs): move handoff plans to .devin/plans
 - vault backup: 2026-06-23 07:17:43
 - vault backup: 2026-06-23 07:18:52
@@ -34,6 +33,7 @@ Local 24/7 radio ad-sensing pipeline
 - vault backup: 2026-06-23 07:58:20
 - vault backup: 2026-06-23 08:08:22
 - vault backup: 2026-06-23 08:18:24
+- Oracle review review-patch-e-1-follow: station expansion should remain blocked after 0/50 true-loan audit; cash advance persistence is conditionally safe; follow-up needed to clean/filter legacy vertical pollution in candidate/audit exports [plan/patch-e1-test-quality-audit-20260623.md]
 
 ## Key files
 - `.agents/skills/caveman/SKILL.md`

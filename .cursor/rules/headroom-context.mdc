@@ -1,0 +1,30 @@
+---
+description: Headroom context compression for RadioSense Memory OS
+alwaysApply: true
+---
+
+# Headroom Context (RadioSense)
+
+**Canonical contract:** `AGENTS.md` — always load first.
+
+## Load order
+
+1. `AGENTS.md`
+2. `project-memory/04_Agent_Load_Order.md` and mandatory vault files it lists
+3. Task-specific memory only when relevant
+
+## Headroom
+
+When Headroom proxy is available (`http://127.0.0.1:8787`):
+
+- Prefer compressed context from Headroom
+- Avoid loading unnecessary vault files or large plan trees
+- Do not skip `AGENTS.md` or forbidden-assumptions policy
+
+When proxy is offline: use normal Memory OS load order (Obsidian MCP optional).
+
+## Safety
+
+Do not use Headroom to bypass classifier, station, ingestor, or DB guardrails in `AGENTS.md`.
+
+Config: `config/headroom/`

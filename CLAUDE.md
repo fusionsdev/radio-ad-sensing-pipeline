@@ -12,6 +12,16 @@ Also read `.projectmem/AI_INSTRUCTIONS.md` if present (projectmem event memory +
 4. `LESSONS_LEARNED.md`
 5. `.projectmem/AI_INSTRUCTIONS.md` (machine event memory — do not replace vault docs)
 
+## Headroom (context compression)
+
+When Headroom proxy is available (`http://127.0.0.1:8787`):
+
+- Prefer compressed context from Headroom
+- Avoid loading unnecessary vault files
+- Do not skip `AGENTS.md` or forbidden-assumptions policy
+
+When proxy is offline: use normal Memory OS load order. Config: `config/headroom/`
+
 ## Before making changes
 
 1. Read `AGENTS.md`.

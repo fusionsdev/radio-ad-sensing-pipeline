@@ -9,6 +9,7 @@
 - Patch E implemented/tested locally: watchdog fixed-harvest mode blocks auto-promotion, preserves pool safety locks on sync, and records `manual_attention` instead of disabling fixed-harvest stations at recovery limits
 - Patch E controlled watchdog audit stopped at T+15: no promote/disable drift, but watchdog still queued `restart_station` for stale `klif-am-570`
 - Patch E.1 watchdog-only audit passed T+30: no `promote_station`, no `disable_station`, no `restart_station`, no station drift, pool locks remained `0`; watchdog is running healthy in observe-only fixed-harvest mode
+- Patch E.1 follow-up restored pytest to 465/465 and harness pass; KLIF/WBAP last-24h quality audit sampled 50 candidates with 0 true consumer personal loan ads, so KTRH/WSB expansion is deferred
 - Docker full stack on Win GPU host — `radio-dashboard` on `127.0.0.1:8081`
 
 ## Memory OS

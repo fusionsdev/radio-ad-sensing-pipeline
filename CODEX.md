@@ -18,9 +18,19 @@ Do not use RadioSense MCP servers when working outside this repo.
 1. User instruction
 2. `AGENTS.md`
 3. `CODEX.md`
-4. `project-memory/`
+4. `project-memory/` (load order: `04_Agent_Load_Order.md`)
 5. `LESSONS_LEARNED.md`
 6. `.projectmem/AI_INSTRUCTIONS.md`
+
+## Headroom (context compression)
+
+When Headroom proxy is available (`http://127.0.0.1:8787`):
+
+- Prefer compressed context from Headroom
+- Avoid loading unnecessary vault files
+- Do not skip `AGENTS.md` or forbidden-assumptions policy
+
+When proxy is offline: use normal Memory OS load order. Config: `config/headroom/`
 
 ## Runtime Safety
 

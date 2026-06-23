@@ -17,7 +17,9 @@ from tools.harness.runners import (  # noqa: E402
     classifier_harness,
     dashboard_harness,
     decision_harness,
+    headroom_harness,
     hermes_harness,
+    observability_harness,
     memory_harness,
     self_healing_harness,
     station_harness,
@@ -41,6 +43,8 @@ def main(argv: list[str] | None = None) -> int:
         hermes_harness.run(),
         decision_harness.run(),
         memory_harness.run(),
+        headroom_harness.run(),
+        observability_harness.run(),
     ]
 
     report = build_report(results)

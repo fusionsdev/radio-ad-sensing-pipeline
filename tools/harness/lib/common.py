@@ -73,12 +73,24 @@ def build_report(results: list[HarnessResult]) -> dict[str, Any]:
     if memory_result and "memory_health" in memory_result.metrics:
         memory_health = memory_result.metrics["memory_health"]
 
+    headroom_result = next((r for r in results if r.harness == "headroom"), None)
+    headroom_status: dict[str, Any] = {}
+    if headroom_result:
+        headroom_status = dict(headroom_result.metrics)
+
+    observability_result = next((r for r in results if r.harness == "observability"), None)
+    observability_status: dict[str, Any] = {}
+    if observability_result:
+        observability_status = dict(observability_result.metrics)
+
     return {
         "timestamp": utc_now_iso(),
         "status": "pass" if all_passed else "fail",
         "overnight_readiness": "ready" if overnight_ready else "not_ready",
         "harnesses": {r.harness: {"passed": r.passed, "metrics": r.metrics} for r in results},
         "memory_health": memory_health,
+        "headroom_status": headroom_status,
+        "observability_status": observability_status,
         "failed_checks": [
             {"harness": r.harness, "check": c.name, "detail": c.detail}
             for r in results
@@ -116,6 +128,16 @@ def write_reports(report: dict[str, Any]) -> None:
         from tools.memory.memory_report import format_memory_health_section  # noqa: PLC0415
 
         lines.extend(format_memory_health_section(memory_health))
+    headroom_status = report.get("headroom_status") or {}
+    if headroom_status:
+        from tools.harness.runners.headroom_harness import format_headroom_status_section  # noqa: PLC0415
+
+        lines.extend(format_headroom_status_section(headroom_status))
+    observability_status = report.get("observability_status") or {}
+    if observability_status:
+        from tools.memory.metrics_report import format_observability_section  # noqa: PLC0415
+
+        lines.extend(format_observability_section(observability_status))
     lines.append("## Harness summary")
     for name, info in report["harnesses"].items():
         status = "pass" if info["passed"] else "fail"
