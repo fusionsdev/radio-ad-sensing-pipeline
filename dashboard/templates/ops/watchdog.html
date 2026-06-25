@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Watchdog — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top:0;">ตัวเฝ้าระวังสถานี</h2>
+<p style="color: var(--muted); margin-top: 0;">
+  ตรวจสุขภาพสถานีและคิวแบบอ่านอย่างเดียวสำหรับ owner review
+  {% if not overview.watchdog_enabled %}(watchdog loop disabled in config){% endif %}
+</p>
+{% if restarted_station %}
+<p class="badge ok" style="margin: 0.75rem 0;">ส่งคำสั่งรีสตาร์ตแล้วสำหรับ {{ restarted_station }}</p>
+{% endif %}
+
+<div class="grid">
+  <div class="card">
+    <h2>Target Active</h2>
+    <div class="value">{{ overview.target_active_stations }}</div>
+  </div>
+  <div class="card">
+    <h2>Active Now</h2>
+    <div class="value">{{ overview.counts.active }}</div>
+  </div>
+  <div class="card">
+    <h2>ปกติ</h2>
+    <div class="value">{{ overview.counts.healthy }}</div>
+  </div>
+  <div class="card">
+    <h2>Stale</h2>
+    <div class="value">{{ overview.counts.stale }}</div>
+  </div>
+  <div class="card">
+    <h2>Disabled</h2>
+    <div class="value">{{ overview.counts.disabled }}</div>
+  </div>
+  <div class="card">
+    <h2>Stale After</h2>
+    <div class="value">{{ overview.stale_after_minutes }}m</div>
+  </div>
+</div>
+
+{% if overview.queue_critical %}
+<p class="badge err" style="margin: 1rem 0;">Queue critical — drop ratio {{ overview.queue.drop_ratio }} (promotions would be paused)</p>
+{% elif overview.queue_warning %}
+<p class="badge warn" style="margin: 1rem 0;">Queue warning — drop ratio {{ overview.queue.drop_ratio }}</p>
+{% endif %}
+
+<section style="margin-top: 1.5rem;">
+  <h3>สุขภาพคิว</h3>
+  <table>
+    <thead><tr><th>Done</th><th>Dropped</th><th>Pending</th><th>Drop Ratio</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>{{ overview.queue.done }}</td>
+        <td>{{ overview.queue.dropped }}</td>
+        <td>{{ overview.queue.pending }}</td>
+        <td>{{ overview.queue.drop_ratio }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section style="margin-top: 1.5rem;">
+  <h3>สุขภาพสถานี</h3>
+  {% if overview.stations %}
+  <table>
+    <thead>
+      <tr>
+        <th>Station</th>
+        <th>State</th>
+        <th>Enabled</th>
+        <th>Last Chunk</th>
+        <th>Age</th>
+        <th>รีสตาร์ตวันนี้</th>
+        <th>Last Error</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in overview.stations %}
+      <tr>
+        <td>{{ row.display_name or row.station_id }}</td>
+        <td>{{ format_watchdog_state(row.health_state) | safe }}</td>
+        <td>{{ "yes" if row.enabled else "no" }}</td>
+        <td>{{ row.last_chunk_at or "—" }}</td>
+        <td>{{ format_age(row.age_seconds) }}</td>
+        <td>{{ row.restart_count_today or 0 }}</td>
+        <td>{{ row.last_error or "—" }}</td>
+        <td>
+          {% if row.enabled %}
+          <form method="post" action="/ops/watchdog/restart/{{ row.station_id }}" style="margin:0;">
+            <button type="submit" class="pager button" style="font-size:0.8rem;">รีสตาร์ต</button>
+          </form>
+          {% else %}
+          —
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">No station health rows yet. Run the watchdog service once.</p>
+  {% endif %}
+</section>
+
+<section style="margin-top: 1.5rem;">
+  <h3>เหตุการณ์กู้คืนล่าสุด</h3>
+  {% if overview.events %}
+  <table>
+    <thead>
+      <tr><th>When</th><th>Station</th><th>Event</th><th>Reason</th><th>Action</th></tr>
+    </thead>
+    <tbody>
+      {% for event in overview.events %}
+      <tr>
+        <td>{{ event.created_at }}</td>
+        <td>{{ event.station_id }}</td>
+        <td>{{ event.event_type }}</td>
+        <td>{{ event.reason or "—" }}</td>
+        <td>{{ event.action_taken or "—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">No recovery events logged yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
