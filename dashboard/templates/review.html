@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Review — Radio Ad Dashboard{% endblock %}
 {% block content %}
-<h2 style="margin-top: 0; font-size: 1rem;">Review inbox ({{ window_days }} days)</h2>
+<h2 style="margin-top: 0; font-size: 1rem;">กล่องตรวจทาน ({{ window_days }} days)</h2>
 <p style="color: var(--muted); font-size: 0.9rem; max-width: 52rem;">
   Filter loan/funding <strong>ads</strong> vs keyword noise before Telegram alerts.
-  <strong>Tier A</strong> = keyword + LLM ad ·
+  <strong>ระดับ A</strong> = keyword + LLM ad ·
   <strong>Tier B</strong> = LLM ad only ·
   <strong>Tier C</strong> = keyword mention only (usually news/talk — not an ad).
 </p>
 <p style="font-size: 0.85rem; margin-bottom: 1rem;">
   Show:
-  <a href="/review"{% if not tier_filter %} style="font-weight:600"{% endif %}>All</a>
-  · <a href="/review?tier=A"{% if tier_filter == 'A' %} style="font-weight:600"{% endif %}>A</a>
+  <a href="/review"{% if not tier_filter %} style="font-weight:600"{% endif %}>ทั้งหมด</a>
+  · <a href="/review?tier=A"{% if tier_filter == 'A' %} style="font-weight:600"{% endif %}>ระดับ A</a>
   · <a href="/review?tier=B"{% if tier_filter == 'B' %} style="font-weight:600"{% endif %}>B</a>
   · <a href="/review?tier=C"{% if tier_filter == 'C' %} style="font-weight:600"{% endif %}>C</a>
   {% if tier_filter %}<span style="color: var(--muted);"> — {{ rows|length }} row(s)</span>{% endif %}
@@ -52,7 +52,7 @@
           <br><a href="/ads/{{ row.canonical_ad_id }}" style="font-size: 0.8rem;">canonical #{{ row.canonical_ad_id }}</a>
           {% endif %}
         {% else %}
-          <span class="badge muted">no LLM ad</span>
+          <span class="badge muted">ไม่มีโฆษณา LLM</span>
         {% endif %}
       </td>
       <td style="max-width: 180px; font-size: 0.85rem;">

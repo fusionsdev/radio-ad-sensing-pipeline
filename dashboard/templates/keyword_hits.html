@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Keyword Hits — Radio Ad Dashboard{% endblock %}
+{% block content %}
+<h2 style="margin-top: 0; font-size: 1rem;">ฮิตคีย์เวิร์ดดิบ ({{ window_days }}d)</h2>
+<p style="color: var(--muted); font-size: 0.9rem;">
+  รายการ keyword hit ทั้งหมด รวมวลีที่ไม่เข้าเกณฑ์รายงาน
+  <a href="/verticals">สรุปแนวตั้ง →</a>
+</p>
+{% if hits %}
+<table>
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Station</th>
+      <th>Vertical</th>
+      <th>Keyword</th>
+      <th>Excerpt</th>
+      <th>Chunk</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hit in hits %}
+    <tr>
+      <td>{{ format_ts(hit.hit_ts) }}</td>
+      <td>{{ hit.station_label }}</td>
+      <td>{{ hit.vertical_label or "—" }}</td>
+      <td>{{ hit.keyword }}</td>
+      <td style="max-width: 320px; font-size: 0.85rem; color: var(--muted);">{{ hit.context_excerpt or "—" }}</td>
+      <td>{{ hit.chunk_id }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">ยังไม่มี keyword hit ในช่วงนี้</p>
+{% endif %}
+{% endblock %}

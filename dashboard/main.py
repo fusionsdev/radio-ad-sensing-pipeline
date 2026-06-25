@@ -11,6 +11,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Form, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from dashboard import queries
@@ -30,6 +31,11 @@ def create_app(db_path: Path | None = None) -> FastAPI:
     )
 
     app = FastAPI(title="Radio Ad-Sensing Dashboard", docs_url=None, redoc_url=None)
+    app.mount(
+        "/static",
+        StaticFiles(directory=Path(__file__).parent / "static"),
+        name="static",
+    )
     start_metrics_server(9104)
     configure_dashboard_metrics(resolved_db)
 
@@ -86,6 +92,7 @@ def create_app(db_path: Path | None = None) -> FastAPI:
                 "format_ts": _format_ts,
                 "format_age": _format_age,
                 "format_status": _format_status,
+                "format_tier": _format_vertical_tier,
             },
         )
 
@@ -166,6 +173,59 @@ def create_app(db_path: Path | None = None) -> FastAPI:
                 "format_status": _format_status,
                 "format_recommendation": _format_recommendation,
             },
+        )
+
+    @app.get("/keywords/hits", response_class=HTMLResponse)
+    def keyword_hits(request: Request, days: int = 7) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        window_days = max(1, min(days, 30))
+        hits = queries.fetch_keyword_hits(resolved_db, window_days=window_days)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "keyword_hits.html",
+            {
+                "hits": hits,
+                "window_days": window_days,
+                "format_ts": _format_ts,
+            },
+        )
+
+    @app.get("/ops/watchdog", response_class=HTMLResponse)
+    def ops_watchdog(request: Request, restarted: str | None = None) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "ops/watchdog.html",
+            {
+                "overview": queries.fetch_watchdog_overview(resolved_db),
+                "restarted_station": restarted,
+                "format_ts": _format_ts,
+                "format_age": _format_age,
+                "format_watchdog_state": _format_watchdog_state,
+            },
+        )
+
+    @app.get("/verticals", response_class=HTMLResponse)
+    @app.get("/novelty", response_class=HTMLResponse)
+    @app.get("/novelty/new", response_class=HTMLResponse)
+    @app.get("/novelty/known", response_class=HTMLResponse)
+    @app.get("/novelty/noise", response_class=HTMLResponse)
+    @app.get("/opportunities", response_class=HTMLResponse)
+    @app.get("/opportunities/digest-preview", response_class=HTMLResponse)
+    @app.get("/opportunities/batch-review", response_class=HTMLResponse)
+    @app.get("/sources/landing-pages", response_class=HTMLResponse)
+    @app.get("/novelty/known-pending", response_class=HTMLResponse)
+    @app.get("/advertisers/opportunities", response_class=HTMLResponse)
+    @app.get("/keywords/trademark", response_class=HTMLResponse)
+    def owner_review_placeholder(request: Request) -> HTMLResponse:
+        if not queries.db_exists(resolved_db):
+            return _no_database(request)
+        return TEMPLATES.TemplateResponse(
+            request,
+            "owner_review_placeholder.html",
+            {"path": request.url.path},
         )
 
     @app.get("/keywords", response_class=HTMLResponse)
@@ -323,9 +383,30 @@ def _format_recommendation(recommendation: str) -> str:
 
 def _format_tier(tier: str) -> str:
     labels = {
-        "A": ("A · kw+ad", "ok"),
-        "B": ("B · ad only", "warn"),
-        "C": ("C · kw only", "muted"),
+        "A": ("ระดับ A · คีย์เวิร์ด + โฆษณา", "ok"),
+        "B": ("ระดับ B · โฆษณาเท่านั้น", "warn"),
+        "C": ("ระดับ C · คีย์เวิร์ดเท่านั้น", "muted"),
     }
     label, css = labels.get(tier, (tier, "muted"))
+    return f'<span class="badge {css}">{label}</span>'
+
+
+def _format_vertical_tier(
+    tier: str, *, hit_count: int = 0, no_hit_ok: bool = False
+) -> str:
+    label = tier.replace("_", " ").title() if tier else "Active"
+    return f'<span class="badge muted">{label}</span>'
+
+
+def _format_watchdog_state(state: str) -> str:
+    labels = {
+        "healthy": ("ปกติ", "ok"),
+        "stale": ("ช้า", "warn"),
+        "recovering": ("กำลังกู้คืน", "warn"),
+        "failed": ("ล้มเหลว", "err"),
+        "disabled": ("ปิด", "muted"),
+        "standby": ("พัก", "muted"),
+        "unknown": ("ไม่ทราบ", "muted"),
+    }
+    label, css = labels.get(state, (state.replace("_", " ").title(), "muted"))
     return f'<span class="badge {css}">{label}</span>'

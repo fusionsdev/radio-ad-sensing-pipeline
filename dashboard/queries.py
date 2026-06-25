@@ -72,6 +72,18 @@ class ReviewRow:
     alerted: bool
 
 
+@dataclass(frozen=True)
+class KeywordHitRow:
+    id: int
+    keyword: str
+    hit_ts: float
+    chunk_id: int
+    context_excerpt: str | None
+    detection_id: int | None
+    station_label: str
+    vertical_label: str | None
+
+
 def _start_of_today_ts() -> float:
     now = datetime.now(UTC)
     start = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -580,6 +592,97 @@ def fetch_keyword_matrix(
         matrix.setdefault(station_label_text, {})[keyword] = int(row["hits"])
 
     return sorted(stations), sorted(keywords), matrix
+
+
+def fetch_keyword_hits(
+    db_path: Path, *, window_days: int = 7, limit: int = 500
+) -> list[KeywordHitRow]:
+    since = time.time() - window_days * 24 * 3600
+    with _readonly(db_path) as conn:
+        rows = conn.execute(
+            """
+            SELECT kh.id, kh.keyword, kh.hit_ts, kh.chunk_id,
+                   kh.context_excerpt, kh.detection_id,
+                   s.name AS station_name, s.display_name AS station_display_name
+            FROM keyword_hits kh
+            JOIN stations s ON s.id = kh.station_id
+            WHERE kh.hit_ts >= ?
+            ORDER BY kh.hit_ts DESC
+            LIMIT ?
+            """,
+            (since, limit),
+        ).fetchall()
+    return [
+        KeywordHitRow(
+            id=int(row["id"]),
+            keyword=str(row["keyword"]),
+            hit_ts=float(row["hit_ts"]),
+            chunk_id=int(row["chunk_id"]),
+            context_excerpt=row["context_excerpt"],
+            detection_id=int(row["detection_id"]) if row["detection_id"] is not None else None,
+            station_label=station_label(
+                {
+                    "name": row["station_name"],
+                    "display_name": row["station_display_name"],
+                }
+            ),
+            vertical_label=None,
+        )
+        for row in rows
+    ]
+
+
+def fetch_watchdog_overview(db_path: Path) -> dict:
+    queue = {"done": 0, "dropped": 0, "pending": 0, "drop_ratio": 0.0}
+    stations: list[dict] = []
+    with _readonly(db_path) as conn:
+        queue_rows = conn.execute(
+            "SELECT status, COUNT(*) AS count FROM chunks GROUP BY status"
+        ).fetchall()
+        for row in queue_rows:
+            status = str(row["status"])
+            count = int(row["count"])
+            if status in queue:
+                queue[status] = count
+        station_rows = conn.execute(
+            """
+            SELECT id, name, display_name, enabled
+            FROM stations
+            ORDER BY name
+            """
+        ).fetchall()
+    done = int(queue["done"])
+    dropped = int(queue["dropped"])
+    queue["drop_ratio"] = round(dropped / done, 2) if done else 0.0
+    for row in station_rows:
+        stations.append(
+            {
+                "station_id": row["name"],
+                "display_name": row["display_name"] or row["name"],
+                "enabled": bool(row["enabled"]),
+                "health_state": "unknown",
+                "last_chunk_at": None,
+                "age_seconds": None,
+                "restart_count_today": 0,
+                "last_error": None,
+            }
+        )
+    return {
+        "watchdog_enabled": False,
+        "target_active_stations": len([row for row in stations if row["enabled"]]),
+        "counts": {
+            "active": len([row for row in stations if row["enabled"]]),
+            "healthy": 0,
+            "stale": 0,
+            "disabled": len([row for row in stations if not row["enabled"]]),
+        },
+        "stale_after_minutes": int(load_settings().station_down_alert_minutes),
+        "queue": queue,
+        "queue_warning": False,
+        "queue_critical": False,
+        "stations": stations,
+        "events": [],
+    }
 
 
 def fetch_health(db_path: Path) -> dict:

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Ads — Radio Ad Dashboard{% endblock %}
 {% block content %}
-<h2 style="margin-top: 0; font-size: 1rem;">Canonical ads ({{ total }})</h2>
+<h2 style="margin-top: 0; font-size: 1rem;">โฆษณาหลัก ({{ total }})</h2>
 {% if total == 0 %}
-<p class="empty">No ads detected yet. Run the ingestor and worker pipeline first.</p>
+<p class="empty">ยังไม่พบโฆษณา ให้รัน ingestor และ worker ก่อน</p>
 {% else %}
 <table>
   <thead>

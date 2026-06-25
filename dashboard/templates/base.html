@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Radio Ad Dashboard{% endblock %}</title>
-  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <script src="/static/vendor/htmx.min.js"></script>
   <style>
     :root { --bg: #0f1419; --card: #1a2332; --text: #e7ecf3; --muted: #8b9cb3; --accent: #3d8bfd; --border: #2a3548; }
     * { box-sizing: border-box; }
@@ -44,8 +44,10 @@
       <a href="/review">Review</a>
       <a href="/ads">Ads</a>
       <a href="/stations">Stations</a>
+      <a href="/ops/watchdog">Watchdog</a>
       <a href="/scorecard">Scorecard</a>
-      <a href="/keywords">Keywords</a>
+      <a href="/keywords/hits">Keyword hits</a>
+      <a href="/keywords">Keyword matrix</a>
       <a href="/gaps">Gaps</a>
       <a href="/cfpb">CFPB Seeds</a>
       <a href="/health">Health (JSON)</a>
