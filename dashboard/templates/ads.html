@@ -7,7 +7,7 @@
 {% else %}
 <table>
   <thead>
-    <tr><th>Company</th><th>Category</th><th>Phone</th><th>First seen</th><th>Last seen</th><th>Airings</th></tr>
+    <tr><th>บริษัท</th><th>หมวดหมู่</th><th>โทรศัพท์</th><th>พบครั้งแรก</th><th>พบล่าสุด</th><th>จำนวนออกอากาศ</th></tr>
   </thead>
   <tbody id="ads-table-body">
     {% include "partials/ads_rows.html" %}
@@ -15,10 +15,10 @@
 </table>
 <div class="pager">
   <button {% if page <= 1 %}disabled{% endif %}
-    hx-get="/ads?page={{ page - 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">Prev</button>
-  <span>Page {{ page }} / {{ total_pages }}</span>
+    hx-get="/ads?page={{ page - 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">ก่อนหน้า</button>
+  <span>หน้า {{ page }} / {{ total_pages }}</span>
   <button {% if page >= total_pages %}disabled{% endif %}
-    hx-get="/ads?page={{ page + 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">Next</button>
+    hx-get="/ads?page={{ page + 1 }}" hx-target="#ads-table-body" hx-swap="innerHTML">ถัดไป</button>
 </div>
 {% endif %}
 {% endblock %}
