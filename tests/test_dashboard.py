@@ -13,7 +13,29 @@ from dashboard.main import create_app
 from shared.db import get_connection, migrate
 from tests.fixtures.seed_dashboard import seed_dashboard_db
 
-HTML_ROUTES = ["/", "/ads", "/stations", "/scorecard", "/keywords", "/review", "/gaps"]
+HTML_ROUTES = [
+    "/",
+    "/ads",
+    "/stations",
+    "/scorecard",
+    "/keywords",
+    "/keywords/hits",
+    "/verticals",
+    "/review",
+    "/ops/watchdog",
+    "/gaps",
+    "/novelty",
+    "/novelty/new",
+    "/novelty/known",
+    "/novelty/noise",
+    "/opportunities",
+    "/opportunities/digest-preview",
+    "/opportunities/batch-review",
+    "/sources/landing-pages",
+    "/novelty/known-pending",
+    "/advertisers/opportunities",
+    "/keywords/trademark",
+]
 CFPB_ROUTES = ["/cfpb", "/cfpb/runs", "/cfpb/entities", "/cfpb/candidates"]
 
 
@@ -71,7 +93,8 @@ def test_missing_db_shows_no_database_page(missing_db: Path) -> None:
     client = TestClient(create_app(db_path=missing_db))
     response = client.get("/")
     assert response.status_code == 200
-    assert "No database yet" in response.text
+    assert "ยังไม่มีฐานข้อมูล" in response.text
+    assert "No database yet" not in response.text
 
 
 def test_health_json_empty_db(empty_db: Path) -> None:
@@ -186,7 +209,7 @@ def test_stations_page_shows_status_column(seeded: tuple[Path, dict[str, int]]) 
     client = TestClient(create_app(db_path=db_path))
     response = client.get("/stations")
     assert response.status_code == 200
-    assert "<th>Status</th>" in response.text
+    assert "<th>สถานะ</th>" in response.text
     assert 'class="badge' in response.text
 
 
@@ -195,7 +218,7 @@ def test_overview_shows_status_column(seeded: tuple[Path, dict[str, int]]) -> No
     client = TestClient(create_app(db_path=db_path))
     response = client.get("/")
     assert response.status_code == 200
-    assert "<th>Status</th>" in response.text
+    assert "<th>สถานะ</th>" in response.text
     assert 'class="badge' in response.text
 
 
@@ -208,13 +231,50 @@ def test_ads_htmx_partial(seeded: tuple[Path, dict[str, int]]) -> None:
     assert "<html" not in response.text.lower()
 
 
+def test_dashboard_uses_local_htmx_runtime(empty_db: Path) -> None:
+    client = TestClient(create_app(db_path=empty_db))
+    response = client.get("/static/vendor/htmx.min.js")
+    assert response.status_code == 200
+    assert "htmx" in response.text
+
+    base_html = Path("dashboard/templates/base.html").read_text(encoding="utf-8")
+    smoke_guidance = Path("plan/owner-review-diff-packet.md").read_text(encoding="utf-8")
+    assert "/static/vendor/htmx.min.js" in base_html
+    assert "unpkg.com" not in base_html
+    assert "unpkg.com" not in smoke_guidance
+
+
+def test_ads_page_is_localized(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/ads")
+    assert response.status_code == 200
+    text = response.text
+    assert "โฆษณาหลัก" in text
+    assert "Canonical ads" not in text
+    assert "No ads detected yet" not in text
+
+
+def test_keyword_hits_page_is_localized(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/keywords/hits")
+    assert response.status_code == 200
+    text = response.text
+    assert "ฮิตคีย์เวิร์ดดิบ" in text
+    assert "Raw keyword hits" not in text
+    assert "Vertical summary" not in text
+    assert "No keyword hits in this window" not in text
+
+
 def test_scorecard_shows_yield_and_recommendation(seeded: tuple[Path, dict[str, int]]) -> None:
     db_path, _ = seeded
     client = TestClient(create_app(db_path=db_path))
     response = client.get("/scorecard")
     assert response.status_code == 200
     assert "News Talk 1010 — Demo Market" in response.text
-    assert "Yield" in response.text
+    assert "อัตราฮิต" in response.text
+    assert "Yield" not in response.text
     rows = queries.fetch_station_scorecard(db_path)
     news_talk = next(row for row in rows if row["name"] == "news-talk")
     assert news_talk["keyword_hits_7d"] == 2
@@ -257,13 +317,34 @@ def test_review_page_renders_tiers(seeded: tuple[Path, dict[str, int]]) -> None:
     db_path, _ = seeded
     client = TestClient(create_app(db_path=db_path))
     response = client.get("/review")
+    text = response.text
     assert response.status_code == 200
-    assert "Review inbox" in response.text
-    assert "kw+ad" in response.text
-    assert "Acme Funding" in response.text
-    assert "hard money" in response.text
+    assert "กล่องตรวจทาน" in text
+    assert "ทั้งหมด" in text
+    assert "ระดับ A" in text
+    assert "Review inbox" not in text
+    assert "kw+ad" not in text
+    assert "no LLM ad" not in text
+    assert "Acme Funding" in text
+    assert "hard money" in text
     assert client.get("/review?tier=C").status_code == 200
-    assert "no LLM ad" in client.get("/review?tier=C").text
+    assert "ไม่มีโฆษณา LLM" in client.get("/review?tier=C").text
+
+
+def test_watchdog_page_is_localized(seeded: tuple[Path, dict[str, int]]) -> None:
+    db_path, _ = seeded
+    client = TestClient(create_app(db_path=db_path))
+    response = client.get("/ops/watchdog")
+    assert response.status_code == 200
+    text = response.text
+    assert "ตัวเฝ้าระวังสถานี" in text
+    assert "สุขภาพคิว" in text
+    assert "สุขภาพสถานี" in text
+    assert "เหตุการณ์กู้คืนล่าสุด" in text
+    assert "Station Watchdog" not in text
+    assert "Queue Health" not in text
+    assert "Healthy" not in text
+    assert "Restart" not in text
 
 
 def test_cfpb_candidate_detail_and_status_update(empty_db: Path) -> None:
