@@ -16,7 +16,13 @@ from ingestor.ffmpeg import (
     get_wav_duration_seconds,
     is_valid_chunk_duration,
 )
-from ingestor.repository import enqueue_chunk, is_station_enabled, log_gap, upsert_station
+from ingestor.repository import (
+    enforce_pending_backlog_limit,
+    enqueue_chunk,
+    is_station_enabled,
+    log_gap,
+    upsert_station,
+)
 from shared.metrics import (
     increment_chunks_processed,
     increment_ingest_chunks,
@@ -103,6 +109,8 @@ class StationIngestor:
         Returns True when a chunk was successfully enqueued, False when all
         attempts (initial + immediate retries) failed and a gap was logged.
         """
+        enforce_pending_backlog_limit(self.db_path, self.settings)
+
         start_ts = self.clock.time()
         expected_end_ts = start_ts + float(self.settings.chunk_len)
         output_path = self._output_path(start_ts)

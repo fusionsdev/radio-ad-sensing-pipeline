@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 import sqlite3
 from pathlib import Path
 
 from shared.db import get_connection, retry_on_busy, transaction
-from shared.models import ChunkStatus, StationConfig
+from shared.models import ChunkStatus, PipelineSettings, StationConfig
+
+logger = logging.getLogger("ingestor.repository")
 
 
 def fetch_station_config(db_path: str | Path, station_name: str) -> StationConfig | None:
@@ -105,6 +108,87 @@ def enqueue_chunk(
             return int(conn.execute("SELECT last_insert_rowid()").fetchone()[0])
     finally:
         conn.close()
+
+
+@retry_on_busy()
+def enforce_pending_backlog_limit(db_path: str | Path, settings: PipelineSettings) -> int:
+    """Drop oldest pending chunks above the configured queue cap and delete WAVs.
+
+    The worker normally enforces this before claiming work, but if the worker is
+    stalled the ingestor can fill the shared chunk tmpfs before that code runs.
+    Running the same cap here keeps live ingest writable while preserving the
+    newest pending audio.
+    """
+    max_seconds = settings.queue_max_hours * 3600
+    conn = get_connection(db_path)
+    drop_rows: list[sqlite3.Row] = []
+    try:
+        rows = conn.execute(
+            """
+            SELECT id, station_id, path, start_ts, end_ts
+            FROM chunks
+            WHERE status = ?
+            ORDER BY start_ts ASC
+            """,
+            (ChunkStatus.PENDING.value,),
+        ).fetchall()
+        total_duration = sum(row["end_ts"] - row["start_ts"] for row in rows)
+        if total_duration <= max_seconds:
+            return 0
+
+        overflow_seconds = total_duration - max_seconds
+        accumulated = 0.0
+        for row in rows:
+            drop_rows.append(row)
+            accumulated += row["end_ts"] - row["start_ts"]
+            if accumulated >= overflow_seconds:
+                break
+
+        drop_ids = [row["id"] for row in drop_rows]
+        placeholders = ",".join("?" * len(drop_ids))
+        with transaction(conn):
+            conn.execute(
+                f"""
+                UPDATE chunks
+                SET status = ?, error = ?
+                WHERE id IN ({placeholders})
+                """,
+                (ChunkStatus.DROPPED.value, "dropped_backlog", *drop_ids),
+            )
+            for row in drop_rows:
+                conn.execute(
+                    """
+                    INSERT INTO gaps (station_id, start_ts, end_ts, reason)
+                    VALUES (?, ?, ?, 'dropped_backlog')
+                    """,
+                    (row["station_id"], row["start_ts"], row["end_ts"]),
+                )
+    finally:
+        conn.close()
+
+    removed = 0
+    for row in drop_rows:
+        path = Path(row["path"])
+        try:
+            if path.is_file():
+                path.unlink(missing_ok=True)
+                removed += 1
+        except OSError:
+            logger.warning(
+                "failed to delete dropped backlog chunk file",
+                extra={"chunk_id": row["id"], "path": row["path"]},
+                exc_info=True,
+            )
+
+    logger.warning(
+        "ingestor dropped backlog overflow",
+        extra={
+            "dropped_count": len(drop_rows),
+            "files_deleted": removed,
+            "overflow_seconds": overflow_seconds,
+        },
+    )
+    return len(drop_rows)
 
 
 @retry_on_busy()

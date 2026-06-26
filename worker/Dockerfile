@@ -14,6 +14,7 @@ RUN apt-get update \
         ffmpeg \
         ca-certificates \
         curl \
+        libchromaprint-tools \
         libsndfile1 \
     && rm -rf /var/lib/apt/lists/*
 

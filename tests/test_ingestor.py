@@ -440,6 +440,80 @@ def test_immediate_retries_recover_without_gap(tmp_path: Path) -> None:
     assert len(runner.calls) == 3, f"expected 3 ffmpeg calls, got {len(runner.calls)}"
 
 
+def test_ingestor_drops_old_pending_backlog_before_recording(tmp_path: Path) -> None:
+    db_path = tmp_path / "pipeline.db"
+    chunks_dir = tmp_path / "chunks"
+    migrate(db_path)
+    settings = PipelineSettings(
+        chunk_len=90,
+        overlap=7,
+        queue_max_hours=2,
+        ingest_immediate_retries=0,
+    )
+    station = StationConfig(name="Backlog AM", url="https://example.com/live", enabled=True)
+
+    conn = _conn(db_path)
+    try:
+        station_id = conn.execute(
+            """
+            INSERT INTO stations (name, url, format, enabled, display_name)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (station.name, station.url, station.format, 1, station.display_name),
+        ).lastrowid
+        for index in range(120):
+            audio = chunks_dir / station.name / f"{index}.wav"
+            audio.parent.mkdir(parents=True, exist_ok=True)
+            audio.write_bytes(b"x")
+            conn.execute(
+                """
+                INSERT INTO chunks (station_id, path, start_ts, end_ts, status)
+                VALUES (?, ?, ?, ?, 'pending')
+                """,
+                (
+                    station_id,
+                    str(audio),
+                    float(index * settings.chunk_len),
+                    float((index + 1) * settings.chunk_len),
+                ),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+
+    runner = FakeRunner()
+    ingestor = StationIngestor(
+        db_path,
+        station,
+        settings,
+        chunks_dir=chunks_dir,
+        runner=runner,
+        clock=FakeClock(start=20_000.0),
+    )
+
+    assert ingestor.run_once() is True
+
+    conn = _conn(db_path)
+    try:
+        dropped = conn.execute(
+            "SELECT COUNT(*) FROM chunks WHERE status = 'dropped'"
+        ).fetchone()[0]
+        pending = conn.execute(
+            "SELECT COUNT(*) FROM chunks WHERE status = 'pending'"
+        ).fetchone()[0]
+        gaps = conn.execute(
+            "SELECT COUNT(*) FROM gaps WHERE reason = 'dropped_backlog'"
+        ).fetchone()[0]
+    finally:
+        conn.close()
+
+    assert dropped == 40
+    assert pending == 81
+    assert gaps == 40
+    assert not (chunks_dir / station.name / "0.wav").exists()
+    assert (chunks_dir / station.name / "119.wav").exists()
+
+
 def test_immediate_retries_exhausted_logs_single_gap(tmp_path: Path) -> None:
     """All retries fail (3 immediate + 1 initial = 4 failures): exactly 1 gap, 0 chunks."""
     db_path = tmp_path / "pipeline.db"
