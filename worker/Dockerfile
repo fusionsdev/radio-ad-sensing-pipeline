@@ -24,6 +24,7 @@ COPY pyproject.toml README.md ./
 COPY shared/ ./shared/
 COPY collectors/ ./collectors/
 COPY worker/ ./worker/
+COPY scripts/gpu_metrics_exporter.py ./scripts/gpu_metrics_exporter.py
 COPY config/ ./config/
 
 # faster-whisper pulls ctranslate2 + tokenizers; both need wheel builds.
