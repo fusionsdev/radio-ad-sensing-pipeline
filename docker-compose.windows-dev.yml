@@ -1,7 +1,8 @@
 # Windows Docker Desktop dev overrides (GPU host on Win32).
 # - SQLite WAL fails on ./data bind mounts → pair with docker-compose.prod.yml
 # - Port 8080 is often reserved by HTTP.sys; publish dashboard on 8081
-# - dcgm-exporter needs Linux /sys/bus/pci; stub it on Windows dev
+# - native dcgm-exporter needs Linux /sys/bus/pci; use a Windows-safe
+#   nvidia-smi exporter that preserves the DCGM metric names Grafana expects.
 #
 # Usage:
 #   docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.windows-dev.yml up -d
@@ -12,11 +13,26 @@ services:
       - "127.0.0.1:8081:8080"
 
   dcgm-exporter:
-    image: busybox:stable
-    command: ["sh", "-c", "sleep infinity"]
-    cap_add: []
-    environment: {}
-    deploy: {}
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    image: radio-ad-pipeline/gpu-metrics-exporter:dev
+    command: ["python", "/app/scripts/gpu_metrics_exporter.py"]
+    cap_add: !override []
+    expose:
+      - "9400"
+    ports:
+      - "127.0.0.1:9400:9400"
+    environment: !override
+      - NVIDIA_SMI_EXPORTER_PORT=9400
+      - PYTHONPATH=/app
+    deploy: !override
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   prometheus:
     depends_on:
