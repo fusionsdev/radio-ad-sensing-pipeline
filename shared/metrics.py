@@ -70,6 +70,11 @@ LLM_EXTRACTION_DURATION_SECONDS = Histogram(
     "Ollama structured extraction wall time in seconds.",
     buckets=_LLM_DURATION_BUCKETS,
 )
+LLM_SKIPPED_TOTAL = Counter(
+    "pipeline_llm_skipped_total",
+    "LLM extraction skips grouped by reason.",
+    ["reason"],
+)
 DETECTIONS_TOTAL = Counter(
     "pipeline_detections_total",
     "Ad detections persisted above the confidence threshold.",
@@ -179,6 +184,10 @@ def observe_stage_duration(stage: str, duration_sec: float) -> None:
 
 def observe_llm_extraction_duration(duration_sec: float) -> None:
     LLM_EXTRACTION_DURATION_SECONDS.observe(duration_sec)
+
+
+def increment_llm_skipped(reason: str, amount: float = 1.0) -> None:
+    LLM_SKIPPED_TOTAL.labels(reason=reason).inc(amount)
 
 
 def increment_detections(amount: float = 1.0) -> None:

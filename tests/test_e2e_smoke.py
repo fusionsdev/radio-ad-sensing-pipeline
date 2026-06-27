@@ -122,15 +122,15 @@ def test_smoke_worker_then_alerter_dry_run(tmp_path: Path) -> None:
         conn.close()
 
     settings = PipelineSettings(queue_max_hours=2, chunk_len=90)
-    transcriber = FakeTranscriber(text="Rapid Capital same-day business funding")
+    transcriber = FakeTranscriber(text="Rapid Capital same-day personal loan")
     extractor = FakeExtractor(
         AdExtraction(
             is_ad=True,
-            ad_category="business_funding",
+            ad_category="personal_loan",
             company_name="Rapid Capital",
             phone_number="8005551212",
             website="https://rapid.example",
-            offer_summary="same-day business funding",
+            offer_summary="same-day personal loan",
             key_claims=["cash for payroll"],
             confidence=0.94,
         )
@@ -147,11 +147,12 @@ def test_smoke_worker_then_alerter_dry_run(tmp_path: Path) -> None:
         transcriber,
         extractor=extractor,
         detection_persister=persister,
+        loan_keywords=["personal loan"],
     )
 
     assert consumer.run_once() is True
     assert transcriber.calls == [audio_path]
-    assert extractor.calls == ["Rapid Capital same-day business funding"]
+    assert extractor.calls == ["Rapid Capital same-day personal loan"]
 
     conn = get_connection(db_path)
     try:
@@ -162,7 +163,7 @@ def test_smoke_worker_then_alerter_dry_run(tmp_path: Path) -> None:
         transcript = conn.execute(
             "SELECT text, segments_json FROM transcripts"
         ).fetchone()
-        assert transcript["text"] == "Rapid Capital same-day business funding"
+        assert transcript["text"] == "Rapid Capital same-day personal loan"
         assert "Rapid Capital" in transcript["segments_json"]
 
         detection = conn.execute(

@@ -17,6 +17,7 @@ from shared.metrics import (
     increment_chunks_processed,
     increment_fingerprint_errors,
     increment_fingerprint_hits,
+    increment_llm_skipped,
     observe_asr_metrics,
     observe_llm_extraction_duration,
     observe_stage_duration,
@@ -29,7 +30,7 @@ from worker.dedup import DetectionPersister
 from worker.extract import OllamaExtractor
 from worker.fingerprint import FingerprintAnnotator, FingerprintMatch
 from worker.janitor import ChunkJanitor
-from worker.keywords import find_keyword_matches, record_keyword_hits
+from worker.keywords import KeywordMatch, find_keyword_matches, record_keyword_hits
 from worker.transcribe import Transcriber, TranscriptionResult, WhisperBackend
 
 logger = logging.getLogger("worker")
@@ -61,6 +62,15 @@ class ClaimedChunk:
     @property
     def audio_duration_sec(self) -> float:
         return self.end_ts - self.start_ts
+
+
+@dataclass(frozen=True)
+class PersistedTranscript:
+    keyword_matches: list[KeywordMatch]
+
+    @property
+    def has_llm_signal(self) -> bool:
+        return bool(self.keyword_matches)
 
 
 class ExtractionBackend(Protocol):
@@ -160,8 +170,12 @@ class ChunkConsumer:
         conn = get_connection(self.db_path)
         try:
             with transaction(conn):
+                drop_started = time.perf_counter()
                 self._enforce_drop_oldest(conn)
+                observe_stage_duration("drop_oldest", time.perf_counter() - drop_started)
+                claim_started = time.perf_counter()
                 chunk = self._claim_chunk(conn)
+                observe_stage_duration("claim", time.perf_counter() - claim_started)
                 if chunk is None:
                     return False
 
@@ -264,6 +278,7 @@ class ChunkConsumer:
         # transcription/extraction failure makes the lost ad unrecoverable, so keep
         # the audio on any failure path and let retention/reprocessing handle it.
         delete_path: Path | None = None
+        total_started = time.perf_counter()
         try:
             audio_path = Path(chunk.path)
             if not audio_path.is_file():
@@ -306,48 +321,62 @@ class ChunkConsumer:
             observe_stage_duration("asr", result.wall_time_sec)
             observe_asr_metrics(chunk.station, result.wall_time_sec, result.rtf)
 
-            self._persist_success(chunk, result)
+            persisted = self._persist_success(chunk, result)
             extraction_ok = True
             if (
                 known_ad_match is None
                 and self.extractor is not None
                 and self.detection_persister is not None
             ):
-                try:
-                    llm_started = time.perf_counter()
-                    extraction = self.extractor.extract(result.text)
-                    llm_duration_sec = time.perf_counter() - llm_started
-                    observe_llm_extraction_duration(llm_duration_sec)
-                    observe_stage_duration("llm", llm_duration_sec)
+                if not persisted.has_llm_signal:
+                    skip_reason = "no_loan_keyword_signal"
+                    increment_llm_skipped(skip_reason)
+                    logger.info(
+                        "llm extraction skipped",
+                        extra={
+                            "chunk_id": chunk.id,
+                            "station": chunk.station,
+                            "reason": skip_reason,
+                        },
+                    )
+                else:
+                    try:
+                        llm_started = time.perf_counter()
+                        extraction = self.extractor.extract(result.text)
+                        llm_duration_sec = time.perf_counter() - llm_started
+                        observe_llm_extraction_duration(llm_duration_sec)
+                        observe_stage_duration("llm", llm_duration_sec)
 
-                    dedup_started = time.perf_counter()
-                    self.detection_persister.record_extraction(
-                        chunk.id,
-                        extraction,
-                        transcript_text=result.text,
-                        segments=result.segments,
-                    )
-                    observe_stage_duration(
-                        "dedup",
-                        time.perf_counter() - dedup_started,
-                    )
-                except Exception as exc:
-                    logger.exception(
-                        "extraction/dedup failed",
-                        extra={"chunk_id": chunk.id, "path": chunk.path},
-                    )
-                    self._mark_dropped(chunk.id, f"extraction/dedup failed: {exc}")
-                    extraction_ok = False
+                        persist_started = time.perf_counter()
+                        self.detection_persister.record_extraction(
+                            chunk.id,
+                            extraction,
+                            transcript_text=result.text,
+                            segments=result.segments,
+                        )
+                        persist_duration_sec = time.perf_counter() - persist_started
+                        observe_stage_duration("persist_detection", persist_duration_sec)
+                        observe_stage_duration("dedup", persist_duration_sec)
+                    except Exception as exc:
+                        logger.exception(
+                            "extraction/dedup failed",
+                            extra={"chunk_id": chunk.id, "path": chunk.path},
+                        )
+                        self._mark_dropped(chunk.id, f"extraction/dedup failed: {exc}")
+                        extraction_ok = False
             if extraction_ok:
                 # Chunk is fully processed (status='done'); safe to reclaim disk.
                 delete_path = audio_path
             return True
         finally:
+            observe_stage_duration("total_chunk", time.perf_counter() - total_started)
             if self.janitor is not None and delete_path is not None:
                 self.janitor.delete_after_processing(delete_path)
 
     @retry_on_busy()
-    def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> None:
+    def _persist_success(self, chunk: ClaimedChunk, result: TranscriptionResult) -> PersistedTranscript:
+        persist_started = time.perf_counter()
+        keyword_matches: list[KeywordMatch] = []
         conn = get_connection(self.db_path)
         try:
             with transaction(conn):
@@ -373,24 +402,27 @@ class ChunkConsumer:
                     "UPDATE chunks SET status = 'done', error = NULL WHERE id = ?",
                     (chunk.id,),
                 )
+                keyword_started = time.perf_counter()
                 if self.loan_keywords:
-                    matches = find_keyword_matches(
+                    keyword_matches = find_keyword_matches(
                         result.text,
                         self.loan_keywords,
                         min_record_confidence=float(self.settings.keyword_min_record_confidence),
                     )
-                    if matches:
+                    if keyword_matches:
                         record_keyword_hits(
                             conn,
                             station_id=chunk.station_id,
                             chunk_id=chunk.id,
                             hit_ts=chunk.start_ts,
-                            matches=matches,
+                            matches=keyword_matches,
                         )
+                observe_stage_duration("keyword_scan", time.perf_counter() - keyword_started)
                 self._update_rtf_avg(conn, result.rtf)
                 set_asr_rtf_avg(result.rtf)
         finally:
             conn.close()
+            observe_stage_duration("persist_transcript", time.perf_counter() - persist_started)
 
         logger.info(
             "chunk transcribed",
@@ -401,6 +433,7 @@ class ChunkConsumer:
                 "chunk_audio_duration_sec": result.audio_duration_sec,
             },
         )
+        return PersistedTranscript(keyword_matches=keyword_matches)
 
     @retry_on_busy()
     def _mark_dropped(self, chunk_id: int, error: str) -> None:

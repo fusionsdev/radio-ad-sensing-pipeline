@@ -18,6 +18,7 @@ from shared.metrics import (
     INGEST_CHUNKS_TOTAL,
     INGEST_ERRORS_TOTAL,
     LLM_EXTRACTION_DURATION_SECONDS,
+    LLM_SKIPPED_TOTAL,
     SQLITE_WAL_BUSY,
     SQLITE_WAL_CHECKPOINTED_FRAMES,
     SQLITE_WAL_LOG_FRAMES,
@@ -30,6 +31,7 @@ from shared.metrics import (
     increment_fingerprint_hits,
     increment_ingest_chunks,
     increment_ingest_errors,
+    increment_llm_skipped,
     observe_asr_metrics,
     observe_llm_extraction_duration,
     observe_stage_duration,
@@ -64,6 +66,13 @@ def test_observe_llm_extraction_duration_records_histogram() -> None:
     observe_llm_extraction_duration(2.5)
     after = LLM_EXTRACTION_DURATION_SECONDS._sum.get()  # noqa: SLF001
     assert after == before + 2.5
+
+
+def test_increment_llm_skipped_uses_reason_label() -> None:
+    before = LLM_SKIPPED_TOTAL.labels(reason="no_loan_keyword_signal")._value.get()  # noqa: SLF001
+    increment_llm_skipped("no_loan_keyword_signal")
+    after = LLM_SKIPPED_TOTAL.labels(reason="no_loan_keyword_signal")._value.get()  # noqa: SLF001
+    assert after == before + 1.0
 
 
 def test_increment_detections_increments_counter() -> None:
