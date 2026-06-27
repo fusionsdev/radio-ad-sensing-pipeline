@@ -275,23 +275,135 @@ def test_consumer_runs_extraction_and_dedup_after_transcription(
     extraction = AdExtraction(is_ad=True, company_name="Rapid Capital", confidence=0.9)
     extractor = FakeExtractor(extraction)
     persister = FakeDetectionPersister()
-    transcriber = FakeTranscriber(text="Rapid Capital funding ad", wall_time_sec=3.0)
+    transcriber = FakeTranscriber(text="Rapid Capital personal loan ad", wall_time_sec=3.0)
     consumer = ChunkConsumer(
         worker_db,
         settings,
         transcriber,
         extractor=extractor,
         detection_persister=persister,
+        loan_keywords=["personal loan"],
     )
 
     assert consumer.run_once() is True
 
-    assert extractor.calls == ["Rapid Capital funding ad"]
+    assert extractor.calls == ["Rapid Capital personal loan ad"]
     assert len(persister.calls) == 1
     assert persister.calls[0]["chunk_id"] == chunk_id
     assert persister.calls[0]["extraction"] == extraction
-    assert persister.calls[0]["transcript_text"] == "Rapid Capital funding ad"
+    assert persister.calls[0]["transcript_text"] == "Rapid Capital personal loan ad"
     assert len(persister.calls[0]["segments"]) == 2
+
+
+def test_consumer_observes_worker_loop_stage_durations(
+    worker_db: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    audio = tmp_path / "chunk.wav"
+    audio.write_bytes(b"fake wav")
+
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            _insert_chunk(
+                conn,
+                station_id=station_id,
+                path=str(audio),
+                start_ts=1000.0,
+                end_ts=1090.0,
+            )
+    finally:
+        conn.close()
+
+    observed_stages: list[str] = []
+
+    def fake_observe_stage(stage: str, duration_sec: float) -> None:
+        assert duration_sec >= 0.0
+        observed_stages.append(stage)
+
+    monkeypatch.setattr("worker.consumer.observe_stage_duration", fake_observe_stage)
+
+    extractor = FakeExtractor(AdExtraction(is_ad=True, company_name="Rapid Capital", confidence=0.9))
+    persister = FakeDetectionPersister()
+    transcriber = FakeTranscriber(text="Rapid Capital personal loan ad", wall_time_sec=3.0)
+    consumer = ChunkConsumer(
+        worker_db,
+        settings,
+        transcriber,
+        extractor=extractor,
+        detection_persister=persister,
+        loan_keywords=["personal loan"],
+    )
+
+    assert consumer.run_once() is True
+
+    assert {
+        "drop_oldest",
+        "claim",
+        "asr",
+        "persist_transcript",
+        "keyword_scan",
+        "llm",
+        "persist_detection",
+        "dedup",
+        "total_chunk",
+    }.issubset(set(observed_stages))
+
+
+def test_consumer_skips_llm_extraction_without_loan_keyword_signal(
+    worker_db: Path,
+    settings: PipelineSettings,
+    tmp_path: Path,
+) -> None:
+    audio = tmp_path / "news.wav"
+    audio.write_bytes(b"fake wav")
+
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            chunk_id = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path=str(audio),
+                start_ts=1000.0,
+                end_ts=1090.0,
+            )
+    finally:
+        conn.close()
+
+    extractor = FakeExtractor(AdExtraction(is_ad=True, company_name="Should Not Run", confidence=0.9))
+    persister = FakeDetectionPersister()
+    transcriber = FakeTranscriber(text="Traffic and weather after the break.", wall_time_sec=3.0)
+    consumer = ChunkConsumer(
+        worker_db,
+        settings,
+        transcriber,
+        extractor=extractor,
+        detection_persister=persister,
+        loan_keywords=["personal loan"],
+    )
+
+    assert consumer.run_once() is True
+
+    assert extractor.calls == []
+    assert persister.calls == []
+    conn = get_connection(worker_db)
+    try:
+        chunk = conn.execute(
+            "SELECT status, error FROM chunks WHERE id = ?", (chunk_id,)
+        ).fetchone()
+        assert chunk["status"] == ChunkStatus.DONE.value
+        assert chunk["error"] is None
+        transcript = conn.execute(
+            "SELECT text FROM transcripts WHERE chunk_id = ?", (chunk_id,)
+        ).fetchone()
+        assert transcript["text"] == "Traffic and weather after the break."
+    finally:
+        conn.close()
 
 
 def test_consumer_skips_llm_extraction_when_fingerprint_marks_known_ad(
@@ -599,18 +711,19 @@ def test_extraction_failure_marks_chunk_dropped_but_keeps_transcript(
 
     extractor = FakeExtractor(fail_with=RuntimeError("ollama unavailable"))
     persister = FakeDetectionPersister()
-    transcriber = FakeTranscriber(text="some transcript", wall_time_sec=3.0)
+    transcriber = FakeTranscriber(text="some personal loan transcript", wall_time_sec=3.0)
     consumer = ChunkConsumer(
         worker_db,
         settings,
         transcriber,
         extractor=extractor,
         detection_persister=persister,
+        loan_keywords=["personal loan"],
     )
 
     assert consumer.run_once() is True
 
-    assert extractor.calls == ["some transcript"]
+    assert extractor.calls == ["some personal loan transcript"]
     assert persister.calls == []
     conn = get_connection(worker_db)
     try:
@@ -623,7 +736,7 @@ def test_extraction_failure_marks_chunk_dropped_but_keeps_transcript(
         transcript = conn.execute(
             "SELECT text FROM transcripts WHERE chunk_id = ?", (chunk_id,)
         ).fetchone()
-        assert transcript["text"] == "some transcript"
+        assert transcript["text"] == "some personal loan transcript"
     finally:
         conn.close()
 
