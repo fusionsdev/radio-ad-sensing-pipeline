@@ -74,6 +74,7 @@ services:
       - CHUNKS_DIR=/app/chunks
       # Ollama client URL inside the compose network
       - OLLAMA_HOST=http://ollama:11434
+      - WORKER_RECLAIM_ORPHANS=${WORKER_RECLAIM_ORPHANS:-true}
     # NVIDIA GPU passthrough — requires nvidia-container-toolkit on the host
     deploy:
       resources:

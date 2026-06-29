@@ -1,0 +1,50 @@
+# Controlled follower worker override.
+# Start with:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.worker2.yml up -d --no-deps worker-2
+
+services:
+  worker-2:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    image: radio-ad-pipeline/worker:dev
+    container_name: radio-worker-2
+    restart: unless-stopped
+    depends_on:
+      pipeline-migrate:
+        condition: service_completed_successfully
+      ollama:
+        condition: service_started
+      ollama-pull:
+        condition: service_completed_successfully
+    volumes:
+      - pipeline_data:/app/data
+      - chunk-tmpfs:/app/chunks
+      - ./config:/app/config:ro
+    expose:
+      - "9102"
+    environment:
+      - PYTHONPATH=/app
+      - CHUNKS_DIR=/app/chunks
+      - OLLAMA_HOST=http://ollama:11434
+      - WORKER_RECLAIM_ORPHANS=false
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import faster_whisper"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    networks:
+      - pipeline-internal

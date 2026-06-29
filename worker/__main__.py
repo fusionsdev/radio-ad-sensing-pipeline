@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import signal
 import sys
 import threading
@@ -16,6 +17,18 @@ from worker.consumer import create_consumer
 DEFAULT_DB_PATH = Path("data/pipeline.db")
 
 
+def _env_bool(name: str, default: bool = True) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    normalized = raw.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    return default
+
+
 def main() -> None:
     setup_logging("worker")
     start_metrics_server(9102)
@@ -23,7 +36,11 @@ def main() -> None:
     migrate(db_path)
 
     settings = load_settings()
-    consumer = create_consumer(db_path, settings)
+    consumer = create_consumer(
+        db_path,
+        settings,
+        reclaim_orphans=_env_bool("WORKER_RECLAIM_ORPHANS", True),
+    )
 
     stop_event = threading.Event()
 

@@ -786,3 +786,77 @@ def test_reclaim_orphaned_processing_requeues_stuck_chunks(
         conn.close()
     assert rows[stuck] == "pending"
     assert rows[done] == "done"
+
+
+def test_default_run_reclaims_orphaned_processing_rows(
+    worker_db: Path,
+    settings: PipelineSettings,
+) -> None:
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            stuck = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path="data/chunks/test-fm/1.wav",
+                start_ts=1.0,
+                end_ts=91.0,
+                status="processing",
+            )
+    finally:
+        conn.close()
+
+    transcriber = FakeTranscriber()
+    consumer = ChunkConsumer(worker_db, settings, transcriber)
+    stop_event = threading.Event()
+    stop_event.set()
+
+    consumer.run(stop_event)
+
+    conn = get_connection(worker_db)
+    try:
+        status = conn.execute(
+            "SELECT status FROM chunks WHERE id = ?",
+            (stuck,),
+        ).fetchone()["status"]
+    finally:
+        conn.close()
+    assert status == ChunkStatus.PENDING.value
+
+
+def test_follower_run_skips_orphan_reclaim_and_keeps_processing_rows(
+    worker_db: Path,
+    settings: PipelineSettings,
+) -> None:
+    conn = get_connection(worker_db)
+    try:
+        with transaction(conn):
+            station_id = _seed_station(conn)
+            stuck = _insert_chunk(
+                conn,
+                station_id=station_id,
+                path="data/chunks/test-fm/1.wav",
+                start_ts=1.0,
+                end_ts=91.0,
+                status="processing",
+            )
+    finally:
+        conn.close()
+
+    transcriber = FakeTranscriber()
+    consumer = ChunkConsumer(worker_db, settings, transcriber, reclaim_orphans=False)
+    stop_event = threading.Event()
+    stop_event.set()
+
+    consumer.run(stop_event)
+
+    conn = get_connection(worker_db)
+    try:
+        status = conn.execute(
+            "SELECT status FROM chunks WHERE id = ?",
+            (stuck,),
+        ).fetchone()["status"]
+    finally:
+        conn.close()
+    assert status == ChunkStatus.PROCESSING.value
