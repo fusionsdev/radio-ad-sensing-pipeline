@@ -19,6 +19,7 @@ services:
       - OLLAMA_HOST=http://ollama:11434
       - ASR_MODEL=${ASR_MODEL:-}
       - ASR_COMPUTE_TYPE=${ASR_COMPUTE_TYPE:-}
+      - WORKER_RECLAIM_ORPHANS=${WORKER_RECLAIM_ORPHANS:-true}
 
   alerter:
     volumes:

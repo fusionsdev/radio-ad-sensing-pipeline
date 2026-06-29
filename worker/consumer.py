@@ -107,6 +107,7 @@ class ChunkConsumer:
         janitor: ChunkJanitor | None = None,
         poll_interval_sec: float = 1.0,
         loan_keywords: list[LoanKeywordEntry] | list[str] | None = None,
+        reclaim_orphans: bool = True,
     ) -> None:
         self.db_path = Path(db_path)
         self.settings = settings
@@ -117,11 +118,15 @@ class ChunkConsumer:
         self.janitor = janitor if janitor is not None else ChunkJanitor(db_path, settings)
         self.poll_interval_sec = poll_interval_sec
         self.loan_keywords = loan_keywords if loan_keywords is not None else load_loan_keywords()
+        self.reclaim_orphans = reclaim_orphans
         self._run_loops = 0
 
     def run(self, stop_event: Any | None = None) -> None:
         """Poll until stop_event is set."""
-        self._reclaim_orphaned_processing()
+        if self.reclaim_orphans:
+            self._reclaim_orphaned_processing()
+        else:
+            logger.info("startup orphan reclaim disabled for this worker")
         while stop_event is None or not stop_event.is_set():
             processed = self.run_once()
             self._run_loops += 1
@@ -524,6 +529,7 @@ def create_consumer(
     detection_persister: DetectionPersistenceBackend | None = None,
     fingerprint_annotator: FingerprintAnnotationBackend | None = None,
     poll_interval_sec: float = 1.0,
+    reclaim_orphans: bool = True,
 ) -> ChunkConsumer:
     """Factory for production consumer with default ASR, extraction, dedup, and fingerprint backends."""
     backend = transcriber or Transcriber(settings)
@@ -538,4 +544,5 @@ def create_consumer(
         detection_persister=persister,
         fingerprint_annotator=annotator,
         poll_interval_sec=poll_interval_sec,
+        reclaim_orphans=reclaim_orphans,
     )
