@@ -46,6 +46,14 @@ scrape_configs:
       - targets: ['worker:9102']
         labels:
           service: worker
+          worker_id: worker-1
+          role: leader
+          tier: processing
+      - targets: ['worker-2:9102']
+        labels:
+          service: worker
+          worker_id: worker-2
+          role: follower
           tier: processing
 
   - job_name: alerter

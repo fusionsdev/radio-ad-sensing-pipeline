@@ -50,7 +50,7 @@
     },
     {
       "id": 2,
-      "title": "Chunks processed / hour (by service)",
+      "title": "Chunks processed / hour (combined + by worker)",
       "type": "timeseries",
       "gridPos": {"h": 8, "w": 12, "x": 6, "y": 1},
       "datasource": {"type": "prometheus", "uid": "prometheus"},
@@ -58,7 +58,12 @@
         {
           "expr": "sum by (service) (rate(pipeline_chunks_processed_total[1h]) * 3600)",
           "refId": "A",
-          "legendFormat": "{{service}}"
+          "legendFormat": "{{service}} total"
+        },
+        {
+          "expr": "sum by (worker_id) (rate(pipeline_chunks_processed_total{service=\"worker\"}[1h]) * 3600)",
+          "refId": "B",
+          "legendFormat": "{{worker_id}}"
         }
       ],
       "fieldConfig": {
