@@ -1,0 +1,4 @@
+# Rendered video/audio is delivered as run artifacts, not committed (see README)
+out/
+assets/*.mp4
+assets/vo_*.wav
